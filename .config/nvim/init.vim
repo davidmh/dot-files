@@ -113,12 +113,8 @@ call plug#begin('~/.config/nvim/bundle')
   Plug 'tpope/vim-unimpaired'
   Plug 'tpope/vim-vinegar'
 
-  " javascript
-  Plug 'pangloss/vim-javascript'
-  Plug 'MaxMEllon/vim-jsx-pretty'
-  Plug 'leafgarland/typescript-vim'
-  Plug 'peitalin/vim-jsx-typescript'
-  Plug 'galooshi/vim-import-js'
+  " Syntax
+  Plug 'sheerun/vim-polyglot'
 
   " ruby
   Plug 'joker1007/vim-ruby-heredoc-syntax'
@@ -151,9 +147,10 @@ call plug#begin('~/.config/nvim/bundle')
   Plug 'AndrewRadev/switch.vim'
 
   Plug 'yasuhiroki/circleci.vim'
+  Plug 'terryma/vim-multiple-cursors'
 call plug#end()
 
-let g:space_vim_dark_background = 234
+" let g:seoul256_background = 235
 colorscheme gruvbox
 
 " Remove the background from the current colorscheme to fallback to the
@@ -197,7 +194,13 @@ augroup GitFormatType
 augroup END
 
 " Conquer of Completion
-let g:coc_global_extensions = ['coc-json', 'coc-python', 'coc-tsserver', 'coc-solargraph', 'coc-eslint']
+let g:coc_global_extensions = [
+      \ 'coc-diagnostic',
+      \ 'coc-eslint',
+      \ 'coc-python',
+      \ 'coc-solargraph',
+      \ 'coc-tsserver',
+      \ ]
 let g:airline_section_error = '%{airline#util#wrap(airline#extensions#coc#get_error(),0)}'
 let g:airline_section_warning = '%{airline#util#wrap(airline#extensions#coc#get_warning(),0)}'
 nmap <silent> <M-h> :call CocActionAsync('doHover')<CR>

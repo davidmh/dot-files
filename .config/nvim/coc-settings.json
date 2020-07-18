@@ -1,16 +1,19 @@
 {
-  "javascript.suggest.enabled": false,
   "coc.preferences.enableFloatHighlight": true,
   "coc.preferences.formatOnSaveFiletypes": ["ruby", "javascript", "python"],
   "coc.preferences.messageLevel": "more",
   "coc.preferences.useQuickfixForLocations": true,
   "suggest.floatEnable": false,
+
   "eslint.run": "onSave",
   "eslint.autoFixOnSave": true,
   "eslint.filetypes": ["javascript", "typescript", "typescriptreact"],
   "eslint.enable": true,
   "eslint.packageManager": "yarn",
+
+  "javascript.suggest.enabled": false,
   "javascript.validate.enable": false,
+
   "tsserver.ignoreLocalTsserver": false,
   "tsserver.trace.server": "verbose",
   "tsserver.enable": true,
@@ -19,19 +22,29 @@
   "typescript.suggest.enabled": false,
   "typescript.suggestionActions.enabled": false,
   "typescript.suggest.completeFunctionCalls": true,
+
   "python.linting.enabled": false,
   "python.linting.pylintEnabled": true,
   "python.linting.pylintArgs": ["--rcfile=.pylintrc"],
   "python.linting.flake8Enabled": true,
   "python.formatting.provider": "none",
   "python.jediEnabled": false,
+
   "solargraph.checkGemVersion": false,
   "solargraph.diagnostics": true,
   "solargraph.formatting": false,
   "solargraph.useBundler": true,
+  "solargraph.bundlerPath": "~/.gem/ruby/2.6.6/bin/bundle",
   "solargraph.hover": true,
   "solargraph.definitions": true,
   "solargraph.logLevel": "debug",
+
+  "diagnostic-languageserver.filetypes": {
+    "gitcommit": "write-good",
+    "markdown": "write-good",
+    "sh": "shellcheck"
+  },
+
   "languageserver": {
     "elmLS": {
       "command": "elm-language-server",
@@ -45,6 +58,14 @@
       "rootPatterns": ["compile_flags.txt", "compile_commands.json", ".git/", ".hg/"],
       "initializationOptions": {
         "cacheDirectory": "/tmp/cquery"
+      }
+    },
+    "golang": {
+      "command": "gopls",
+      "rootPatterns": ["go.mod", ".vim/", ".git/", ".hg/"],
+      "filetypes": ["go"],
+      "initializationOptions": {
+        "usePlaceholders": true
       }
     }
   }
