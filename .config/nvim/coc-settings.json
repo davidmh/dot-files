@@ -5,6 +5,8 @@
   "coc.preferences.useQuickfixForLocations": true,
   "suggest.floatEnable": false,
 
+  "suggest.maxPreviewWidth": 100,
+
   "eslint.run": "onSave",
   "eslint.autoFixOnSave": true,
   "eslint.filetypes": ["javascript", "typescript", "typescriptreact"],
@@ -39,8 +41,15 @@
   "solargraph.definitions": true,
   "solargraph.logLevel": "debug",
 
+  "diagnostic.checkCurrentLine": true,
+  "diagnostic.maxWindowHeight": 20,
+  "diagnostic.errorSign": "✖",
+  "diagnostic.warningSign": "⚠",
+  "diagnostic.infoSign": "●",
+  "diagnostic.hintSign": "○",
   "diagnostic-languageserver.filetypes": {
     "gitcommit": "write-good",
+    "less": "stylelint",
     "markdown": "write-good",
     "sh": "shellcheck"
   },

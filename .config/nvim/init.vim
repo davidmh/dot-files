@@ -94,9 +94,7 @@ tnoremap <M-right> <C-\><C-n><C-W>l
 " install plugins
 call plug#begin('~/.config/nvim/bundle')
   " linting, autocompletion, LSP features
-  " Plug 'neoclide/coc.nvim', {'tag': 'v0.0.78'}
   Plug 'neoclide/coc.nvim', {'branch': 'release'}
-  " Plug 'davidhalter/jedi-vim'
 
   " the pope
   Plug 'tpope/vim-commentary'
@@ -106,15 +104,13 @@ call plug#begin('~/.config/nvim/bundle')
   Plug 'tpope/vim-fugitive' | Plug 'tpope/vim-rhubarb'
   Plug 'tpope/vim-git'
   Plug 'tpope/vim-projectionist'
-  " Plug 'tpope/vim-rails'
   Plug 'tpope/vim-repeat'
   Plug 'tpope/vim-scriptease'
   Plug 'tpope/vim-surround'
   Plug 'tpope/vim-unimpaired'
-  Plug 'tpope/vim-vinegar'
 
-  " Syntax
-  Plug 'sheerun/vim-polyglot'
+  " File system navigation
+  Plug 'justinmk/vim-dirvish'
 
   " ruby
   Plug 'joker1007/vim-ruby-heredoc-syntax'
@@ -145,9 +141,8 @@ call plug#begin('~/.config/nvim/bundle')
   Plug 'ElmCast/elm-vim'
   Plug 'rhysd/vim-grammarous'
   Plug 'AndrewRadev/switch.vim'
-
-  Plug 'yasuhiroki/circleci.vim'
-  Plug 'terryma/vim-multiple-cursors'
+  Plug 'mg979/vim-visual-multi'
+  Plug 'nvim-treesitter/nvim-treesitter'
 call plug#end()
 
 " let g:seoul256_background = 235
@@ -158,6 +153,7 @@ colorscheme gruvbox
 hi Normal     ctermbg=NONE guibg=NONE
 hi LineNr     ctermbg=NONE guibg=NONE
 hi SignColumn ctermbg=NONE guibg=NONE
+hi Comment    guifg=DarkGray
 
 " vim-fugitive
 " open the latest committed version of the current file
@@ -216,15 +212,16 @@ vmap <silent> <M-s> <Plug>(coc-range-select)
 nmap <silent> <M-S> <Plug>(coc-range-select-backward)
 vmap <silent> <M-S> <Plug>(coc-range-select-backward)
 
-" Applying codeAction to the selected region.
-" Example: `<leader>aap` for current paragraph
-xmap <leader>a  <Plug>(coc-codeaction-selected)
-nmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <silent> <leader>hi <Plug>(coc-git-chunkinfo)
+nmap [g <Plug>(coc-git-prevchunk)
+nmap ]g <Plug>(coc-git-nextchunk)
+
+vmap <leader>a <Plug>(coc-codeaction-selected)
+nmap <leader>a <Plug>(coc-codeaction-selected)
 
 nmap <silent> <M-x> :CocCommand<CR>
 
-
-" EasyAlign 
+" EasyAlign
 " Start in visual mode (e.g. vipga)
 xmap ga <Plug>(EasyAlign)
 " Start for a motion/text object (e.g. gaip)
@@ -402,3 +399,5 @@ let g:vimwiki_list = [{'path': '~/Documents/vimwiki',
 
 let g:vimwiki_folding='syntax'
 let g:switch_mapping='!'
+
+lua require('tree-sitter-config')
