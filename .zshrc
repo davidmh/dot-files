@@ -21,9 +21,9 @@ zle -N edit-command-line
 bindkey '^xe' edit-command-line
 bindkey '^x^e' edit-command-line
 
-alias ll="ls -lpG"
+alias ll="lsd -l"
 
-alias vim="nvim"
+compdef fuck=pkill
 
 function mov2gif() {
   MOVNAME=$1
@@ -117,7 +117,7 @@ zplug "zsh-users/zsh-autosuggestions"
 
 zplug "zsh-users/zsh-completions"
 
-zplug "g-plane/zsh-yarn-autocompletions", hook-build:"./zplug.zsh", defer:2
+zplug "g-plane/zsh-yarn-autocompletions", hook-build:"./zplug.zsh"
 
 zplug load
 
@@ -125,11 +125,16 @@ zplug load
 
 bindkey '^ ' autosuggest-accept
 
-export NVIM_LISTEN_ADDRESS=/tmp/nvim.sock
+# remote-neovim
+alias vim="nvr -s"
+if [ -n "$TMUX" ]; then
+    eval "$(tmux show-environment -s NVIM_LISTEN_ADDRESS)"
+else
+    export NVIM_LISTEN_ADDRESS=/tmp/nvim.sock
+fi
 
 eval "$(pyenv init -)"
 
-export EDITOR="nvim"
+export VISUAL="nvim"
+export EDITOR="nvr-tmux -s"
 export TERM=xterm-256color
-export MANPAGER="nvim -c 'set ft=man' -"
-
