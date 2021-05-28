@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+LC_ALL=C GIT_COMMITTER_DATE="$(date)" git commit -n --amend --no-edit --date "$(date)"

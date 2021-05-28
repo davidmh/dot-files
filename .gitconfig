@@ -1,0 +1,44 @@
+[user]
+  name = David Mejorado
+  email = david.mejorado@gmail.com
+[core]
+  pager = diff-so-fancy | less --tabs=4 -RFX
+  editor = nvr-tmux -s
+[color]
+  ui = true
+[color "diff-highlight"]
+  oldNormal = red
+  oldHighlight = red 52
+  newNormal = green
+  newHighlight = green 22
+[color "diff"]
+  meta = yellow
+  frag = magenta
+  commit = yellow
+  old = red
+  new = green
+  whitespace = red reverse
+[rerere]
+  enabled = false
+[init]
+  templatedir = ~/.git_template
+[alias]
+  amend-date     = !~/.config/bin/git-amend-date
+  current-branch = rev-parse --abbrev-ref HEAD
+  fixup          = !~/.config/bin/git-fixup
+  fresh          = !git switch master && git pull origin master && git fetch
+  pushc          = !git push origin $(git current-branch)
+  pullc          = !git pull origin $(git current-branch)
+[filter "lfs"]
+  smudge = git-lfs smudge -- %f
+  process = git-lfs filter-process
+  required = true
+  clean = git-lfs clean -- %f
+[merge]
+  conflictstyle = diff3
+[pager]
+  branch = false
+[pull]
+  rebase = true
+[rebase]
+  autosquash = true

@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+MERGE_BASE_COMMIT=$(git merge-base HEAD origin/master)
+SELECTED_COMMIT=$(git log HEAD..."$MERGE_BASE_COMMIT" --format="%h %s" \
+  | fzf --prompt="fixup into > " --preview="git show {1} | diff-so-fancy" \
+  | awk '{ print $1 }')
+
+git commit -n --fixup "$SELECTED_COMMIT"
