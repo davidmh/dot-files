@@ -1,4 +1,3 @@
-local lsp_status = require('lsp-status')
 local condition = require('galaxyline.condition')
 local gl = require('galaxyline')
 local gls = gl.section
@@ -38,24 +37,32 @@ function providers.ale_info()
   return providers.ale_diagnostics().info
 end
 
--- looks funky, disabled for now
-function providers.lsp_status()
-  return lsp_status.status()
-end
-
 function providers.mode()
-  local mode_color = {n = colors.red, i = colors.green,v=colors.blue,
-    [''] = colors.blue,V=colors.blue,
-    c = colors.yellow,no = colors.red,s = colors.orange,
-    S=colors.orange,[''] = colors.orange,
-    ic = colors.yellow,R = colors.violet,Rv = colors.violet,
-    cv = colors.red,ce=colors.red, r = colors.cyan,
-    rm = colors.cyan, ['r?'] = colors.cyan,
-    ['!']  = colors.red,t = colors.red}
+  local mode_color = {
+    n      = colors.blue,
+    i      = colors.green,
+    v      = colors.purple,
+    [''] = colors.purple,
+    V      = colors.purple,
+    c      = colors.red,
+    no     = colors.blue,
+    s      = colors.red,
+    S      = colors.red,
+    [''] = colors.red,
+    ic     = colors.yellow,
+    R      = colors.violet,
+    Rv     = colors.violet,
+    cv     = colors.blue,
+    ce     = colors.blue,
+    r      = colors.cyan,
+    rm     = colors.cyan,
+    ['r?'] = colors.cyan,
+    ['!']  = colors.blue,
+    t      = colors.blue,
+  }
   -- auto change color according the vim mode
   local mode = vim.fn.mode()
   vim.api.nvim_command('hi GalaxyViMode guifg='..mode_color[mode])
-  -- return ' '
   return '▊ '
 end
 
@@ -103,6 +110,7 @@ gls.left[1] = {
 gls.left[2] = {
   GitBranch = {
     provider = 'GitBranch',
+    icon = ' ',
     separator = ' ',
     condition = condition.show_git_branch,
     highlight = {colors.violet,colors.bg,'bold'},
@@ -110,16 +118,16 @@ gls.left[2] = {
 }
 gls.left[3] = {
   DiffAdd = {
-    provider = 'DiffAdd',
-    icon = '+',
-    highlight = {colors.green,colors.bg},
+    provider = 'DiffModified',
+    icon = '±',
+    highlight = {colors.orange,colors.bg},
   }
 }
 gls.left[4] = {
   DiffModified = {
-    provider = 'DiffModified',
-    icon = '±',
-    highlight = {colors.orange,colors.bg},
+    provider = 'DiffAdd',
+    icon = '+',
+    highlight = {colors.green,colors.bg},
   }
 }
 gls.left[5] = {

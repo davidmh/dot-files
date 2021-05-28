@@ -19,38 +19,38 @@ local on_attach = function(client, bufnr)
   lsp_status.register_progress()
   lsp_status.on_attach(client)
 
-  local function buf_set_keymap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
-  local function buf_set_option(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+  local function nnoremap(key, exp)
+    vim.api.nvim_buf_set_keymap(bufnr, 'n', key, '<cmd>' .. exp .. '<cr>', { noremap=true, silent = true})
+  end
+  local function vnoremap(key, exp)
+    vim.api.nvim_buf_set_keymap(bufnr, 'v', key, '<cmd>' .. exp .. '<cr>', { noremap=true, silent = true})
+  end
 
-  buf_set_option('omnifunc', 'v:lua.vim.lsp.omnifunc')
+  vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
   -- Mappings.
-  local opts = { noremap=true, silent=false }
-  buf_set_keymap('n', '<M-d>', '<cmd>lua vim.lsp.buf.definition()<CR>', opts)
-  buf_set_keymap('n', '<M-f>', '<cmd>lua vim.lsp.buf.references()<CR>', opts)
-  buf_set_keymap('n', '<M-h>', '<cmd>Lspsaga hover_doc<CR>', opts)
-  buf_set_keymap('n', '<M-i>', '<cmd>lua vim.lsp.buf.implementation()<CR>', opts)
-  buf_set_keymap('n', '<M-k>', '<cmd>lua vim.lsp.buf.signature_help()<CR>', opts)
-  buf_set_keymap('n', '<M-t>', '<cmd>lua vim.lsp.buf.type_definition()<CR>', opts)
-  buf_set_keymap('n', '<M-r>', '<cmd>Lspsaga rename<CR>', opts)
-  buf_set_keymap('n', '[d', '<cmd>lua vim.lsp.diagnostic.goto_prev()<CR>', opts)
-  buf_set_keymap('n', ']d', '<cmd>lua vim.lsp.diagnostic.goto_next()<CR>', opts)
-  buf_set_keymap('n', '<M-q>', '<cmd>lua vim.lsp.diagnostic.set_loclist()<CR>', opts)
-  buf_set_keymap('n', '<M-a>', "<cmd>Lspsaga code_action<CR>", opts)
+  nnoremap('<M-d>', 'lua vim.lsp.buf.definition()')
+  nnoremap('<M-f>', 'lua vim.lsp.buf.references()')
+  nnoremap('<M-h>', 'Lspsaga hover_doc')
+  nnoremap('<M-i>', 'lua vim.lsp.buf.implementation()')
+  nnoremap('<M-k>', 'lua vim.lsp.buf.signature_help()')
+  nnoremap('<M-t>', 'lua vim.lsp.buf.type_definition()')
+  nnoremap('<M-r>', 'Lspsaga rename')
+  nnoremap('[d', '<cmdvim.lsp.diagnostic.goto_prev()')
+  nnoremap(']d', '<cmdvim.lsp.diagnostic.goto_next()')
+  nnoremap('<M-q>', 'lua vim.lsp.diagnostic.set_loclist()')
+  nnoremap('<M-a>', "Lspsaga code_action")
   --
   -- scroll hover doc or scroll in definition preview
-  buf_set_keymap('n', '<C-f>', "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(1)<CR>", opts)
-  buf_set_keymap('n', '<C-b>', "<cmd>lua require('lspsaga.action').smart_scroll_with_saga(-1)<CR>", opts)
-  --
-  -- broken:
-  -- buf_set_keymap('n', '<M-p>', '<cmd>Lspsaga preview_definition<CR>', opts)
+  nnoremap('<C-f>', "lua require('lspsaga.action').smart_scroll_with_saga(1)")
+  nnoremap('<C-b>', "lua require('lspsaga.action').smart_scroll_with_saga(-1)")
 
   -- Set some keybinds conditional on server capabilities
   if client.resolved_capabilities.document_formatting then
-    buf_set_keymap("n", "<M-F>", "<cmd>lua vim.lsp.buf.formatting()<CR>", opts)
+    nnoremap("<M-F>", "lua vim.lsp.buf.formatting()")
   end
   if client.resolved_capabilities.document_range_formatting then
-    buf_set_keymap("v", "<M-F>", "<cmd>lua vim.lsp.buf.range_formatting()<CR>", opts)
+    vnoremap('<M-F>', 'lua vim.lsp.buf.range_formatting()')
   end
 end
 
@@ -65,7 +65,7 @@ for _, lsp in ipairs(servers) do
 end
 
 -- lua needs some custom settings to provide context on the vim API
-local system_name = 'macOS' -- (Linux, macOS, or Windows)
+local system_name = 'macOs'
 local sumneko_root_path = vim.fn.stdpath('data') .. '/lspinstall/lua/sumneko-lua/extension/server/'
 local sumneko_binary = sumneko_root_path..'/bin/' .. system_name .. '/lua-language-server'
 lsp_config.sumneko_lua.setup({

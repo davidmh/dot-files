@@ -1,5 +1,5 @@
 " install plugins
-call plug#begin('~/.config/nvim/bundle')
+call plug#begin(stdpath('config') . '/bundle')
   " LSP
   Plug 'neovim/nvim-lspconfig'
   Plug 'kabouzeid/nvim-lspinstall'
@@ -25,13 +25,9 @@ call plug#begin('~/.config/nvim/bundle')
   Plug 'gruvbox-community/gruvbox'
   Plug 'junegunn/seoul256.vim'
   Plug 'romainl/Apprentice'
-  Plug 'cormacrelf/vim-colors-github'
   Plug 'arcticicestudio/nord-vim'
   Plug 'dracula/vim'
   Plug 'joshdick/onedark.vim'
-  Plug 'ulwlu/elly.vim'
-  Plug 'aonemd/kuroi.vim'
-  Plug 'folke/tokyonight.nvim'
 
   " Syntax hightlighting
   Plug 'yasuhiroki/circleci.vim'
@@ -40,7 +36,7 @@ call plug#begin('~/.config/nvim/bundle')
   " Lists
   Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
   Plug 'junegunn/fzf.vim'
-  Plug 'nvim-telescope/telescope.nvim'
+  Plug 'nvim-telescope/telescope.nvim' | Plug 'nvim-telescope/telescope-fzf-native.nvim', { 'do': 'make' }
   Plug 'kevinhwang91/nvim-bqf'
 
   " The lua invasion
@@ -48,6 +44,7 @@ call plug#begin('~/.config/nvim/bundle')
   Plug 'nvim-lua/plenary.nvim'
   Plug 'lewis6991/gitsigns.nvim'
   Plug 'folke/zen-mode.nvim'
+  Plug 'folke/which-key.nvim'
 
   " TMUX integration
   Plug 'christoomey/vim-tmux-navigator'
@@ -60,6 +57,7 @@ call plug#begin('~/.config/nvim/bundle')
   Plug 'glepnir/galaxyline.nvim' , {'branch': 'main'} | Plug 'kyazdani42/nvim-web-devicons'
 
   " Misc Utilities
+  Plug 'tommcdo/vim-exchange'
   Plug 'tpope/vim-commentary'
   Plug 'tpope/vim-dadbod'
   Plug 'tpope/vim-dispatch'
@@ -116,8 +114,8 @@ augroup VimrcAutoSource
   au BufWritePost $HOME/.config/nvim/init.vim source <afile>
 augroup END
 
-let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
-let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+" let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+" let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
 
 let $TERM='screen-256color-italic'
 let s:plug_url = 'https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim'
@@ -127,8 +125,6 @@ let s:plug_target = stdpath('data') . '/site/autoload/plug.vim'
 if empty(glob(s:plug_target))
   execute '!curl -fLo ' . s:plug_target . ' --create-dirs ' . s:plug_url
 endif
-
-let g:VtrUseVtrMaps = 1
 
 colorscheme nord
 
@@ -151,11 +147,8 @@ xmap ga <Plug>(EasyAlign)
 " Start for a motion/text object (e.g. gaip)
 nmap ga <Plug>(EasyAlign)
 
-nnoremap <leader>gg :silent! grep <C-R><C-W>
-
-let g:switch_mapping='!'
-let g:netrw_banner=0
-
+lua require('utilities')
+lua require('plugin-settings')
 lua require('lsp')
 lua require('tree-sitter-config')
 lua require('completion')
@@ -164,10 +157,9 @@ lua require('colorizer').setup()
 lua require('gitsigns').setup()
 lua require('status-line')
 lua require('telescope-config')
+lua require('confirm-quit')
+lua require('which-key-config')
 
-source $HOME/.config/nvim/settings/commands.vim
-source $HOME/.config/nvim/settings/ale.vim
 source $HOME/.config/nvim/settings/remaps.vim
-source $HOME/.config/nvim/settings/telescope.vim
 source $HOME/.config/nvim/settings/lists.vim
-source $HOME/.config/nvim/settings/confirm-quit.vim
+source $HOME/.config/nvim/settings/remix.vim

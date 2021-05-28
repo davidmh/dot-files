@@ -1,8 +1,8 @@
 augroup remix-config
   autocmd!
   autocmd BufRead,BufNewFile $REMIX_HOME/*
-        \ cabbrev <buffer> client Dispatch -dir=client/ |
-        \ cabbrev <buffer> core Dispatch -dir=core/
+        \ cabbrev <buffer> Client Dispatch -dir=client/ |
+        \ cabbrev <buffer> Core Dispatch -dir=core/
 augroup END
 
 command! RemixApprovals
