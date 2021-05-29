@@ -1,4 +1,3 @@
--- ALE
 vim.g.ale_disable_lsp = 1
 vim.g.ale_fix_on_save = 1
 vim.g.ale_completion_autoimport = 1
@@ -15,6 +14,3 @@ vim.g.ale_fixers = {
   typescript = {'eslint'},
   typescriptreact = {'eslint'},
 }
-
-vim.g.switch_mapping = '!'
-vim.g.netrw_banner = 0

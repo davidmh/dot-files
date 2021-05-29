@@ -32,6 +32,7 @@ function _G.confirm_quit(should_write)
     vim.cmd("echo ''")
   end
   if vim.fn.winnr('$') == 1 and vim.fn.tabpagenr('$') == 1 then
+    math.randomseed(os.time())
     local message = messages[math.random(#messages)]
     if vim.fn.confirm(message,  'Quit? &Yes\n&No', 2) == 1 then
       vim.cmd('quit')

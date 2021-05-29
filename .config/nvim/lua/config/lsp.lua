@@ -56,7 +56,7 @@ end
 
 -- Use a loop to conveniently both setup defined servers
 -- and map buffer local keybindings when the language server attaches
-local servers = { "solargraph", "tsserver", "python", "vim" }
+local servers = { "solargraph", "tsserver", "python", "vim", "json" }
 for _, lsp in ipairs(servers) do
   lsp_config[lsp].setup {
     on_attach = on_attach,
@@ -65,7 +65,8 @@ for _, lsp in ipairs(servers) do
 end
 
 -- lua needs some custom settings to provide context on the vim API
-local system_name = 'macOs'
+local system_dict = { Linux = 'Linux', Darwin = 'macOS' }
+local system_name = system_dict[vim.fn.system('uname -s'):gsub('%s+', '')]
 local sumneko_root_path = vim.fn.stdpath('data') .. '/lspinstall/lua/sumneko-lua/extension/server/'
 local sumneko_binary = sumneko_root_path..'/bin/' .. system_name .. '/lua-language-server'
 lsp_config.sumneko_lua.setup({
@@ -80,7 +81,7 @@ lsp_config.sumneko_lua.setup({
       },
       diagnostics = {
         -- Get the language server to recognize the `vim` global
-        globals = {'vim'},
+        globals = {'vim', 'use'},
       },
       workspace = {
         -- Make the server aware of Neovim runtime files

@@ -22,8 +22,8 @@ wk.register({
   -- git mappings
   g = {
     name = 'git',
-    g = cmd('Git', 'git status'),
-    s = cmd('Telescope git_branches theme=get_ivy', 'switch branch'),
+    s = cmd('Git', 'git status'),
+    c = cmd('Telescope git_branches theme=get_ivy', 'checkout branch'),
     w = cmd('Gwrite', 'write into the git tree'),
     r = cmd('Gread', 'read from the git tree'),
     e = cmd('Gedit', 'edit from the git tree'), -- open the latest committed version of the current file
