@@ -4,6 +4,17 @@ command! Tmuxrc tabedit $HOME/.tmux.conf
 command! Vimrc tabedit $HOME/.config/nvim/init.lua
 command! Zshrc tabedit $HOME/.zshrc
 
+" Remove the background from the current colorscheme to fallback to the
+" colorscheme in the terminal
+augroup colorscheme-settings
+  au!
+  au ColorScheme *
+        \ hi Normal     ctermbg=NONE guibg=NONE |
+        \ hi LineNr     ctermbg=NONE guibg=NONE |
+        \ hi SignColumn ctermbg=NONE guibg=NONE |
+        \ hi Comment cterm=italic gui=italic guifg=DarkGray
+augroup END
+
 augroup quickfix-settings
   au!
   " auto-adjust window height to a max of N lines
