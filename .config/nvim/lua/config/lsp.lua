@@ -1,7 +1,9 @@
-require('lspinstall').setup()
+local lsp_install = require('lspinstall')
 local lsp_config = require 'lspconfig'
 local saga = require 'lspsaga'
 local lsp_status = require 'lsp-status'
+
+lsp_install.setup()
 
 local on_attach = function(client, bufnr)
   saga.init_lsp_saga {
@@ -54,44 +56,51 @@ local on_attach = function(client, bufnr)
   end
 end
 
--- Use a loop to conveniently both setup defined servers
--- and map buffer local keybindings when the language server attaches
-local servers = { "solargraph", "tsserver", "python", "vim", "json" }
-for _, lsp in ipairs(servers) do
-  lsp_config[lsp].setup {
-    on_attach = on_attach,
-    capabilities = lsp_status.capabilities,
-  }
-end
+local function setup()
+  -- returns all the lsp servers installed with:
+  -- `:LspInstall <server_name>`
+  local servers = require'lspinstall'.installed_servers()
 
--- lua needs some custom settings to provide context on the vim API
-local system_dict = { Linux = 'Linux', Darwin = 'macOS' }
-local system_name = system_dict[vim.fn.system('uname -s'):gsub('%s+', '')]
-local sumneko_root_path = vim.fn.stdpath('data') .. '/lspinstall/lua/sumneko-lua/extension/server/'
-local sumneko_binary = sumneko_root_path..'/bin/' .. system_name .. '/lua-language-server'
-lsp_config.sumneko_lua.setup({
-  cmd = {sumneko_binary, '-E', sumneko_root_path .. '/main.lua'},
-  settings = {
-    Lua = {
-      runtime = {
-        -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
-        version = 'LuaJIT',
-        -- Setup your lua path
-        path = vim.split(package.path, ';'),
-      },
-      diagnostics = {
-        -- Get the language server to recognize the `vim` global
-        globals = {'vim', 'use'},
-      },
-      workspace = {
-        -- Make the server aware of Neovim runtime files
-        library = {
-          [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-          [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-        },
+  for _, lsp in ipairs(servers) do
+    lsp_config[lsp].setup {
+      on_attach = on_attach,
+      capabilities = lsp_status.capabilities,
+      settings = {
+        Lua = {
+          runtime = {
+            -- Tell the language server which version of Lua you're using (most likely LuaJIT in the case of Neovim)
+            version = 'LuaJIT',
+            -- Setup your lua path
+            path = vim.split(package.path, ';'),
+          },
+          diagnostics = {
+            -- Get the language server to recognize the `vim` global
+            globals = {'vim', 'use'},
+          },
+          workspace = {
+            -- Make the server aware of Neovim runtime files
+            library = {
+              [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+              [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+            },
+          },
+        }
       },
     }
-  },
-  on_attach = on_attach,
-  capabilities = lsp_status.capabilities
-})
+  end
+
+  -- The typescript server is installed globally, not through lspinstall in
+  -- order to pickup a commit from master that hasn't been released yet
+  lsp_config.tsserver.setup({
+    on_attach = on_attach,
+    capabilities = lsp_status.capabilities
+  })
+end
+
+setup()
+
+-- Automatically reload after `:LspInstall <server_name>` so we don't have to restart neovim
+lsp_install.post_install_hook = function ()
+  setup() -- reload installed servers
+  vim.cmd('bufdo e') -- this triggers the FileType autocmd that starts the server
+end
