@@ -6,6 +6,7 @@ end
 
 -- normal mode mappings
 wk.register({
+  f = cmd([[lua _G.telescope_file_browser()]], 'file browser'),
   -- finders
   ["<leader>"] = cmd('Telescope find_files theme=get_ivy', 'find files'),
   lg = cmd('Telescope live_grep theme=get_ivy', 'live grep'),

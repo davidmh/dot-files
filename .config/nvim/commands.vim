@@ -1,25 +1,31 @@
 command! Kittyrc tabedit $HOME/.config/kitty/kitty.conf
-command! Luarc tabedit $HOME/.config/nvim/lua/
 command! Tmuxrc tabedit $HOME/.tmux.conf
-command! Vimrc tabedit $HOME/.config/nvim/init.lua
+command! Vimrc call v:lua.telescope_file_browser("~/.config/nvim")
 command! Zshrc tabedit $HOME/.zshrc
 
-" Remove the background from the current colorscheme to fallback to the
-" colorscheme in the terminal
-augroup colorscheme-settings
+augroup custom-settings
   au!
+
+  " Remove the background from the current colorscheme to fallback to the
+  " colorscheme in the terminal
   au ColorScheme *
         \ hi Normal     ctermbg=NONE guibg=NONE |
         \ hi LineNr     ctermbg=NONE guibg=NONE |
         \ hi SignColumn ctermbg=NONE guibg=NONE |
         \ hi Comment cterm=italic gui=italic guifg=DarkGray
-augroup END
 
-augroup quickfix-settings
-  au!
+  " Add missing extension/ft association
+  au BufRead,BufNew *.exs,*.ex
+        \ set filetype=elixir |
+        \ setlocal makeprg=elixirc\ %
+  au BufRead,BufNew *_test.exs
+        \ set filetype=elixir |
+        \ setlocal makeprg=mix\ test\ %
+
+  " Quickfix
   " auto-adjust window height to a max of N lines
   au FileType qf call s:adjust_qf_window(1,  20)
-  " open the quickfix window if the command includes *grep*
+  " open if the command includes *grep*
   au QuickFixCmdPost *grep* copen
 augroup END
 
