@@ -15,7 +15,7 @@ wk.register({
   -- buffers
   b = {
     name = 'buffer',
-    b = cmd('Buffers', 'buffer list'),
+    b = cmd('Telescope buffers theme=get_ivy', 'buffer list'),
     k = cmd('bprevious <bar> bdelete #', 'kill buffer'),
     o = cmd('BufOnly', 'kill other buffers')
   },
@@ -30,8 +30,8 @@ wk.register({
     e = cmd('Gedit', 'edit from the git tree'), -- open the latest committed version of the current file
     b = cmd('Git blame', 'blame'),
     d = cmd('Gdiff', 'diff'),
-    l = cmd('FloatermNew --height=0.9 --width=0.9 --title=tig tig', 'log'),
-    L = cmd('FloatermNew --height=0.9 --width=0.9 --title=tig tig -- %', 'file log'),
+    l = cmd('lua _G.telescope_git_log()', 'log'),
+    L = cmd('lua _G.telescope_git_log({ current_buffer = true })', 'buffer log'),
     B = cmd('GBrowse', 'open in remote service'),
     f = cmd('GFixup', 'fixup staged changes'),
     ['[h'] = cmd('Gitsigns prev_hunk', 'prev hunk'),
