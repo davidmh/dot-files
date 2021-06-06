@@ -38,10 +38,10 @@ local on_attach = function(client, bufnr)
   nnoremap('<M-k>', 'lua vim.lsp.buf.signature_help()')
   nnoremap('<M-t>', 'lua vim.lsp.buf.type_definition()')
   nnoremap('<M-r>', 'Lspsaga rename')
-  nnoremap('[d', '<cmdvim.lsp.diagnostic.goto_prev()')
-  nnoremap(']d', '<cmdvim.lsp.diagnostic.goto_next()')
   nnoremap('<M-q>', 'lua vim.lsp.diagnostic.set_loclist()')
-  nnoremap('<M-a>', "Lspsaga code_action")
+  nnoremap('<M-a>', 'Lspsaga code_action')
+  nnoremap('[d',    'lua vim.lsp.diagnostic.goto_prev()')
+  nnoremap(']d',    'lua vim.lsp.diagnostic.goto_next()')
   --
   -- scroll hover doc or scroll in definition preview
   nnoremap('<C-f>', "lua require('lspsaga.action').smart_scroll_with_saga(1)")
