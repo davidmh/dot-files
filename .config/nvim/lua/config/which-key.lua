@@ -31,7 +31,7 @@ wk.register({
     b = cmd('Git blame', 'blame'),
     d = cmd('Gdiff', 'diff'),
     l = cmd('lua _G.telescope_git_log()', 'log'),
-    L = cmd('lua _G.telescope_git_log({ current_buffer = true })', 'buffer log'),
+    L = cmd([[lua _G.telescope_git_log({ path = vim.fn.expand('%') })]], 'buffer log'),
     B = cmd('GBrowse', 'open in remote service'),
     f = cmd('GFixup', 'fixup staged changes'),
     ['[h'] = cmd('Gitsigns prev_hunk', 'prev hunk'),

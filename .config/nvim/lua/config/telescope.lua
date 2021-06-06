@@ -1,6 +1,11 @@
 local action_state = require('telescope.actions.state')
 local actions = require('telescope.actions')
 local builtin = require('telescope.builtin')
+local conf = require('telescope.config').values
+local finders = require('telescope.finders')
+local make_entry = require('telescope.make_entry')
+local pickers = require('telescope.pickers')
+local previewers = require('telescope.previewers')
 local telescope = require('telescope')
 local themes = require('telescope.themes')
 local utils = require('telescope.utils')
@@ -58,15 +63,25 @@ end
 
 function _G.telescope_git_log(opts)
   opts = opts or {}
+  local path = opts.path or '.'
+  local limit = opts.limit or 2000 -- large logs get slow past this point
+  local revision_range = opts.revision_range or 'HEAD'
+  local path_in_title = opts.path and ' -- ' .. path or ''
 
-  local picker = opts.current_buffer and 'git_bcommits' or 'git_commits'
-  local log_path = opts.current_buffer and ' -- ' .. vim.fn.expand('%') or ''
+  local results = utils.get_os_command_output({
+    'git', 'log', '--pretty=oneline', '--abbrev-commit', string.format('-n%s', limit), revision_range, '--', path
+  }, opts.cwd)
 
-  builtin[picker](themes.get_ivy({
-    prompt_title = 'git log' .. log_path,
+  pickers.new(themes.get_ivy(opts), {
+    prompt_title = 'git log' .. path_in_title,
+    finder = finders.new_table {
+      results = results,
+      entry_maker = opts.entry_maker or make_entry.gen_from_git_commits(opts),
+    },
+    previewer = previewers.git_commit_diff.new(opts),
+    sorter = conf.file_sorter(opts),
     attach_mappings = function(_, map)
-      map('i', '<CR>', git_view_commit 'Gtabedit')
-      map('n', '<CR>', git_view_commit 'Gtabedit')
+      actions.select_default:replace(git_view_commit 'Gtabedit')
       map('i', '<C-x>', git_view_commit 'Gsplit')
       map('n', '<C-x>', git_view_commit 'Gsplit')
       map('i', '<C-v>', git_view_commit 'Gvsplit')
@@ -79,5 +94,5 @@ function _G.telescope_git_log(opts)
       map('n', '<C-f>', git_fixup)
       return true
     end
-  }))
+  }):find()
 end
