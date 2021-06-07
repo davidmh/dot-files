@@ -55,6 +55,14 @@ local function git_view_commit(target)
   end
 end
 
+-- Yank the selected commit into the default registry
+local function git_yank_commit(prompt_bufnr)
+  local selection = action_state.get_selected_entry()
+
+  actions.close(prompt_bufnr)
+  vim.cmd(string.format([[let @@='%s']], selection.value))
+end
+
 -- Open the selected commit in the platform hosting the remote. Depends on
 -- vim-fugitive
 local function git_browse()
@@ -86,6 +94,9 @@ function _G.telescope_git_log(opts)
       map('n', '<C-x>', git_view_commit 'Gsplit')
       map('i', '<C-v>', git_view_commit 'Gvsplit')
       map('n', '<C-v>', git_view_commit 'Gvsplit')
+
+      map('i', '<C-y>', git_yank_commit)
+      map('n', '<C-y>', git_yank_commit)
 
       map('i', '<C-b>', git_browse)
       map('n', '<C-b>', git_browse)
