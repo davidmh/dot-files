@@ -9,6 +9,9 @@ local previewers = require('telescope.previewers')
 local telescope = require('telescope')
 local themes = require('telescope.themes')
 local utils = require('telescope.utils')
+local putils = require('telescope.previewers.utils')
+
+local defaulter = utils.make_default_callable
 
 telescope.setup {
   defaults = {
@@ -69,6 +72,23 @@ local function git_browse()
   vim.cmd('GBrowse ' .. action_state.get_selected_entry().value)
 end
 
+local git_commit_diff = defaulter(function(opts)
+  return previewers.new_buffer_previewer {
+    get_buffer_by_name = function(_, entry)
+      return entry.value
+    end,
+
+    define_preview = function(self, entry, _)
+      putils.job_maker({ 'git', '--no-pager', 'show', entry.value .. '^!' }, self.state.bufnr, {
+        value = entry.value,
+        bufname = self.state.bufname,
+        cwd = opts.cwd
+      })
+      putils.regex_highlighter(self.state.bufnr, 'git')
+    end
+  }
+end, {})
+
 function _G.telescope_git_log(opts)
   opts = opts or {}
   local path = opts.path or '.'
@@ -86,7 +106,7 @@ function _G.telescope_git_log(opts)
       results = results,
       entry_maker = opts.entry_maker or make_entry.gen_from_git_commits(opts),
     },
-    previewer = previewers.git_commit_diff.new(opts),
+    previewer = git_commit_diff.new(opts),
     sorter = conf.file_sorter(opts),
     attach_mappings = function(_, map)
       actions.select_default:replace(git_view_commit 'Gtabedit')
