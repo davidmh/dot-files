@@ -39,7 +39,7 @@ return require('packer').startup(function()
   use {
     'lewis6991/gitsigns.nvim',
     requires = { 'nvim-lua/plenary.nvim' },
-    config = function() require('gitsigns').setup() end
+    config = function() require('config.gitsigns') end
   }
 
   -- Ruby
@@ -48,12 +48,7 @@ return require('packer').startup(function()
   use 'joker1007/vim-ruby-heredoc-syntax'
 
   -- Colorschemes
-  use 'gruvbox-community/gruvbox'
-  use 'junegunn/seoul256.vim'
-  use 'romainl/Apprentice'
   use 'arcticicestudio/nord-vim'
-  use { 'dracula/vim', as = 'dracula' }
-  use 'joshdick/onedark.vim'
 
   -- Syntax hightlighting
   use 'yasuhiroki/circleci.vim'
@@ -124,7 +119,6 @@ return require('packer').startup(function()
       vim.cmd('xmap ga <Plug>(EasyAlign)')
       -- Start for a motion/text object (e.g. gaip)
       vim.cmd('nmap ga <Plug>(EasyAlign)')
-
     end
   }
   use 'junegunn/vim-peekaboo'
@@ -145,5 +139,10 @@ return require('packer').startup(function()
   use {
     'norcalli/nvim-colorizer.lua',
     config = function() require('colorizer').setup() end
+  }
+  use {
+    'folke/todo-comments.nvim',
+    requires = 'nvim-lua/plenary.nvim',
+    config = function() require('todo-comments').setup() end
   }
 end)

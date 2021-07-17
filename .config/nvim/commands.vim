@@ -12,7 +12,9 @@ augroup custom-settings
         \ hi Normal     ctermbg=NONE guibg=NONE |
         \ hi LineNr     ctermbg=NONE guibg=NONE |
         \ hi SignColumn ctermbg=NONE guibg=NONE |
-        \ hi Comment cterm=italic gui=italic guifg=DarkGray
+        \ hi Comment cterm=italic gui=italic guifg=DarkGray |
+        \ hi clear CursorLine |
+        \ hi CursorLine gui=underline cterm=underline ctermfg=None guifg=None
 
   " Add missing extension/ft association
   au BufRead,BufNew *.exs,*.ex

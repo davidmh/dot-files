@@ -24,6 +24,7 @@
   templatedir = ~/.git_template
 [alias]
   amend-date     = !~/.config/bin/git-amend-date
+  quiet-amend    = commit --amend --no-edit -n
   current-branch = rev-parse --abbrev-ref HEAD
   fixup          = !~/.config/bin/git-fixup
   fresh          = !git switch master && git pull origin master && git fetch

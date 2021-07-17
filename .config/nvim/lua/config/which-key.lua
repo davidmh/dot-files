@@ -1,5 +1,20 @@
 local wk = require("which-key")
 
+wk.setup {
+  spelling = {
+    enabled = true,
+    suggestions = 10,
+  },
+  presets = {
+    operators = false,
+    motions = false,
+    text_objects = false,
+    nav = false,
+    z = false,
+    g = true,
+  }
+}
+
 local cmd = function(expression, description)
   return { '<cmd>' .. expression .. '<cr>', description }
 end
@@ -9,8 +24,12 @@ wk.register({
   f = cmd([[lua _G.telescope_file_browser()]], 'file browser'),
   -- finders
   ["<leader>"] = cmd('Telescope find_files theme=get_ivy', 'find files'),
-  lg = cmd('Telescope live_grep theme=get_ivy', 'live grep'),
-  sw = cmd('Telescope grep_string theme=get_ivy', 'search word under cursor'),
+  s = {
+    name = 'search',
+    p = cmd('Telescope live_grep theme=get_ivy', 'in project'),
+    o = cmd('Telescope live_grep grep_open_files=true theme=get_ivy', 'open files'),
+    w = cmd('Telescope grep_string theme=get_ivy', 'word under cursor'),
+  },
 
   -- buffers
   b = {
@@ -32,7 +51,7 @@ wk.register({
     d = cmd('Gdiff', 'diff'),
     l = cmd('lua _G.telescope_git_log()', 'log'),
     L = cmd([[lua _G.telescope_git_log({ path = vim.fn.expand('%') })]], 'buffer log'),
-    B = cmd('GBrowse', 'open in remote service'),
+    B = cmd("'<,'>GBrowse", 'open in remote service'),
     f = cmd('GFixup', 'fixup staged changes'),
     ['[h'] = cmd('Gitsigns prev_hunk', 'prev hunk'),
     [']h'] = cmd('Gitsigns next_hunk', 'next hunk'),
@@ -42,7 +61,7 @@ wk.register({
       u = cmd('Gitsigns undo_stage_hunk', 'unstage'),
       r = cmd('Gitsigns reset_hunk', 'reset'),
       p = cmd('Gitsigns preview_hunk', 'reset'),
-      b = cmd('Gitsigns blame_line', 'blame line'),
+      b = cmd('lua require"gitsigns".blame_line(true)', 'blame line'),
     }
   },
 
@@ -69,7 +88,7 @@ wk.register({
 wk.register({
   g = {
     name = 'git',
-    b = cmd('GBrowse', 'browse in remote'),
+    b = cmd("'<,'>GBrowse", 'browse in remote'),
   },
 }, { prefix = '<leader>', mode = 'v' })
 

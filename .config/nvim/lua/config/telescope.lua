@@ -15,7 +15,9 @@ local defaulter = utils.make_default_callable
 
 telescope.setup {
   defaults = {
-    prompt_position = 'top',
+    layout_config = {
+      prompt_position = 'top',
+    },
     sorting_strategy = 'ascending',
   },
 }

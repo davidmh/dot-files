@@ -24,9 +24,6 @@ local on_attach = function(client, bufnr)
   local function nnoremap(key, exp)
     vim.api.nvim_buf_set_keymap(bufnr, 'n', key, '<cmd>' .. exp .. '<cr>', { noremap=true, silent = true})
   end
-  local function vnoremap(key, exp)
-    vim.api.nvim_buf_set_keymap(bufnr, 'v', key, '<cmd>' .. exp .. '<cr>', { noremap=true, silent = true})
-  end
 
   vim.api.nvim_buf_set_option(bufnr, 'omnifunc', 'v:lua.vim.lsp.omnifunc')
 
@@ -46,14 +43,6 @@ local on_attach = function(client, bufnr)
   -- scroll hover doc or scroll in definition preview
   nnoremap('<C-f>', "lua require('lspsaga.action').smart_scroll_with_saga(1)")
   nnoremap('<C-b>', "lua require('lspsaga.action').smart_scroll_with_saga(-1)")
-
-  -- Set some keybinds conditional on server capabilities
-  if client.resolved_capabilities.document_formatting then
-    nnoremap("<M-F>", "lua vim.lsp.buf.formatting()")
-  end
-  if client.resolved_capabilities.document_range_formatting then
-    vnoremap('<M-F>', 'lua vim.lsp.buf.range_formatting()')
-  end
 end
 
 local function setup()
@@ -84,17 +73,12 @@ local function setup()
               [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
             },
           },
+          -- Do not send telemetry data
+          telemetry = { enable = false }
         }
       },
     }
   end
-
-  -- The typescript server is installed globally, not through lspinstall in
-  -- order to pickup a commit from master that hasn't been released yet
-  lsp_config.tsserver.setup({
-    on_attach = on_attach,
-    capabilities = lsp_status.capabilities
-  })
 end
 
 setup()
