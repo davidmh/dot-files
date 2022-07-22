@@ -21,6 +21,7 @@
     pkgs.nodejs
     pkgs.pass
     pkgs.silver-searcher
+    pkgs.teamocil
     pkgs.tdesktop
     pkgs.tig
     pkgs.xclip
@@ -69,6 +70,15 @@
 
     diff-so-fancy.enable = true;
     lfs.enable = true;
+  };
+
+  programs.tmux = {
+    enable = true;
+    plugins = [
+      pkgs.tmuxPlugins.nord
+      pkgs.tmuxPlugins.vim-tmux-navigator
+      pkgs.tmuxPlugins.yank
+    ];
   };
 
   services.gpg-agent.enable = true;

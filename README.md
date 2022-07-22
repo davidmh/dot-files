@@ -13,5 +13,3 @@
   ```shell
   git clone git@github.com:davidmh/dot-files.git ~/.config/nixpkgs
   ```
-
-* TODO: tmux + teamocil
