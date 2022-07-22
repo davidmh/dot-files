@@ -1,0 +1,16 @@
+{
+  "fnl/own/plugin/*.fnl": {
+    "type": "plugin",
+    "template": [
+      "(module own.plugin.{}",
+      "  {open}autoload {open}nvim aniseed.nvim{close}{close})"
+    ]
+  },
+  "fnl/own/*.fnl": {
+    "type": "module",
+    "template": [
+      "(module own.{}",
+      "  {open}autoload {open}nvim aniseed.nvim{close}{close})"
+    ]
+  }
+}
