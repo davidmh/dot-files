@@ -1,8 +1,16 @@
-{ config, pkgs, ... }:
+{ config, pkgs, lib, ... }:
 
+let
+  optionals = lib.optionals;
+  os = builtins.currentSystem;
+  isLinux = os == "x86_64-linux";
+  isDarwin = os == "x86_64-darwin";
+  userName = builtins.getEnv "USER";
+  homeDirectory = builtins.getEnv "HOME";
+in
 {
-  home.username = "chaac";
-  home.homeDirectory = "/home/chaac";
+  home.username = userName;
+  home.homeDirectory = homeDirectory;
 
   home.stateVersion = "22.05";
 
@@ -22,11 +30,9 @@
     pkgs.pass
     pkgs.silver-searcher
     pkgs.teamocil
-    pkgs.tdesktop
     pkgs.tig
-    pkgs.xclip
     pkgs.yarn
-  ];
+  ] ++ (optionals isLinux [ pkgs.tdesktop pkgs.xclip ]);
 
   programs.home-manager.enable = true;
 
@@ -36,19 +42,18 @@
     envExtra = builtins.readFile ~/.env.zsh;
     autocd = true;
     history.ignoreSpace = true;
+    oh-my-zsh = {
+      enable = true;
+      plugins = ["git" "dirhistory" "colorize" "colored-man-pages"];
+      theme = "nanotech";
+    };
     initExtra = ''
       source "${pkgs.antigen}/share/antigen/antigen.zsh"
-      antigen use oh-my-zsh
-      antigen bundle git
-      antigen bundle dirhistory
-      antigen bundle colorize
-      antigen bundle colored-man-pages
       antigen bundle zsh-users/zsh-syntax-highlighting
       antigen bundle zsh-users/zsh-autosuggestions
       antigen bundle zsh-users/zsh-completions
       antigen bundle spwhitt/nix-zsh-completions.git
       antigen apply
-      antigen theme nanotech
       '';
     shellAliases = {
       vim = "nvim";
@@ -81,10 +86,12 @@
     ];
   };
 
-  services.gpg-agent.enable = true;
-
   xdg.configFile.nvim = {
     source = ./nvim;
     recursive = true;
   };
+
+  imports = []
+    ++ (optionals isDarwin [ ./darwin.nix ])
+    ++ (optionals isLinux [ ./linux.nix ]);
 }
