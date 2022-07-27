@@ -80,9 +80,17 @@ in
   programs.tmux = {
     enable = true;
     plugins = [
-      pkgs.tmuxPlugins.nord
       pkgs.tmuxPlugins.vim-tmux-navigator
       pkgs.tmuxPlugins.yank
+      {
+        plugin = pkgs.tmuxPlugins.dracula;
+        extraConfig = ''
+          set -g @dracula-show-left-icon session
+          set -g @dracula-show-flags true
+          set -g @dracula-military-time true
+          set -g @dracula-plugins "time"
+        '';
+      }
     ];
   };
 
