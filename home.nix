@@ -26,7 +26,7 @@ in
     pkgs.gh
     pkgs.jq
     pkgs.neovim
-    pkgs.nodejs
+    pkgs.nodejs-14_x
     pkgs.pass
     pkgs.silver-searcher
     pkgs.teamocil
