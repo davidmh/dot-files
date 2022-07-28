@@ -27,12 +27,9 @@
                         :update_in_insert true
                         :severity_sort true})
 
-(def- eslint-settings {; :cwd project-root
-                       ; :prefer_local :node_modules/.bin
+(def- eslint-settings {:prefer_local :node_modules/.bin
                        :condition (fn [utils]
-                                    (and
-                                      (not (utils.root_has_file [:deno.json]))
-                                      (utils.root_has_file [:package.json])))})
+                                    (utils.root_has_file [:package.json]))})
 
 (null-ls.setup
  {:sources [(null-ls.builtins.code_actions.eslint_d.with eslint-settings)

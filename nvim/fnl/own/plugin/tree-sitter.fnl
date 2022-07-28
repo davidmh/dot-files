@@ -31,4 +31,5 @@
                                   :rust
                                   :tsx
                                   :typescript
-                                  :nix]})
+                                  :nix
+                                  :yaml]})

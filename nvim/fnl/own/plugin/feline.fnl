@@ -119,6 +119,6 @@
                :components components
                :vi_mode_colors vi-mode-colors})
 
-; (feline.winbar.setup {:components {:active [[] [comp.file.info]]
-;                                    :inactive [[] [comp.file.info]]}
-;                       :disable {:filetypes [:packer :fugitive :fugitiveblame :toggleterm]}})
+(feline.winbar.setup {:components {:active [[] [comp.file.info]]
+                                   :inactive [[] [comp.file.info]]}
+                      :disable {:filetypes [:packer :fugitive :fugitiveblame :toggleterm]}})

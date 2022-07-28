@@ -29,7 +29,6 @@
                         ; :solargraph
                         :sumneko_lua
                         :tsserver
-                        :denols
                         :vimls])
 
 (do

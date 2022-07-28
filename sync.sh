@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
-home-manager switch
+set -eo pipefail
 
+touch ~/.env.zsh
+home-manager switch
 rm -rf ~/.config/nvim/lua/
