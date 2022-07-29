@@ -86,7 +86,9 @@ in
 
   programs.tmux = {
     enable = true;
+    keyMode = "vi";
     plugins = [
+      pkgs.tmuxPlugins.sensible
       pkgs.tmuxPlugins.vim-tmux-navigator
       pkgs.tmuxPlugins.yank
       {
