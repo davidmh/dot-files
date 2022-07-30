@@ -74,7 +74,8 @@ in
 
     aliases = {
       current-branch = "commit --amend --no-edit -n";
-      fresh = "!git switch master && git pull origin master && git fetch";
+      default-branch = "!git rev-parse --abbrev-ref origin/HEAD | awk -F/ '{print $2}'";
+      fresh = "!git switch $(git default-branch) && git pull origin $(git default-branch) && git fetch";
       pushc = "!git push origin $(git current-branch)";
       pullc = "!git pull origin $(git current-branch)";
       amend-date = ''!LC_ALL=C GIT_COMMITTER_DATE="$(date)" git commit -n --amend --no-edit --date "$(date)"'';
