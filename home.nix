@@ -73,7 +73,7 @@ in
     userEmail = "david.mejorado@gmail.com";
 
     aliases = {
-      current-branch = "commit --amend --no-edit -n";
+      current-branch = "rev-parse --abbrev-ref HEAD";
       default-branch = "!git rev-parse --abbrev-ref origin/HEAD | awk -F/ '{print $2}'";
       fresh = "!git switch $(git default-branch) && git pull origin $(git default-branch) && git fetch";
       pushc = "!git push origin $(git current-branch)";
