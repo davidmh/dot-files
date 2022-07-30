@@ -39,8 +39,7 @@
             null-ls.builtins.diagnostics.shellcheck
             (null-ls.builtins.diagnostics.rubocop.with {:cwd project-root
                                                          :command :bundle
-                                                         :args [:exec :rubocop :-f :json :--stdin :$FILENAME]})
-            (null-ls.builtins.formatting.rubocop.with {:cwd project-root})]})
+                                                         :args [:exec :rubocop :-f :json :--stdin :$FILENAME]})]})
 
 (defn- rubocop-fix []
   (vim.cmd "silent !bundle exec rubocop -A %")
