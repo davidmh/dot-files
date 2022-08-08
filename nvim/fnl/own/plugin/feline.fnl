@@ -27,6 +27,11 @@
 (def- space-separator {:hl {:bg colors.crust :fg :fg}
                        :str " "})
 
+(def- round-left {:provider (fn [] :)
+                  :hl {:bg :NONE :fg colors.crust}})
+(def- round-right {:provider (fn [] :)
+                   :hl {:bg :NONE :fg colors.crust}})
+
 (def- comp {:vi_mode {:provider (fn [] "  ")
                       :hl (fn []
                             {:name (vi-mode-utils.get_mode_highlight_name)
@@ -120,6 +125,6 @@
 (feline.setup {:components components
                :theme {:fg (. colors :subtext0)
                        :bg (. colors :crust)}})
-(feline.winbar.setup {:components {:active [[] [comp.file.info]]
-                                   :inactive [[] [comp.file.info]]}
+(feline.winbar.setup {:components {:active [[] [round-left comp.file.info round-right]]
+                                   :inactive [[] [round-left comp.file.info round-right]]}
                       :disable {:filetypes [:packer :fugitive :fugitiveblame :toggleterm]}})

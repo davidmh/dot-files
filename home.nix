@@ -84,9 +84,13 @@ in
     lfs.enable = true;
   };
 
+  programs.alacritty.enable = true;
+
   programs.tmux = {
     enable = true;
     keyMode = "vi";
+    terminal = "tmux-256color";
+    extraConfig = ''set -ag terminal-overrides ",alacritty:RGB"'';
     plugins = [
       pkgs.tmuxPlugins.sensible
       pkgs.tmuxPlugins.vim-tmux-navigator
@@ -107,6 +111,8 @@ in
     source = ./nvim;
     recursive = true;
   };
+
+  xdg.configFile."alacritty/alacritty.yml" = { source = ./alacritty.yml; };
 
   imports = []
     ++ (optionals isDarwin [ ./darwin.nix ])
