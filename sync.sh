@@ -3,5 +3,5 @@
 set -eo pipefail
 
 touch ~/.env.zsh
-home-manager switch
+home-manager switch -v
 rm -rf ~/.config/nvim/lua/

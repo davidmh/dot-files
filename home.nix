@@ -27,7 +27,6 @@ in
 
   home.packages = [
     pkgs.cargo
-    pkgs.diff-so-fancy
     pkgs.fx
     pkgs.gcc
     pkgs.gh
@@ -81,7 +80,7 @@ in
       amend-date = ''!LC_ALL=C GIT_COMMITTER_DATE="$(date)" git commit -n --amend --no-edit --date "$(date)"'';
     };
 
-    diff-so-fancy.enable = true;
+    difftastic.enable = true;
     lfs.enable = true;
   };
 
