@@ -15,7 +15,7 @@
                            :additional_vim_regex_highlighting [:org]}
                :indent {:enable true}
                :incremental_selection {:enable true
-                                       :keymaps {:init_selection :<tab>
+                                       :keymaps {:init_selection :gnn
                                                  :node_incremental :<tab>
                                                  :node_decremental :<s-tab>
                                                  :scope_incremental :<leader><tab>}}

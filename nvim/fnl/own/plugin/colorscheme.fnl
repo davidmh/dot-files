@@ -2,7 +2,7 @@
   {autoload {catppuccin catppuccin
              palette catppuccin.palettes}})
 
-(set vim.g.catppuccin_flavour :frappe)
+(set vim.g.catppuccin_flavour :latte)
 (catppuccin.setup {:transparent_background false
                    :term_colors true
                    :integrations {:lsp_trouble true
