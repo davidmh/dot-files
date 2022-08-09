@@ -28,9 +28,13 @@
                        :str " "})
 
 (def- round-left {:provider (fn [] :)
-                  :hl {:bg :NONE :fg colors.crust}})
+                  :hl {:bg :NONE :fg colors.crust}
+                  :left_sep {:hl {:bg :NONE :fg :NONE}
+                             :str " "}})
 (def- round-right {:provider (fn [] :)
-                   :hl {:bg :NONE :fg colors.crust}})
+                   :hl {:bg :NONE :fg colors.crust}
+                   :right_sep {:hl {:bg :none :fg :none}
+                               :str " "}})
 
 (def- comp {:vi_mode {:provider (fn [] "  ")
                       :hl (fn []
@@ -91,7 +95,6 @@
                              :hl {:bg colors.crust
                                   :fg colors.subtext0}}
              :git {:branch {:provider :git_branch
-                            :icon " "
                             :left_sep space-separator
                             :hl {:bg colors.crust
                                  :fg colors.subtext0
@@ -107,7 +110,8 @@
                                  :bg colors.crust}}}})
 
 (def- components
-  {:active [[comp.vi_mode
+  {:active [[round-left
+             comp.vi_mode
              comp.git.branch
              comp.git.add
              comp.git.change
@@ -119,7 +123,8 @@
              comp.lsp
              comp.orgmode_clock
              comp.line_percentage
-             comp.scroll_bar]]
+             comp.scroll_bar
+             round-right]]
    :inactive [[] []]})
 
 (feline.setup {:components components
