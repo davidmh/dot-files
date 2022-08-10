@@ -28,13 +28,9 @@
                        :str " "})
 
 (def- round-left {:provider (fn [] :)
-                  :hl {:bg :NONE :fg colors.crust}
-                  :left_sep {:hl {:bg :NONE :fg :NONE}
-                             :str " "}})
+                  :hl {:bg :NONE :fg colors.crust}})
 (def- round-right {:provider (fn [] :)
-                   :hl {:bg :NONE :fg colors.crust}
-                   :right_sep {:hl {:bg :none :fg :none}
-                               :str " "}})
+                   :hl {:bg :NONE :fg colors.crust}})
 
 (def- comp {:vi_mode {:provider (fn [] "  ")
                       :hl (fn []
@@ -58,7 +54,6 @@
                                :hl {:fg colors.cyan
                                     :bg colors.crust}}}
              :line_percentage {:provider :line_percentage
-                               :left_sep pipe-separator
                                :hl {:style :bold
                                     :fg colors.subtext0
                                     :bg colors.crust}}
@@ -88,10 +83,12 @@
                    :hl {:bg colors.crust
                         :fg colors.subtext0}
                    :left_sep space-separator
+                   :right_sep pipe-separator
                    :icon "  "
                    :enabled (fn [] (not (core.empty? (buffer-lsp-clients))))}
              :orgmode_clock {:provider (fn [] (orgmode.statusline))
                              :enabled (fn [] (not (core.empty? (orgmode.statusline))))
+                             :right_sep pipe-separator
                              :hl {:bg colors.crust
                                   :fg colors.subtext0}}
              :git {:branch {:provider :git_branch
