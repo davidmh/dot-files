@@ -53,7 +53,7 @@
 (defn- git-browse []
   "Open the selected commit in the platform hosting the remote. Depends on
   vim-fugitive's :GBrowse"
-  (vim.cmd (.. :GBrowse (. (state.get_selected_entry) :value))))
+  (vim.cmd (.. "GBrowse " (. (state.get_selected_entry) :value))))
 
 (defn- git-commit-preview-fn [opts]
   (previewers.new_buffer_previewer
