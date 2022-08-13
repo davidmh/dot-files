@@ -86,30 +86,6 @@ in
 
   programs.wezterm = {
     enable = true;
-    extraConfig = ''
-      local appearance = wezterm.gui.get_appearance()
-      local is_dark = appearance:find "Dark"
-
-      local color_scheme = "Catppuccin Latte"
-
-      if is_dark then
-        color_scheme = "Catppuccin Macchiato"
-      end
-
-      return {
-        font = wezterm.font("Dank Mono"),
-        font_size = 18.0,
-        font_fules = {
-          { intensity = "Bold" },
-        },
-        color_scheme = color_scheme,
-        hide_tab_bar_if_only_one_tab = true,
-        keys = {
-          {key="n", mods="SHIFT|CTRL", action="ToggleFullScreen"},
-        },
-        window_decorations = "RESIZE",
-      }
-    '';
   };
 
   programs.tmux = {
@@ -134,8 +110,12 @@ in
   };
 
   xdg.configFile.nvim = {
-    source = ./nvim;
+    source = config.lib.file.mkOutOfStoreSymlink ./nvim;
     recursive = true;
+  };
+
+  xdg.configFile."wezterm/wezterm.lua" = {
+    source = config.lib.file.mkOutOfStoreSymlink ./wezterm.lua;
   };
 
   imports = []
