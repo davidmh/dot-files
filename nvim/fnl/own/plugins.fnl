@@ -33,16 +33,12 @@
   :Olical/aniseed {:requires [:Olical/conjure]}
 
   ;; LSP
-  :neovim/nvim-lspconfig {:requires [:williamboman/nvim-lsp-installer
-                                     :folke/lua-dev.nvim
-                                     :nvim-lua/plenary.nvim
-                                     :onsails/lspkind-nvim
-                                     :j-hui/fidget.nvim]
-                          :mod :lsp}
-
-  ;; linting/fixing
-  :jose-elias-alvarez/null-ls.nvim {:requires [:nvim-lua/plenary.nvim]
-                                    :mod :diagnostics}
+  :williamboman/mason.nvim {:requires [:neovim/nvim-lspconfig
+                                       :williamboman/mason-lspconfig.nvim
+                                       :folke/lua-dev.nvim
+                                       :onsails/lspkind-nvim
+                                       :j-hui/fidget.nvim]
+                            :mod :lsp}
 
   ;; Completion
   :hrsh7th/nvim-cmp {:requires [:hrsh7th/cmp-nvim-lsp

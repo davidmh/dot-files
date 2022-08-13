@@ -1,35 +1,31 @@
 (module own.plugin.lsp
   {autoload {nvim aniseed.nvim
-             a aniseed.core
-             l own.lists
-             installer nvim-lsp-installer
-             servers nvim-lsp-installer.servers
-             config lspconfig
+             core aniseed.core
+             config own.config
              util lspconfig.util
              lua-dev lua-dev
              cmp-lsp cmp_nvim_lsp
              json-schemas own.json-schemas
+             lspconfig lspconfig
              kind lspkind
-             fidget fidget
-             wk which-key}})
+             mason mason
+             mason-lspconfig mason-lspconfig
+             wk which-key
+             fidget fidget}})
 
-(kind.init {})
+(kind.init)
 (fidget.setup {:text {:spinner :dots_pulse :done :}
                :window {:blend 50}})
-
-; The virtual text is a bit noisy, I prefer displaying the diagnostic on-demand
-(vim.diagnostic.config {:virtual_text false})
-
-(vim.cmd "autocmd ColorScheme * highlight NormalFloat guibg=#1f2335")
-(vim.cmd "autocmd ColorScheme * highlight FloatBorder guifg=white guibg=#1f2335")
-
-(def- required-servers [:clojure_lsp
-                        :cssls
-                        :jsonls
-                        ; :solargraph
-                        :sumneko_lua
-                        :tsserver
-                        :vimls])
+(mason.setup)
+(mason-lspconfig.setup {:ensure_installed [:clojure_lsp
+                                           :cssls
+                                           :jsonls
+                                           :solargraph
+                                           :sumneko_lua
+                                           :tsserver
+                                           :eslint
+                                           :vimls]
+                        :automatic_installation true})
 
 (do
   (def- win-opts {:border :rounded
@@ -40,15 +36,16 @@
   (tset vim.lsp.handlers "textDocument/signatureHelp"
         (vim.lsp.with vim.lsp.handlers.signature_help win-opts)))
 
+; https://github.com/neovim/nvim-lspconfig/blob/da7461b596d70fa47b50bf3a7acfaef94c47727d/lua/lspconfig/server_configurations/eslint.lua#L141-L145
+(defn- set-eslint-autofix [bufnr]
+  (vim.api.nvim_create_autocmd
+       :BufWritePre
+       {:command :EslintFixAll
+        :buffer bufnr
+        :group (vim.api.nvim_create_augroup :eslint-autofix {:clear true})}))
+
 (defn- on-attach [client bufnr]
-  ;; let null-ls handle the formatting
-  (tset client.server_capabilities :document_formatting false)
-  (tset client.server_capabilities :document_range_formatting false)
-
-  (nvim.buf_set_option bufnr :omnifunc :v:lua.vim.lsp.omnifunc)
-
-  (if (= client.name :denols)
-    (nvim.ex.autocmd :BufWritePost :*.ts "silent !deno fmt %"))
+  (nvim.buf_set_option 0 :omnifunc :v:lua.vim.lsp.omnifunc)
 
   (local opts {:buffer true :silent true})
 
@@ -63,29 +60,51 @@
                     :t [vim.lsp.buf.type_definition "type definition"]
                     :a [vim.lsp.buf.code_action "code actions"]
                     :r [vim.lsp.buf.rename "rename"]
+                    :F [vim.lsp.buf.format "format"]
                     :R [":LspRestart<CR>" "restart"]}}
                {:prefix :<leader>
-                :buffer 0}))
+                :buffer 0})
+
+  (when (= client.name :eslint) (set-eslint-autofix bufnr)))
+
+(def- git-root (util.root_pattern :.git))
 
 (def- base-settings {:on_attach on-attach
                      :capabilities (cmp-lsp.update_capabilities (vim.lsp.protocol.make_client_capabilities))
                      :init_options {:preferences {:includeCompletionsWithSnippetText true
                                                   :includeCompletionsForImportStatements true}}})
 
-(def- server-settings {:stylelint_lsp {:filetypes [:css :less :scss]}
-                       :jsonls {:settings {:json {:schemas (json-schemas.get-all)}}}
-                       :tsserver {:root_dir (util.root_pattern :package.json)
-                                  :format {:enable false}}
-                       :denols {:root_dir (util.root_pattern :deno.json :deno.jsonc)}
-                       :sumneko_lua {:settings {:Lua (a.get-in (lua-dev.setup) [:settings :Lua])}}
-                       :rubocop {:root_dir (util.root_pattern ".git")}})
+(def- server-configs {:tsserver {:root_dir (util.root_pattern :package.json)
+                                 :format {:enable false}}
+                      :jsonls {:settings {:json {:schemas (json-schemas.get-all)}}}
+                      :sumneko_lua {:settings {:Lua (core.get-in (lua-dev.setup) [:settings :Lua])}}
+                      :solargraph {:root_dir git-root}
+                      :eslint {:root_dir git-root}
+                      :cssls {:root_dir git-root}})
 
-(installer.on_server_ready
-  (fn [server]
-    (server:setup (a.merge base-settings (a.get server-settings server.name {})))))
+(each [_ server-name (ipairs (mason-lspconfig.get_installed_servers))]
+  (let [server-setup (core.get-in lspconfig [server-name :setup])]
+    (server-setup (core.merge base-settings
+                              (core.get server-configs server-name {})))))
 
-; ensure default servers
-(each [_ server-name (ipairs required-servers)]
-  (let [(available server) (servers.get_server server-name)]
-    (when (and available (not (server:is_installed)))
-      (installer.install server-name))))
+; diagnostics
+
+(vim.fn.sign_define :DiagnosticSignError {:texthl :LspDiagnosticsError
+                                          :icon config.icons.error
+                                          :numhl :LspDiagnosticsError})
+(vim.fn.sign_define :DiagnosticSignWarn {:texthl :LspDiagnosticsWarning
+                                         :icon config.icons.warning
+                                         :numhl :LspDiagnosticsWarn})
+(vim.fn.sign_define :DiagnosticSignHint {:texthl :LspDiagnosticsHint
+                                         :icon config.icons.hint
+                                         :numhl :LspDiagnosticsHint})
+(vim.fn.sign_define :DiagnosticSignInfo {:texthl :Error
+                                         :icon config.icons.info
+                                         :numhl :LspDiagnosticsInfo})
+
+(vim.diagnostic.config {:underline true
+                        :virtual_text true
+                        :signs true
+                        :update_in_insert true
+                        :severity_sort true
+                        :float {:header "" :source true}})
