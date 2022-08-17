@@ -80,7 +80,12 @@ in
       amend-date = ''!LC_ALL=C GIT_COMMITTER_DATE="$(date)" git commit -n --amend --no-edit --date "$(date)"'';
     };
 
-    difftastic.enable = true;
+    extraConfig = {
+      init.defaultBranch = "main";
+      rebase.autosquash = true;
+    };
+
+    diff-so-fancy.enable = true;
     lfs.enable = true;
   };
 
