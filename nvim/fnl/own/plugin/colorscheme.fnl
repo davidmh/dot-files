@@ -2,7 +2,7 @@
   {autoload {catppuccin catppuccin
              palette catppuccin.palettes}})
 
-(set vim.g.catppuccin_flavour :macchiato)
+(set vim.g.catppuccin_flavour :mocha)
 (catppuccin.setup {:transparent_background false
                    :term_colors true
                    :integrations {:lsp_trouble true
