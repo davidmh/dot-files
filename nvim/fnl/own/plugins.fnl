@@ -40,6 +40,10 @@
                                        :j-hui/fidget.nvim]
                             :mod :lsp}
 
+  ;; Diagnostics
+  :jose-elias-alvarez/null-ls.nvim {:requires [:nvim-lua/plenary.nvim]
+                                    :mod :diagnostics}
+
   ;; Completion
   :hrsh7th/nvim-cmp {:requires [:hrsh7th/cmp-nvim-lsp
                                 :hrsh7th/cmp-buffer

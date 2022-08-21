@@ -1,7 +1,6 @@
 (module own.plugin.lsp
   {autoload {nvim aniseed.nvim
              core aniseed.core
-             config own.config
              util lspconfig.util
              lua-dev lua-dev
              cmp-lsp cmp_nvim_lsp
@@ -80,31 +79,10 @@
                       :sumneko_lua {:settings {:Lua (core.get-in (lua-dev.setup) [:settings :Lua])}}
                       :solargraph {:root_dir git-root}
                       :eslint {:root_dir git-root}
-                      :cssls {:root_dir git-root}})
+                      :cssls {:root_dir git-root}
+                      :shellcheck {:root_dir git-root}})
 
 (each [_ server-name (ipairs (mason-lspconfig.get_installed_servers))]
   (let [server-setup (core.get-in lspconfig [server-name :setup])]
     (server-setup (core.merge base-settings
                               (core.get server-configs server-name {})))))
-
-; diagnostics
-
-(vim.fn.sign_define :DiagnosticSignError {:texthl :LspDiagnosticsError
-                                          :icon config.icons.error
-                                          :numhl :LspDiagnosticsError})
-(vim.fn.sign_define :DiagnosticSignWarn {:texthl :LspDiagnosticsWarning
-                                         :icon config.icons.warning
-                                         :numhl :LspDiagnosticsWarn})
-(vim.fn.sign_define :DiagnosticSignHint {:texthl :LspDiagnosticsHint
-                                         :icon config.icons.hint
-                                         :numhl :LspDiagnosticsHint})
-(vim.fn.sign_define :DiagnosticSignInfo {:texthl :Error
-                                         :icon config.icons.info
-                                         :numhl :LspDiagnosticsInfo})
-
-(vim.diagnostic.config {:underline true
-                        :virtual_text true
-                        :signs true
-                        :update_in_insert true
-                        :severity_sort true
-                        :float {:header "" :source true}})
