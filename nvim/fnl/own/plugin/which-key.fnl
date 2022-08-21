@@ -40,12 +40,6 @@
   (let [font (str.split nvim.o.guifont ::h)]
    (set nvim.o.guifont (.. (core.first font) ::h (func (core.last font))))))
 
-(defn- toggle-copilot []
-  (if vim.b.copilot_enabled
-    (set nvim.b.copilot_enabled false)
-    (set nvim.b.copilot_enabled true))
-  (vim.cmd "Copilot status"))
-
 (defn- toggle-zen []
   (if (core.empty? nvim.o.winbar)
     (do
@@ -86,7 +80,6 @@
 
    :t {:name :toggle
        :b [toggle-blame-line "git blame"]
-       :c [toggle-copilot :copilot]
        :d (cmd "TroubleToggle" :diagnostics)
        :t (cmd :ToggleTerm :term)
        :z [toggle-zen :zen]}

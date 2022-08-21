@@ -54,8 +54,6 @@
                                 :rafamadriz/friendly-snippets]
                      :mod :completion}
 
-  :github/copilot.vim {:mod :copilot}
-
   "~/Projects/remix/.nvim" {:as :remix.nvim
                             :mod :remix}
 
