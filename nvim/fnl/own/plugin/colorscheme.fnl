@@ -11,20 +11,22 @@
 
 (vim.cmd "colorscheme catppuccin")
 
-(def- color (palette.get_palette))
+(defn- set-hl [name colors]
+  (vim.api.nvim_set_hl 0 name colors))
 
-; catppuccin introduced this awesome update for telescope, but some people
-; didn't like it, so I'm doing it here
-; Revert: https://github.com/catppuccin/nvim/pull/191
-; Original: https://github.com/catppuccin/nvim/pull/138
-
-(vim.api.nvim_set_hl 0 :TelescopePromptPrefix { :bg color.crust})
-(vim.api.nvim_set_hl 0 :TelescopePromptNormal { :bg color.crust})
-(vim.api.nvim_set_hl 0 :TelescopeResultsNormal { :bg color.mantle})
-(vim.api.nvim_set_hl 0 :TelescopePreviewNormal { :bg color.crust})
-(vim.api.nvim_set_hl 0 :TelescopePromptBorder { :bg color.crust :fg color.crust})
-(vim.api.nvim_set_hl 0 :TelescopeResultsBorder { :bg color.mantle :fg color.crust})
-(vim.api.nvim_set_hl 0 :TelescopePreviewBorder { :bg color.crust :fg color.crust})
-(vim.api.nvim_set_hl 0 :TelescopePromptTitle { :fg color.crust})
-(vim.api.nvim_set_hl 0 :TelescopeResultsTitle { :fg color.text})
-(vim.api.nvim_set_hl 0 :TelescopePreviewTitle { :fg color.crust})
+(let [color (palette.get_palette)
+      accent color.blue]
+  (set-hl :TelescopeBorder {:fg color.crust :bg color.crust})
+  (set-hl :TelescopePromptBorder {:fg color.crust :bg color.crust})
+  (set-hl :TelescopePromptNormal {:bg color.crust})
+  (set-hl :TelescopePromptPrefix {:fg accent :bg color.crust})
+  (set-hl :TelescopeNormal {:bg color.crust})
+  (set-hl :TelescopePreviewTitle {:fg color.crust :bg color.crust})
+  (set-hl :TelescopePromptTitle {:fg color.crust :bg accent})
+  (set-hl :TelescopeResultsNormal { :bg color.mantle})
+  (set-hl :TelescopeResultsBorder {:fg color.mantle :bg color.mantle})
+  (set-hl :TelescopeSelection {:bg color.crust :fg accent})
+  (set-hl :TelescopeSelectionCaret  {:fg accent})
+  (set-hl :TelescopeResultsDiffAdd {:fg color.green})
+  (set-hl :TelescopeResultsDiffChange {:fg color.yellow})
+  (set-hl :TelescopeResultsDiffDelete {:fg color.red}))

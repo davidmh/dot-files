@@ -11,10 +11,11 @@
                                              :height 0.80
                                              :preview_cutoff 120}
                              :sorting_strategy :ascending
-                             :prompt_prefix " "
-                             :selection_caret "❯ "
+                             :prompt_prefix "   "
+                             :selection_caret " "
                              :set_env {:COLORTERM true}
-                             :vimgrep_arguments [:ag :--nocolor :--vimgrep :--smart-case]}
+                             :vimgrep_arguments [:ag :--nocolor :--vimgrep :--smart-case]
+                             :results_title false}
                   :pickers {:buffers {:sort_mru true}}})
 
 (telescope.load_extension :notify)

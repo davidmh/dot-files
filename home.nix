@@ -28,7 +28,6 @@ in
   home.packages = [
     pkgs.cargo
     pkgs.fx
-    pkgs.gcc
     pkgs.gh
     pkgs.jq
     pkgs.neovim
@@ -96,7 +95,6 @@ in
   programs.tmux = {
     enable = true;
     keyMode = "vi";
-    terminal = "tmux-256color";
     extraConfig = ''set -ag terminal-overrides ",xterm*:Tc"'';
     plugins = [
       pkgs.tmuxPlugins.sensible
