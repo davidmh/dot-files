@@ -17,12 +17,14 @@
 (defn use [...]
   (let [pkgs [...]]
     (packer.startup
-      (fn [use]
-        (for [i 1 (core.count pkgs) 2]
-          (let [name (. pkgs i)
-                opts (. pkgs (+ i 1))]
-             (-?> (. opts :mod) (safe-require-plugin-config))
-             (use (core.assoc opts 1 name))))))))
+      {1 (fn [use]
+           (for [i 1 (core.count pkgs) 2]
+             (let [name (. pkgs i)
+                   opts (. pkgs (+ i 1))]
+                (-?> (. opts :mod) (safe-require-plugin-config))
+                (use (core.assoc opts 1 name)))))
+       :config {:max_jobs 20
+                :preview_updates true}})))
 
 (use
   ;; Packer can manage itself
@@ -63,23 +65,18 @@
                              :tpope/vim-rhubarb
                              :nvim-lua/plenary.nvim
                              :sindrets/diffview.nvim
-                             :lewis6991/gitsigns.nvim]
-                  :after [:nvim-telescope/telescope.nvim]}
-
-  :ldelossa/gh.nvim {:requires [:ldelossa/litee.nvim]
-                     :mod :gh}
+                             :lewis6991/gitsigns.nvim
+                             :nvim-telescope/telescope.nvim]}
 
   ;; Ruby
   :tpope/vim-rails {}
   :tpope/vim-rake {}
-  :joker1007/vim-ruby-heredoc-syntax {}
 
   ;; (parens (for (days)))
   :gpanders/nvim-parinfer {}
   :clojure-vim/vim-jack-in {}
 
   ;; Colorscheme
-  ; :rmehri01/onenord.nvim {:branch :main :mod :colorscheme}
   :catppuccin/nvim {:as :catppuccin :mod :colorscheme}
 
   ;; Syntax hightlighting
@@ -108,7 +105,6 @@
 
   ;; TMUX integration
   :christoomey/vim-tmux-navigator {}
-  :christoomey/vim-tmux-runner {}
 
   ;; Status line
   :feline-nvim/feline.nvim {:require :kyazdani42/nvim-web-devicons

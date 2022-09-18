@@ -4,7 +4,8 @@
              wk which-key}})
 
 (notify.setup {:timeout 2500
-               :minimum_width 30})
+               :minimum_width 30
+               :top_down false})
 
 (set vim.notify notify)
 

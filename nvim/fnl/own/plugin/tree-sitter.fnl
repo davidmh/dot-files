@@ -1,6 +1,5 @@
 (module own.plugin.tree-sitter
-  {autoload {nvim aniseed.nvim
-             orgmode orgmode
+  {autoload {orgmode orgmode
              ts-parsers nvim-treesitter.parsers
              config nvim-treesitter.configs}})
 
@@ -20,15 +19,18 @@
                                                  :node_decremental :<s-tab>
                                                  :scope_incremental :<leader><tab>}}
                :textobjects {:enable true}
-               :ensure_installed [:fennel
+               :ensure_installed [:bash
+                                  :fennel
                                   :hcl
                                   :html
                                   :json
                                   :lua
                                   :org
                                   :python
+                                  :query
                                   :ruby
                                   :rust
+                                  :sql
                                   :tsx
                                   :typescript
                                   :nix
