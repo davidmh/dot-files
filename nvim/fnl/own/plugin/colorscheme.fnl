@@ -2,14 +2,14 @@
   {autoload {catppuccin catppuccin
              palette catppuccin.palettes}})
 
-(set vim.g.catppuccin_flavour :mocha)
+(set vim.g.catppuccin_flavour :macchiato)
 (catppuccin.setup {:transparent_background false
                    :term_colors true
                    :integrations {:lsp_trouble true
                                   :telescope true
                                   :which_key true}})
 
-(vim.cmd "colorscheme catppuccin")
+(vim.cmd.colorscheme :catppuccin)
 
 (defn- set-hl [name colors]
   (vim.api.nvim_set_hl 0 name colors))

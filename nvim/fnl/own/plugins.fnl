@@ -100,18 +100,16 @@
   :kevinhwang91/nvim-bqf {}
 
   ;; Organize mappings to encourage mnemonics
-  :folke/which-key.nvim {:mod :which-key
-                         :requires [:mrjones2014/legendary.nvim]}
+  :folke/which-key.nvim {:mod :which-key}
 
   ;; TMUX integration
   :christoomey/vim-tmux-navigator {}
 
   ;; Status line
-  :feline-nvim/feline.nvim {:require :kyazdani42/nvim-web-devicons
+  :feline-nvim/feline.nvim {:requires :kyazdani42/nvim-web-devicons
                             :mod :feline}
 
-  ;; Notifications in floating windows
-  :rcarriga/nvim-notify {:mod :notify}
+  :vigoux/notifier.nvim {:mod :notifier}
 
   ;; Improve vim.ui.input and vim.ui.select
   :stevearc/dressing.nvim {:mod :dressing}

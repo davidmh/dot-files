@@ -1,5 +1,7 @@
 (module own.init
-  {autoload {nvim aniseed.nvim}
+  {autoload {nvim aniseed.nvim
+             core aniseed.core
+             package own.package}
    require [own.plugins
             own.window-mappings
             own.confirm-quit]})
@@ -33,3 +35,4 @@
 (set vim.g.GuiWindowFrameless true)
 
 (nvim.ex.hi :WinSeparator :guibg=None)
+(package.setup)

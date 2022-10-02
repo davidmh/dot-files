@@ -4,12 +4,8 @@
              core aniseed.core
              wk which-key
              t telescope.builtin
-             c own.confirm-quit
              gitsigns gitsigns
-             legendary legendary
              scratch own.scratch}})
-
-(legendary.setup)
 
 (wk.setup {:plugins {:spelling {:enabled false}
                      :presets {:operators true
@@ -44,10 +40,12 @@
   (if (core.empty? nvim.o.winbar)
     (do
       (gitsigns.toggle_current_line_blame true)
+      (set nvim.o.cmdheight 1)
       (set nvim.o.laststatus 3)
       (set nvim.o.winbar "%{%v:lua.require'feline'.generate_winbar()%}"))
     (do
       (gitsigns.toggle_current_line_blame false)
+      (set nvim.o.cmdheight 0)
       (set nvim.o.laststatus 0)
       (set nvim.o.winbar ""))))
 
@@ -63,7 +61,7 @@
   {:f [telescope-file-browser "file browser"]
 
    ; finders
-   :<leader> (cmd "Telescope find_files hidden=true" "find files")
+   :<leader> (cmd "Telescope find_files hidden=true no_ignore=false" "find files")
    :/ {:name :search
        :b [grep-buffer-content "in open buffers"]
        :p (cmd "Telescope live_grep" "in project")
@@ -123,8 +121,7 @@
 
 (wk.register {:L (cmd :LToggle "list toggle")
               :Q (cmd :QToggle "quickfix toggle")
-              :ZZ [(fn [] (c.confirm true)) "save and quit"]
-              :ZQ [(fn [] (c.confirm false)) "discard and quit"]
+              :<M-s> (cmd "write" :write)
               ;; spelling
               :z= (cmd "Telescope spell_suggest theme=get_cursor" "suggest spelling")
               ;; font size
