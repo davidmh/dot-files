@@ -5,8 +5,13 @@
              config own.config}})
 
 (def- git-root (u.root_pattern :.git))
+
 (defn- project-root [params]
   (git-root (vim.fn.expand params.bufname)))
+
+(defn- python-cwd [params]
+  (let [python-root (u.root_pattern :venv/)]
+    (python-root (vim.fn.expand params.bufname))))
 
 (vim.fn.sign_define :DiagnosticSignError {:texthl :LspDiagnosticsError
                                           :icon config.icons.error
@@ -31,10 +36,13 @@
 (null-ls.setup
  {:sources [null-ls.builtins.formatting.jq
             null-ls.builtins.diagnostics.shellcheck
+            null-ls.builtins.diagnostics.pycodestyle
+            null-ls.builtins.diagnostics.pydocstyle
+            (null-ls.builtins.diagnostics.pylint.with {:cwd python-cwd})
             (null-ls.builtins.formatting.rubocop.with {:cwd project-root})
             (null-ls.builtins.diagnostics.rubocop.with {:cwd project-root
-                                                         :command :bundle
-                                                         :args [:exec :rubocop :-f :json :--stdin :$FILENAME]})]})
+                                                        :command :bundle
+                                                        :args [:exec :rubocop :-f :json :--stdin :$FILENAME]})]})
 
 (nvim.create_augroup :own-diagnostics {:clear true})
 
@@ -42,4 +50,4 @@
                      {:group :own-diagnostics
                       :pattern :*_spec.lua
                       :callback (fn []
-                                  (vim.keymap.set :n :<localleader>r :<Plug>PlenaryTestFile {:buffer 0}))})
+                                  (vim.keymap.set :n :<localleader>t :<Plug>PlenaryTestFile {:buffer 0}))})

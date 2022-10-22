@@ -4,11 +4,6 @@
              packer packer
              util packer.util}})
 
-; luarocks fails to install packages on macOS BigSur
-; https://github.com/wbthomason/packer.nvim/issues/180#issuecomment-871634199
-(when (string.match (vim.fn.system "uname -s") "Darwin")
-  (vim.fn.setenv :MACOSX_DEPLOYMENT_TARGET :10.15))
-
 (defn- safe-require-plugin-config [name]
   (let [(ok? val-or-err) (pcall require (.. "own.plugin." name))]
     (when (not ok?)
@@ -37,7 +32,7 @@
   ;; LSP
   :williamboman/mason.nvim {:requires [:neovim/nvim-lspconfig
                                        :williamboman/mason-lspconfig.nvim
-                                       :folke/lua-dev.nvim
+                                       :folke/neodev.nvim
                                        :onsails/lspkind-nvim
                                        :j-hui/fidget.nvim]
                             :mod :lsp}
@@ -56,8 +51,8 @@
                                 :rafamadriz/friendly-snippets]
                      :mod :completion}
 
-  "~/Projects/remix/.nvim" {:as :remix.nvim
-                            :mod :remix}
+  "$REMIX_HOME/.nvim" {:as :remix.nvim
+                       :mod :remix}
 
   ;; Git
   :tpope/vim-git {:mod :git
