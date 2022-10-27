@@ -9,9 +9,11 @@
              kind lspkind
              mason mason
              mason-lspconfig mason-lspconfig
-             wk which-key}})
+             wk which-key
+             fidget fidget}})
 
 (kind.init)
+(fidget.setup)
 (mason.setup)
 (mason-lspconfig.setup {:ensure_installed [:clojure_lsp
                                            :cssls
