@@ -2,7 +2,8 @@
   {autoload {catppuccin catppuccin
              palette catppuccin.palettes}})
 
-(set vim.g.catppuccin_flavour :macchiato)
+(let [flavor (or vim.env.CATPPUCCIN_FLAVOR "macchiato")]
+  (set vim.g.catppuccin_flavour (string.lower flavor)))
 (catppuccin.setup {:transparent_background false
                    :term_colors true
                    :integrations {:lsp_trouble true
@@ -11,10 +12,8 @@
 
 (vim.cmd.colorscheme :catppuccin)
 
-(defn- set-hl [name colors]
-  (vim.api.nvim_set_hl 0 name colors))
-
-(let [color (palette.get_palette)
+(let [set-hl #(vim.api.nvim_set_hl 0 $1 $2)
+      color (palette.get_palette)
       accent color.blue]
   (set-hl :TelescopeBorder {:fg color.crust :bg color.crust})
   (set-hl :TelescopePromptBorder {:fg color.crust :bg color.crust})
