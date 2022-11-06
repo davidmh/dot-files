@@ -15,6 +15,8 @@
              utils telescope.utils
              wk which-key}})
 
+(set vim.g.fugitive_legacy_commands false)
+
 (git-signs.setup {:current_line_blame false
                   :yadm {:enable false}})
 
