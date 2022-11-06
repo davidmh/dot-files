@@ -19,19 +19,23 @@ in
     TIG_EDITOR = "nvim";
   };
 
-  home.packages = [
-    pkgs.cargo
-    pkgs.fx
-    pkgs.gh
-    pkgs.jq
-    pkgs.neovim
-    pkgs.nodejs-14_x
-    pkgs.pass
-    pkgs.silver-searcher
-    pkgs.teamocil
-    pkgs.tig
-    pkgs.yarn
-  ] ++ (optionals isLinux [ pkgs.tdesktop pkgs.xclip ]);
+  home.packages = with pkgs; [
+    deno
+    cargo
+    clojure
+    fx
+    gh
+    htop
+    jq
+    lazygit
+    leiningen
+    neovide
+    neovim
+    pass
+    silver-searcher
+    teamocil
+    tig
+  ] ++ (optionals isLinux [ tdesktop xclip ]);
 
   programs.home-manager.enable = true;
 
