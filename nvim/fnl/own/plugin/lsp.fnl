@@ -36,13 +36,15 @@
   (tset vim.lsp.handlers "textDocument/signatureHelp"
         (vim.lsp.with vim.lsp.handlers.signature_help win-opts)))
 
+(vim.api.nvim_create_augroup :eslint-autofix {:clear true})
+
 ; https://github.com/neovim/nvim-lspconfig/blob/da7461b596d70fa47b50bf3a7acfaef94c47727d/lua/lspconfig/server_configurations/eslint.lua#L141-L145
 (defn- set-eslint-autofix [bufnr]
   (vim.api.nvim_create_autocmd
        :BufWritePre
        {:command :EslintFixAll
-        :buffer bufnr
-        :group (vim.api.nvim_create_augroup :eslint-autofix {:clear true})}))
+        :group :eslint-autofix
+        :buffer bufnr}))
 
 (defn- on-attach [args]
   (local bufnr args.buf)
