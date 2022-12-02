@@ -104,7 +104,7 @@
   :feline-nvim/feline.nvim {:requires :kyazdani42/nvim-web-devicons
                             :mod :feline}
 
-  :vigoux/notifier.nvim {:mod :notifier}
+  :rcarriga/nvim-notify {:mod :notify}
 
   ;; Improve vim.ui.input and vim.ui.select
   :stevearc/dressing.nvim {:mod :dressing}

@@ -28,4 +28,16 @@
   (set-hl :TelescopeSelectionCaret  {:fg accent})
   (set-hl :TelescopeResultsDiffAdd {:fg color.green})
   (set-hl :TelescopeResultsDiffChange {:fg color.yellow})
-  (set-hl :TelescopeResultsDiffDelete {:fg color.red}))
+  (set-hl :TelescopeResultsDiffDelete {:fg color.red})
+
+  (set-hl :NotifyINFOBody {:bg color.mantle})
+  (set-hl :NotifyWARNBody {:bg color.mantle})
+  (set-hl :NotifyERRORBody {:bg color.mantle})
+  (set-hl :NotifyDEBUGBody {:bg color.mantle})
+  (set-hl :NotifyTRACEBody {:bg color.mantle})
+
+  (set-hl :NotifyINFOBorder  {:fg color.mantle :bg color.mantle})
+  (set-hl :NotifyWARNBorder  {:fg color.mantle :bg color.mantle})
+  (set-hl :NotifyERRORBorder {:fg color.mantle :bg color.mantle})
+  (set-hl :NotifyDEBUGBorder {:fg color.mantle :bg color.mantle})
+  (set-hl :NotifyTRACEBorder {:fg color.mantle :bg color.mantle}))
