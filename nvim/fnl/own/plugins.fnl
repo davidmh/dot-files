@@ -81,9 +81,9 @@
                                     :requires :nvim-treesitter/playground
                                     :mod :tree-sitter}
 
-  ;; org-mode
-  :nvim-orgmode/orgmode {:mod :org
-                         :requires [:akinsho/org-bullets.nvim]}
+  ; ;; org-mode
+  ; :nvim-orgmode/orgmode {:mod :org
+  ;                        :requires [:akinsho/org-bullets.nvim]}
 
   ;; Lists
   :nvim-telescope/telescope.nvim {:requires [:nvim-lua/plenary.nvim :nvim-lua/popup.nvim]

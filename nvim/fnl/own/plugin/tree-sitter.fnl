@@ -8,7 +8,7 @@
                                       :files [:src/parser.c :src/scanner.cc]
                                       :branch :main}})
 
-(orgmode.setup_ts_grammar)
+; (orgmode.setup_ts_grammar)
 
 (config.setup {:highlight {:enable true
                            :additional_vim_regex_highlighting [:org]}
@@ -25,13 +25,17 @@
                                   :html
                                   :json
                                   :lua
-                                  :org
+                                  :markdown
+                                  :markdown_inline
+                                  :nix
+                                  ; :org
                                   :python
                                   :query
+                                  :regex
                                   :ruby
                                   :rust
                                   :sql
                                   :tsx
                                   :typescript
-                                  :nix
+                                  :vim
                                   :yaml]})

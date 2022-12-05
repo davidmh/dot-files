@@ -62,14 +62,13 @@
                                       :bg :crust}
                                  :icon (.. " " config.icons.hint " ")
                                  :provider :diagnostic_hints}}
-             :lsp {:provider (fn [] (->> (buffer-lsp-clients)
-                                         (str.join " & ")))
+             :lsp {:provider #(->> (buffer-lsp-clients) (str.join " · "))
                    :left_sep space-separator
-                   :right_sep pipe-separator
-                   :icon "  "
-                   :enabled (fn [] (not (core.empty? (buffer-lsp-clients))))}
-             :orgmode_clock {:provider (fn [] (orgmode.statusline))
-                             :enabled (fn [] (not (core.empty? (orgmode.statusline))))
+                   :right_sep space-separator
+                   ; :icon "  "
+                   :enabled #(not (core.empty? (buffer-lsp-clients)))}
+             :orgmode_clock {:provider #(orgmode.statusline)
+                             :enabled #(not (core.empty? (orgmode.statusline)))
                              :right_sep pipe-separator}
              :git {:branch {:provider :git_branch
                             :left_sep space-separator
@@ -96,9 +95,10 @@
              comp.diagnostic.hint
              comp.diagnostic.info
              comp.lsp
-             comp.orgmode_clock
-             comp.line_percentage
-             comp.scroll_bar
+             ; comp.orgmode_clock
+             ; comp.line_percentage
+             ; comp.scroll_bar
+             comp.file.position
              round-right]]
    :inactive [[] []]})
 
