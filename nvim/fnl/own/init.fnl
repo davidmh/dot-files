@@ -12,7 +12,7 @@
 (set vim.o.cursorline true)
 (set vim.o.expandtab true)
 (set vim.o.grepprg "ag -S --vimgrep")
-(set vim.o.guifont "FiraCode Nerd Font:h11")
+(set vim.o.guifont "Dank Mono:h11")
 (set vim.o.hidden true)
 (set vim.o.ignorecase true)
 (set vim.o.inccommand :split)

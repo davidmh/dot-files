@@ -13,13 +13,12 @@
              fidget fidget}})
 
 (kind.init)
-(fidget.setup)
-(mason.setup)
+(fidget.setup {:text {:spinner :dots}})
+(mason.setup {:ui {:border :rounded}})
 (mason-lspconfig.setup {:ensure_installed [:clojure_lsp
                                            :cssls
                                            :jsonls
                                            :solargraph
-                                           :stylelint_lsp
                                            :sumneko_lua
                                            :tsserver
                                            :eslint

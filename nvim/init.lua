@@ -2,25 +2,35 @@ local execute = vim.api.nvim_command
 local fn = vim.fn
 local fmt = string.format
 
-local pack_path = fn.stdpath("data") .. "/site/pack"
+local pack_path = fn.stdpath("data") .. "/lazy"
 
---- Ensures a given github.com/USER/REPO is cloned in the pack/packer/start directory.
+--- Ensures a given github.com/USER/REPO is cloned in the lazy directory.
 --- @param user string
 --- @param repo string
-local function ensure(user, repo)
-  local install_path = fmt("%s/packer/start/%s", pack_path, repo, repo)
+--- @param cb function|nil
+local function ensure(user, repo, cb)
+  local install_path = fmt("%s/%s", pack_path, repo, repo)
   if fn.empty(fn.glob(install_path)) > 0 then
-    execute(fmt("!git clone https://github.com/%s/%s %s", user, repo, install_path))
-    execute(fmt("packadd %s", repo))
+    execute(fmt(
+      "!git clone --filter=blob:none --single-branch https://github.com/%s/%s %s",
+      user,
+      repo,
+      install_path
+    ))
+  end
+  vim.opt.runtimepath:prepend(install_path)
+  if cb then
+    cb()
   end
 end
 
 -- Speed up lua requires
-ensure("lewis6991", "impatient.nvim")
-require("impatient")
+-- ensure("lewis6991", "impatient.nvim", function()
+--   require("impatient")
+-- end)
 
--- Packer as a plugin manager
-ensure("wbthomason", "packer.nvim")
+-- Lazy.nvim as a plugin manager
+ensure("folke", "lazy.nvim")
 
 -- Aniseed compiles Fennel to Lua and loads it automatically.
 ensure("Olical", "aniseed")

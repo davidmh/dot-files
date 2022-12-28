@@ -23,6 +23,7 @@ in
     deno
     cargo
     clojure
+    fd
     fx
     gh
     htop

@@ -1,5 +1,4 @@
-(module own.plugin.easy-align
-  {autoload {nvim aniseed.nvim}})
+(module own.plugin.easy-align)
 
-(nvim.set_keymap :x :ga "<Plug>(EasyAlign)" {})
-(nvim.set_keymap :n :ga "<Plug>(EasyAlign)" {})
+(vim.keymap.set :x :ga "<Plug>(EasyAlign)")
+(vim.keymap.set :n :ga "<Plug>(EasyAlign)")

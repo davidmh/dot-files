@@ -30,7 +30,7 @@
   (t.find_files {:depth 4 :cwd path}))
 
 (defn- browse-plugins []
-  (telescope-file-browser (.. (vim.fn.stdpath :data) "/site/pack/packer/start/")))
+  (telescope-file-browser (.. (vim.fn.stdpath :data) "/lazy")))
 
 (defn- set-font-size [func]
   (let [font (str.split nvim.o.guifont ::h)]
@@ -111,12 +111,16 @@
        :z (cmd "tabnew %" :zoom)}}
   {:prefix :<leader>})
 
-(wk.register {:p {:name :packer
-                  :i (cmd :PackerInstall :install)
-                  :c (cmd :PackerClean :clean)
-                  :u (cmd :PackerUpdate :update)
-                  :s (cmd :PackerSync :sync)}
-              :c [(fn [] (telescope-file-browser "~/.config/nixpkgs")) :config]}
+(wk.register {:c [(fn [] (telescope-file-browser "~/.config/nixpkgs")) :config]
+              :d [:<cmd>DBUIToggle<cr> :toggle]
+              :l {:name :lazy
+                  :l (cmd "Lazy show" :show)
+                  :i (cmd "Lazy install" :install)
+                  :c (cmd "Lazy clean" :clean)
+                  :u (cmd "Lazy update" :update)
+                  :s (cmd "Lazy sync" :sync)}
+              :n {:name :notifications
+                  :o ["<cmd>Telescope notify<cr>" :open]}}
              {:prefix :<localleader>})
 
 (wk.register {:L (cmd :LToggle "list toggle")

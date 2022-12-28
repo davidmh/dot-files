@@ -1,6 +1,5 @@
 (module own.plugin.tree-sitter
-  {autoload {orgmode orgmode
-             ts-parsers nvim-treesitter.parsers
+  {autoload {ts-parsers nvim-treesitter.parsers
              config nvim-treesitter.configs}})
 
 (def- ts-configs (ts-parsers.get_parser_configs))
@@ -8,10 +7,7 @@
                                       :files [:src/parser.c :src/scanner.cc]
                                       :branch :main}})
 
-; (orgmode.setup_ts_grammar)
-
-(config.setup {:highlight {:enable true
-                           :additional_vim_regex_highlighting [:org]}
+(config.setup {:highlight {:enable true}
                :indent {:enable true}
                :incremental_selection {:enable true
                                        :keymaps {:init_selection :gnn
@@ -28,7 +24,6 @@
                                   :markdown
                                   :markdown_inline
                                   :nix
-                                  ; :org
                                   :python
                                   :query
                                   :regex

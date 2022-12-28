@@ -2,9 +2,8 @@
   {autoload {catppuccin catppuccin
              palette catppuccin.palettes}})
 
-(let [flavor (or vim.env.CATPPUCCIN_FLAVOR "macchiato")]
-  (set vim.g.catppuccin_flavour (string.lower flavor)))
-(catppuccin.setup {:transparent_background false
+(catppuccin.setup {:flavour :macchiato
+                   :transparent_background false
                    :term_colors true
                    :integrations {:lsp_trouble true
                                   :telescope true

@@ -1,7 +1,7 @@
 (module own.json-schemas
   {autoload {nvim aniseed.nvim
-             core aniseed.core}
-   require {Job plenary.job}})
+             core aniseed.core
+             Job plenary.job}})
 
 (def- local-catalog-path
   (.. (vim.fn.stdpath :data) "/json-schema-catalog.json"))

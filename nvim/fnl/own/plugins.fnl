@@ -1,67 +1,79 @@
 (module own.plugins
   {autoload {core aniseed.core
              nvim aniseed.nvim
-             packer packer
+             lazy lazy
              util packer.util}})
 
-(defn- safe-require-plugin-config [name]
+(defn- load-module [name]
   (let [(ok? val-or-err) (pcall require (.. "own.plugin." name))]
     (when (not ok?)
       (print (.. "Plugin config error: " val-or-err)))))
 
-(defn use [...]
-  (let [pkgs [...]]
-    (packer.startup
-      {1 (fn [use]
-           (for [i 1 (core.count pkgs) 2]
-             (let [name (. pkgs i)
-                   opts (. pkgs (+ i 1))]
-                (-?> (. opts :mod) (safe-require-plugin-config))
-                (use (core.assoc opts 1 name)))))
-       :config {:max_jobs 20
-                :preview_updates true}})))
+(defn- load-plugins [...]
+  (let [pkgs [...]
+        plugins []]
+    (for [i 1 (core.count pkgs) 2]
+      (let [name (. pkgs i)
+            opts (. pkgs (+ i 1))
+            mod (. opts :mod)
+            plugin (core.merge {1 name} opts)]
+        (when mod
+          ; remove the mod key
+          (tset plugin :mod nil)
+          ; replace it with a config call
+          (tset plugin :config #(load-module mod)))
 
-(use
-  ;; Packer can manage itself
-  :wbthomason/packer.nvim {}
+        ; the first param defines the plugin URL, local plugins don't need it
+        (if (. opts :dir)
+          (table.remove plugin 1))
 
-  :lewis6991/impatient.nvim {}
+        ; add it to the list of plugins
+        (table.insert plugins plugin)))
+    (lazy.setup plugins {:ui {:border :rounded}})))
 
-  :Olical/aniseed {:requires [:Olical/conjure]}
+(load-plugins
+  ;; lazy.nvim should manage itself
+  :folke/lazy.nvim {}
+
+  :Olical/aniseed {:dependencies [:Olical/conjure]}
 
   ;; LSP
-  :williamboman/mason.nvim {:requires [:neovim/nvim-lspconfig
-                                       :williamboman/mason-lspconfig.nvim
-                                       :folke/neodev.nvim
-                                       :onsails/lspkind-nvim
-                                       :j-hui/fidget.nvim]
+  :williamboman/mason.nvim {:dependencies [:neovim/nvim-lspconfig
+                                           :williamboman/mason-lspconfig.nvim
+                                           :folke/neodev.nvim
+                                           :onsails/lspkind-nvim
+                                           :hrsh7th/cmp-nvim-lsp
+                                           :j-hui/fidget.nvim]
                             :mod :lsp}
 
   ;; Diagnostics
-  :jose-elias-alvarez/null-ls.nvim {:requires [:nvim-lua/plenary.nvim]
+  :jose-elias-alvarez/null-ls.nvim {:dependencies [:nvim-lua/plenary.nvim]
                                     :mod :diagnostics}
 
   ;; Completion
-  :hrsh7th/nvim-cmp {:requires [:hrsh7th/cmp-nvim-lsp
-                                :hrsh7th/cmp-buffer
-                                :hrsh7th/cmp-emoji
-                                :PaterJason/cmp-conjure
-                                :saadparwaiz1/cmp_luasnip
-                                :L3MON4D3/LuaSnip
-                                :rafamadriz/friendly-snippets]
+  :hrsh7th/nvim-cmp {:dependencies [:hrsh7th/cmp-nvim-lsp
+                                    :hrsh7th/cmp-buffer
+                                    :hrsh7th/cmp-emoji
+                                    :PaterJason/cmp-conjure
+                                    :saadparwaiz1/cmp_luasnip
+                                    :onsails/lspkind-nvim
+                                    :L3MON4D3/LuaSnip
+                                    :rafamadriz/friendly-snippets]
                      :mod :completion}
 
-  "$REMIX_HOME/.nvim" {:as :remix.nvim
-                       :mod :remix}
+  :remix.nvim {:dir :$REMIX_HOME/.nvim
+               :name :remix
+               :mod :remix}
 
   ;; Git
   :tpope/vim-git {:mod :git
-                  :requires [:tpope/vim-fugitive
-                             :tpope/vim-rhubarb
-                             :nvim-lua/plenary.nvim
-                             :sindrets/diffview.nvim
-                             :lewis6991/gitsigns.nvim
-                             :nvim-telescope/telescope.nvim]}
+                  :dependencies [:tpope/vim-fugitive
+                                 :tpope/vim-rhubarb
+                                 :nvim-lua/plenary.nvim
+                                 :sindrets/diffview.nvim
+                                 :lewis6991/gitsigns.nvim
+                                 :folke/which-key.nvim
+                                 :nvim-telescope/telescope.nvim]}
 
   ;; Ruby
   :tpope/vim-rails {}
@@ -72,39 +84,42 @@
   :clojure-vim/vim-jack-in {}
 
   ;; Colorscheme
-  :catppuccin/nvim {:as :catppuccin :mod :colorscheme}
+  :catppuccin/nvim {:name :catppuccin
+                    :mod :colorscheme
+                    :lazy false}
 
   ;; Syntax hightlighting
   :yasuhiroki/circleci.vim {}
   :aklt/plantuml-syntax {}
-  :nvim-treesitter/nvim-treesitter {:run ":TSUpdate"
-                                    :requires :nvim-treesitter/playground
+  :nvim-treesitter/nvim-treesitter {:dependencies [:nvim-treesitter/playground]
+                                    :build ::TSUpdate
                                     :mod :tree-sitter}
 
-  ; ;; org-mode
-  ; :nvim-orgmode/orgmode {:mod :org
-  ;                        :requires [:akinsho/org-bullets.nvim]}
-
   ;; Lists
-  :nvim-telescope/telescope.nvim {:requires [:nvim-lua/plenary.nvim :nvim-lua/popup.nvim]
+  :nvim-telescope/telescope.nvim {:dependencies [:nvim-lua/plenary.nvim :nvim-lua/popup.nvim]
                                   :mod :telescope}
-  :folke/trouble.nvim {:requires :kyazdani42/nvim-web-devicons
+  :folke/trouble.nvim {:dependencies [:kyazdani42/nvim-web-devicons]
                        :mod :trouble}
 
   ;; improved quickfix window {}
   :kevinhwang91/nvim-bqf {}
 
   ;; Organize mappings to encourage mnemonics
-  :folke/which-key.nvim {:mod :which-key}
+  :folke/which-key.nvim {:dependencies [:lewis6991/gitsigns.nvim]
+                         :mod :which-key}
 
   ;; TMUX integration
   :christoomey/vim-tmux-navigator {}
 
   ;; Status line
-  :feline-nvim/feline.nvim {:requires :kyazdani42/nvim-web-devicons
+  :feline-nvim/feline.nvim {:dependencies [:kyazdani42/nvim-web-devicons
+                                           :catppuccin/nvim]
                             :mod :feline}
 
-  :rcarriga/nvim-notify {:mod :notify}
+  :rcarriga/nvim-notify {:dependencies [:nvim-telescope/telescope.nvim
+                                        :catppuccin/nvim]
+                         :lazy false
+                         :mod :notify}
 
   ;; Improve vim.ui.input and vim.ui.select
   :stevearc/dressing.nvim {:mod :dressing}
@@ -113,14 +128,14 @@
                             :mod :toggle-term}
 
   ;; Databases
-  :tpope/vim-dadbod  {:requires [:kristijanhusak/vim-dadbod-completion
-                                 :kristijanhusak/vim-dadbod-ui]
+  :tpope/vim-dadbod  {:dependencies [:kristijanhusak/vim-dadbod-completion
+                                     :kristijanhusak/vim-dadbod-ui]
                       :mod :db}
 
   ;; Misc Utilities
   :tommcdo/vim-exchange {}
   :tpope/vim-commentary  {}
-  :radenling/vim-dispatch-neovim {:requires :tpope/vim-dispatch}
+  :radenling/vim-dispatch-neovim {:dependencies [:tpope/vim-dispatch]}
   :tpope/vim-eunuch  {}
   :tpope/vim-repeat  {}
   :tpope/vim-scriptease  {}
@@ -133,4 +148,4 @@
   :mg979/vim-visual-multi  {}
   :Valloric/ListToggle {:mod :list-toggle}
   :AndrewRadev/switch.vim {:mod :switch}
-  :weirongxu/plantuml-previewer.vim {:requires :tyru/open-browser.vim})
+  :weirongxu/plantuml-previewer.vim {:dependencies [:tyru/open-browser.vim]})
