@@ -1,5 +1,6 @@
 (module own.plugin.git
   {autoload {actions telescope.actions
+             builtin telescope.builtin
              config telescope.config
              core aniseed.core
              diff-view diffview
@@ -89,21 +90,14 @@
   true)
 
 (defn- git-log [opts]
-  (let [opts (if (core.nil? opts) {} opts)
-        path (core.get opts :path ".")
-        limit (core.get opts :limit 2000)
-        revision-range (core.get opts :revision_range :HEAD)
-        path-in-title (if (core.nil? (core.get opts :path)) "" (.. " --  " path))
-        results (utils.get_os_command_output
-                  [:git :log :--pretty=oneline :--abbrev-commit (.. "-n" limit) revision-range "--" path]
-                  (core.get opts :cwd))
-        picker (pickers.new opts {:prompt_title (.. "git log" path-in-title)
-                                  :finder (finders.new_table {:results results
-                                                              :entry_maker (make-entry.gen_from_git_commits opts)})
-                                  :previewer (git-commit-preview.new opts)
-                                  :sorter (config.values.file_sorter opts)
-                                  :attach_mappings git-log-mappings})]
-    (picker:find)))
+  (let [opts (or opts {})
+        limit (or opts.limit 3000)
+        command [:git :log
+                 :--graph :--oneline :--decorate :-n limit
+                 :-- (or opts.path :.)]]
+    (builtin.git_commits {:attach_mappings git-log-mappings
+                          :previewer (git-commit-preview.new opts)
+                          :git_command command})))
 
 (defn- git-buffer-log []
   (git-log {:path (vim.fn.expand :%)}))
