@@ -36,6 +36,7 @@ in
     silver-searcher
     teamocil
     tig
+    sketchybar
   ] ++ (optionals isLinux [ tdesktop xclip ]);
 
   programs.home-manager.enable = true;
@@ -113,6 +114,11 @@ in
 
   xdg.configFile.nvim = {
     source = config.lib.file.mkOutOfStoreSymlink ./nvim;
+    recursive = true;
+  };
+
+  xdg.configFile.sketchybar = {
+    source = config.lib.file.mkOutOfStoreSymlink ./sketchybar;
     recursive = true;
   };
 

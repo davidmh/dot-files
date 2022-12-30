@@ -1,0 +1,129 @@
+#!/usr/bin/env bash
+
+# I N I T
+source $HOME/.config/sketchybar/colors.sh
+
+PLUGIN_DIR="$HOME/.config/sketchybar/plugins" # Directory where all the plugin scripts are stored
+
+
+# B A R  A P P E A R A N C E
+sketchybar --bar height=32            \
+                 blur_radius=50       \
+                 position=top         \
+                 padding_left=10      \
+                 padding_right=10     \
+                 color=0xff${NORD0:1}
+
+
+# B A R  D E F A U L T S
+sketchybar --default updates=when_shown                       \
+                     drawing=on                               \
+                     icon.font="FiraCode Nerd Font:Regular:13.0"     \
+                     icon.color=0xff${NORD5:1}                \
+                     label.font="Dank Mono:Regular:10.0" \
+                     label.color=0xff${NORD6:1}               \
+                     label.padding_left=3                     \
+                     label.padding_right=3                    \
+                     icon.padding_left=3                      \
+                     icon.padding_right=3
+
+
+# C O N T R O L  S P A C E  I N D I C A T O R S
+sketchybar --add item logo left                          \
+           --set      logo icon=                        \
+                      background.padding_left=0          \
+                      background.padding_right=5         \
+                      background.color=0xff${NORD1:1}    \
+                      background.corner_radius=9         \
+                      background.height=22               \
+                      label.drawing=off                  \
+                      icon.font="FiraCode Nerd Font:Regular:13.0"     \
+                      icon.padding_left=8                \
+                      icon.padding_right=8               \
+                      click_script="sketchybar --update"
+
+SPACE_ICONS=("" "" "" "" "" "" "")
+
+for i in "${!SPACE_ICONS[@]}"
+do
+  sid=$(($i+1))
+  sketchybar --add space space.$sid left                                 \
+             --set space.$sid associated_space=$sid                      \
+                              icon=${SPACE_ICONS[i]}                     \
+                              icon.padding_left=4                        \
+                              icon.padding_right=4                       \
+                              icon.highlight_color=0xff${NORD10:1}       \
+                              label.drawing=off                          \
+                              script="$PLUGIN_DIR/space.sh"              \
+                              click_script="yabai -m space --focus $sid" 
+done
+
+sketchybar --add bracket primary_spaces space.1 space.2 space.3 space.4 space.5 space.6 space.7 \
+           --set primary_spaces background.color=0xff${NORD3:1} \
+                                background.corner_radius=9      \
+                                background.height=22
+
+
+# L E F T  I T E M S
+sketchybar --add item space_separator left                             \
+           --set space_separator icon=                                \
+                                 icon.color=0xff${NORD2:1}             \
+                                 background.padding_left=8             \
+                                 background.padding_right=0            \
+                                 label.drawing=off                     \
+                                                                       \
+           --add item window_title left                                \
+           --set window_title    script="$PLUGIN_DIR/window_title.sh"  \
+                                 icon.drawing=off                      \
+           --subscribe window_title front_app_switched                 
+
+
+# R I G H T  I T E M S
+sketchybar --add item clock right                                                 \
+           --set clock update_freq=10                                             \
+                       label.font="Dank Mono:Regular:10.0"                           \
+                       label.padding_left=0                                       \
+                       label.padding_right=8                                      \
+                       background.padding_left=5                                  \
+                       background.padding_right=5                                 \
+                       background.color=0xff${NORD1:1}                            \
+                       background.corner_radius=9                                 \
+                       background.height=22                                       \
+                       script="$PLUGIN_DIR/clock.sh"                              \
+                                                                                  \
+           --add alias "Control Center,Battery" right                             \
+           --set "Control Center,Battery" script="$PLUGIN_DIR/battery.sh"         \
+                                          update_freq=10                          \
+                                          label.drawing=on                        \
+                                          background.padding_left=5               \
+                                          background.padding_right=5              \
+                                          background.color=0xff${NORD1:1}         \
+                                          background.corner_radius=9              \
+                                          background.height=22                    \
+                                          label.padding_left=-3                   \
+                                          label.padding_right=5                   \
+                                          icon.padding_left=-3                    \
+                                          icon.padding_right=-3                   \
+                                                                                  \
+           --add alias "Control Center,WiFi" right                                \
+           --set "Control Center,WiFi" script="$PLUGIN_DIR/wifi.sh"               \
+                                       update_freq=10                             \
+                                       label.drawing=on                           \
+                                       background.padding_left=5                  \
+                                       background.padding_right=5                 \
+                                       background.color=0xff${NORD1:1}            \
+                                       background.corner_radius=9                 \
+                                       background.height=22                       \
+                                       label.padding_left=-3                      \
+                                       label.padding_right=5                      \
+                                       icon.color=0xff${NORD5:1}                  \
+                                       icon.padding_left=-3                       \
+                                       icon.padding_right=-3
+
+
+# U P D A T E  B A R
+sketchybar --update
+
+
+# F I N I S H
+echo "sketchybar configuration loaded.."
