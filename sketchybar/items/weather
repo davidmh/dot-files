@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+if [[ $BUILT_IN_DISPLAY -eq 1 ]]; then
+  POSITION=right
+else
+  POSITION=center
+fi
+
+sketchybar  --add item weather $POSITION              \
+            --set weather                             \
+                  icon=                              \
+                  icon.color=0xfff5bde6               \
+                  icon.font="$FONT_FACE:Regular:15.0" \
+                  update_freq=1800                    \
+                  script="$PLUGIN_DIR/weather.sh"     \
+            --subscribe weather system_woke mouse.clicked

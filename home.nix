@@ -4,7 +4,7 @@ let
   optionals = lib.optionals;
   os = builtins.currentSystem;
   isLinux = os == "x86_64-linux";
-  isDarwin = os == "x86_64-darwin";
+  isDarwin = !isLinux;
   userName = builtins.getEnv "USER";
   homeDirectory = builtins.getEnv "HOME";
 in
@@ -120,7 +120,18 @@ in
     source = config.lib.file.mkOutOfStoreSymlink ./wezterm.lua;
   };
 
-  imports = []
-    ++ (optionals isDarwin [ ./darwin.nix ])
-    ++ (optionals isLinux [ ./linux.nix ]);
+  xdg.configFile.sketchybar = {
+    source = config.lib.file.mkOutOfStoreSymlink ./sketchybar;
+    recursive = true;
+  };
+  xdg.configFile.yabai = {
+    source = config.lib.file.mkOutOfStoreSymlink ./yabai;
+    recursive = true;
+  };
+  xdg.configFile.skhd = {
+    source = config.lib.file.mkOutOfStoreSymlink ./skhd;
+    recursive = true;
+  };
+
+  imports = [] ++ (optionals isLinux [ ./linux.nix ]);
 }

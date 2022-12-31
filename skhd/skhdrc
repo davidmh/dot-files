@@ -1,0 +1,56 @@
+### Window Commands
+# Focus
+alt - h : $(yabai -m window --focus west  || yabai -m window --focus east)
+alt - l : $(yabai -m window --focus east  || yabai -m window --focus west)
+alt - j : $(yabai -m window --focus south || yabai -m window --focus north)
+alt - k : $(yabai -m window --focus north || yabai -m window --focus south)
+
+# Swap
+shift + alt - h : yabai -m window --swap west  || $(yabai -m window --swap east)
+shift + alt - l : yabai -m window --swap east  || $(yabai -m window --swap west)
+shift + alt - j : yabai -m window --swap south || $(yabai -m window --swap north)
+shift + alt - k : yabai -m window --swap north || $(yabai -m window --swap south)
+
+## Resize
+ctrl + alt - e : yabai -m space --balance
+ctrl + alt - h : yabai -m window --resize left:-50:0; \
+                 yabai -m window --resize right:-50:0
+ctrl + alt - j : yabai -m window --resize bottom:0:50; \
+                 yabai -m window --resize top:0:50
+ctrl + alt - k : yabai -m window --resize top:0:-50; \
+                 yabai -m window --resize bottom:0:-50
+ctrl + alt - l : yabai -m window --resize right:50:0; \
+                 yabai -m window --resize left:50:0
+
+# Move to a space
+alt + shift - 1 : yabai -m window --space 1
+alt + shift - 2 : yabai -m window --space 2
+alt + shift - 3 : yabai -m window --space 3
+alt + shift - 4 : yabai -m window --space 4
+alt + shift - 5 : yabai -m window --space 5
+alt + shift - 6 : yabai -m window --space 6
+alt + shift - 7 : yabai -m window --space 7
+alt + shift - 8 : yabai -m window --space 8
+alt + shift - 9 : yabai -m window --space 9
+
+# Toggle zoom
+alt - f : yabai -m window --toggle zoom-fullscreen
+
+# Rotate windows
+cmd + alt - r : yabai -m space --rotate 90
+
+### App launcher
+
+## Finder
+cmd + alt - d : open ~/Downloads/
+cmd + alt - f : open ~/
+## Terminal
+cmd + alt - t : open ~/Applications/WezTerm.app
+
+## Insertion (shift + ctrl + alt - ...)
+# Set insertion point for focused container: shift + ctrl + alt - {h, j, k, l, s}
+shift + ctrl + alt - h : yabai -m window --insert west
+shift + ctrl + alt - j : yabai -m window --insert south
+shift + ctrl + alt - k : yabai -m window --insert north
+shift + ctrl + alt - l : yabai -m window --insert east
+shift + ctrl + alt - s : yabai -m window --insert stack
