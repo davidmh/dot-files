@@ -9,13 +9,15 @@
 
 (set nvim.o.completeopt "menuone,noselect,preview")
 
-(def- menu-sources {:path     "[path]"
-                    :luasnip  "[snippet]"
-                    :nvim_lsp "[lsp]"
-                    :conjure  "[conjure]"
-                    :buffer   "[buffer]"
-                    :nvim_lua "[lua]"
-                    :omni     "[omni]"})
+(def- menu-sources {:path      "[path]"
+                    :luasnip   "[snippet]"
+                    :nvim_lsp  "[lsp]"
+                    :conjure   "[conjure]"
+                    :emoji     "[emoji]"
+                    :nerdfonts "[nerd fonts]"
+                    :buffer    "[buffer]"
+                    :nvim_lua  "[lua]"
+                    :omni      "[omni]"})
 
 (def- cmd-mappings {:<C-d> (cmp.mapping.scroll_docs -4)
                     :<C-f> (cmp.mapping.scroll_docs 4)
@@ -27,7 +29,8 @@
 (cmp.setup {:mapping (cmp.mapping.preset.insert cmd-mappings)
             :sources (cmp.config.sources [{:name :luasnip}
                                           {:name :nvim_lsp}
-                                          {:name :orgmode}
+                                          {:name :emoji :insert true}
+                                          {:name :nerdfonts}
                                           {:name :conjure}
                                           {:name :buffer :keyword_length 5}])
             :formatting {:format (lspkind.cmp_format {:with_text false

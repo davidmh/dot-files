@@ -56,6 +56,7 @@
                                     :hrsh7th/cmp-emoji
                                     :PaterJason/cmp-conjure
                                     :saadparwaiz1/cmp_luasnip
+                                    :davidmh/cmp-nerdfonts 
                                     :onsails/lspkind-nvim
                                     :L3MON4D3/LuaSnip
                                     :rafamadriz/friendly-snippets]
