@@ -47,7 +47,7 @@ source "$HOME/.config/sketchybar/items/front_app"
 
 # Center
 if [[ $BUILT_IN_DISPLAY -eq "" ]]; then
-  source "$HOME/.config/sketchybar/items/weather"
+  source "$HOME/.config/sketchybar/items/now_playing"
 fi
 
 # Right
@@ -56,7 +56,7 @@ source "$HOME/.config/sketchybar/items/volume"
 source "$HOME/.config/sketchybar/items/battery"
 
 if [[ $BUILT_IN_DISPLAY -eq 1 ]]; then
-  source "$HOME/.config/sketchybar/items/weather"
+  source "$HOME/.config/sketchybar/items/now_playing"
 fi
 
 sketchybar --update
