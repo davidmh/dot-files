@@ -3,4 +3,4 @@
 (def icons {:error :
             :warning :
             :hint :
-            :info : })
+            :info :})

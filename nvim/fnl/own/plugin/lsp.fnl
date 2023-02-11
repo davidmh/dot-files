@@ -77,23 +77,25 @@
   (when (= client.name :eslint) (set-eslint-autofix bufnr)))
 
 (def- git-root (util.root_pattern :.git))
-(def- npm-root (util.root_pattern :package.json))
+(def- eslint-root (util.root_pattern :.eslintrc.js :.eslintrc.json))
+
+(def- ts-root (util.root_pattern :package.json))
 (def- deno-root (util.root_pattern :deno.json :deno.jsonc))
 
 (def- base-settings {:capabilities (cmp-lsp.default_capabilities (vim.lsp.protocol.make_client_capabilities))
                      :init_options {:preferences {:includeCompletionsWithSnippetText true
                                                   :includeCompletionsForImportStatements true}}})
 
-(def- server-configs {:tsserver {:root_dir npm-root
+(def- server-configs {:tsserver {:root_dir ts-root
                                  :format {:enable false}}
                       :jsonls {:settings {:json {:schemas (json-schemas.get-all)}}}
                       :sumneko_lua {:settings {:Lua (core.get-in (neodev.setup) [:settings :Lua])}}
                       :solargraph {:root_dir git-root}
-                      :eslint {:root_dir npm-root}
+                      :eslint {:root_dir eslint-root}
                       :denols {:root_dir deno-root}
                       :cssls {:root_dir git-root}
                       :shellcheck {:root_dir git-root}
-                      :grammarly-languageserver {:filetypes [:mardown :org :txt]}})
+                      :grammarly-languageserver {:languages [:mardown :org :txt :gitcommit]}})
 
 (each [_ server-name (ipairs (mason-lspconfig.get_installed_servers))]
   (let [server-setup (core.get-in lspconfig [server-name :setup])]

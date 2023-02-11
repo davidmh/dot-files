@@ -18,8 +18,7 @@
 
 (set vim.g.fugitive_legacy_commands false)
 
-(git-signs.setup {:current_line_blame false
-                  :yadm {:enable false}})
+(git-signs.setup {:current_line_blame false})
 
 (diff-view.setup {:key_bindings {:disable_defaults false}})
 
@@ -93,7 +92,8 @@
   (let [opts (or opts {})
         limit (or opts.limit 3000)
         command [:git :log
-                 :--graph :--oneline :--decorate :-n limit
+                 :--oneline :--decorate :-n limit
+                 :--follow
                  :-- (or opts.path :.)]]
     (builtin.git_commits {:attach_mappings git-log-mappings
                           :previewer (git-commit-preview.new opts)

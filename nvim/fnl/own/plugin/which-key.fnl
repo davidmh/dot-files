@@ -49,6 +49,9 @@
       (set nvim.o.laststatus 0)
       (set nvim.o.winbar ""))))
 
+(defn- toggle-codeium-mode []
+  (vim.cmd (.. "Codeium " (if vim.g.codeium_enabled :Disable :Enable))))
+
 (fn toggle-blame-line []
   (let [enabled? (gitsigns.toggle_current_line_blame)]
     (vim.notify
@@ -112,13 +115,15 @@
   {:prefix :<leader>})
 
 (wk.register {:c [(fn [] (telescope-file-browser "~/.config/nixpkgs")) :config]
-              :d [:<cmd>DBUIToggle<cr> :toggle]
+              :d [:<cmd>DBUIToggle<cr> :db]
               :l {:name :lazy
                   :l (cmd "Lazy show" :show)
                   :i (cmd "Lazy install" :install)
                   :c (cmd "Lazy clean" :clean)
                   :u (cmd "Lazy update" :update)
                   :s (cmd "Lazy sync" :sync)}
+              :t {:name :toggle
+                  :c [toggle-codeium-mode "codeium mode"]}
               :n {:name :notifications
                   :o ["<cmd>Telescope notify<cr>" :open]}}
              {:prefix :<localleader>})

@@ -117,21 +117,30 @@
                                            :catppuccin/nvim]
                             :mod :feline}
 
-  :rcarriga/nvim-notify {:dependencies [:nvim-telescope/telescope.nvim
+  :rcarriga/nvim-notify {:after [:catppuccin/nvim]
+                         :dependencies [:nvim-telescope/telescope.nvim
                                         :catppuccin/nvim]
-                         :lazy false
                          :mod :notify}
 
   ;; Improve vim.ui.input and vim.ui.select
   :stevearc/dressing.nvim {:mod :dressing}
 
+  :chomosuke/term-edit.nvim {:ft :toggleterm
+                             :version :1.*}
+  ;; Manage terminal buffers in splits, tabs, etc
   :akinsho/toggleterm.nvim {:branch :main
+                            :dependencies [:chomosuke/term-edit.nvim]
                             :mod :toggle-term}
 
   ;; Databases
   :tpope/vim-dadbod  {:dependencies [:kristijanhusak/vim-dadbod-completion
                                      :kristijanhusak/vim-dadbod-ui]
                       :mod :db}
+
+  ;; netrwho?
+  :stevearc/oil.nvim {:mod :oil}
+
+  :cshuaimin/ssr.nvim {:mod :structural-search-replace}
 
   ;; Misc Utilities
   :tommcdo/vim-exchange {}
@@ -148,5 +157,4 @@
   :vim-scripts/BufOnly.vim  {}
   :mg979/vim-visual-multi  {}
   :Valloric/ListToggle {:mod :list-toggle}
-  :AndrewRadev/switch.vim {:mod :switch}
-  :weirongxu/plantuml-previewer.vim {:dependencies [:tyru/open-browser.vim]})
+  :AndrewRadev/switch.vim {:mod :switch})
