@@ -140,7 +140,7 @@
   ;; netrwho?
   :stevearc/oil.nvim {:mod :oil}
 
-  :cshuaimin/ssr.nvim {:mod :structural-search-replace}
+  :cshuaimin/ssr.nvim {:mod :ssr}
 
   ;; Misc Utilities
   :tommcdo/vim-exchange {}
