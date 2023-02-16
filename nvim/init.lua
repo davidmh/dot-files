@@ -2,6 +2,8 @@ local execute = vim.api.nvim_command
 local fn = vim.fn
 local fmt = string.format
 
+vim.opt.termguicolors = true
+
 local pack_path = fn.stdpath("data") .. "/lazy"
 
 --- Ensures a given github.com/USER/REPO is cloned in the lazy directory.

@@ -12,6 +12,7 @@
              wk which-key
              fidget fidget}})
 
+(neodev.setup)
 (kind.init)
 (fidget.setup {:text {:spinner :dots}})
 (mason.setup {:ui {:border :rounded}})
@@ -19,7 +20,7 @@
                                            :cssls
                                            :jsonls
                                            :solargraph
-                                           :sumneko_lua
+                                           :lua_ls
                                            :tsserver
                                            :eslint
                                            :denols
@@ -89,7 +90,7 @@
 (def- server-configs {:tsserver {:root_dir ts-root
                                  :format {:enable false}}
                       :jsonls {:settings {:json {:schemas (json-schemas.get-all)}}}
-                      :sumneko_lua {:settings {:Lua (core.get-in (neodev.setup) [:settings :Lua])}}
+                      :lua_ls {:settings {:Lua {:completion :Replace}}}
                       :solargraph {:root_dir git-root}
                       :eslint {:root_dir eslint-root}
                       :denols {:root_dir deno-root}
