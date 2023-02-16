@@ -30,7 +30,6 @@ in
     jq
     lazygit
     leiningen
-    neovide
     neovim
     pass
     silver-searcher

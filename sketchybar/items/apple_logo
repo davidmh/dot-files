@@ -30,8 +30,19 @@ sketchybar -m --bar blur_radius=50                                              
                                click_script="pmset displaysleepnow;
                                              sketchybar -m --set apple.logo popup.drawing=off"\
                                                                                               \
-              --add item apple.reload popup.apple.logo                                        \
-              --set apple.reload icon=􀚂                                                       \
+              --add item apple.reload_sketchybar popup.apple.logo                             \
+              --set apple.reload_sketchybar icon=􀚂                                            \
                                label="Reload sketchybar"                                      \
-                               click_script="sketchybar --remove '/.*/';
-                                             source $HOME/.config/sketchybar/sketchybarrc"
+                               click_script="brew services restart sketchybar"                 \
+                                                                                              \
+              --add item apple.reload_yabai popup.apple.logo                                  \
+              --set apple.reload_yabai icon=􀚂                                                 \
+                               label="Reload yabai"                                           \
+                               click_script="brew services restart yabai;
+                                             sketchybar -m --set apple.logo popup.drawing=off"\
+                                                                                              \
+              --add item apple.reload_skhd popup.apple.logo                                   \
+              --set apple.reload_skhd icon=􀚂                                                  \
+                               label="Reload skhd"                                            \
+                               click_script="brew services restart skhd
+                                             sketchybar -m --set apple.logo popup.drawing=off"

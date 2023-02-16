@@ -5,20 +5,23 @@ FONT_FACE="FiraCode Nerd Font"
 
 BUILT_IN_DISPLAY=$(system_profiler SPDisplaysDataType | grep -c 'Built-in Liquid Retina XDR Display')
 
+# Unload the macOS on screen indicator overlay for volume change
+launchctl unload -F /System/Library/LaunchAgents/com.apple.OSDUIHelper.plist > /dev/null 2>&1 &
+
 sketchybar  --bar                 \
                 height=32         \
                 blur_radius=0     \
                 position=top      \
-                sticky=on         \
+                sticky=off        \
                 notch_width=300   \
-                padding_left=10   \
-                padding_right=10  \
+                padding_left=12   \
+                padding_right=12  \
                 display=main      \
                 color=0x6624273a
 
 sketchybar  --default                                 \
                 updates=when_shown                    \
-                background.color=0xff24273a           \
+                background.color=0xff000000           \
                 background.padding_left=2             \
                 background.padding_right=2            \
                 background.corner_radius=5            \
@@ -42,7 +45,6 @@ sketchybar --add event lock   "com.apple.screenIsLocked"   \
            --subscribe        animator lock unlock
 
 # Left
-source "$HOME/.config/sketchybar/items/apple_logo"
 source "$HOME/.config/sketchybar/items/front_app"
 
 # Center

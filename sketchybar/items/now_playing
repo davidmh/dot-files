@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
 
-# TODO: Get the "Now Playing" data from the Menu Bar/Control Center, so we don't
-# have to rely on a specific player to show the media details.
+sketchybar  --add item now_playing left               \
+            --set now_playing                         \
+                  icon.font="$FONT_FACE:Regular:14.0" \
+                  label.drawing=no                    \
+                  script="$PLUGIN_DIR/now_playing.sh" \
+                  label="..."                         \
+                  label.drawing=yes

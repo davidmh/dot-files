@@ -13,11 +13,17 @@ case $INFO in
   "Discord")
     ICON=ﭮ
     ;;
+  "Docker Desktop")
+    ICON=
+    ;;
   "FaceTime" | "zoom.us")
     ICON=辶
     ;;
   "Finder")
     ICON=
+    ;;
+  "Grammarly Desktop")
+    ICON=ﯩ
     ;;
   "Google Chrome")
     ICON=
@@ -27,6 +33,9 @@ case $INFO in
     ;;
   "Messages")
     ICON=
+    ;;
+  "Preview")
+    ICON=
     ;;
   "Script Editor")
     ICON=亮
@@ -40,8 +49,14 @@ case $INFO in
   "Telegram")
     ICON=切
     ;;
+  "Tuple")
+    ICON=
+    ;;
+  "VLC")
+    ICON=嗢
+    ;;
   *)
-    ICON=﯂
+    ICON=ﬓ
     ;;
 esac
 
