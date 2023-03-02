@@ -13,25 +13,21 @@
   (let [python-root (u.root_pattern :venv/)]
     (python-root (vim.fn.expand params.bufname))))
 
-(vim.fn.sign_define :DiagnosticSignError {:texthl :LspDiagnosticsError
-                                          :icon config.icons.error
-                                          :numhl :LspDiagnosticsError})
-(vim.fn.sign_define :DiagnosticSignWarn {:texthl :LspDiagnosticsWarning
-                                         :icon config.icons.warning
-                                         :numhl :LspDiagnosticsWarn})
-(vim.fn.sign_define :DiagnosticSignHint {:texthl :LspDiagnosticsHint
-                                         :icon config.icons.hint
-                                         :numhl :LspDiagnosticsHint})
-(vim.fn.sign_define :DiagnosticSignInfo {:texthl :Error
-                                         :icon config.icons.info
-                                         :numhl :LspDiagnosticsInfo})
+(vim.fn.sign_define :DiagnosticSignError {:text config.icons.error
+                                          :texthl :DiagnosticSignError})
+(vim.fn.sign_define :DiagnosticSignWarn {:text config.icons.warn
+                                         :texthl :DiagnosticSignWarn})
+(vim.fn.sign_define :DiagnosticSignInfo {:text config.icons.info
+                                         :texthl :DiagnosticSignInfo})
+(vim.fn.sign_define :DiagnosticSignHint {:text config.icons.hint
+                                         :texthl :DiagnosticSignHint})
 
 (vim.diagnostic.config {:underline true
-                        :virtual_text false
                         :signs true
-                        :update_in_insert true
+                        :virtual_text false
+                        :update_in_insert false
                         :severity_sort true
-                        :float {:header "" :source true}})
+                        :float {:header "" :border :single}})
 
 (null-ls.setup
  {:sources [null-ls.builtins.formatting.jq

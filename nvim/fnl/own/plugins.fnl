@@ -1,4 +1,4 @@
-(module own.plugins
+(module own.pluginsplugin
   {autoload {core aniseed.core
              nvim aniseed.nvim
              lazy lazy
@@ -29,7 +29,8 @@
 
         ; add it to the list of plugins
         (table.insert plugins plugin)))
-    (lazy.setup plugins {:ui {:border :rounded}})))
+    (lazy.setup plugins {:ui {:border :rounded}
+                         :install {:colorscheme [:catppuccin]}})))
 
 (load-plugins
   ;; lazy.nvim should manage itself
@@ -53,13 +54,9 @@
   ;; Completion
   :hrsh7th/nvim-cmp {:dependencies [:hrsh7th/cmp-nvim-lsp
                                     :hrsh7th/cmp-buffer
-                                    :hrsh7th/cmp-emoji
                                     :PaterJason/cmp-conjure
-                                    :saadparwaiz1/cmp_luasnip
-                                    :davidmh/cmp-nerdfonts 
-                                    :onsails/lspkind-nvim
-                                    :L3MON4D3/LuaSnip
-                                    :rafamadriz/friendly-snippets]
+                                    :davidmh/cmp-nerdfonts
+                                    :onsails/lspkind-nvim]
                      :mod :completion}
 
   :remix.nvim {:dir :$REMIX_HOME/.nvim
@@ -92,12 +89,16 @@
   ;; Syntax hightlighting
   :yasuhiroki/circleci.vim {}
   :aklt/plantuml-syntax {}
+  :nvim-treesitter/playground {:cmd :TSPlaygroundToggle}
   :nvim-treesitter/nvim-treesitter {:dependencies [:nvim-treesitter/playground]
                                     :build ::TSUpdate
                                     :mod :tree-sitter}
 
   ;; Lists
-  :nvim-telescope/telescope.nvim {:dependencies [:nvim-lua/plenary.nvim :nvim-lua/popup.nvim]
+  :nvim-telescope/telescope.nvim {:dependencies [:nvim-lua/plenary.nvim
+                                                 :nvim-lua/popup.nvim
+                                                 :molecule-man/telescope-menufacture
+                                                 :rcarriga/nvim-notify]
                                   :mod :telescope}
   :folke/trouble.nvim {:dependencies [:kyazdani42/nvim-web-devicons]
                        :mod :trouble}
@@ -117,8 +118,7 @@
                                            :catppuccin/nvim]
                             :mod :feline}
 
-  :rcarriga/nvim-notify {:after [:catppuccin/nvim]
-                         :dependencies [:nvim-telescope/telescope.nvim
+  :rcarriga/nvim-notify {:dependencies [:nvim-telescope/telescope.nvim
                                         :catppuccin/nvim]
                          :mod :notify}
 
@@ -135,11 +135,13 @@
   ;; Databases
   :tpope/vim-dadbod  {:dependencies [:kristijanhusak/vim-dadbod-completion
                                      :kristijanhusak/vim-dadbod-ui]
+                      :cmd [:DB :DBUIToggle]
                       :mod :db}
 
   ;; netrwho?
   :stevearc/oil.nvim {:mod :oil}
 
+  ;; structured search/replace with the power of tree-sitter
   :cshuaimin/ssr.nvim {:mod :ssr}
 
   ;; Misc Utilities

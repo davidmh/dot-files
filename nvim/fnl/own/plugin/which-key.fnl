@@ -4,6 +4,7 @@
              core aniseed.core
              wk which-key
              t telescope.builtin
+             telescope telescope
              gitsigns gitsigns
              scratch own.scratch}})
 
@@ -27,7 +28,7 @@
                 :grep_open_files true}))
 
 (defn- telescope-file-browser [path]
-  (t.find_files {:depth 4 :cwd path}))
+  (telescope.extensions.menufacture.find_files {:depth 4 :cwd path}))
 
 (defn- browse-plugins []
   (telescope-file-browser (.. (vim.fn.stdpath :data) "/lazy")))
@@ -49,9 +50,6 @@
       (set nvim.o.laststatus 0)
       (set nvim.o.winbar ""))))
 
-(defn- toggle-codeium-mode []
-  (vim.cmd (.. "Codeium " (if vim.g.codeium_enabled :Disable :Enable))))
-
 (fn toggle-blame-line []
   (let [enabled? (gitsigns.toggle_current_line_blame)]
     (vim.notify
@@ -67,9 +65,8 @@
    :<leader> (cmd "Telescope find_files hidden=true no_ignore=false" "find files")
    :/ {:name :search
        :b [grep-buffer-content "in open buffers"]
-       :p (cmd "Telescope live_grep" "in project")
-       :o (cmd "Telescope live_grep grep_open_files=true" "open files")
-       :w (cmd "Telescope grep_string" "word under cursor")}
+       :p [telescope.extensions.menufacture.live_grep "in project"]
+       :w [telescope.extensions.menufacture.grep_string "word under cursor"]}
 
    :s {:name :scratch
        :o [scratch.show :open]
@@ -123,14 +120,14 @@
                   :u (cmd "Lazy update" :update)
                   :s (cmd "Lazy sync" :sync)}
               :t {:name :toggle
-                  :c [toggle-codeium-mode "codeium mode"]}
+                  :m (cmd :MindOpenMain :main)}
               :n {:name :notifications
                   :o ["<cmd>Telescope notify<cr>" :open]}}
              {:prefix :<localleader>})
 
 (wk.register {:L (cmd :LToggle "list toggle")
               :Q (cmd :QToggle "quickfix toggle")
-              :<M-s> (cmd "write" :write)
+              :<M-s> (cmd "write" "silent! write")
               ;; spelling
               :z= (cmd "Telescope spell_suggest theme=get_cursor" "suggest spelling")
               ;; font size

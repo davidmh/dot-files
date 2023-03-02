@@ -9,6 +9,7 @@
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
 
+(set vim.o.cmdheight 0)
 (set vim.o.cursorline true)
 (set vim.o.expandtab true)
 (set vim.o.grepprg "ag -S --vimgrep")
@@ -22,7 +23,7 @@
 (set vim.o.mouse :a)
 (set vim.o.scrolloff 0)
 (set vim.o.shiftwidth 2)
-(set vim.o.signcolumn :yes)
+(set vim.o.signcolumn :yes:2)
 (set vim.o.smartcase true)
 (set vim.o.softtabstop 2)
 (set vim.o.tabstop 2)
@@ -36,3 +37,9 @@
 
 (nvim.ex.hi :WinSeparator :guibg=None)
 (package.setup)
+
+(defn- os-open [url]
+  (vim.fn.system (.. "xdg-open " url " || open " url)))
+
+; I'm disabling netrw, and Fugitive needs a :Browse command
+(nvim.create_user_command :Browse (fn [opts] (os-open opts.args)) {:nargs 1})
