@@ -1,105 +1,67 @@
 (module own.plugin.feline
   {autoload {nvim aniseed.nvim
              core aniseed.core
-             str aniseed.string
              config own.config
              feline feline
              lsp feline.providers.lsp
-             file feline.providers.file
-             git-provider feline.providers.git
              catppuccin catppuccin.palettes}})
 
-(set nvim.o.termguicolors true)
+(def- severity-enum vim.diagnostic.severity)
 
-(defn- buffer-lsp-clients []
-  (->> (vim.lsp.buf_get_clients)
-       (core.filter (fn [client] (and
-                                  (~= client nil)
-                                  (~= client.name :null-ls))))
-       (core.map (fn [client] client.name))))
+(defn- get-severity [severity-code]
+  (core.get vim.diagnostic.severity severity-code))
 
-(def- pipe-separator {:str " | "
-                      :hl {:fg :fg}})
+(defn- needs-leading-space? [previous-severities]
+  (core.reduce
+    #(or $1 (lsp.diagnostics_exist (get-severity $2)))
+    false
+    previous-severities))
 
-(def- space-separator {:str " "})
+(defn- diagnostic [severity-code previous-severities]
+  (let [previous-severities (or previous-severities [])
+        severity (get-severity severity-code)
+        icon (core.get config.icons severity-code)
+        count (lsp.get_diagnostics_count severity)]
+    (if (> count 0)
+      (..
+        (if (needs-leading-space? previous-severities) " " "")
+        icon
+        " "
+        count)
+      "")))
 
-(def- comp {:file {:info {:hl {:style :bold}
-                          :provider {:name :file_info
-                                     :opts {:type :relative
-                                            :file_readonly_icon " "
-                                            :file_modified_icon "ﱐ"}}}
-                   :encoding {:provider :file_encoding
-                              :left_sep space-separator
-                              :hl {:style :bold}}
-                   :position {:provider :position}}
-             :line_percentage {:provider :line_percentage
-                               :hl {:style :bold}}
-             :scroll_bar {:provider :scroll_bar
-                          :left_sep space-separator
-                          :hl {:style :bold}}
-             :diagnostic {:err {:hl {:fg :red
-                                     :bg :crust}
-                                :icon (.. " " config.icons.error " ")
-                                :provider :diagnostic_errors}
-                          :warn {:hl {:fg :orange
-                                      :bg :crust}
-                                 :icon (.. " " config.icons.warning " ")
-                                 :provider :diagnostic_warnings}
-                          :info {:hl {:fg :blue
-                                      :bg :crust}
-                                 :icon (.. " " config.icons.info " ")
-                                 :provider :diagnostic_info}
-                          :hint {:hl {:fg :fg
-                                      :bg :crust}
-                                 :icon (.. " " config.icons.hint " ")
-                                 :provider :diagnostic_hints}}
-             :lsp {:provider #(->> (buffer-lsp-clients) (str.join " · "))
-                   :left_sep space-separator
-                   :right_sep pipe-separator
-                   ; :icon "  "
-                   :enabled #(not (core.empty? (buffer-lsp-clients)))}
+(def- comp {:file_info {:hl {:style :bold :bg :NONE}
+                        :provider {:name :file_info
+                                   :opts {:type :relative
+                                          :file_readonly_icon " "
+                                          :file_modified_icon :ﱐ}}}
+             :diagnostic {:err {:hl {:fg :red :bg :NONE}
+                                :provider #(diagnostic :ERROR)}
+                          :warn {:hl {:fg :yellow :bg :NONE}
+                                 :provider #(diagnostic :WARN [:ERROR])}
+                          :info {:hl {:fg :blue :bg :NONE}
+                                 :provider #(diagnostic :INFO [:ERROR :WARN])}
+                          :hint {:hl {:fg :fg :bg :NONE}
+                                 :provider #(diagnostic :HINT [:ERROR :WARN :INFO])}}
              :git {:branch {:provider :git_branch
-                            :left_sep space-separator
-                            :hl {:style :bold}}
+                            :hl {:style :bold :bg :NONE}}
                    :add {:provider :git_diff_added
-                         :hl {:fg :green
-                              :bg :crust}}
+                         :hl {:fg :green :bg :NONE}}
                    :change {:provider :git_diff_changed
-                            :hl {:fg :teal
-                                 :bg :crust}}
+                            :hl {:fg :teal :bg :NONE}}
                    :remove {:provider :git_diff_removed
-                            :hl {:fg :red
-                                 :bg :crust}}}})
-
-(def- has-diagnostics {:enabled #(lsp.diagnostics_exist)})
-(def- is-git-repo {:enabled #(git-provider.git_info_exists)})
-
-(defn- round-left [condition]
-  (vim.tbl_extend
-    :error
-    {:provider (fn [] :) :hl {:bg :none :fg :bg}}
-    (or condition {})))
-
-(defn- round-right [condition]
-  (vim.tbl_extend
-    :error
-    {:provider (fn [] :) :hl {:bg :NONE :fg :bg}}
-    (or condition {})))
+                            :hl {:fg :red :bg :NONE}}}})
 
 (def- components
-  {:active [[(round-left is-git-repo)
-             comp.git.branch
+  {:active [[comp.git.branch
              comp.git.add
              comp.git.change
-             comp.git.remove
-             (round-right is-git-repo)]
+             comp.git.remove]
             []
-            [(round-left has-diagnostics)
-             comp.diagnostic.err
+            [comp.diagnostic.err
              comp.diagnostic.warn
-             comp.diagnostic.hint
              comp.diagnostic.info
-             (round-right has-diagnostics)]]
+             comp.diagnostic.hint]]
    :inactive [[] []]})
 
 (defn get-theme []
@@ -110,6 +72,6 @@
 (feline.setup {:components components
                :theme (get-theme)})
 
-(feline.winbar.setup {:components {:active [[] [(round-left) comp.file.info (round-right)]]
-                                   :inactive [[] [(round-left) comp.file.info (round-right)]]}
+(feline.winbar.setup {:components {:active [[] [comp.file_info]]
+                                   :inactive [[] [comp.file_info]]}
                       :disable {:filetypes [:packer :fugitive :fugitiveblame :toggleterm]}})

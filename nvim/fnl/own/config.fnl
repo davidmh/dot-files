@@ -1,6 +1,6 @@
 (module own.config)
 
-(def icons {:error :
-            :warning :
-            :hint :
-            :info :})
+(def icons {:ERROR :
+            :WARN :
+            :HINT :
+            :INFO :})

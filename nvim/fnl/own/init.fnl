@@ -23,7 +23,7 @@
 (set vim.o.mouse :a)
 (set vim.o.scrolloff 0)
 (set vim.o.shiftwidth 2)
-(set vim.o.signcolumn :yes:2)
+(set vim.o.signcolumn :yes)
 (set vim.o.smartcase true)
 (set vim.o.softtabstop 2)
 (set vim.o.tabstop 2)

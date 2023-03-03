@@ -3,9 +3,9 @@
              config own.config}})
 
 (trouble.setup {:icons true
-                :signs {:error config.icons.error
-                        :warning config.icons.warning
-                        :hint config.icons.hint
-                        :information config.info
+                :signs {:error config.icons.ERROR
+                        :warning config.icons.WARN
+                        :hint config.icons.HINT
+                        :information config.icons.INFO
                         :other "﫠"}
                 :group false})
