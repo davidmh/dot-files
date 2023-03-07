@@ -15,28 +15,35 @@
   (let [python-root (u.root_pattern :venv/)]
     (python-root (vim.fn.expand bufname))))
 
-(vim.fn.sign_define :DiagnosticSignError {:text config.icons.ERROR
-                                          :texthl :DiagnosticSignError})
-(vim.fn.sign_define :DiagnosticSignWarn {:text config.icons.WARN
-                                         :texthl :DiagnosticSignWarn})
-(vim.fn.sign_define :DiagnosticSignInfo {:text config.icons.INFO
-                                         :texthl :DiagnosticSignInfo})
-(vim.fn.sign_define :DiagnosticSignHint {:text config.icons.HINT
-                                         :texthl :DiagnosticSignHint})
+(vim.fn.sign_define :DiagnosticSignError
+                    {:text :● :texthl :DiagnosticSignError})
+(vim.fn.sign_define :DiagnosticSignWarn
+                    {:text :● :texthl :DiagnosticSignWarn})
+(vim.fn.sign_define :DiagnosticSignInfo
+                    {:text :● :texthl :DiagnosticSignInfo})
+(vim.fn.sign_define :DiagnosticSignHint
+                    {:text :● :texthl :DiagnosticSignHint})
+
+(defn- diagnostic-format [diagnostic]
+  (..
+    (. config.icons diagnostic.severity)
+    "  [" diagnostic.source "] "
+    diagnostic.message))
 
 (vim.diagnostic.config {:underline true
                         :signs true
                         :virtual_text false
                         :update_in_insert false
                         :severity_sort true
-                        :float {:header "" :border :single}})
+                        :float {:header ""
+                                :border :single
+                                :format diagnostic-format}})
 
 (null-ls.setup
   {:sources [formatting.jq
              diagnostics.shellcheck
              diagnostics.pycodestyle
              diagnostics.pydocstyle
-             diagnostics.selene
              (diagnostics.pylint.with {:cwd python-cwd})
              (formatting.rubocop.with {:cwd project-root})
              (diagnostics.rubocop.with {:cwd project-root

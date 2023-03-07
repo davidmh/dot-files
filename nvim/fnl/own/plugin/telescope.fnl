@@ -11,7 +11,7 @@
                                              :height 0.80
                                              :preview_cutoff 120}
                              :sorting_strategy :ascending
-                             :prompt_prefix "   "
+                             :prompt_prefix "   "
                              :selection_caret " "
                              :set_env {:COLORTERM true}
                              :vimgrep_arguments [:ag :--nocolor :--vimgrep :--smart-case]
@@ -19,6 +19,7 @@
                   :pickers {:buffers {:sort_mru true}}})
 
 (telescope.load_extension :menufacture)
+(telescope.load_extension :advanced_git_search)
 
 (vim.keymap.set :n :<M-x> ::Telescope<CR> {:nowait true})
 (vim.keymap.set :n :<D-x> ::Telescope<CR> {:nowait true})

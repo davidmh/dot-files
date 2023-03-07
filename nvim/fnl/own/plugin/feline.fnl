@@ -1,77 +1,66 @@
 (module own.plugin.feline
-  {autoload {nvim aniseed.nvim
-             core aniseed.core
+  {autoload {core aniseed.core
+             str aniseed.string
              config own.config
              feline feline
-             lsp feline.providers.lsp
+             git-provider feline.providers.git
              catppuccin catppuccin.palettes}})
 
-(def- severity-enum vim.diagnostic.severity)
+(def- glyphs [:₀ :₁ :₂ :₃ :₄ :₅ :₆ :₇ :₈ :₉])
+(def- digit-to-glyph #(. glyphs (+ $1 1)))
 
-(defn- get-severity [severity-code]
-  (core.get vim.diagnostic.severity severity-code))
+(fn number-to-glyph [num]
+  (local result {:val ""})
+  (let [num-str (tostring num)]
+    (for [i 1 (length num-str)]
+      (tset result :val
+         (->> (string.sub num-str i i)
+              (digit-to-glyph)
+              (.. result.val))))
+    result.val))
 
-(defn- needs-leading-space? [previous-severities]
-  (core.reduce
-    #(or $1 (lsp.diagnostics_exist (get-severity $2)))
-    false
-    previous-severities))
+(defn- get-diagnostic-count [severity-code]
+  (length (vim.diagnostic.get 0 {:severity severity-code})))
 
-(defn- diagnostic [severity-code previous-severities]
-  (let [previous-severities (or previous-severities [])
-        severity (get-severity severity-code)
-        icon (core.get config.icons severity-code)
-        count (lsp.get_diagnostics_count severity)]
-    (if (> count 0)
-      (..
-        (if (needs-leading-space? previous-severities) " " "")
-        icon
-        " "
-        count)
-      "")))
+(defn- diagnostic [severity-code color]
+  {:hl {:fg color}
+   :enabled #(> (get-diagnostic-count severity-code) 0)
+   :provider #(.. " " (number-to-glyph (get-diagnostic-count severity-code) " "))})
 
-(def- comp {:file_info {:hl {:style :bold :bg :NONE}
-                        :provider {:name :file_info
-                                   :opts {:type :relative
-                                          :file_readonly_icon " "
-                                          :file_modified_icon :ﱐ}}}
-             :diagnostic {:err {:hl {:fg :red :bg :NONE}
-                                :provider #(diagnostic :ERROR)}
-                          :warn {:hl {:fg :yellow :bg :NONE}
-                                 :provider #(diagnostic :WARN [:ERROR])}
-                          :info {:hl {:fg :blue :bg :NONE}
-                                 :provider #(diagnostic :INFO [:ERROR :WARN])}
-                          :hint {:hl {:fg :fg :bg :NONE}
-                                 :provider #(diagnostic :HINT [:ERROR :WARN :INFO])}}
-             :git {:branch {:provider :git_branch
-                            :hl {:style :bold :bg :NONE}}
-                   :add {:provider :git_diff_added
-                         :hl {:fg :green :bg :NONE}}
-                   :change {:provider :git_diff_changed
-                            :hl {:fg :teal :bg :NONE}}
-                   :remove {:provider :git_diff_removed
-                            :hl {:fg :red :bg :NONE}}}})
+(def- file-info {:provider {:name :file_info
+                            :opts {:type :relative
+                                   :file_readonly_icon " "
+                                   :file_modified_icon :ﱐ}}
+                 :hl {:style :bold}})
 
-(def- components
-  {:active [[comp.git.branch
-             comp.git.add
-             comp.git.change
-             comp.git.remove]
-            []
-            [comp.diagnostic.err
-             comp.diagnostic.warn
-             comp.diagnostic.info
-             comp.diagnostic.hint]]
-   :inactive [[] []]})
+(def- git-branch {:provider :git_branch
+                  :hl {:style :bold}})
+(def- git-add {:provider :git_diff_added
+               :hl {:fg :fg}
+               :icon " +"})
+(def- git-change {:provider :git_diff_changed
+                  :hl {:fg :fg}
+                  :icon " ±"})
+(def- git-remove {:provider :git_diff_removed
+                  :hl {:fg :fg}
+                  :icon " −"})
 
 (defn get-theme []
   (let [colors (catppuccin.get_palette)]
-    (core.merge colors {:fg colors.subtext0
-                        :bg colors.crust})))
+    (vim.tbl_extend :force colors {:fg colors.subtext0
+                                   :bg :NONE})))
 
-(feline.setup {:components components
+(feline.setup {:components {:active [[git-branch
+                                      git-add
+                                      git-change
+                                      git-remove]
+                                     [(diagnostic :ERROR :red)
+                                      (diagnostic :WARN :yellow)
+                                      (diagnostic :INFO :fg)
+                                      (diagnostic :HINT :teal)]]
+                             :inactive [[] []]}
                :theme (get-theme)})
 
-(feline.winbar.setup {:components {:active [[] [comp.file_info]]
-                                   :inactive [[] [comp.file_info]]}
+(feline.winbar.setup {:components {:active [[] [file-info]]
+                                   :inactive [[] [file-info]]}
                       :disable {:filetypes [:packer :fugitive :fugitiveblame :toggleterm]}})

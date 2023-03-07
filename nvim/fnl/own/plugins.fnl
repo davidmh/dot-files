@@ -1,36 +1,4 @@
-(module own.pluginsplugin
-  {autoload {core aniseed.core
-             nvim aniseed.nvim
-             lazy lazy
-             util packer.util}})
-
-(defn- load-module [name]
-  (let [(ok? val-or-err) (pcall require (.. "own.plugin." name))]
-    (when (not ok?)
-      (print (.. "Plugin config error: " val-or-err)))))
-
-(defn- load-plugins [...]
-  (let [pkgs [...]
-        plugins []]
-    (for [i 1 (core.count pkgs) 2]
-      (let [name (. pkgs i)
-            opts (. pkgs (+ i 1))
-            mod (. opts :mod)
-            plugin (core.merge {1 name} opts)]
-        (when mod
-          ; remove the mod key
-          (tset plugin :mod nil)
-          ; replace it with a config call
-          (tset plugin :config #(load-module mod)))
-
-        ; the first param defines the plugin URL, local plugins don't need it
-        (if (. opts :dir)
-          (table.remove plugin 1))
-
-        ; add it to the list of plugins
-        (table.insert plugins plugin)))
-    (lazy.setup plugins {:ui {:border :rounded}
-                         :install {:colorscheme [:catppuccin]}})))
+(module own.plugins {autoload {{: load-plugins} own.lazy}})
 
 (load-plugins
   ;; lazy.nvim should manage itself
@@ -55,6 +23,8 @@
   :hrsh7th/nvim-cmp {:dependencies [:hrsh7th/cmp-nvim-lsp
                                     :hrsh7th/cmp-buffer
                                     :PaterJason/cmp-conjure
+                                    :saadparwaiz1/cmp_luasnip
+                                    :L3MON4D3/LuaSnip
                                     :davidmh/cmp-nerdfonts
                                     :onsails/lspkind-nvim]
                      :mod :completion}
@@ -98,6 +68,7 @@
   :nvim-telescope/telescope.nvim {:dependencies [:nvim-lua/plenary.nvim
                                                  :nvim-lua/popup.nvim
                                                  :molecule-man/telescope-menufacture
+                                                 :aaronhallaert/advanced-git-search.nvim
                                                  :rcarriga/nvim-notify]
                                   :mod :telescope}
   :folke/trouble.nvim {:dependencies [:kyazdani42/nvim-web-devicons]
@@ -114,9 +85,9 @@
   :christoomey/vim-tmux-navigator {}
 
   ;; Status line
-  :feline-nvim/feline.nvim {:dependencies [:kyazdani42/nvim-web-devicons
-                                           :catppuccin/nvim]
-                            :mod :feline}
+  :freddiehaddad/feline.nvim {:dependencies [:kyazdani42/nvim-web-devicons
+                                             :catppuccin/nvim]
+                              :mod :feline}
 
   :rcarriga/nvim-notify {:dependencies [:nvim-telescope/telescope.nvim
                                         :catppuccin/nvim]
@@ -143,6 +114,9 @@
 
   ;; structured search/replace with the power of tree-sitter
   :cshuaimin/ssr.nvim {:mod :ssr}
+
+  :alanfortlink/blackjack.nvim {:config #(let [blackjack (require :blackjack)]
+                                           (blackjack.setup {:card_style :large}))}
 
   ;; Misc Utilities
   :tommcdo/vim-exchange {}

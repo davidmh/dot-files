@@ -90,7 +90,8 @@
 (def- server-configs {:tsserver {:root_dir ts-root
                                  :format {:enable false}}
                       :jsonls {:settings {:json {:schemas (json-schemas.get-all)}}}
-                      :lua_ls {:settings {:Lua {:completion :Replace}}}
+                      :lua_ls {:settings {:Lua {:completion :Replace
+                                                :diagnostics {:globals [:vim]}}}}
                       :solargraph {:root_dir git-root}
                       :eslint {:root_dir eslint-root}
                       :denols {:root_dir deno-root}

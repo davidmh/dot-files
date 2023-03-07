@@ -79,7 +79,6 @@
    :t {:name :toggle
        :b [toggle-blame-line "git blame"]
        :d (cmd "TroubleToggle" :diagnostics)
-       :t (cmd :ToggleTerm :term)
        :z [toggle-zen :zen]}
 
    ; buffers
@@ -118,6 +117,7 @@
                   :i (cmd "Lazy install" :install)
                   :c (cmd "Lazy clean" :clean)
                   :u (cmd "Lazy update" :update)
+                  :p (cmd "Lazy profile" :profile)
                   :s (cmd "Lazy sync" :sync)}
               :t {:name :toggle
                   :m (cmd :MindOpenMain :main)}
