@@ -4,7 +4,10 @@
              config own.config
              feline feline
              git-provider feline.providers.git
-             catppuccin catppuccin.palettes}})
+             catppuccin catppuccin.palettes
+             web-dev-icons nvim-web-devicons}})
+
+(web-dev-icons.set_icon {:fnl {:icon :}})
 
 (def- glyphs [:₀ :₁ :₂ :₃ :₄ :₅ :₆ :₇ :₈ :₉])
 (def- digit-to-glyph #(. glyphs (+ $1 1)))
