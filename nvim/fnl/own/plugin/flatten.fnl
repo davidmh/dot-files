@@ -12,7 +12,8 @@
     (. windows-by-size (table.maxn windows-by-size))))
 
 (fn open-in-largest-window [bufs]
-  (vim.api.nvim_win_set_buf (get-largest-window-id)
-                            (. bufs 1)))
+  (let [window-id (get-largest-window-id)]
+    (vim.api.nvim_win_set_buf window-id (. bufs 1))
+    (vim.api.nvim_set_current_win window-id)))
 
 (flatten.setup {:window {:open open-in-largest-window}})
