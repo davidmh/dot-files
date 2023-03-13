@@ -1,4 +1,5 @@
-(module own.plugins {autoload {{: load-plugins} own.lazy}})
+(module own.plugins {autoload {config own.config
+                               {: load-plugins} own.lazy}})
 
 (load-plugins
   ;; lazy.nvim should manage itself
@@ -72,7 +73,13 @@
                                                  :rcarriga/nvim-notify]
                                   :mod :telescope}
   :folke/trouble.nvim {:dependencies [:kyazdani42/nvim-web-devicons]
-                       :mod :trouble}
+                       :opts {:icons true
+                              :signs {:error config.icons.ERROR
+                                      :warning config.icons.WARN
+                                      :hint config.icons.HINT
+                                      :information config.icons.INFO
+                                      :other "﫠"}
+                              :group false}}
 
   ;; improved quickfix window {}
   :kevinhwang91/nvim-bqf {}
@@ -87,6 +94,7 @@
   ;; Status line
   :freddiehaddad/feline.nvim {:dependencies [:kyazdani42/nvim-web-devicons
                                              :catppuccin/nvim]
+                              :branch :main
                               :mod :feline}
 
   :rcarriga/nvim-notify {:dependencies [:nvim-telescope/telescope.nvim
@@ -112,11 +120,12 @@
   ;; netrwho?
   :stevearc/oil.nvim {:mod :oil}
 
+  :willothy/flatten.nvim {:mod :flatten}
+
   ;; structured search/replace with the power of tree-sitter
   :cshuaimin/ssr.nvim {:mod :ssr}
 
-  :alanfortlink/blackjack.nvim {:config #(let [blackjack (require :blackjack)]
-                                           (blackjack.setup {:card_style :large}))}
+  :alanfortlink/blackjack.nvim {:opts {:card_style :large}}
 
   ;; Misc Utilities
   :tommcdo/vim-exchange {}
