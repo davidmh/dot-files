@@ -5,6 +5,7 @@
              wk which-key
              t telescope.builtin
              telescope telescope
+             toggle-term toggleterm
              gitsigns gitsigns
              scratch own.scratch}})
 
@@ -57,6 +58,12 @@
       vim.log.levels.INFO
       {:title :toggle :timeout 1000})))
 
+(defn term-tab []
+  (toggle-term.toggle_command "direction=tab dir=. size=0" 200))
+
+(defn term-split []
+  (toggle-term.toggle_command "direction=horizontal dir=. size=0" 100))
+
 ; normal mode mappings
 (wk.register
   {:f [telescope-file-browser "file browser"]
@@ -79,7 +86,10 @@
    :t {:name :toggle
        :b [toggle-blame-line "git blame"]
        :d (cmd "TroubleToggle" :diagnostics)
-       :z [toggle-zen :zen]}
+       :z [toggle-zen :zen]
+       :t {:name :terminal
+           :s [term-split :split]
+           :t [term-tab :tab]}}
 
    ; buffers
    :b {:name :buffer
@@ -137,6 +147,11 @@
               "[d" (cmd "lua vim.diagnostic.goto_prev()" "next diagnostic")
               "]d" (cmd "lua vim.diagnostic.goto_next()" "prev diagnostic")})
 
+(wk.register {:<C-t> [term-split :split]
+              :<M-t> [term-tab :tab]}
+             {:mode [:n :t]
+              :nowait true})
+
 ; On-demand OS clipboard sharing
 ;
 ; Creates a map of handful of actions to share with
@@ -154,12 +169,9 @@
 (defn- os-clipboard-cmd [action name direction]
   [(.. "\"+" action) (.. name " " direction " the OS clipboard")])
 
-(do
-  (let [os-mappings {}]
-    (each [action data (pairs shared-actions)]
-      (let [Action (string.upper action)]
-        (tset os-mappings action (os-clipboard-cmd action data.name data.dir))
-        (tset os-mappings Action (os-clipboard-cmd Action (string.upper data.name) data.dir))))
-
-    (wk.register os-mappings {:prefix :<leader> :mode :n})
-    (wk.register os-mappings {:prefix :<leader> :mode :v})))
+(let [os-mappings {}]
+   (each [action data (pairs shared-actions)]
+     (let [Action (string.upper action)]
+       (tset os-mappings action (os-clipboard-cmd action data.name data.dir))
+       (tset os-mappings Action (os-clipboard-cmd Action (string.upper data.name) data.dir))))
+   (wk.register os-mappings {:prefix :<leader> :mode [:n :v]}))
