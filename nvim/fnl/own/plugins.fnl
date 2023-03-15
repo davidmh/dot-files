@@ -7,6 +7,10 @@
 
   :Olical/aniseed {:dependencies [:Olical/conjure]}
 
+  :folke/neodev.nvim {:dependencies [:olimorris/neotest-rspec]
+                      :opts {:library {:plugins [:neotest]
+                                       :types true}}}
+
   ;; LSP
   :williamboman/mason.nvim {:dependencies [:neovim/nvim-lspconfig
                                            :williamboman/mason-lspconfig.nvim
@@ -29,6 +33,13 @@
                                     :davidmh/cmp-nerdfonts
                                     :onsails/lspkind-nvim]
                      :mod :completion}
+
+  ;; Tests
+  :nvim-neotest/neotest {:dependencies [:nvim-lua/plenary.nvim
+                                        :nvim-treesitter/nvim-treesitter
+                                        :antoinemadec/FixCursorHold.nvim
+                                        :olimorris/neotest-rspec]
+                         :mod :testing}
 
   :remix.nvim {:dir :$REMIX_HOME/.nvim
                :name :remix

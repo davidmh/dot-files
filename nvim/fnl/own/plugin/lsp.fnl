@@ -2,7 +2,6 @@
   {autoload {nvim aniseed.nvim
              core aniseed.core
              util lspconfig.util
-             neodev neodev
              cmp-lsp cmp_nvim_lsp
              json-schemas own.json-schemas
              lspconfig lspconfig
@@ -12,7 +11,6 @@
              wk which-key
              fidget fidget}})
 
-(neodev.setup)
 (kind.init)
 (fidget.setup {:text {:spinner :dots}})
 (mason.setup {:ui {:border :rounded}})

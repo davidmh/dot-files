@@ -129,8 +129,6 @@
                   :u (cmd "Lazy update" :update)
                   :p (cmd "Lazy profile" :profile)
                   :s (cmd "Lazy sync" :sync)}
-              :t {:name :toggle
-                  :m (cmd :MindOpenMain :main)}
               :n {:name :notifications
                   :o ["<cmd>Telescope notify<cr>" :open]}}
              {:prefix :<localleader>})
