@@ -1,9 +1,13 @@
 (module own.plugin.testing
   {autoload {neotest neotest
              neotest-rspec neotest-rspec
+             neotest-plenary neotest-plenary
+             neotest-jest neotest-jest
              wk which-key}})
 
-(neotest.setup {:adapters [(neotest-rspec {:rspec_cmd [:bundle :exec :rspec]})]
+(neotest.setup {:adapters [(neotest-rspec {:rspec_cmd [:bundle :exec :rspec]})
+                           neotest-plenary
+                           neotest-jest]
                 :discovery {:enabled false}
                 :icons {:failed :
                         :passed :}
@@ -17,6 +21,7 @@
 (wk.register {:t {:name :test
                   :f [#(neotest.run.run (vim.fn.expand :%)) :file]
                   :l [#(neotest.run.run) :line]
-                  :s [#(neotest.run.stop) :stop]
-                  :t [#(neotest.summary.toggle) :open]}}
+                  :c [#(neotest.run.stop) :cancel]
+                  :s [#(neotest.summary.toggle) :summary]
+                  :o [#(neotest.output_panel.toggle) :output]}}
              {:prefix :<localleader>})

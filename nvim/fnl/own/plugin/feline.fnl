@@ -74,12 +74,13 @@
       ; (status counts :total :)
       " "))
 
+(defn- starts-with [prefix str]
+  (= prefix (string.sub str 1 (string.len prefix))))
+
 (defn- get-adapter-id []
   (-?>> (neotest.state.adapter_ids)
-        (lists.find #(let [parts (str.split $1 ::)
-                           adapter-path (. parts 2)
-                           file-path (vim.fn.expand :%:p)]
-                         (string.find file-path adapter-path)))))
+        (lists.find #(starts-with (-> $1 (str.split ::) (. 2))
+                                  (vim.fn.expand :%:p)))))
 
 (defn- neotest-provider []
   (let [adapter (get-adapter-id)
