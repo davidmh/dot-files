@@ -4,16 +4,26 @@
              u null-ls.utils
              config own.config}})
 
-(local {: formatting : diagnostics} null-ls.builtins)
-
 (def- git-root (u.root_pattern :.git))
-
-(defn- project-root [{: bufname}]
-  (git-root (vim.fn.expand bufname)))
 
 (defn- python-cwd [{: bufname}]
   (let [python-root (u.root_pattern :venv/)]
     (python-root (vim.fn.expand bufname))))
+
+(defn- cspell-cwd [{: bufname}]
+  (let [cspell-root (u.root_pattern :cspell.json)]
+    (cspell-root (vim.fn.expand bufname))))
+
+(def- cspell-filetypes [:css
+                        :gitcommit
+                        :html
+                        :javascript
+                        :less
+                        :markdown
+                        :python
+                        :ruby
+                        :typescript
+                        :typescriptreact])
 
 (vim.fn.sign_define :DiagnosticSignError
                     {:text :● :texthl :DiagnosticSignError})
@@ -38,22 +48,23 @@
                         :float {:header ""
                                 :border :single
                                 :format diagnostic-format}})
+(def- {: formatting
+       : diagnostics
+       : code_actions} null-ls.builtins)
 
 (null-ls.setup
-  {:sources [formatting.jq
-             diagnostics.shellcheck
+  {:sources [diagnostics.shellcheck
              diagnostics.pycodestyle
              diagnostics.pydocstyle
-             (diagnostics.pylint.with {:cwd python-cwd})
-             (formatting.rubocop.with {:cwd project-root})
-             (diagnostics.rubocop.with {:cwd project-root
-                                        :command :bundle
-                                        :args [:exec :rubocop :-f :json :--stdin :$FILENAME]})]})
+             diagnostics.rubocop
+             (diagnostics.pylint.with  {:cwd python-cwd})
+             (diagnostics.cspell.with {:cwd cspell-root
+                                       :filetypes cspell-filetypes})
 
-(nvim.create_augroup :own-diagnostics {:clear true})
+             code_actions.shellcheck
+             (code_actions.cspell.with {:cwd cspell-root
+                                        :filetypes cspell-filetypes})
 
-(nvim.create_autocmd [:BufRead :BufNewFile]
-                     {:group :own-diagnostics
-                      :pattern :*_spec.lua
-                      :callback (fn []
-                                  (vim.keymap.set :n :<localleader>t :<Plug>PlenaryTestFile {:buffer 0}))})
+             formatting.jq
+             formatting.rubocop]})
+
