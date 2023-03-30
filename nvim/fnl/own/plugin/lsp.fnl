@@ -12,14 +12,17 @@
              fidget fidget}})
 
 (kind.init)
-(fidget.setup {:text {:spinner :dots}})
+(fidget.setup {:text {:spinner :dots
+                      :done :}
+               :window {:blend 0
+                        :border :rounded}})
 (mason.setup {:ui {:border :rounded}})
 (mason-lspconfig.setup {:ensure_installed [:clojure_lsp
                                            :cssls
                                            :jsonls
                                            :solargraph
                                            :lua_ls
-                                           :tsserver
+                                           :vtsls
                                            :eslint
                                            :denols
                                            :vimls]
@@ -85,8 +88,7 @@
                      :init_options {:preferences {:includeCompletionsWithSnippetText true
                                                   :includeCompletionsForImportStatements true}}})
 
-(def- server-configs {:tsserver {:root_dir ts-root
-                                 :format {:enable false}}
+(def- server-configs {:vtsls {:root_dir ts-root}
                       :jsonls {:settings {:json {:schemas (json-schemas.get-all)}}}
                       :lua_ls {:settings {:Lua {:completion :Replace
                                                 :diagnostics {:globals [:vim]}}}}
@@ -95,7 +97,7 @@
                       :denols {:root_dir deno-root}
                       :cssls {:root_dir git-root}
                       :shellcheck {:root_dir git-root}
-                      :grammarly-languageserver {:languages [:mardown :org :txt :gitcommit]}})
+                      :grammarly {:filetypes [:markdown :org :txt :gitcommit]}})
 
 (each [_ server-name (ipairs (mason-lspconfig.get_installed_servers))]
   (let [server-setup (core.get-in lspconfig [server-name :setup])]
