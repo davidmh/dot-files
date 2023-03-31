@@ -58,11 +58,12 @@
              diagnostics.pydocstyle
              diagnostics.rubocop
              (diagnostics.pylint.with  {:cwd python-cwd})
-             (diagnostics.cspell.with {:cwd cspell-root
-                                       :filetypes cspell-filetypes})
+             (diagnostics.cspell.with {:cwd cspell-cwd
+                                       :filetypes cspell-filetypes
+                                       :diagnostics_postprocess #(tset $1 :severity vim.diagnostic.severity.W)})
 
              code_actions.shellcheck
-             (code_actions.cspell.with {:cwd cspell-root
+             (code_actions.cspell.with {:cwd cspell-cwd
                                         :filetypes cspell-filetypes})
 
              formatting.jq
