@@ -4,7 +4,9 @@
              u null-ls.utils
              config own.config}})
 
-(def- git-root (u.root_pattern :.git))
+(def- formatting null-ls.builtins.formatting)
+(def- diagnostics null-ls.builtins.diagnostics)
+(def- code_actions null-ls.builtins.code_actions)
 
 (defn- python-cwd [{: bufname}]
   (let [python-root (u.root_pattern :venv/)]
@@ -48,9 +50,6 @@
                         :float {:header ""
                                 :border :single
                                 :format diagnostic-format}})
-(def- {: formatting
-       : diagnostics
-       : code_actions} null-ls.builtins)
 
 (null-ls.setup
   {:sources [diagnostics.shellcheck
@@ -59,6 +58,7 @@
              diagnostics.rubocop
              (diagnostics.pylint.with  {:cwd python-cwd})
              (diagnostics.cspell.with {:cwd cspell-cwd
+                                       :command :./node_modules/.bin/cspell
                                        :filetypes cspell-filetypes
                                        :diagnostics_postprocess #(tset $1 :severity vim.diagnostic.severity.W)})
 
