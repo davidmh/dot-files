@@ -24,6 +24,7 @@ in
     cargo
     clojure
     fd
+    (nerdfonts.override { fonts = [ "Hasklig" ]; })
     fx
     gh
     htop

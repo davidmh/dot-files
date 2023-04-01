@@ -8,15 +8,22 @@
 
 (set nvim.o.completeopt "menuone,noselect,preview")
 
-(def- menu-sources {:path      "[path]"
-                    :luasnip   "[snippet]"
-                    :nvim_lsp  "[lsp]"
-                    :conjure   "[conjure]"
-                    :emoji     "[emoji]"
-                    :nerdfonts "[nerd fonts]"
-                    :buffer    "[buffer]"
-                    :nvim_lua  "[lua]"
-                    :omni      "[omni]"})
+(def- menu-sources {:path      "(path)"
+                    :luasnip   "(snip)"
+                    :nvim_lsp  "(lsp)"
+                    :conjure   "(conj)"
+                    :nerdfonts "(font)"
+                    :buffer    "(buff)"
+                    :nvim_lua  "(lua)"
+                    :omni      "(omni)"})
+
+(defn- cmp-format [entry vim-item]
+  (let [kind-fmt (lspkind.cmp_format {:mode :symbol
+                                      :menu menu-sources
+                                      :maxwidth 30})
+        kind-item (kind-fmt entry vim-item)]
+    (tset kind-item :kind (.. " " kind-item.kind " "))
+    kind-item))
 
 (def- cmd-mappings {:<C-d> (cmp.mapping.scroll_docs -4)
                     :<C-f> (cmp.mapping.scroll_docs 4)
@@ -26,24 +33,24 @@
                                                  :select true})})
 
 (cmp.setup {:mapping (cmp.mapping.preset.insert cmd-mappings)
-            :sources (cmp.config.sources [{:name :nvim_lsp}
-                                          {:name :luasnip}
-                                          {:name :emoji :insert true}
+            :sources (cmp.config.sources [{:name :luasnip}
+                                          {:name :nvim_lsp}
+                                          {:name :orgmode}
                                           {:name :nerdfonts}
                                           {:name :conjure}
                                           {:name :buffer :keyword_length 5}])
-            :formatting {:format (lspkind.cmp_format {:with_text false
-                                                      :menu menu-sources})}
-            :snippet {:expand (fn [args] (ls.lsp_expand args.body))}})
+            :formatting {:fields [:kind :abbr :menu]
+                         :format cmp-format}
+            :snippet {:expand (fn [args] (ls.lsp_expand args.body))}
+            :window {:completion {:winhighlight "Normal:Pmenu,FloatBorder:Pmenu,Search:None"
+                                  :col_offset -3
+                                  :side_padding 0}}})
 
 (cmp.setup.cmdline {:mapping (cmp.mapping.preset.cmdline cmd-mappings)})
-(cmp.setup.filetype :gitcommit {:sources (cmp.config.sources [{:name :emoji
-                                                               :insert true}])})
 
 (ls.config.setup {:history true
                   :update_events "TextChanged,TextChangedI"
-                  :enable_autosnippets true
-                  :ext_opts {ls-types.choiceNode {:active {:virt_text ["<-" "Error"]}}}})
+                  :enable_autosnippets true})
 
 (vim.keymap.set [:i :s]
                 :<c-k>

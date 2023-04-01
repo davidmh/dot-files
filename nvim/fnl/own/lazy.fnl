@@ -27,5 +27,4 @@
 
         ; add it to the list of plugins
         (table.insert plugins plugin)))
-    (lazy.setup plugins {:ui {:border :rounded}
-                         :install {:colorscheme [:catppuccin]}})))
+    (lazy.setup plugins {:install {:colorscheme [:catppuccin]}})))

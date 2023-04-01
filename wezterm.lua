@@ -1,7 +1,7 @@
 local wezterm = require('wezterm')
 
 return {
-  font = wezterm.font('Dank Mono'),
+  font = wezterm.font('Hasklug Nerd Font'),
   font_size = 14.0,
   color_scheme = 'Catppuccin Macchiato',
   hide_tab_bar_if_only_one_tab = true,

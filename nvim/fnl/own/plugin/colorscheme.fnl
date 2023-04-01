@@ -2,41 +2,71 @@
   {autoload {catppuccin catppuccin
              palette catppuccin.palettes}})
 
+(def- color (palette.get_palette))
+
+(defn- custom-highlights []
+  {:Comment {:style [:italic :bold]}
+   :Pmenu {:bg color.crust}
+   :TelescopeBorder {:fg color.crust :bg color.crust}
+   :TelescopePromptBorder {:fg color.crust :bg color.crust}
+   :TelescopePromptNormal {:bg color.crust}
+   :TelescopePromptPrefix {:fg color.blue :bg color.crust}
+   :TelescopeNormal {:bg color.crust}
+   :TelescopePreviewTitle {:fg color.crust :bg color.crust}
+   :TelescopePromptTitle {:fg color.crust :bg color.blue}
+   :TelescopeResultsNormal { :bg color.mantle}
+   :TelescopeResultsBorder {:fg color.mantle :bg color.mantle}
+   :TelescopeSelection {:bg color.crust :fg color.blue}
+   :TelescopeSelectionCaret  {:fg color.blue}
+   :TelescopeResultsDiffAdd {:fg color.green}
+   :TelescopeResultsDiffChange {:fg color.yellow}
+   :TelescopeResultsDiffDelete {:fg color.red}
+
+   :NotifyINFOBody {:bg color.mantle}
+   :NotifyWARNBody {:bg color.mantle}
+   :NotifyERRORBody {:bg color.mantle}
+   :NotifyDEBUGBody {:bg color.mantle}
+   :NotifyTRACEBody {:bg color.mantle}
+
+   :NotifyINFOBorder  {:fg color.mantle :bg color.mantle}
+   :NotifyWARNBorder  {:fg color.mantle :bg color.mantle}
+   :NotifyERRORBorder {:fg color.mantle :bg color.mantle}
+   :NotifyDEBUGBorder {:fg color.mantle :bg color.mantle}
+   :NotifyTRACEBorder {:fg color.mantle :bg color.mantle}
+
+   :CmpItemKindSnippet {:fg color.crust :bg color.mauve}
+   :CmpItemKindKeyword {:fg color.crust :bg color.red}
+   :CmpItemKindText {:fg color.crust :bg color.teal}
+   :CmpItemKindMethod {:fg color.crust :bg color.blue}
+   :CmpItemKindConstructor {:fg color.crust :bg color.blue}
+   :CmpItemKindFunction {:fg color.crust :bg color.blue}
+   :CmpItemKindFolder {:fg color.crust :bg color.blue}
+   :CmpItemKindModule {:fg color.crust :bg color.blue}
+   :CmpItemKindConstant {:fg color.crust :bg color.peach}
+   :CmpItemKindField {:fg color.crust :bg color.green}
+   :CmpItemKindProperty {:fg color.crust :bg color.green}
+   :CmpItemKindEnum {:fg color.crust :bg color.green}
+   :CmpItemKindUnit {:fg color.crust :bg color.green}
+   :CmpItemKindClass {:fg color.crust :bg color.yellow}
+   :CmpItemKindVariable {:fg color.crust :bg color.flamingo}
+   :CmpItemKindFile {:fg color.crust :bg color.blue}
+   :CmpItemKindInterface {:fg color.crust :bg color.yellow}
+   :CmpItemKindColor {:fg color.crust :bg color.red}
+   :CmpItemKindReference {:fg color.crust :bg color.red}
+   :CmpItemKindEnumMember {:fg color.crust :bg color.red}
+   :CmpItemKindStruct {:fg color.crust :bg color.blue}
+   :CmpItemKindValue {:fg color.crust :bg color.peach}
+   :CmpItemKindEvent {:fg color.crust :bg color.blue}
+   :CmpItemKindOperator {:fg color.crust :bg color.blue}
+   :CmpItemKindTypeParameter {:fg color.crust :bg color.blue}
+   :CmpItemKindCopilot {:fg color.crust :bg color.teal}})
+
 (catppuccin.setup {:flavour :macchiato
                    :transparent_background false
                    :term_colors true
                    :integrations {:lsp_trouble true
                                   :telescope true
-                                  :which_key true}})
+                                  :which_key true}
+                   :custom_highlights custom-highlights})
 
 (vim.cmd.colorscheme :catppuccin)
-
-(let [set-hl #(vim.api.nvim_set_hl 0 $1 $2)
-      color (palette.get_palette)
-      accent color.blue]
-  (set-hl :TelescopeBorder {:fg color.crust :bg color.crust})
-  (set-hl :TelescopePromptBorder {:fg color.crust :bg color.crust})
-  (set-hl :TelescopePromptNormal {:bg color.crust})
-  (set-hl :TelescopePromptPrefix {:fg accent :bg color.crust})
-  (set-hl :TelescopeNormal {:bg color.crust})
-  (set-hl :TelescopePreviewTitle {:fg color.crust :bg color.crust})
-  (set-hl :TelescopePromptTitle {:fg color.crust :bg accent})
-  (set-hl :TelescopeResultsNormal { :bg color.mantle})
-  (set-hl :TelescopeResultsBorder {:fg color.mantle :bg color.mantle})
-  (set-hl :TelescopeSelection {:bg color.crust :fg accent})
-  (set-hl :TelescopeSelectionCaret  {:fg accent})
-  (set-hl :TelescopeResultsDiffAdd {:fg color.green})
-  (set-hl :TelescopeResultsDiffChange {:fg color.yellow})
-  (set-hl :TelescopeResultsDiffDelete {:fg color.red})
-
-  (set-hl :NotifyINFOBody {:bg color.mantle})
-  (set-hl :NotifyWARNBody {:bg color.mantle})
-  (set-hl :NotifyERRORBody {:bg color.mantle})
-  (set-hl :NotifyDEBUGBody {:bg color.mantle})
-  (set-hl :NotifyTRACEBody {:bg color.mantle})
-
-  (set-hl :NotifyINFOBorder  {:fg color.mantle :bg color.mantle})
-  (set-hl :NotifyWARNBorder  {:fg color.mantle :bg color.mantle})
-  (set-hl :NotifyERRORBorder {:fg color.mantle :bg color.mantle})
-  (set-hl :NotifyDEBUGBorder {:fg color.mantle :bg color.mantle})
-  (set-hl :NotifyTRACEBorder {:fg color.mantle :bg color.mantle}))

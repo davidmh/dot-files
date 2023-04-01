@@ -16,7 +16,7 @@
                       :done :}
                :window {:blend 0
                         :border :rounded}})
-(mason.setup {:ui {:border :rounded}})
+(mason.setup)
 (mason-lspconfig.setup {:ensure_installed [:clojure_lsp
                                            :cssls
                                            :jsonls

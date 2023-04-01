@@ -5,14 +5,12 @@
              config own.config
              feline feline
              git-provider feline.providers.git
-             catppuccin catppuccin.palettes
              neotest neotest
              utils null-ls.utils
              web-dev-icons nvim-web-devicons}})
 
 (web-dev-icons.set_icon {:fnl {:icon :}})
 
-(def- git-root (utils.root_pattern :.git))
 (def- subscript [:₀ :₁ :₂ :₃ :₄ :₅ :₆ :₇ :₈ :₉])
 (def- digit-to-sub #(. subscript (+ $1 1)))
 
@@ -96,11 +94,6 @@
                       :enabled #(-> (get-adapter-id)
                                     (~= nil))})
 
-(defn get-theme []
-  (let [colors (catppuccin.get_palette)]
-    (vim.tbl_extend :force colors {:fg colors.subtext0
-                                   :bg :NONE})))
-
 (feline.setup {:components {:active [[venv
                                       git-branch
                                       git-add
@@ -110,9 +103,10 @@
                                      [(diagnostic :ERROR :red)
                                       (diagnostic :WARN :yellow)
                                       (diagnostic :INFO :fg)
-                                      (diagnostic :HINT :teal)]]
+                                      (diagnostic :HINT :green)]]
                              :inactive [[] []]}
-               :theme (get-theme)})
+               :theme {:fg :#ffffff
+                       :bg :NONE}})
 
 (feline.winbar.setup {:components {:active [[] [file-info]]
                                    :inactive [[] [file-info]]}
