@@ -7,7 +7,7 @@
 
   :Olical/aniseed {:dependencies [:Olical/conjure]}
 
-  :folke/neodev.nvim {:dependencies [:olimorris/neotest-rspec]
+  :folke/neodev.nvim {:dependencies [:nvim-neotest/neotest]
                       :opts {:library {:plugins [:neotest]
                                        :types true}}}
 
@@ -37,7 +37,6 @@
   ;; Tests
   :nvim-neotest/neotest {:dependencies [:nvim-lua/plenary.nvim
                                         :nvim-treesitter/nvim-treesitter
-                                        :antoinemadec/FixCursorHold.nvim
                                         :olimorris/neotest-rspec]
                          :mod :testing}
 
@@ -113,7 +112,9 @@
                          :mod :notify}
 
   ;; Improve vim.ui.input and vim.ui.select
-  :stevearc/dressing.nvim {:mod :dressing}
+  :stevearc/dressing.nvim {:opts {:select {:backend :telescope}
+                                  :telescope {:layout_config {:width #(math.min $2 80)
+                                                              :height #(math.min $2 15)}}}}
 
   :chomosuke/term-edit.nvim {:ft :toggleterm
                              :version :1.*}
@@ -130,13 +131,12 @@
 
   ;; netrwho?
   :stevearc/oil.nvim {:mod :oil}
+  :chrishrb/gx.nvim {:event [:BufEnter]
+                     :config true}
 
-  :willothy/flatten.nvim {:mod :flatten}
-
-  ;; structured search/replace with the power of tree-sitter
-  :cshuaimin/ssr.nvim {:mod :ssr}
-
-  :alanfortlink/blackjack.nvim {:opts {:card_style :large}}
+  ;; open files from a terminal buffer in the current instance
+  :davidmh/flatten.nvim {:mod :flatten
+                         :branch :prioritize-guest-cwd}
 
   ;; Misc Utilities
   :tommcdo/vim-exchange {}
