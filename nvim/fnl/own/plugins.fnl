@@ -71,9 +71,16 @@
   :yasuhiroki/circleci.vim {}
   :aklt/plantuml-syntax {}
   :nvim-treesitter/playground {:cmd :TSPlaygroundToggle}
-  :nvim-treesitter/nvim-treesitter {:dependencies [:nvim-treesitter/playground]
+  :nvim-treesitter/nvim-treesitter {:dependencies [:nvim-treesitter/playground
+                                                   :nvim-treesitter/nvim-treesitter-context]
                                     :build ::TSUpdate
                                     :mod :tree-sitter}
+  :nvim-treesitter/nvim-treesitter-context {:mod :context}
+
+  ;; Icons
+  :kyazdani42/nvim-web-devicons {:opts {:override {:scm {:color :#A6E3A1
+                                                         :icon :ﬦ
+                                                         :name :Scheme}}}}
 
   ;; Lists
   :nvim-telescope/telescope.nvim {:dependencies [:nvim-lua/plenary.nvim

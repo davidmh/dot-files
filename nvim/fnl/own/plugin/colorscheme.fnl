@@ -7,6 +7,10 @@
 (defn- custom-highlights []
   {:Comment {:style [:italic :bold]}
    :Pmenu {:bg color.crust}
+   :WinSeparator {:fg color.overlay0 :bg :none}
+
+   :TreesitterContext {:link :Normal}
+
    :TelescopeBorder {:fg color.crust :bg color.crust}
    :TelescopePromptBorder {:fg color.crust :bg color.crust}
    :TelescopePromptNormal {:bg color.crust}
