@@ -142,9 +142,7 @@
                      :config true}
 
   ;; open files from a terminal buffer in the current instance
-  ; :willothy/flatten.nvim {:mod :flatten}
-  :davidmh/flatten.nvim {:branch :read-cli-options
-                         :mod :flatten}
+  :willothy/flatten.nvim {:mod :flatten}
 
   ;; Misc Utilities
   :tommcdo/vim-exchange {}

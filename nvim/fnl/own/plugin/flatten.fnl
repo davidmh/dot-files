@@ -22,9 +22,12 @@
   (vim.cmd (.. "tabedit " (nvim.buf_get_name (. bufs 1))))
   (vim.cmd (.. "botright vertical diffsplit " (nvim.buf_get_name (. bufs 2)))))
 
+(def- diff-mode #(vim.tbl_contains (or $1 []) :-d))
+
 (defn- router [bufs argv]
-  (if (vim.tbl_contains argv :-d)
+  (if (diff-mode argv)
     (open-diff-in-tab bufs)
     (open-in-largest-window bufs)))
 
-(flatten.setup {:window {:open router}})
+(flatten.setup {:window {:open router}
+                :callbacks {:should_block diff-mode}})
