@@ -1,7 +1,7 @@
 (module own.json-schemas
   {autoload {nvim aniseed.nvim
-             core aniseed.core
-             Job plenary.job}})
+             core aniseed.core}
+   require {Job plenary.job}})
 
 (def- local-catalog-path
   (.. (vim.fn.stdpath :data) "/json-schema-catalog.json"))
@@ -41,4 +41,4 @@
   ; delete the existing catalog
   (vim.fn.system (.. "rm -f " local-catalog-path))
   ; fetch the catalog again
-  (: (download-catalog) :start))
+  (: (download-catalog) :sync))

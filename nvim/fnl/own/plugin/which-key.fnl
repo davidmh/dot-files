@@ -29,7 +29,7 @@
                 :grep_open_files true}))
 
 (defn- telescope-file-browser [path]
-  (telescope.extensions.menufacture.find_files {:depth 4 :cwd path}))
+  (t.find_files {:depth 4 :cwd path}))
 
 (defn- browse-plugins []
   (telescope-file-browser (.. (vim.fn.stdpath :data) "/lazy")))
@@ -38,31 +38,16 @@
   (let [font (str.split nvim.o.guifont ::h)]
    (set nvim.o.guifont (.. (core.first font) ::h (func (core.last font))))))
 
-(defn- toggle-zen []
-  (if (core.empty? nvim.o.winbar)
-    (do
-      (gitsigns.toggle_current_line_blame true)
-      (set nvim.o.cmdheight 1)
-      (set nvim.o.laststatus 3)
-      (set nvim.o.winbar "%{%v:lua.require'feline'.generate_winbar()%}"))
-    (do
-      (gitsigns.toggle_current_line_blame false)
-      (set nvim.o.cmdheight 0)
-      (set nvim.o.laststatus 0)
-      (set nvim.o.winbar ""))))
-
-(fn toggle-blame-line []
+(defn- toggle-blame-line []
   (let [enabled? (gitsigns.toggle_current_line_blame)]
     (vim.notify
       (.. "Git blame line " (if enabled? :on :off))
       vim.log.levels.INFO
       {:title :toggle :timeout 1000})))
 
-(defn term-tab []
-  (toggle-term.toggle_command "direction=tab dir=. size=0" 200))
-
-(defn term-split []
-  (toggle-term.toggle_command "direction=horizontal dir=. size=0" 100))
+(defn- toggle-context []
+  (-> (require :treesitter-context)
+    (: :toggle)))
 
 ; normal mode mappings
 (wk.register
@@ -72,8 +57,8 @@
    :<leader> (cmd "Telescope find_files hidden=true no_ignore=false" "find files")
    :/ {:name :search
        :b [grep-buffer-content "in open buffers"]
-       :p [telescope.extensions.menufacture.live_grep "in project"]
-       :w [telescope.extensions.menufacture.grep_string "word under cursor"]}
+       :p [t.live_grep "in project"]
+       :w [t.grep_string "word under cursor"]}
 
    :s {:name :scratch
        :o [scratch.show :open]
@@ -85,11 +70,8 @@
 
    :t {:name :toggle
        :b [toggle-blame-line "git blame"]
-       :d (cmd "TroubleToggle" :diagnostics)
-       :z [toggle-zen :zen]
-       :t {:name :terminal
-           :s [term-split :split]
-           :t [term-tab :tab]}}
+       :d (cmd "TroubleToggle document_diagnostics" :diagnostics)
+       :c [toggle-context :context]}
 
    ; buffers
    :b {:name :buffer
@@ -144,11 +126,6 @@
               ;; diagnostics
               "[d" (cmd "lua vim.diagnostic.goto_prev()" "next diagnostic")
               "]d" (cmd "lua vim.diagnostic.goto_next()" "prev diagnostic")})
-
-(wk.register {:<C-t> [term-split :split]
-              :<M-t> [term-tab :tab]}
-             {:mode [:n :t]
-              :nowait true})
 
 ; On-demand OS clipboard sharing
 ;

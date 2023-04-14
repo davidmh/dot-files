@@ -11,7 +11,7 @@ return {
     {
       key = 'n',
       mods = 'SHIFT|CTRL',
-      action = 'ToggleFullScreen'
+      action = 'ToggleFullScreen',
     },
     {
       key = ' ',

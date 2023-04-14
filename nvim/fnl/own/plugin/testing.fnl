@@ -6,8 +6,7 @@
              wk which-key}})
 
 (neotest.setup {:adapters [(neotest-rspec {:rspec_cmd [:bundle :exec :rspec]})
-                           neotest-plenary
-                           neotest-jest]
+                           neotest-plenary]
                 :discovery {:enabled false}
                 :icons {:failed :
                         :passed :}
@@ -19,6 +18,7 @@
                            :open false}})
 
 (wk.register {:t {:name :test
+                  :a [#(neotest.run.attach) :attach]
                   :f [#(neotest.run.run (vim.fn.expand :%)) :file]
                   :l [#(neotest.run.run) :line]
                   :c [#(neotest.run.stop) :cancel]

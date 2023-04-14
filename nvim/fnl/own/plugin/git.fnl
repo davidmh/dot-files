@@ -1,14 +1,10 @@
 (module own.plugin.git
   {autoload {actions telescope.actions
              builtin telescope.builtin
-             config telescope.config
              core aniseed.core
              diff-view diffview
-             finders telescope.finders
              git-signs gitsigns
-             make-entry telescope.make_entry
              nvim aniseed.nvim
-             pickers telescope.pickers
              previewers telescope.previewers
              putils telescope.previewers.utils
              state telescope.actions.state

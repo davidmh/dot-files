@@ -11,6 +11,7 @@
 
 (web-dev-icons.set_icon {:fnl {:icon :}})
 
+(def- git-root (utils.root_pattern :.git))
 (def- subscript [:₀ :₁ :₂ :₃ :₄ :₅ :₆ :₇ :₈ :₉])
 (def- digit-to-sub #(. subscript (+ $1 1)))
 
@@ -50,9 +51,10 @@
                   :hl {:fg :fg}
                   :icon " −"})
 
-(def- venv {:provider #(let [root (.. (git-root vim.env.VIRTUAL_ENV) :/)
-                             workspace (. (str.split vim.env.VIRTUAL_ENV root) 2)]
-                         (.. "(" workspace ") "))
+(def- venv {:provider #(let [workspace (-> vim.env.VIRTUAL_ENV
+                                           (str.split :/)
+                                           (core.last))]
+                         (.. "(" workspace ")"))
             :enabled #(not (core.empty? vim.env.VIRTUAL_ENV))})
 
 (defn- status [obj name icon]

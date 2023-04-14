@@ -11,7 +11,9 @@
                      :*-test.tsx
                      :*.test.ts
                      :*.test.tsx
-                     :*_spec.rb])
+                     :*_spec.rb
+                     :*.approved.json
+                     :*.received.json])
 
 (augroup :auto-context
   [:BufEnter {:pattern test-patterns

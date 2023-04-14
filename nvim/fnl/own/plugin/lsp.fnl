@@ -84,14 +84,25 @@
 (def- ts-root (util.root_pattern :package.json))
 (def- deno-root (util.root_pattern :deno.json :deno.jsonc))
 
-(def- base-settings {:capabilities (cmp-lsp.default_capabilities (vim.lsp.protocol.make_client_capabilities))
+(def- client-capabilities (->> (vim.lsp.protocol.make_client_capabilities)
+                               ; :kevinhwang91/nvim-ufo
+                               (vim.tbl_deep_extend :keep {:textDocument {:foldingRange {:dynamicRegistration false
+                                                                                         :lineFoldingOnly true}}})))
+
+(def- base-settings {:capabilities (cmp-lsp.default_capabilities client-capabilities)
                      :init_options {:preferences {:includeCompletionsWithSnippetText true
                                                   :includeCompletionsForImportStatements true}}})
 
 (def- server-configs {:vtsls {:root_dir ts-root}
                       :jsonls {:settings {:json {:schemas (json-schemas.get-all)}}}
                       :lua_ls {:settings {:Lua {:completion :Replace
-                                                :diagnostics {:globals [:vim]}}}}
+                                                :diagnostics {:globals [:vim
+                                                                        :it
+                                                                        :describe
+                                                                        :before_each
+                                                                        :after_each
+                                                                        :pending]}
+                                                :workspace {:checkThirdParty false}}}}
                       :solargraph {:root_dir git-root}
                       :eslint {:root_dir eslint-root}
                       :denols {:root_dir deno-root}

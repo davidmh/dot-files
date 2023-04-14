@@ -2,7 +2,7 @@
   {autoload {cmp cmp
              nvim aniseed.nvim}})
 
-(set nvim.g.dbs {:remix_development "postgres://postgres@localhost:5432/remix_development"})
+(set nvim.g.dbs {:remix_development "postgres:remix_development"})
 
 (defn- dadbod-setup []
   (set vim.bo.omnifunc :vim_dadbod_completion#omni)

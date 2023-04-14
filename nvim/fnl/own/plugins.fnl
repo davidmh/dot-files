@@ -17,12 +17,17 @@
                                            :folke/neodev.nvim
                                            :onsails/lspkind-nvim
                                            :hrsh7th/cmp-nvim-lsp
-                                           :j-hui/fidget.nvim]
+                                           :j-hui/fidget.nvim
+                                           :kevinhwang91/nvim-ufo]
                             :mod :lsp}
 
   ;; Diagnostics
-  :jose-elias-alvarez/null-ls.nvim {:dependencies [:nvim-lua/plenary.nvim]
-                                    :mod :diagnostics}
+  ; :jose-elias-alvarez/null-ls.nvim
+  :davidmh/null-ls.nvim {:dependencies [:nvim-lua/plenary.nvim]
+                         :branch :cspell-code-action-custom-dictionaries
+                         :mod :diagnostics}
+
+  :petertriho/cmp-git {:dependencies [:nvim-lua/plenary.nvim]}
 
   ;; Completion
   :hrsh7th/nvim-cmp {:dependencies [:hrsh7th/cmp-nvim-lsp
@@ -31,18 +36,27 @@
                                     :saadparwaiz1/cmp_luasnip
                                     :L3MON4D3/LuaSnip
                                     :davidmh/cmp-nerdfonts
-                                    :onsails/lspkind-nvim]
+                                    :onsails/lspkind-nvim
+                                    :petertriho/cmp-git]
                      :mod :completion}
+
+  ; ;; Debugger Adapter Protocol
+  :mfussenegger/nvim-dap {:mod :dap
+                          :dependencies [:rcarriga/nvim-dap-ui
+                                         :theHamsta/nvim-dap-virtual-text]
+                          :event :VeryLazy}
 
   ;; Tests
   :nvim-neotest/neotest {:dependencies [:nvim-lua/plenary.nvim
                                         :nvim-treesitter/nvim-treesitter
+                                        :nvim-neotest/neotest-plenary
                                         :olimorris/neotest-rspec]
                          :mod :testing}
 
   :remix.nvim {:dir :$REMIX_HOME/.nvim
                :name :remix
-               :mod :remix}
+               :config #(-> (require :remix)
+                            (: :setup))}
 
   ;; Git
   :tpope/vim-git {:mod :git
@@ -52,6 +66,7 @@
                                  :sindrets/diffview.nvim
                                  :lewis6991/gitsigns.nvim
                                  :folke/which-key.nvim
+                                 :norcalli/nvim-terminal.lua
                                  :nvim-telescope/telescope.nvim]}
 
   ;; Ruby
@@ -85,8 +100,6 @@
   ;; Lists
   :nvim-telescope/telescope.nvim {:dependencies [:nvim-lua/plenary.nvim
                                                  :nvim-lua/popup.nvim
-                                                 :molecule-man/telescope-menufacture
-                                                 :aaronhallaert/advanced-git-search.nvim
                                                  :rcarriga/nvim-notify]
                                   :mod :telescope}
   :folke/trouble.nvim {:dependencies [:kyazdani42/nvim-web-devicons]
@@ -101,6 +114,10 @@
   ;; improved quickfix window {}
   :kevinhwang91/nvim-bqf {}
 
+  ;; improved folding
+  :kevinhwang91/nvim-ufo {:dependencies [:kevinhwang91/promise-async]
+                          :mod :ultra-fold}
+
   ;; Organize mappings to encourage mnemonics
   :folke/which-key.nvim {:dependencies [:lewis6991/gitsigns.nvim]
                          :mod :which-key}
@@ -109,13 +126,12 @@
   :christoomey/vim-tmux-navigator {}
 
   ;; Status line
-  :freddiehaddad/feline.nvim {:dependencies [:kyazdani42/nvim-web-devicons
-                                             :catppuccin/nvim]
+  :freddiehaddad/feline.nvim {:dependencies [:kyazdani42/nvim-web-devicons]
                               :branch :main
                               :mod :feline}
 
   :rcarriga/nvim-notify {:dependencies [:nvim-telescope/telescope.nvim
-                                        :catppuccin/nvim]
+                                        :catppuccin]
                          :mod :notify}
 
   ;; Improve vim.ui.input and vim.ui.select

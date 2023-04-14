@@ -2,11 +2,14 @@
   {autoload {nvim aniseed.nvim
              core aniseed.core
              cmp cmp
+             cmp-git cmp_git
              ls luasnip
              ls-types luasnip.util.types
              lspkind lspkind}})
 
 (set nvim.o.completeopt "menuone,noselect,preview")
+
+(cmp-git.setup)
 
 (def- menu-sources {:path      "(path)"
                     :luasnip   "(snip)"
@@ -15,6 +18,7 @@
                     :nerdfonts "(font)"
                     :buffer    "(buff)"
                     :nvim_lua  "(lua)"
+                    :git       "(git)"
                     :omni      "(omni)"})
 
 (defn- cmp-format [entry vim-item]
@@ -35,7 +39,7 @@
 (cmp.setup {:mapping (cmp.mapping.preset.insert cmd-mappings)
             :sources (cmp.config.sources [{:name :luasnip}
                                           {:name :nvim_lsp}
-                                          {:name :orgmode}
+                                          {:name :git}
                                           {:name :nerdfonts}
                                           {:name :conjure}
                                           {:name :buffer :keyword_length 5}])

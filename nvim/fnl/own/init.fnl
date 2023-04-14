@@ -34,8 +34,8 @@
 (set vim.o.splitright true)
 (set vim.g.neovide_input_use_logo true)
 (set vim.g.GuiWindowFrameless true)
+; (set vim.g.conjure#filetype#python nil)
 
-(nvim.ex.hi :WinSeparator :guibg=None)
 (package.setup)
 
 (defn- os-open [url]
@@ -43,3 +43,8 @@
 
 ; I'm disabling netrw, and Fugitive needs a :Browse command
 (nvim.create_user_command :Browse (fn [opts] (os-open opts.args)) {:nargs 1})
+
+(nvim.create_augroup :auto-resize-windows {:clear true})
+(nvim.create_autocmd :VimResized {:pattern :*
+                                  :group :auto-resize-windows
+                                  :command "wincmd ="})

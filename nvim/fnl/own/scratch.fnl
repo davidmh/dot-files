@@ -63,4 +63,4 @@
       ; reset the state
       (tset state :bufnr nil))
 
-    (nvim.echo "Nothing to kill")))
+    (vim.notify "Nothing to kill")))

@@ -18,8 +18,5 @@
                              :results_title false}
                   :pickers {:buffers {:sort_mru true}}})
 
-(telescope.load_extension :menufacture)
-(telescope.load_extension :advanced_git_search)
-
 (vim.keymap.set :n :<M-x> ::Telescope<CR> {:nowait true})
 (vim.keymap.set :n :<D-x> ::Telescope<CR> {:nowait true})
