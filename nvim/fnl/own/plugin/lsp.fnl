@@ -15,8 +15,8 @@
 (fidget.setup {:text {:spinner :dots
                       :done :}
                :window {:blend 0
-                        :border :rounded}})
-(mason.setup)
+                        :border :none}})
+(mason.setup {:ui {:border :rounded}})
 (mason-lspconfig.setup {:ensure_installed [:clojure_lsp
                                            :cssls
                                            :jsonls

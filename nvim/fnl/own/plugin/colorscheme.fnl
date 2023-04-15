@@ -9,6 +9,8 @@
    :Pmenu {:bg color.crust}
    :WinSeparator {:fg color.overlay0 :bg :none}
 
+   :NormalFloat {:link :Normal}
+
    :TreesitterContext {:link :Normal}
 
    :TelescopeBorder {:fg color.crust :bg color.crust}
