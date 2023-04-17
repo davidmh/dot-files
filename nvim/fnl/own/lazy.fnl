@@ -1,5 +1,6 @@
 (module own.lazy
   {autoload {core aniseed.core
+             config own.config
              lazy lazy}})
 
 (defn- load-module [name]
@@ -28,4 +29,5 @@
         ; add it to the list of plugins
         (table.insert plugins plugin)))
     (lazy.setup plugins {:install {:colorscheme [:catppuccin]}
-                         :ui {:border :rounded}})))
+                         :ui {:border config.border
+                              :icons {:lazy :鈴}}})))

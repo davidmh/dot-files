@@ -90,8 +90,7 @@
                                        :condition (with-root-file :selene.toml)})
              (diagnostics.pylint.with  {:cwd (root-pattern :venv/)})
              (diagnostics.cspell.with {:cwd (root-pattern :cspell.json)
-                                       :command :./node_modules/.bin/cspell
-                                       ; :condition (with-root-file :cspell.json)
+                                       :prefer_local :./node_modules/.bin
                                        :filetypes cspell-filetypes
                                        :diagnostics_postprocess #(tset $1 :severity vim.diagnostic.severity.W)})
 

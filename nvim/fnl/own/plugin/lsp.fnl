@@ -1,6 +1,7 @@
 (module own.plugin.lsp
   {autoload {nvim aniseed.nvim
              core aniseed.core
+             config own.config
              util lspconfig.util
              cmp-lsp cmp_nvim_lsp
              json-schemas own.json-schemas
@@ -16,7 +17,7 @@
                       :done :}
                :window {:blend 0
                         :border :none}})
-(mason.setup {:ui {:border :rounded}})
+(mason.setup {:ui {:border config.border}})
 (mason-lspconfig.setup {:ensure_installed [:clojure_lsp
                                            :cssls
                                            :jsonls
@@ -26,16 +27,15 @@
                                            :eslint
                                            :denols
                                            :vimls]
-                        :automatic_installation true})
+                        :automatic_installation false})
 
-(do
-  (def- win-opts {:border :rounded
-                  :max_width 100
-                  :separator true})
-  (tset vim.lsp.handlers "textDocument/hover"
-        (vim.lsp.with vim.lsp.handlers.hover win-opts))
-  (tset vim.lsp.handlers "textDocument/signatureHelp"
-        (vim.lsp.with vim.lsp.handlers.signature_help win-opts)))
+(def- win-opts {:border config.border
+                :max_width 100
+                :separator true})
+(tset vim.lsp.handlers "textDocument/hover"
+      (vim.lsp.with vim.lsp.handlers.hover win-opts))
+(tset vim.lsp.handlers "textDocument/signatureHelp"
+      (vim.lsp.with vim.lsp.handlers.signature_help win-opts))
 
 (vim.api.nvim_create_augroup :eslint-autofix {:clear true})
 
@@ -107,13 +107,16 @@
                       :eslint {:root_dir eslint-root}
                       :denols {:root_dir deno-root}
                       :cssls {:root_dir git-root}
-                      :shellcheck {:root_dir git-root}
-                      :grammarly {:filetypes [:markdown :org :txt :gitcommit]}})
+                      :shellcheck {:root_dir git-root}})
 
 (each [_ server-name (ipairs (mason-lspconfig.get_installed_servers))]
   (let [server-setup (core.get-in lspconfig [server-name :setup])]
     (server-setup (core.merge base-settings
                               (core.get server-configs server-name {})))))
+
+;; grammarly is not installed through mason, see:
+;; https://github.com/znck/grammarly/issues/334
+(lspconfig.grammarly.setup {:filetypes [:markdown :org :txt :gitcommit]})
 
 (nvim.create_augroup :lsp-attach {:clear true})
 (nvim.create_autocmd :LspAttach {:callback on-attach

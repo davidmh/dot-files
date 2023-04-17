@@ -9,9 +9,13 @@
    :Pmenu {:bg color.crust}
    :WinSeparator {:fg color.overlay0 :bg :none}
 
-   :NormalFloat {:link :Normal}
+   :FloatBorder {:link :NormalFloat}
 
    :TreesitterContext {:link :Normal}
+
+   :TroubleText {:link :Normal}
+   :TroubleCount {:link :Normal}
+   :TroubleNormal {:link :Normal}
 
    :TelescopeBorder {:fg color.crust :bg color.crust}
    :TelescopePromptBorder {:fg color.crust :bg color.crust}

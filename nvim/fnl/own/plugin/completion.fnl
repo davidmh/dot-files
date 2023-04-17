@@ -14,6 +14,7 @@
 (def- menu-sources {:path      "(path)"
                     :luasnip   "(snip)"
                     :nvim_lsp  "(lsp)"
+                    :emoji     "(emo)"
                     :conjure   "(conj)"
                     :nerdfonts "(font)"
                     :buffer    "(buff)"
@@ -39,6 +40,7 @@
 (cmp.setup {:mapping (cmp.mapping.preset.insert cmd-mappings)
             :sources (cmp.config.sources [{:name :luasnip}
                                           {:name :nvim_lsp}
+                                          {:name :emoji}
                                           {:name :git}
                                           {:name :nerdfonts}
                                           {:name :conjure}

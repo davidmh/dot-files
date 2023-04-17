@@ -5,7 +5,8 @@
   ;; lazy.nvim should manage itself
   :folke/lazy.nvim {}
 
-  :Olical/aniseed {:dependencies [:Olical/conjure]}
+  :Olical/aniseed {:dependencies [:Olical/conjure]
+                   :config #(set vim.g.conjure#log#hud#border config.border)}
 
   :folke/neodev.nvim {:dependencies [:nvim-neotest/neotest]
                       :opts {:library {:plugins [:neotest]
@@ -37,7 +38,8 @@
                                     :L3MON4D3/LuaSnip
                                     :davidmh/cmp-nerdfonts
                                     :onsails/lspkind-nvim
-                                    :petertriho/cmp-git]
+                                    :petertriho/cmp-git
+                                    :hrsh7th/cmp-emoji]
                      :mod :completion}
 
   ; ;; Debugger Adapter Protocol

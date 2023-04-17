@@ -30,4 +30,5 @@
     (open-in-largest-window bufs)))
 
 (flatten.setup {:window {:open router}
-                :callbacks {:should_block diff-mode}})
+                :callbacks {:should_block diff-mode}
+                :nest_if_no_args true})

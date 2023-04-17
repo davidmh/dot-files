@@ -11,3 +11,5 @@
 (tset icons severity.WARN icons.WARN)
 (tset icons severity.HINT icons.HINT)
 (tset icons severity.INFO icons.INFO)
+
+(def border :solid)
