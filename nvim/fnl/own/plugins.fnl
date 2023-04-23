@@ -23,10 +23,10 @@
                             :mod :lsp}
 
   ;; Diagnostics
-  ; :jose-elias-alvarez/null-ls.nvim
-  :davidmh/null-ls.nvim {:dependencies [:nvim-lua/plenary.nvim]
-                         :branch :cspell-code-action-custom-dictionaries
-                         :mod :diagnostics}
+  :davidmh/cspell.nvim {:name :cspell.nvim
+                        :dependencies [:nvim-lua/plenary.nvim]}
+  :jose-elias-alvarez/null-ls.nvim {:dependencies [:nvim-lua/plenary.nvim :cspell.nvim]
+                                    :mod :diagnostics}
 
   :petertriho/cmp-git {:dependencies [:nvim-lua/plenary.nvim]}
 
@@ -128,7 +128,8 @@
   :christoomey/vim-tmux-navigator {}
 
   ;; Status line
-  :freddiehaddad/feline.nvim {:dependencies [:kyazdani42/nvim-web-devicons]
+  :freddiehaddad/feline.nvim {:dependencies [:kyazdani42/nvim-web-devicons
+                                             :catppuccin]
                               :branch :main
                               :mod :feline}
 

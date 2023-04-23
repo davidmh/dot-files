@@ -2,6 +2,7 @@
   {autoload {nvim aniseed.nvim
              str aniseed.string
              core aniseed.core
+             config own.config
              wk which-key
              t telescope.builtin
              telescope telescope
@@ -16,7 +17,7 @@
                                :windows true
                                :nav true
                                :z true}}
-           :window {:border :rounded
+           :window {:border config.border
                     :margin [2 30 2 30]
                     :winblend 10}})
 

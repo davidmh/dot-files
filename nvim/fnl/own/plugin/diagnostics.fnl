@@ -4,6 +4,7 @@
              null-ls null-ls
              lists own.lists
              u null-ls.utils
+             cspell cspell
              config own.config}
    require-macros [aniseed.macros.autocmds]})
 
@@ -25,6 +26,7 @@
                         :html
                         :javascript
                         :less
+                        :lua
                         :markdown
                         :python
                         :ruby
@@ -52,7 +54,7 @@
                         :update_in_insert false
                         :severity_sort true
                         :float {:header ""
-                                :border :single
+                                :border config.border
                                 :format diagnostic-format}})
 
 (defn- str-ends-with [str ending]
@@ -89,18 +91,21 @@
              (diagnostics.selene.with {:cwd (root-pattern :selene.toml)
                                        :condition (with-root-file :selene.toml)})
              (diagnostics.pylint.with  {:cwd (root-pattern :venv/)})
-             (diagnostics.cspell.with {:cwd (root-pattern :cspell.json)
+             (cspell.diagnostics.with {:cwd (root-pattern :cspell.json)
                                        :prefer_local :./node_modules/.bin
                                        :filetypes cspell-filetypes
                                        :diagnostics_postprocess #(tset $1 :severity vim.diagnostic.severity.W)})
 
              code_actions.shellcheck
-             (code_actions.cspell.with {:cwd (root-pattern :cspell.json)
-                                        :filetypes cspell-filetypes})
+             (cspell.code_actions.with {:cwd (root-pattern :cspell.json)
+                                        :filetypes cspell-filetypes
+                                        :config {; use jq to format the contents
+                                                 :encode_json #(vim.fn.system (.. "echo '" (vim.json.encode $1) "' | jq --monochrome-output '.'"))}})
 
              formatting.jq
              formatting.rubocop
-             formatting.stylua]
+             formatting.stylua
+             formatting.terraform_fmt]
 
    :on_attach on-attach})
 
