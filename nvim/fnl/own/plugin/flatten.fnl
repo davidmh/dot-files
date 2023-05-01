@@ -12,22 +12,23 @@
       (tset windows-by-size (window-size window-id) window-id))
     (. windows-by-size (table.maxn windows-by-size))))
 
-(defn- open-in-largest-window [bufs]
-  (let [window-id (get-largest-window-id)]
-    (nvim.win_set_buf window-id (. bufs 1))
+(defn- open-in-largest-window [file-paths]
+  (let [window-id (get-largest-window-id)
+        bufnr (vim.fn.bufnr (. file-paths 1))]
+    (nvim.win_set_buf window-id bufnr)
     (nvim.set_current_win window-id)))
 
 ;; assumes the diff is comparing only two files, works for now
-(defn- open-diff-in-tab [bufs]
-  (vim.cmd (.. "tabedit " (nvim.buf_get_name (. bufs 1))))
-  (vim.cmd (.. "botright vertical diffsplit " (nvim.buf_get_name (. bufs 2)))))
+(defn- open-diff-in-tab [file-paths]
+  (vim.cmd (.. "tabedit " (. file-paths 1)))
+  (vim.cmd (.. "botright vertical diffsplit " (. file-paths 2))))
 
 (def- diff-mode #(vim.tbl_contains (or $1 []) :-d))
 
-(defn- router [bufs argv]
+(defn- router [file-paths argv]
   (if (diff-mode argv)
-    (open-diff-in-tab bufs)
-    (open-in-largest-window bufs)))
+    (open-diff-in-tab file-paths)
+    (open-in-largest-window file-paths)))
 
 (flatten.setup {:window {:open router}
                 :callbacks {:should_block diff-mode}
