@@ -35,6 +35,10 @@ end
 
 vim.opt.termguicolors = true
 
+-- luarocks support
+package.path = string.gsub(vim.fn.system('luarocks path --lr-path'), '\n', ';') .. package.path
+package.cpath = package.cpath .. ';.dylib'
+
 local data_path = fn.stdpath('data') .. '/lazy'
 
 --- Ensures a given github.com/USER/REPO is cloned in the lazy directory.

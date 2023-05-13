@@ -31,6 +31,7 @@ in
     jq
     lazygit
     leiningen
+    lua51Packages.luarocks
     neovide
     neovim
     pass
