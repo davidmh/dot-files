@@ -22,10 +22,38 @@
                     :git       "(git)"
                     :omni      "(omni)"})
 
+;; use v2 nerdfonts
+(def- v2-symbol-map {:Text :
+                     :Method :
+                     :Function :
+                     :Constructor :
+                     :Field :
+                     :Variable :
+                     :Class :
+                     :Interface :
+                     :Module :
+                     :Property :
+                     :Unit :
+                     :Value :
+                     :Enum :
+                     :Keyword :
+                     :Snippet :
+                     :Color :
+                     :File :
+                     :Reference :
+                     :Folder :
+                     :EnumMember :
+                     :Constant :
+                     :Struct :
+                     :Event :
+                     :Operator :
+                     :TypeParameter :})
+
 (defn- cmp-format [entry vim-item]
   (let [kind-fmt (lspkind.cmp_format {:mode :symbol
                                       :menu menu-sources
-                                      :maxwidth 30})
+                                      :maxwidth 30
+                                      :symbol_map v2-symbol-map})
         kind-item (kind-fmt entry vim-item)]
     (tset kind-item :kind (.. " " kind-item.kind " "))
     kind-item))
