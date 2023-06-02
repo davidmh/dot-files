@@ -2,9 +2,11 @@
   {autoload {catppuccin catppuccin
              palette catppuccin.palettes}})
 
+; useful to get completion while writing the overrides but the actual
+; colors are pulled from the custom-highlights param
 (def- color (palette.get_palette))
 
-(defn- custom-highlights []
+(defn- custom-highlights [color]
   {:Comment {:style [:italic :bold]}
    :Pmenu {:bg color.crust}
    :WinSeparator {:fg color.overlay0 :bg :none}

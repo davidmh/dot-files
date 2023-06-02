@@ -6,6 +6,7 @@
              cmp-lsp cmp_nvim_lsp
              json-schemas own.json-schemas
              lspconfig lspconfig
+             configs lspconfig.configs
              kind lspkind
              mason mason
              mason-lspconfig mason-lspconfig
@@ -13,7 +14,8 @@
              fidget fidget}})
 
 (kind.init)
-(fidget.setup {:text {:spinner :dots
+(fidget.setup {:align {:bottom false}
+               :text {:spinner :dots
                       :done :}
                :window {:blend 0
                         :border :none
@@ -22,7 +24,6 @@
 (mason-lspconfig.setup {:ensure_installed [:clojure_lsp
                                            :cssls
                                            :jsonls
-                                           :solargraph
                                            :lua_ls
                                            :vtsls
                                            :eslint
@@ -104,7 +105,6 @@
                                                                         :after_each
                                                                         :pending]}
                                                 :workspace {:checkThirdParty false}}}}
-                      :solargraph {:root_dir git-root}
                       :eslint {:root_dir eslint-root}
                       :denols {:root_dir deno-root}
                       :cssls {:root_dir git-root}
@@ -118,6 +118,9 @@
 ;; grammarly is not installed through mason, see:
 ;; https://github.com/znck/grammarly/issues/334
 (lspconfig.grammarly.setup {:filetypes [:markdown :org :txt :gitcommit]})
+
+(lspconfig.solargraph.setup {:root_dir git-root
+                             :cmd [:bundle :exec :solargraph :stdio]})
 
 (nvim.create_augroup :lsp-attach {:clear true})
 (nvim.create_autocmd :LspAttach {:callback on-attach

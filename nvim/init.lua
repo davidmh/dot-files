@@ -33,6 +33,8 @@ for _, plugin in pairs(default_plugins) do
   vim.g['loaded_' .. plugin] = 1
 end
 
+-- gem install neovim-ruby
+vim.g.ruby_host_prog = '~/.gem/ruby/3.0.6/bin/neovim-ruby-host'
 vim.opt.termguicolors = true
 
 -- luarocks support

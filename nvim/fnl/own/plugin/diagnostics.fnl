@@ -23,15 +23,18 @@
 
 (def- cspell-filetypes [:css
                         :gitcommit
+                        :clojure
                         :html
                         :javascript
+                        :json
                         :less
                         :lua
                         :markdown
                         :python
                         :ruby
                         :typescript
-                        :typescriptreact])
+                        :typescriptreact
+                        :yaml])
 
 (vim.fn.sign_define :DiagnosticSignError
                     {:text :● :texthl :DiagnosticSignError})
@@ -85,7 +88,9 @@
   {:sources [diagnostics.shellcheck
              diagnostics.pycodestyle
              diagnostics.pydocstyle
-             diagnostics.rubocop
+             (diagnostics.rubocop.with {:cwd (root-pattern :.rubocop.yml)})
+                                        ; :command :bundle
+                                        ; :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
              (diagnostics.luacheck.with {:cwd (root-pattern :.luacheckrc)
                                          :condition (with-root-file :.luacheckrc)})
              (diagnostics.selene.with {:cwd (root-pattern :selene.toml)
@@ -98,12 +103,12 @@
 
              code_actions.shellcheck
              (cspell.code_actions.with {:cwd (root-pattern :cspell.json)
-                                        :filetypes cspell-filetypes
-                                        :config {; use jq to format the contents
-                                                 :encode_json #(vim.fn.system (.. "echo '" (vim.json.encode $1) "' | jq --monochrome-output '.'"))}})
+                                        :filetypes cspell-filetypes})
 
              formatting.jq
-             formatting.rubocop
+             (formatting.rubocop.with {:cwd (root-pattern :.rubocop.yml)})
+                                       ; :command :bundle
+                                       ; :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
              formatting.stylua
              formatting.terraform_fmt]
 

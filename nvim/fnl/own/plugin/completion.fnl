@@ -16,6 +16,7 @@
                     :nvim_lsp  "(lsp)"
                     :emoji     "(emo)"
                     :conjure   "(conj)"
+                    :orgmode   "(org)"
                     :nerdfonts "(font)"
                     :buffer    "(buff)"
                     :nvim_lua  "(lua)"
@@ -68,6 +69,7 @@
 (cmp.setup {:mapping (cmp.mapping.preset.insert cmd-mappings)
             :sources (cmp.config.sources [{:name :luasnip}
                                           {:name :nvim_lsp}
+                                          {:name :orgmode}
                                           {:name :emoji}
                                           {:name :git}
                                           {:name :nerdfonts}
@@ -112,3 +114,5 @@
 (ls.add_snippets :javascript [js-log js-test-case])
 (ls.add_snippets :typescript [js-log js-test-case])
 (ls.add_snippets :typescriptreact [js-log js-test-case])
+(ls.add_snippets :gitcommit [(ls.parser.parse_snippet "cab" "Co-Authored-By: $0")])
+(ls.add_snippets :org [(ls.parser.parse_snippet "<s" "#+BEGIN_SRC ${1}\n${0}\n#+END_SRC\n")])

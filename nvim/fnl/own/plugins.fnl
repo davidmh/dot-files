@@ -26,6 +26,7 @@
   :davidmh/cspell.nvim {:name :cspell.nvim
                         :dependencies [:nvim-lua/plenary.nvim]}
   :jose-elias-alvarez/null-ls.nvim {:dependencies [:nvim-lua/plenary.nvim :cspell.nvim]
+                                    :name :null-ls
                                     :mod :diagnostics}
 
   :petertriho/cmp-git {:dependencies [:nvim-lua/plenary.nvim]}
@@ -129,7 +130,8 @@
 
   ;; Status line
   :freddiehaddad/feline.nvim {:dependencies [:kyazdani42/nvim-web-devicons
-                                             :catppuccin]
+                                             :catppuccin
+                                             :null-ls]
                               :branch :main
                               :mod :feline}
 
@@ -162,6 +164,12 @@
 
   ;; open files from a terminal buffer in the current instance
   :willothy/flatten.nvim {:mod :flatten}
+
+  ; ;; orgmode - are we there yet?
+  :nvim-orgmode/orgmode {:dependencies [:nvim-treesitter/nvim-treesitter
+                                        :akinsho/org-bullets.nvim]
+                         :ft :org
+                         :mod :org}
 
   ;; Misc Utilities
   :tommcdo/vim-exchange {}

@@ -107,7 +107,7 @@
                                       (diagnostic :INFO :fg)
                                       (diagnostic :HINT :green)]]
                              :inactive [[] []]}
-               :theme {:fg :#ffffff
+               :theme {:fg :fg
                        :bg :NONE}})
 
 (feline.winbar.setup {:components {:active [[] [file-info]]

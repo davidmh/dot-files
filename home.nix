@@ -12,7 +12,7 @@ in
   home.username = userName;
   home.homeDirectory = homeDirectory;
 
-  home.stateVersion = "22.05";
+  home.stateVersion = "23.05";
 
   home.sessionVariables = {
     EDITOR = "nvim";
@@ -32,7 +32,6 @@ in
     lazygit
     leiningen
     lua51Packages.luarocks
-    neovide
     neovim
     pass
     silver-searcher

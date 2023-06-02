@@ -11,5 +11,5 @@
 * clone
 
   ```shell
-  git clone git@github.com:davidmh/dot-files.git ~/.config/nixpkgs
+  git clone git@github.com:davidmh/dot-files.git ~/.config/home-manager
   ```
