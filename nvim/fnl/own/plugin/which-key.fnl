@@ -50,12 +50,18 @@
   (-> (require :treesitter-context)
     (: :toggle)))
 
+(defn- find-files []
+  (t.find_files {:find_command [:fd
+                                :--hidden
+                                :--type :f
+                                :--exclude :.git]}))
+
 ; normal mode mappings
 (wk.register
   {:f [telescope-file-browser "file browser"]
 
    ; finders
-   :<leader> (cmd "Telescope find_files hidden=true no_ignore=false" "find files")
+   :<leader> [find-files "find files"]
    :/ {:name :search
        :b [grep-buffer-content "in open buffers"]
        :p [t.live_grep "in project"]
