@@ -19,7 +19,9 @@
                                            :onsails/lspkind-nvim
                                            :hrsh7th/cmp-nvim-lsp
                                            :j-hui/fidget.nvim
-                                           :kevinhwang91/nvim-ufo]
+                                           :kevinhwang91/nvim-ufo
+                                           :SmiteshP/nvim-navic]
+                            :name :mason
                             :mod :lsp}
 
   ;; Diagnostics
@@ -96,16 +98,19 @@
   :nvim-treesitter/nvim-treesitter-context {:mod :context}
 
   ;; Icons
-  :kyazdani42/nvim-web-devicons {:opts {:override {:scm {:color :#A6E3A1
-                                                         :icon :ﬦ
-                                                         :name :Scheme}}}}
+  :nvim-tree/nvim-web-devicons {:opts {:override {:scm {:color :#A6E3A1
+                                                        :name :query
+                                                        :icon :ﬦ}
+                                                  :fnl {:color :cyan
+                                                        :name :blue
+                                                        :icon :}}}}
 
   ;; Lists
   :nvim-telescope/telescope.nvim {:dependencies [:nvim-lua/plenary.nvim
                                                  :nvim-lua/popup.nvim
                                                  :rcarriga/nvim-notify]
                                   :mod :telescope}
-  :folke/trouble.nvim {:dependencies [:kyazdani42/nvim-web-devicons]
+  :folke/trouble.nvim {:dependencies [:nvim-tree/nvim-web-devicons]
                        :opts {:icons true
                               :signs {:error config.icons.ERROR
                                       :warning config.icons.WARN
@@ -128,12 +133,11 @@
   ;; TMUX integration
   :christoomey/vim-tmux-navigator {}
 
-  ;; Status line
-  :freddiehaddad/feline.nvim {:dependencies [:kyazdani42/nvim-web-devicons
-                                             :catppuccin
-                                             :null-ls]
-                              :branch :main
-                              :mod :feline}
+  ;; Status lines
+  :rebelot/heirline.nvim {:dependencies [:catppuccin
+                                         :nvim-tree/nvim-web-devicons
+                                         :mason]
+                          :mod :status-lines}
 
   :rcarriga/nvim-notify {:dependencies [:nvim-telescope/telescope.nvim
                                         :catppuccin]

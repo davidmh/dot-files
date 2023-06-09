@@ -71,7 +71,36 @@
    :CmpItemKindEvent {:fg color.crust :bg color.blue}
    :CmpItemKindOperator {:fg color.crust :bg color.blue}
    :CmpItemKindTypeParameter {:fg color.crust :bg color.blue}
-   :CmpItemKindCopilot {:fg color.crust :bg color.teal}})
+
+   :NavicIconsFile {:bg color.mantle :fg color.blue}
+   :NavicIconsModule {:bg color.mantle :fg color.blue}
+   :NavicIconsNamespace {:bg color.mantle :fg color.green}
+   :NavicIconsPackage {:bg color.mantle :fg color.maroon}
+   :NavicIconsClass {:bg color.mantle :fg color.peach}
+   :NavicIconsMethod {:bg color.mantle :fg color.lavender}
+   :NavicIconsProperty {:bg color.mantle :fg color.blue}
+   :NavicIconsField {:bg color.mantle :fg color.blue}
+   :NavicIconsConstructor {:bg color.mantle :fg color.blue}
+   :NavicIconsEnum {:bg color.mantle :fg color.blue}
+   :NavicIconsInterface {:bg color.mantle :fg color.blue}
+   :NavicIconsFunction {:bg color.mantle :fg color.blue}
+   :NavicIconsVariable {:bg color.mantle :fg color.blue}
+   :NavicIconsConstant {:bg color.mantle :fg color.blue}
+   :NavicIconsString {:bg color.mantle :fg color.blue}
+   :NavicIconsNumber {:bg color.mantle :fg color.blue}
+   :NavicIconsBoolean {:bg color.mantle :fg color.blue}
+   :NavicIconsArray {:bg color.mantle :fg color.blue}
+   :NavicIconsObject {:bg color.mantle :fg color.blue}
+   :NavicIconsKey {:bg color.mantle :fg color.blue}
+   :NavicIconsNull {:bg color.mantle :fg color.blue}
+   :NavicIconsEnumMember {:bg color.mantle :fg color.blue}
+   :NavicIconsStruct {:bg color.mantle :fg color.blue}
+   :NavicIconsEvent {:bg color.mantle :fg color.blue}
+   :NavicIconsOperator {:bg color.mantle :fg color.blue}
+   :NavicIconsTypeParameter {:bg color.mantle :fg color.blue}
+   :NavicText {:fg color.text :bg color.mantle}
+   :NavicSeparator {:fg color.text :bg color.mantle}})
+
 
 (catppuccin.setup {:flavour :macchiato
                    :transparent_background false

@@ -10,9 +10,16 @@
              kind lspkind
              mason mason
              mason-lspconfig mason-lspconfig
+             navic nvim-navic
              wk which-key
              fidget fidget}})
 
+(navic.setup {:depth_limit 4
+              :depth_limit_indicator " [  ] "
+              :click true
+              :highlight true
+              :icons config.navic-icons
+              :separator "  "})
 (kind.init)
 (fidget.setup {:align {:bottom false}
                :text {:spinner :dots
@@ -78,7 +85,10 @@
                 :mode :v
                 :buffer 0})
 
-  (when (= client.name :eslint) (set-eslint-autofix bufnr)))
+  (when (= client.name :eslint) (set-eslint-autofix bufnr))
+
+  (when client.server_capabilities.documentSymbolProvider
+    (navic.attach client bufnr)))
 
 (def- git-root (util.root_pattern :.git))
 (def- eslint-root (util.root_pattern :.eslintrc.js :.eslintrc.json))
@@ -115,7 +125,7 @@
     (server-setup (core.merge base-settings
                               (core.get server-configs server-name {})))))
 
-;; grammarly is not installed through mason, see:
+;; grammarly is not installed through mason see:
 ;; https://github.com/znck/grammarly/issues/334
 (lspconfig.grammarly.setup {:filetypes [:markdown :org :txt :gitcommit]})
 

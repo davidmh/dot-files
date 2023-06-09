@@ -13,6 +13,7 @@
              wk which-key}})
 
 (set vim.g.fugitive_legacy_commands false)
+(vim.cmd "cabbrev git Git")
 
 (git-signs.setup {:current_line_blame false})
 

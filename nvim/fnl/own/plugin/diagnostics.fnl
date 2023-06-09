@@ -36,23 +36,25 @@
                         :typescriptreact
                         :yaml])
 
-(vim.fn.sign_define :DiagnosticSignError
-                    {:text :● :texthl :DiagnosticSignError})
-(vim.fn.sign_define :DiagnosticSignWarn
-                    {:text :● :texthl :DiagnosticSignWarn})
-(vim.fn.sign_define :DiagnosticSignInfo
-                    {:text :● :texthl :DiagnosticSignInfo})
-(vim.fn.sign_define :DiagnosticSignHint
-                    {:text :● :texthl :DiagnosticSignHint})
+(comment
+  ; TODO: render gitsigns and diagnostic icons side to side
+  (vim.fn.sign_define :DiagnosticSignError
+                      {:text :● :texthl :DiagnosticSignError})
+  (vim.fn.sign_define :DiagnosticSignWarn
+                      {:text :● :texthl :DiagnosticSignWarn})
+  (vim.fn.sign_define :DiagnosticSignInfo
+                      {:text :● :texthl :DiagnosticSignInfo})
+  (vim.fn.sign_define :DiagnosticSignHint
+                      {:text :● :texthl :DiagnosticSignHint}))
 
 (defn- diagnostic-format [diagnostic]
   (..
     (. config.icons diagnostic.severity)
-    "  [" diagnostic.source "] "
+    " [" diagnostic.source "] "
     diagnostic.message))
 
 (vim.diagnostic.config {:underline true
-                        :signs true
+                        :signs false
                         :virtual_text false
                         :update_in_insert false
                         :severity_sort true
@@ -88,9 +90,9 @@
   {:sources [diagnostics.shellcheck
              diagnostics.pycodestyle
              diagnostics.pydocstyle
-             (diagnostics.rubocop.with {:cwd (root-pattern :.rubocop.yml)})
-                                        ; :command :bundle
-                                        ; :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
+             (diagnostics.rubocop.with {:cwd (root-pattern :.rubocop.yml)
+                                        :command :bundle
+                                        :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
              (diagnostics.luacheck.with {:cwd (root-pattern :.luacheckrc)
                                          :condition (with-root-file :.luacheckrc)})
              (diagnostics.selene.with {:cwd (root-pattern :selene.toml)
@@ -105,10 +107,10 @@
              (cspell.code_actions.with {:cwd (root-pattern :cspell.json)
                                         :filetypes cspell-filetypes})
 
-             formatting.jq
-             (formatting.rubocop.with {:cwd (root-pattern :.rubocop.yml)})
-                                       ; :command :bundle
-                                       ; :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
+             ; formatting.jq
+             (formatting.rubocop.with {:cwd (root-pattern :.rubocop.yml)
+                                       :command :bundle
+                                       :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
              formatting.stylua
              formatting.terraform_fmt]
 

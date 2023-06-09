@@ -3,11 +3,6 @@
 set -eo pipefail
 
 touch ~/.env.zsh
-rm -rf ~/.config/nvim/lua/
-
-# Delete packer files, lazy.nvim does not use the native pack system
-rm -rf ~/.config/nvim/plugin/packer_compiled.lua
-rm -rf ~/.local/share/nvim/site/pack/packer/
 
 home-manager switch -v
 
