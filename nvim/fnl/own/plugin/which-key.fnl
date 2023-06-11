@@ -10,6 +10,8 @@
              gitsigns gitsigns
              scratch own.scratch}})
 
+(set vim.o.timeoutlen 2500)
+
 (wk.setup {:plugins {:spelling {:enabled false}
                      :presets {:operators true
                                :motions true

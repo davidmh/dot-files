@@ -13,6 +13,7 @@
                                        :types true}}}
 
   ;; LSP
+  :j-hui/fidget.nvim {:tag :legacy}
   :williamboman/mason.nvim {:dependencies [:neovim/nvim-lspconfig
                                            :williamboman/mason-lspconfig.nvim
                                            :folke/neodev.nvim
@@ -70,7 +71,7 @@
                                  :nvim-lua/plenary.nvim
                                  :sindrets/diffview.nvim
                                  :lewis6991/gitsigns.nvim
-                                 :folke/which-key.nvim
+                                 ; :folke/which-key.nvim
                                  :norcalli/nvim-terminal.lua
                                  :nvim-telescope/telescope.nvim]}
 
@@ -174,6 +175,18 @@
                                         :akinsho/org-bullets.nvim]
                          :ft :org
                          :mod :org}
+
+  :folke/noice.nvim {:event :VeryLazy
+                     :opts {:lsp {:override {:vim.lsp.util.convert_input_to_markdown_lines true
+                                             :vim.lsp.util.stylize_markdown true
+                                             :cmp.entry.get_documentation true}}
+                            :presets {:bottom_search true
+                                      :command_palette true
+                                      :long_message_to_split true
+                                      :inc_rename false
+                                      :lsp_doc_border false}}
+                     :dependencies [:MunifTanjim/nui.nvim
+                                    :rcarriga/nvim-notify]}
 
   ;; Misc Utilities
   :tommcdo/vim-exchange {}

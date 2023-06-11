@@ -12,7 +12,7 @@
 
 (def- colors (palettes.get_palette))
 
-(def- chrome-accent :mantle)
+(def- chrome-accent :crust)
 
 (defn- starts-with [text prefix]
   (= (string.sub text 0 (length prefix))
@@ -38,29 +38,43 @@
      {:provider :
       :hl {:fg chrome-accent :bg :none}}]))
 
+(def- mode-colors {:n    :fg
+                   :i    :green
+                   :v    :blue
+                   :V    :cyan
+                   "\22" :cyan
+                   :c    :orange
+                   :s    :purple
+                   :S    :purple
+                   "\19" :purple
+                   :R    :orange
+                   :r    :orange
+                   :!    :red
+                   :t    :green})
+
 (def- vi-mode {:init #(tset $1 :mode (vim.fn.mode 1))
-               :static {:mode_colors {:n    :fg
-                                      :i    :green
-                                      :v    :cyan
-                                      :V    :cyan
-                                      "\22" :cyan
-                                      :c    :orange
-                                      :s    :purple
-                                      :S    :purple
-                                      "\19" :purple
-                                      :R    :orange
-                                      :r    :orange
-                                      :!    :red
-                                      :t    :red}}
-               :provider " "
-               :hl #(-> {:fg (. $1.mode_colors $1.mode)
+               :provider #(case [vim.o.filetype vim.o.buftype]
+                            [:toggleterm _] :
+                            [_ :terminal] :
+                            [_ _ ] " ")
+               :hl #(-> {:fg (. mode-colors $1.mode)
                          :bold true})
                :update {1 :ModeChanged
                         :pattern :*:*
                         :callback (vim.schedule_wrap #(vim.cmd :redrawstatus))}})
 
-; (def- file-name-block-base {:init #(tset $1 :file-name (nvim.buf_get_name 0))
-;                             :provider :%=})
+(def- macro-rec {:condition #(and (not= (vim.fn.reg_recording) "")
+                                  (= vim.o.cmdheight 0))
+                 :update [:RecordingEnter :RecordingLeave]
+                 1 [{:provider " " :hl {:fg :red :bg :none}}
+                    {:provider #(.. " @" (vim.fn.reg_recording))
+                     :hl {:bg :red :fg :base :bold true}}
+                    {:provider " " :hl {:fg :red :bg :none}}]})
+
+(def- show-cmd {:condition #(= vim.o.cmdheight 0)
+                :init #(set vim.opt.showcmdloc :statusline)
+                :provider "%3.5(%S%)"})
+
 (def- file-icon {:init #(let [file-name $1.file-name
                               ext (vim.fn.fnamemodify file-name ::e)
                               (icon color) (nvim-web-devicons.get_icon_color file-name ext {:default true})]
@@ -102,6 +116,7 @@
 
 (def- lsp-breadcrumb {:condition #(and (navic.is_available)
                                        (> (length (navic.get_location)) 0))
+                      :update :CursorMoved
                       :hl {:fg :fg}
                       1 (container {:provider #(navic.get_location {:highlight true})})})
 
@@ -175,14 +190,16 @@
 
 (def- statusline {:hl {:bg :NONE}
                   1 vi-mode
-                  2 git-block
-                  3 dead-space
-                  4 push-right
-                  5 diagnostics-block})
+                  2 macro-rec
+                  3 git-block
+                  4 dead-space
+                  5 push-right
+                  6 show-cmd
+                  7 diagnostics-block})
 
 (defn- disable_winbar_cb [{: buf}]
-  (conditions.buffer_matches {:buftype [:nofile :prompt :help :quickfix]
-                              :filetype [:^git.* :fugitive :Trouble]}
+  (conditions.buffer_matches {:buftype [:nofile :prompt :help :quickfix :terminal]
+                              :filetype [:^git.* :fugitive :Trouble :toggleterm]}
                              buf))
 
 (def- opts {: colors
