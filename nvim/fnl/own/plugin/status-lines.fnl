@@ -10,8 +10,6 @@
              navic nvim-navic
              nvim-web-devicons nvim-web-devicons}})
 
-(def- colors (palettes.get_palette))
-
 (def- chrome-accent :crust)
 
 (defn- starts-with [text prefix]
@@ -59,13 +57,11 @@
                             [_ _ ] " ")
                :hl #(-> {:fg (. mode-colors $1.mode)
                          :bold true})
-               :update {1 :ModeChanged
-                        :pattern :*:*
-                        :callback (vim.schedule_wrap #(vim.cmd :redrawstatus))}})
+               :update [:ModeChanged :ColorScheme]})
 
 (def- macro-rec {:condition #(and (not= (vim.fn.reg_recording) "")
                                   (= vim.o.cmdheight 0))
-                 :update [:RecordingEnter :RecordingLeave]
+                 :update [:RecordingEnter :RecordingLeave :ColorScheme]
                  1 [{:provider " " :hl {:fg :red :bg :none}}
                     {:provider #(.. " @" (vim.fn.reg_recording))
                      :hl {:bg :red :fg :base :bold true}}
@@ -116,12 +112,12 @@
 
 (def- lsp-breadcrumb {:condition #(and (navic.is_available)
                                        (> (length (navic.get_location)) 0))
-                      :update :CursorMoved
+                      :update [:CursorMoved :ColorScheme]
                       :hl {:fg :fg}
                       1 (container {:provider #(navic.get_location {:highlight true})})})
 
 (def- lsp {:condition #(conditions.lsp_attached)
-           :update [:LspAttach :LspDetach]
+           :update [:LspAttach :LspDetach :ColorScheme]
            :provider (fn []
                        (let [names (vim.tbl_map #(. $1 :name)
                                                 (vim.lsp.get_active_clients {:bufnr 0}))]
@@ -146,7 +142,7 @@
                                  (tset self :WARN (diagnostic-count :WARN))
                                  (tset self :INFO (diagnostic-count :INFO))
                                  (tset self :HINT (diagnostic-count :HINT)))
-                         :update [:DiagnosticChanged :BufEnter]
+                         :update [:DiagnosticChanged :BufEnter :ColorScheme]
                          1 (diagnostic :ERROR :red)
                          2 (diagnostic :WARN :yellow)
                          3 (diagnostic :INFO :fg)
@@ -197,15 +193,21 @@
                   6 show-cmd
                   7 diagnostics-block})
 
-(defn- disable_winbar_cb [{: buf}]
-  (conditions.buffer_matches {:buftype [:nofile :prompt :help :quickfix :terminal]
-                              :filetype [:^git.* :fugitive :Trouble :toggleterm]}
-                             buf))
+(def- disabled-winbar {:buftype [:nofile :prompt :quickfix :terminal]
+                       :filetype [:^git.* :fugitive :Trouble :toggleterm]})
 
-(def- opts {: colors
-            : disable_winbar_cb})
+(defn- initialize-heirline []
+  (local opts {:colors (palettes.get_palette)
+               :disable_winbar_cb #(conditions.buffer_matches disabled-winbar $1.buf)})
 
-(heirline.setup {: winbar
-                 : statuscolumn
-                 : statusline
-                 : opts})
+  (heirline.setup {: winbar
+                   : statuscolumn
+                   : statusline
+                   : opts}))
+
+(initialize-heirline)
+
+(nvim.create_augroup :update-heirline {:clear true})
+(nvim.create_autocmd :ColorScheme {:pattern :*
+                                   :callback initialize-heirline
+                                   :group :update-heirline})

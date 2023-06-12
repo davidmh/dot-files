@@ -1,106 +1,10 @@
 (module own.plugin.colorscheme
-  {autoload {catppuccin catppuccin
-             palette catppuccin.palettes}})
-
-; useful to get completion while writing the overrides but the actual
-; colors are pulled from the custom-highlights param
-(def- color (palette.get_palette))
-
-(defn- custom-highlights [color]
-  {:Comment {:style [:italic :bold]}
-   :Pmenu {:bg color.crust}
-   :WinSeparator {:fg color.overlay0 :bg :none}
-
-   :FloatBorder {:link :NormalFloat}
-
-   :TreesitterContext {:link :Normal}
-
-   :TroubleText {:link :Normal}
-   :TroubleCount {:link :Normal}
-   :TroubleNormal {:link :Normal}
-
-   :TelescopeBorder {:fg color.crust :bg color.crust}
-   :TelescopePromptBorder {:fg color.crust :bg color.crust}
-   :TelescopePromptNormal {:bg color.crust}
-   :TelescopePromptPrefix {:fg color.blue :bg color.crust}
-   :TelescopeNormal {:bg color.crust}
-   :TelescopePreviewTitle {:fg color.crust :bg color.crust}
-   :TelescopePromptTitle {:fg color.crust :bg color.blue}
-   :TelescopeResultsNormal { :bg color.mantle}
-   :TelescopeResultsBorder {:fg color.mantle :bg color.mantle}
-   :TelescopeSelection {:bg color.crust :fg color.blue}
-   :TelescopeSelectionCaret  {:fg color.blue}
-   :TelescopeResultsDiffAdd {:fg color.green}
-   :TelescopeResultsDiffChange {:fg color.yellow}
-   :TelescopeResultsDiffDelete {:fg color.red}
-
-   :NotifyINFOBody {:bg color.mantle}
-   :NotifyWARNBody {:bg color.mantle}
-   :NotifyERRORBody {:bg color.mantle}
-   :NotifyDEBUGBody {:bg color.mantle}
-   :NotifyTRACEBody {:bg color.mantle}
-
-   :NotifyINFOBorder  {:fg color.mantle :bg color.mantle}
-   :NotifyWARNBorder  {:fg color.mantle :bg color.mantle}
-   :NotifyERRORBorder {:fg color.mantle :bg color.mantle}
-   :NotifyDEBUGBorder {:fg color.mantle :bg color.mantle}
-   :NotifyTRACEBorder {:fg color.mantle :bg color.mantle}
-
-   :CmpItemKindSnippet {:fg color.crust :bg color.mauve}
-   :CmpItemKindKeyword {:fg color.crust :bg color.red}
-   :CmpItemKindText {:fg color.crust :bg color.teal}
-   :CmpItemKindMethod {:fg color.crust :bg color.blue}
-   :CmpItemKindConstructor {:fg color.crust :bg color.blue}
-   :CmpItemKindFunction {:fg color.crust :bg color.blue}
-   :CmpItemKindFolder {:fg color.crust :bg color.blue}
-   :CmpItemKindModule {:fg color.crust :bg color.blue}
-   :CmpItemKindConstant {:fg color.crust :bg color.peach}
-   :CmpItemKindField {:fg color.crust :bg color.green}
-   :CmpItemKindProperty {:fg color.crust :bg color.green}
-   :CmpItemKindEnum {:fg color.crust :bg color.green}
-   :CmpItemKindUnit {:fg color.crust :bg color.green}
-   :CmpItemKindClass {:fg color.crust :bg color.yellow}
-   :CmpItemKindVariable {:fg color.crust :bg color.flamingo}
-   :CmpItemKindFile {:fg color.crust :bg color.blue}
-   :CmpItemKindInterface {:fg color.crust :bg color.yellow}
-   :CmpItemKindColor {:fg color.crust :bg color.red}
-   :CmpItemKindReference {:fg color.crust :bg color.red}
-   :CmpItemKindEnumMember {:fg color.crust :bg color.red}
-   :CmpItemKindStruct {:fg color.crust :bg color.blue}
-   :CmpItemKindValue {:fg color.crust :bg color.peach}
-   :CmpItemKindEvent {:fg color.crust :bg color.blue}
-   :CmpItemKindOperator {:fg color.crust :bg color.blue}
-   :CmpItemKindTypeParameter {:fg color.crust :bg color.blue}
-
-   :NavicIconsFile {:bg color.mantle :fg color.blue}
-   :NavicIconsModule {:bg color.mantle :fg color.blue}
-   :NavicIconsNamespace {:bg color.mantle :fg color.green}
-   :NavicIconsPackage {:bg color.mantle :fg color.maroon}
-   :NavicIconsClass {:bg color.mantle :fg color.peach}
-   :NavicIconsMethod {:bg color.mantle :fg color.lavender}
-   :NavicIconsProperty {:bg color.mantle :fg color.blue}
-   :NavicIconsField {:bg color.mantle :fg color.blue}
-   :NavicIconsConstructor {:bg color.mantle :fg color.blue}
-   :NavicIconsEnum {:bg color.mantle :fg color.blue}
-   :NavicIconsInterface {:bg color.mantle :fg color.blue}
-   :NavicIconsFunction {:bg color.mantle :fg color.blue}
-   :NavicIconsVariable {:bg color.mantle :fg color.blue}
-   :NavicIconsConstant {:bg color.mantle :fg color.blue}
-   :NavicIconsString {:bg color.mantle :fg color.blue}
-   :NavicIconsNumber {:bg color.mantle :fg color.blue}
-   :NavicIconsBoolean {:bg color.mantle :fg color.blue}
-   :NavicIconsArray {:bg color.mantle :fg color.blue}
-   :NavicIconsObject {:bg color.mantle :fg color.blue}
-   :NavicIconsKey {:bg color.mantle :fg color.blue}
-   :NavicIconsNull {:bg color.mantle :fg color.blue}
-   :NavicIconsEnumMember {:bg color.mantle :fg color.blue}
-   :NavicIconsStruct {:bg color.mantle :fg color.blue}
-   :NavicIconsEvent {:bg color.mantle :fg color.blue}
-   :NavicIconsOperator {:bg color.mantle :fg color.blue}
-   :NavicIconsTypeParameter {:bg color.mantle :fg color.blue}
-   :NavicText {:fg color.text :bg color.mantle}
-   :NavicSeparator {:fg color.text :bg color.mantle}})
-
+  {autoload {core aniseed.core
+             nvim aniseed.nvim
+             catppuccin catppuccin
+             palette catppuccin.palettes
+             notify notify
+             {: custom-highlights } own.plugin.highlights}})
 
 (catppuccin.setup {:flavour :macchiato
                    :transparent_background false
@@ -111,3 +15,84 @@
                    :custom_highlights custom-highlights})
 
 (vim.cmd.colorscheme :catppuccin)
+
+(def- home-manager-path (vim.fn.expand "~/.config/home-manager/"))
+(def- wezterm-config-path (.. home-manager-path "wezterm.lua"))
+(def- nvim-colorscheme-path (.. home-manager-path "nvim/fnl/own/plugin/colorscheme.fnl"))
+
+(defn- capitalize [text]
+  (let [first-letter (text:sub 1 1)
+        rest (text:sub 2)]
+    (.. (first-letter:upper) rest)))
+
+(defn- symbolize [text]
+  (.. :: text))
+
+(defn- get-wezterm-catppuccin-flavor []
+  (let [(_ _ flavor) (-> wezterm-config-path
+                        (core.slurp)
+                        (string.lower)
+                        (string.find "color_scheme = 'catppuccin (%w*)'"))]
+    flavor))
+
+(defn- get-nvim-catppuccin-flavor []
+  (let [(_ _ flavor) (-> nvim-colorscheme-path
+                         (core.slurp)
+                         (string.find ":flavour :(%w*)"))]
+    flavor))
+
+(defn- update-colorscheme [new-flavor]
+  (vim.cmd (.. "Catppuccin " new-flavor)))
+
+(defn- update-file-content [path from to]
+  (let [updated-content (-> path
+                            (core.slurp)
+                            (string.gsub from to))]
+    (core.spit path updated-content)))
+
+(defn- on-wezterm-config-change []
+  (let [new-flavor (get-wezterm-catppuccin-flavor)]
+    (when (not= new-flavor catppuccin.flavour)
+      (update-file-content nvim-colorscheme-path
+                           (symbolize catppuccin.flavour)
+                           (symbolize new-flavor))
+      (update-colorscheme new-flavor))))
+
+(defn- on-nvim-config-change []
+  (let [(_ _ new-flavor) (-> (vim.fn.bufnr)
+                             (nvim.buf_get_lines 0 -1 false)
+                             (table.concat)
+                             (string.find ":flavour :(%w*)"))
+        wezterm-flavor (get-wezterm-catppuccin-flavor)]
+    (when (not= new-flavor wezterm-flavor)
+      (update-file-content wezterm-config-path
+                           (capitalize wezterm-flavor)
+                           (capitalize new-flavor))
+      (update-colorscheme new-flavor))))
+
+(defn- on-update-from-command []
+  (let [new-flavor catppuccin.flavour
+        wezterm-flavor (get-wezterm-catppuccin-flavor)
+        nvim-flavor (get-nvim-catppuccin-flavor)]
+    (when (not= new-flavor wezterm-flavor)
+      (update-file-content wezterm-config-path
+                           (capitalize wezterm-flavor)
+                           (capitalize new-flavor)))
+    (when (not= new-flavor nvim-flavor)
+      (update-file-content nvim-colorscheme-path
+                           (symbolize nvim-flavor)
+                           (symbolize new-flavor)))))
+
+(nvim.create_augroup :update-colorscheme {:clear true})
+
+(nvim.create_autocmd :BufWritePost {:pattern wezterm-config-path
+                                    :callback on-wezterm-config-change
+                                    :group :update-colorscheme})
+
+(nvim.create_autocmd :BufWritePost {:pattern nvim-colorscheme-path
+                                    :callback on-nvim-config-change
+                                    :group :update-colorscheme})
+
+(nvim.create_autocmd :ColorScheme {:pattern :*
+                                   :callback on-update-from-command
+                                   :group :update-colorscheme})
