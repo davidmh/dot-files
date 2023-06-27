@@ -105,7 +105,9 @@
                      :init_options {:preferences {:includeCompletionsWithSnippetText true
                                                   :includeCompletionsForImportStatements true}}})
 
-(def- server-configs {:vtsls {:root_dir ts-root}
+(def- server-configs {:vtsls {:root_dir ts-root
+                              :settings {:typescript {:tsdk :./node_modules/typescript/lib
+                                                      :tsserver {:pluginPaths [:.]}}}}
                       :jsonls {:settings {:json {:schemas (json-schemas.get-all)}}}
                       :lua_ls {:settings {:Lua {:completion :Replace
                                                 :diagnostics {:globals [:vim
