@@ -36,6 +36,12 @@
   :petertriho/cmp-git {:dependencies [:nvim-lua/plenary.nvim]}
 
   ;; Completion
+  :zbirenbaum/copilot.lua {:cmd :Copilot
+                           :event :InsertEnter
+                           :opts {:suggestion {:enabled false}
+                                  :panel {:enabled false}}
+                           :dependencies [:zbirenbaum/copilot-cmp]}
+
   :hrsh7th/nvim-cmp {:dependencies [:hrsh7th/cmp-nvim-lsp
                                     :hrsh7th/cmp-buffer
                                     :PaterJason/cmp-conjure
@@ -44,7 +50,9 @@
                                     :davidmh/cmp-nerdfonts
                                     :onsails/lspkind-nvim
                                     :petertriho/cmp-git
-                                    :hrsh7th/cmp-emoji]
+                                    :hrsh7th/cmp-emoji
+                                    :zbirenbaum/copilot.lua]
+                     :event :InsertEnter
                      :mod :completion}
 
   ; ;; Debugger Adapter Protocol

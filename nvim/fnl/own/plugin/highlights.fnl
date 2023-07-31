@@ -72,6 +72,8 @@
    :CmpItemKindOperator {:fg color.crust :bg color.blue}
    :CmpItemKindTypeParameter {:fg color.crust :bg color.blue}
 
+   :CmpItemKindCopilot {:fg color.crust :bg color.mauve}
+
    :NavicIconsFile {:bg color.crust :fg color.blue}
    :NavicIconsModule {:bg color.crust :fg color.blue}
    :NavicIconsNamespace {:bg color.crust :fg color.green}

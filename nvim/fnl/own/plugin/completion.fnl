@@ -3,6 +3,7 @@
              core aniseed.core
              cmp cmp
              cmp-git cmp_git
+             cmp-copilot copilot_cmp
              ls luasnip
              ls-types luasnip.util.types
              lspkind lspkind}})
@@ -10,12 +11,14 @@
 (set nvim.o.completeopt "menuone,noselect,preview")
 
 (cmp-git.setup)
+(cmp-copilot.setup)
 
 (def- menu-sources {:path      "(path)"
                     :luasnip   "(snip)"
                     :nvim_lsp  "(lsp)"
                     :emoji     "(emo)"
                     :conjure   "(conj)"
+                    :copilot   "(copilot)"
                     :orgmode   "(org)"
                     :nerdfonts "(font)"
                     :buffer    "(buff)"
@@ -48,7 +51,8 @@
                      :Struct :
                      :Event :
                      :Operator :
-                     :TypeParameter :})
+                     :TypeParameter :
+                     :Copilot :})
 
 (defn- cmp-format [entry vim-item]
   (let [kind-fmt (lspkind.cmp_format {:mode :symbol
@@ -67,7 +71,8 @@
                                                  :select true})})
 
 (cmp.setup {:mapping (cmp.mapping.preset.insert cmd-mappings)
-            :sources (cmp.config.sources [{:name :luasnip}
+            :sources (cmp.config.sources [{:name :copilot}
+                                          {:name :luasnip}
                                           {:name :nvim_lsp}
                                           {:name :orgmode}
                                           {:name :emoji}
