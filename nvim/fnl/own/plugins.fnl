@@ -21,7 +21,8 @@
                                            :hrsh7th/cmp-nvim-lsp
                                            :j-hui/fidget.nvim
                                            :kevinhwang91/nvim-ufo
-                                           :SmiteshP/nvim-navic]
+                                           :SmiteshP/nvim-navic
+                                           :pmizio/typescript-tools.nvim]
                             :name :mason
                             :mod :lsp}
 
@@ -97,6 +98,8 @@
                                     :build ::TSUpdate
                                     :mod :tree-sitter}
   :nvim-treesitter/nvim-treesitter-context {:mod :context}
+  :Wansmer/treesj {:dependencies [:nvim-treesitter/nvim-treesitter]
+                   :config {:max_join_length 400}}
 
   ;; Icons
   :nvim-tree/nvim-web-devicons {:opts {:override {:scm {:color :#A6E3A1
@@ -120,7 +123,7 @@
                                       :other "﫠"}
                               :group false}}
 
-  ;; improved quickfix window {}
+  ;; improved quickfix window
   :kevinhwang91/nvim-bqf {}
 
   ;; improved folding
@@ -176,6 +179,11 @@
                          :ft :org
                          :mod :org}
 
+  :airblade/vim-rooter {:config #(do
+                                   (set vim.g.rooter_patterns [:.git])
+                                   (set vim.g.rooter_manual_only (if vim.g.neovide 0 1))
+                                   (set vim.g.rooter_silent_chdir true))}
+
   ;; Misc Utilities
   :tommcdo/vim-exchange {}
   :tpope/vim-commentary  {}
@@ -186,6 +194,7 @@
   :tpope/vim-surround  {}
   :tpope/vim-unimpaired  {}
   :tpope/vim-projectionist  {}
+  :tpope/vim-speeddating {}
   :junegunn/vim-slash  {}
   :junegunn/vim-easy-align {:mod :easy-align}
   :vim-scripts/BufOnly.vim  {}

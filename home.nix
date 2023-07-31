@@ -23,6 +23,7 @@ in
     deno
     cargo
     clojure
+    evcxr
     fd
     (nerdfonts.override { fonts = [ "Hasklig" ]; })
     fx

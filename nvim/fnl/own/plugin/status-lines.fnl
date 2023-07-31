@@ -62,14 +62,12 @@
 (def- macro-rec {:condition #(and (not= (vim.fn.reg_recording) "")
                                   (= vim.o.cmdheight 0))
                  :update [:RecordingEnter :RecordingLeave :ColorScheme]
-                 1 [{:provider " " :hl {:fg :red :bg :none}}
-                    {:provider #(.. " @" (vim.fn.reg_recording))
-                     :hl {:bg :red :fg :base :bold true}}
-                    {:provider " " :hl {:fg :red :bg :none}}]})
+                 :provider #(.. " [ 壘 -> " (vim.fn.reg_recording) " ] ")
+                 :hl {:fg :red :bold true}})
 
 (def- show-cmd {:condition #(= vim.o.cmdheight 0)
-                :init #(set vim.opt.showcmdloc :statusline)
-                :provider "%3.5(%S%)"})
+                 :init #(set vim.opt.showcmdloc :statusline)
+                 :provider "%3.5(%S%)"})
 
 (def- file-icon {:init #(let [file-name $1.file-name
                               ext (vim.fn.fnamemodify file-name ::e)
@@ -162,7 +160,13 @@
                                {:provider #(.. " −" $1.git.removed)
                                 :condition (has-git-diff :removed)}])})
 
-(def- line-number {:provider "%2{&nu ? (&rnu && v:relnum ? v:relnum : v:lnum) : ''}"
+(def- term-title {:condition #(not= nil vim.b.term_title)
+                  :provider #(-> (.. "  " vim.b.term_title)
+                                 (string.gsub "term://" "")
+                                 (string.gsub "//%d*:" " $ ")
+                                 (string.gsub ";#toggleterm#%d*" ""))})
+
+(def- line-number {:provider " %2{&nu ? (&rnu && v:relnum ? v:relnum : v:lnum) : ''} "
                    :condition #(-> vim.o.number)})
 
 (def- fold {:provider #(let [line-num vim.v.lnum]
@@ -188,10 +192,11 @@
                   1 vi-mode
                   2 macro-rec
                   3 git-block
-                  4 dead-space
-                  5 push-right
-                  6 show-cmd
-                  7 diagnostics-block})
+                  4 term-title
+                  5 dead-space
+                  6 push-right
+                  7 show-cmd
+                  8 diagnostics-block})
 
 (def- disabled-winbar {:buftype [:nofile :prompt :quickfix :terminal]
                        :filetype [:^git.* :fugitive :Trouble :toggleterm]})

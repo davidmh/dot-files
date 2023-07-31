@@ -73,8 +73,6 @@
        :o [scratch.show :open]
        :k [scratch.kill :kill]}
 
-   :j (cmd "Telescope jumplist" "jumplist")
-
    :vp [browse-plugins "vim plugins"]
 
    :t {:name :toggle

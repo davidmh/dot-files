@@ -90,9 +90,9 @@
   {:sources [diagnostics.shellcheck
              diagnostics.pycodestyle
              diagnostics.pydocstyle
-             (diagnostics.rubocop.with {:cwd (root-pattern :.rubocop.yml)
-                                        :command :bundle
-                                        :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
+             (diagnostics.rubocop.with {:cwd (root-pattern :.rubocop.yml)})
+                                        ; :command :bundle
+                                        ; :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
              (diagnostics.luacheck.with {:cwd (root-pattern :.luacheckrc)
                                          :condition (with-root-file :.luacheckrc)})
              (diagnostics.selene.with {:cwd (root-pattern :selene.toml)
@@ -107,12 +107,13 @@
              (cspell.code_actions.with {:cwd (root-pattern :cspell.json)
                                         :filetypes cspell-filetypes})
 
-             ; formatting.jq
-             (formatting.rubocop.with {:cwd (root-pattern :.rubocop.yml)
-                                       :command :bundle
-                                       :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
+             formatting.jq
+             (formatting.rubocop.with {:cwd (root-pattern :.rubocop.yml)})
+                                       ; :command :bundle
+                                       ; :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
              formatting.stylua
-             formatting.terraform_fmt]
+             formatting.terraform_fmt
+             formatting.rustfmt]
 
    :on_attach on-attach})
 

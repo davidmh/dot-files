@@ -15,6 +15,9 @@
 (defn term-split [id]
   (toggle-term.toggle_command "direction=horizontal dir=. size=0" id))
 
+(defn term-vsplit [id]
+  (toggle-term.toggle_command (.. "direction=vertical dir=. size=" (/ vim.o.columns 2)) id))
+
 (defonce- state {:tmux-term nil})
 
 (defn toggle-tmux []
@@ -32,6 +35,7 @@
               :<C-3> [#(term-split 3) :split-term-3]
               :<C-4> [#(term-split 4) :split-term-4]
               :<C-5> [#(term-split 5) :split-term-5]
+              :<M-\> [#(term-vsplit 100) :split]
               :<M-1> [#(term-tab 1) :tab-term-1]
               :<M-2> [#(term-tab 2) :tab-term-2]
               :<M-3> [#(term-tab 3) :tab-term-3]

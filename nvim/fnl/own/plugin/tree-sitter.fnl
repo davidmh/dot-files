@@ -9,9 +9,10 @@
                         :gitcommit
                         :git_config
                         :git_rebase
-                        :hcl
+                        ; :hcl
                         :html
                         :json
+                        :json5
                         :lua
                         :luadoc
                         :make
@@ -37,9 +38,9 @@
   (table.insert additional-vim-regex-highlighting :org))
 
 (def- ts-configs (ts-parsers.get_parser_configs))
-(tset ts-configs :hcl {:install_info {:url :https://github.com/MichaHoffmann/tree-sitter-hcl
-                                      :files [:src/parser.c :src/scanner.cc]
-                                      :branch :main}})
+; (tset ts-configs :hcl {:install_info {:url :https://github.com/MichaHoffmann/tree-sitter-hcl
+;                                       :files [:src/parser.c :src/scanner.cc]
+;                                       :branch :main}})
 
 (config.setup {:highlight {:enable true}
                :indent {:enable true}
