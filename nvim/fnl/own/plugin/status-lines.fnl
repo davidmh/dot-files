@@ -103,10 +103,11 @@
 (def- file-flags [modified? read-only?])
 
 
-(def- file-name-block (container {:init #(tset $1 :file-name (nvim.buf_get_name 0))
-                                  1 file-icon
-                                  2 file-name
-                                  3 file-flags}))
+(def- file-name-block {:condition #(~= vim.o.filetype :fugitiveblame)
+                       1 (container {:init #(tset $1 :file-name (nvim.buf_get_name 0))
+                                     1 file-icon
+                                     2 file-name
+                                     3 file-flags})})
 
 (def- lsp-breadcrumb {:condition #(and (navic.is_available)
                                        (> (length (navic.get_location)) 0))
@@ -160,6 +161,10 @@
                                {:provider #(.. " −" $1.git.removed)
                                 :condition (has-git-diff :removed)}])})
 
+(def- git-blame {:condition #(= vim.o.filetype :fugitiveblame)
+                 1 (container [{:provider "git blame"
+                                :hl {:bold true}}])})
+
 (def- term-title {:condition #(not= nil vim.b.term_title)
                   :provider #(-> (.. "  " vim.b.term_title)
                                  (string.gsub "term://" "")
@@ -186,6 +191,7 @@
 (def- winbar [lsp-breadcrumb
               dead-space
               push-right
+              git-blame
               file-name-block])
 
 (def- statusline {:hl {:bg :NONE}
@@ -199,7 +205,7 @@
                   8 diagnostics-block})
 
 (def- disabled-winbar {:buftype [:nofile :prompt :quickfix :terminal]
-                       :filetype [:^git.* :fugitive :Trouble :toggleterm]})
+                       :filetype [:^git.* :Trouble :toggleterm]})
 
 (defn- initialize-heirline []
   (local opts {:colors (palettes.get_palette)

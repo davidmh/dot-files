@@ -6,7 +6,10 @@
   :folke/lazy.nvim {}
 
   :Olical/aniseed {:dependencies [:Olical/conjure]
-                   :config #(set vim.g.conjure#log#hud#border config.border)}
+                   :config #(do
+                              (set vim.g.conjure#log#hud#border config.border)
+                              (set vim.g.conjure#filetype#sql nil)
+                              (set vim.g.conjure#filetype#python nil))}
 
   :folke/neodev.nvim {:dependencies [:nvim-neotest/neotest]
                       :opts {:library {:plugins [:neotest]
@@ -36,12 +39,6 @@
   :petertriho/cmp-git {:dependencies [:nvim-lua/plenary.nvim]}
 
   ;; Completion
-  :zbirenbaum/copilot.lua {:cmd :Copilot
-                           :event :InsertEnter
-                           :opts {:suggestion {:enabled false}
-                                  :panel {:enabled false}}
-                           :dependencies [:zbirenbaum/copilot-cmp]}
-
   :hrsh7th/nvim-cmp {:dependencies [:hrsh7th/cmp-nvim-lsp
                                     :hrsh7th/cmp-buffer
                                     :PaterJason/cmp-conjure
@@ -51,8 +48,8 @@
                                     :onsails/lspkind-nvim
                                     :petertriho/cmp-git
                                     :hrsh7th/cmp-emoji
-                                    :zbirenbaum/copilot.lua]
-                     :event :InsertEnter
+                                    :zbirenbaum/copilot.lua
+                                    :zbirenbaum/copilot-cmp]
                      :mod :completion}
 
   ; ;; Debugger Adapter Protocol
@@ -102,7 +99,9 @@
   :aklt/plantuml-syntax {}
   :nvim-treesitter/playground {:cmd :TSPlaygroundToggle}
   :nvim-treesitter/nvim-treesitter {:dependencies [:nvim-treesitter/playground
-                                                   :nvim-treesitter/nvim-treesitter-context]
+                                                   :nvim-treesitter/nvim-treesitter-context
+                                                   :JoosepAlviste/nvim-ts-context-commentstring
+                                                   :numToStr/Comment.nvim]
                                     :build ::TSUpdate
                                     :mod :tree-sitter}
   :nvim-treesitter/nvim-treesitter-context {:mod :context}
@@ -194,7 +193,6 @@
 
   ;; Misc Utilities
   :tommcdo/vim-exchange {}
-  :tpope/vim-commentary  {}
   :radenling/vim-dispatch-neovim {:dependencies [:tpope/vim-dispatch]}
   :tpope/vim-eunuch  {}
   :tpope/vim-repeat  {}

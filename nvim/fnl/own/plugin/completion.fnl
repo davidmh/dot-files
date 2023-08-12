@@ -4,6 +4,7 @@
              cmp cmp
              cmp-git cmp_git
              cmp-copilot copilot_cmp
+             copilot copilot
              ls luasnip
              ls-types luasnip.util.types
              lspkind lspkind}})
@@ -11,6 +12,16 @@
 (set nvim.o.completeopt "menuone,noselect,preview")
 
 (cmp-git.setup)
+(copilot.setup {:suggestion {:enabled false}
+                :panel {:enabled false}
+                :filetypes {:javascript true
+                            :typescript true
+                            :fennel true
+                            :lua true
+                            :ruby true
+                            :rust true
+                            :zsh #(= nil (string.match (nvim.buf_get_name 0) ".*env.*"))
+                            :* false}})
 (cmp-copilot.setup)
 
 (def- menu-sources {:path      "(path)"

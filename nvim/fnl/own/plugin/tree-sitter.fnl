@@ -1,6 +1,7 @@
 (module own.plugin.tree-sitter
-  {autoload {ts-parsers nvim-treesitter.parsers
-             config nvim-treesitter.configs}})
+  {autoload {config nvim-treesitter.configs
+             Comment Comment
+             hook ts_context_commentstring.integrations.comment_nvim}})
 
 (def- additional-vim-regex-highlighting [])
 (def- ensure-installed [:bash
@@ -9,7 +10,7 @@
                         :gitcommit
                         :git_config
                         :git_rebase
-                        ; :hcl
+                        :hcl
                         :html
                         :json
                         :json5
@@ -37,11 +38,6 @@
   (table.insert ensure-installed :org)
   (table.insert additional-vim-regex-highlighting :org))
 
-(def- ts-configs (ts-parsers.get_parser_configs))
-; (tset ts-configs :hcl {:install_info {:url :https://github.com/MichaHoffmann/tree-sitter-hcl
-;                                       :files [:src/parser.c :src/scanner.cc]
-;                                       :branch :main}})
-
 (config.setup {:highlight {:enable true}
                :indent {:enable true}
                :incremental_selection {:enable true
@@ -52,4 +48,8 @@
                                                  :scope_incremental :<leader><tab>}}
                :textobjects {:enable true}
                :ensure_installed ensure-installed
-               :table_of_contents {:enable true}})
+               :table_of_contents {:enable true}
+               :context_commentstring {:enable true
+                                       :enable_autocmd false}})
+
+(Comment.setup {:pre_hook (hook.create_pre_hook)})
