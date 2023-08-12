@@ -30,11 +30,11 @@
                             :mod :lsp}
 
   ;; Diagnostics
-  :davidmh/cspell.nvim {:name :cspell.nvim
-                        :dependencies [:nvim-lua/plenary.nvim]}
-  :jose-elias-alvarez/null-ls.nvim {:dependencies [:nvim-lua/plenary.nvim :cspell.nvim]
-                                    :name :null-ls
-                                    :mod :diagnostics}
+  :mfussenegger/nvim-lint {:dependencies [:nvim-lua/plenary.nvim]
+                           :mod :diagnostics}
+
+  ;; Formatting/fixing
+  :mhartington/formatter.nvim {:mod :formatting}
 
   :petertriho/cmp-git {:dependencies [:nvim-lua/plenary.nvim]}
 
