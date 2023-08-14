@@ -36,11 +36,15 @@ in
     neovim
     pass
     silver-searcher
+    sketchybar
     teamocil
     tig
+    yabai
   ] ++ (optionals isLinux [ tdesktop xclip ]);
 
   programs.home-manager.enable = true;
+
+  programs.direnv.enable = true;
 
   programs.zsh = {
     enable = true;
