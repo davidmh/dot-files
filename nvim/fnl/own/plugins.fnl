@@ -47,10 +47,11 @@
                                     :davidmh/cmp-nerdfonts
                                     :onsails/lspkind-nvim
                                     :petertriho/cmp-git
-                                    :hrsh7th/cmp-emoji
-                                    :zbirenbaum/copilot.lua
-                                    :zbirenbaum/copilot-cmp]
+                                    :hrsh7th/cmp-emoji]
                      :mod :completion}
+
+  :zbirenbaum/copilot.lua {:mod :copilot
+                           :event :InsertEnter}
 
   ; ;; Debugger Adapter Protocol
   :mfussenegger/nvim-dap {:mod :dap
