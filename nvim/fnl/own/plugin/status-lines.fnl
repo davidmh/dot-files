@@ -69,6 +69,15 @@
                  :init #(set vim.opt.showcmdloc :statusline)
                  :provider "%3.5(%S%)"})
 
+(def- show-search {:condition #(and (= vim.o.cmdheight 0)
+                                    (not= vim.v.hlsearch 0)
+                                    (-> (vim.fn.searchcount) (. :total) (> 0)))
+                   :provider #(let [{: current : total} (vim.fn.searchcount)
+                                    direction (if (= vim.v.searchforward 1) : :)
+                                    pattern (vim.fn.getreg "/")
+                                    counter (.. "[" current :/ total "]")]
+                                (.. " " direction " " pattern " " counter))})
+
 (def- file-icon {:init #(let [file-name $1.file-name
                               ext (vim.fn.fnamemodify file-name ::e)
                               (icon color) (nvim-web-devicons.get_icon_color file-name ext {:default true})]
@@ -166,10 +175,11 @@
                                 :hl {:bold true}}])})
 
 (def- term-title {:condition #(not= nil vim.b.term_title)
-                  :provider #(-> (.. "  " vim.b.term_title)
-                                 (string.gsub "term://" "")
-                                 (string.gsub "//%d*:" " $ ")
-                                 (string.gsub ";#toggleterm#%d*" ""))})
+                  1 {:provider "  "}
+                  2 (container [{:provider #(-> vim.b.term_title
+                                                (string.gsub "term://" "")
+                                                (string.gsub "//%d*:" " $ ")
+                                                (string.gsub ";#toggleterm#%d*" ""))}])})
 
 (def- line-number {:provider " %2{&nu ? (&rnu && v:relnum ? v:relnum : v:lnum) : ''} "
                    :condition #(-> vim.o.number)})
@@ -202,7 +212,8 @@
                   5 dead-space
                   6 push-right
                   7 show-cmd
-                  8 diagnostics-block})
+                  8 diagnostics-block
+                  9 show-search})
 
 (def- disabled-winbar {:buftype [:nofile :prompt :quickfix :terminal]
                        :filetype [:^git.* :Trouble :toggleterm]})
