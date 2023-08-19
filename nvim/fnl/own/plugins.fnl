@@ -191,6 +191,7 @@
                                    (set vim.g.rooter_silent_chdir true))}
 
   ;; Misc Utilities
+  :danilamihailov/beacon.nvim {}
   :tommcdo/vim-exchange {}
   :radenling/vim-dispatch-neovim {:dependencies [:tpope/vim-dispatch]}
   :tpope/vim-eunuch  {}
