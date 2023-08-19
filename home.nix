@@ -52,19 +52,21 @@ in
     envExtra = builtins.readFile ~/.env.zsh;
     autocd = true;
     history.ignoreSpace = true;
-    oh-my-zsh = {
+    zplug = {
       enable = true;
-      plugins = ["git" "dirhistory" "colorize" "colored-man-pages"];
-      theme = "nanotech";
+      plugins = [
+        { name = "plugins/git"; tags = [from:oh-my-zsh]; }
+        { name = "plugins/dirhistory"; tags = [from:oh-my-zsh]; }
+        { name = "plugins/colorize"; tags = [from:oh-my-zsh]; }
+        { name = "plugins/chruby"; tags = [from:oh-my-zsh]; }
+        { name = "plugins/colored-man-pages"; tags = [from:oh-my-zsh]; }
+        { name = "zsh-users/zsh-syntax-highlighting"; }
+        { name = "zsh-users/zsh-autosuggestions"; }
+        { name = "zsh-users/zsh-completions"; }
+        { name = "spwhitt/nix-zsh-completions"; }
+        { name = "subnixr/minimal"; tags = [as:theme]; }
+      ];
     };
-    initExtra = ''
-      source "${pkgs.antigen}/share/antigen/antigen.zsh"
-      antigen bundle zsh-users/zsh-syntax-highlighting
-      antigen bundle zsh-users/zsh-autosuggestions
-      antigen bundle zsh-users/zsh-completions
-      antigen bundle spwhitt/nix-zsh-completions.git
-      antigen apply
-      '';
     shellAliases = {
       vim = "nvim";
     };
