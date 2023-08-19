@@ -4,7 +4,13 @@
              copilot-panel copilot.panel}})
 
 (copilot.setup {:suggestion {:enabled true
-                             :auto_trigger true}
+                             :auto_trigger true
+                             :keymap {:next :<m-n>
+                                      :prev :<m-p>
+                                      :accept :<m-y>
+                                      :accept_word :<m-w>
+                                      :accept_line :<m-l>
+                                      :dismiss "<m-[>"}}
                 :panel {:enabled true}
                 :filetypes {:javascript true
                             :typescript true
