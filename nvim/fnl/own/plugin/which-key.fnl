@@ -48,10 +48,6 @@
       vim.log.levels.INFO
       {:title :toggle :timeout 1000})))
 
-(defn- toggle-context []
-  (-> (require :treesitter-context)
-    (: :toggle)))
-
 (defn- find-files []
   (t.find_files {:find_command [:fd
                                 :--hidden
@@ -77,8 +73,7 @@
 
    :t {:name :toggle
        :b [toggle-blame-line "git blame"]
-       :d (cmd "TroubleToggle document_diagnostics" :diagnostics)
-       :c [toggle-context :context]}
+       :d (cmd "TroubleToggle document_diagnostics" :diagnostics)}
 
    ; buffers
    :b {:name :buffer

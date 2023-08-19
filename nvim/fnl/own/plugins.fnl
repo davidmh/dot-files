@@ -100,12 +100,10 @@
   :aklt/plantuml-syntax {}
   :nvim-treesitter/playground {:cmd :TSPlaygroundToggle}
   :nvim-treesitter/nvim-treesitter {:dependencies [:nvim-treesitter/playground
-                                                   :nvim-treesitter/nvim-treesitter-context
                                                    :JoosepAlviste/nvim-ts-context-commentstring
                                                    :numToStr/Comment.nvim]
                                     :build ::TSUpdate
                                     :mod :tree-sitter}
-  :nvim-treesitter/nvim-treesitter-context {:mod :context}
   :Wansmer/treesj {:dependencies [:nvim-treesitter/nvim-treesitter]
                    :config {:max_join_length 400}}
 
