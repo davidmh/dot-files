@@ -37,6 +37,9 @@
 (defn- browse-plugins []
   (telescope-file-browser (.. (vim.fn.stdpath :data) "/lazy")))
 
+(defn- browse-runtime []
+  (telescope-file-browser (vim.fn.expand "$VIMRUNTIME/lua")))
+
 (defn- set-font-size [func]
   (let [font (str.split nvim.o.guifont ::h)]
    (set nvim.o.guifont (.. (core.first font) ::h (func (core.last font))))))
@@ -70,6 +73,7 @@
        :k [scratch.kill :kill]}
 
    :vp [browse-plugins "vim plugins"]
+   :vr [browse-runtime "vim runtime"]
 
    :t {:name :toggle
        :b [toggle-blame-line "git blame"]
