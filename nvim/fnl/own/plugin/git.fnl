@@ -132,3 +132,15 @@
            :p (cmd "Gitsigns preview_hunk" :preview)
            :b [git-blame-line :blame]}}}
   {:prefix :<leader>})
+
+(defn- copy-remote-url [opts]
+  (-> (if (= opts.range 2)
+        (.. opts.line1 "," opts.line2 :GBrowse!)
+        :GBrowse!)
+      (nvim.exec2 {:output true})
+      (core.get :output)
+      (vim.notify vim.log.levels.INFO {:title "Copied to clipboard"
+                                       :icon :})))
+
+;; Same as :GBrowse! but redirects the message to the notify API
+(nvim.create_user_command :GCopy copy-remote-url {:range true :nargs 0})
