@@ -50,11 +50,13 @@
                    :!    :red
                    :t    :green})
 
+(def- not-a-term #(and
+                   (not= vim.o.buftype :terminal)
+                   (not= vim.o.filetype :toggleterm)))
+
 (def- vi-mode {:init #(tset $1 :mode (vim.fn.mode 1))
-               :provider #(case [vim.o.filetype vim.o.buftype]
-                            [:toggleterm _] :
-                            [_ :terminal] :
-                            [_ _ ] " ")
+               :condition not-a-term
+               :provider " "
                :hl #(-> {:fg (. mode-colors $1.mode)
                          :bold true})
                :update [:ModeChanged :ColorScheme]})
@@ -78,6 +80,12 @@
                                     counter (.. "[" current :/ total "]")]
                                 (.. " " direction " " pattern " " counter))})
 
+(defn- sanitize-path [path size]
+  (-> path
+      (string.gsub vim.env.HOME "~")
+      (string.gsub vim.env.REMIX_HOME "remix")
+      (vim.fn.pathshorten (or size 2))))
+
 (def- file-icon {:init #(let [file-name $1.file-name
                               ext (vim.fn.fnamemodify file-name ::e)
                               (icon color) (nvim-web-devicons.get_icon_color file-name ext {:default true})]
@@ -91,11 +99,7 @@
                                 "[no name]"
                                 (if (conditions.width_percent_below (length file-name) 0.25)
                                   file-name
-                                  (vim.fn.pathshorten
-                                    (if (starts-with file-name vim.env.HOME)
-                                      (.. "~" (string.sub file-name (+ (length vim.env.HOME) 1)))
-                                      file-name)
-                                    2))))
+                                  (sanitize-path file-name))))
                  :hl #(when vim.bo.modified
                         {:fg :fg
                          :bold true
@@ -112,7 +116,7 @@
 (def- file-flags [modified? read-only?])
 
 
-(def- file-name-block {:condition #(~= vim.o.filetype :fugitiveblame)
+(def- file-name-block {:condition #(and (~= vim.o.filetype :fugitiveblame) (not-a-term))
                        1 (container {:init #(tset $1 :file-name (nvim.buf_get_name 0))
                                      1 file-icon
                                      2 file-name
@@ -175,11 +179,15 @@
                                 :hl {:bold true}}])})
 
 (def- term-title {:condition #(not= nil vim.b.term_title)
-                  1 {:provider "  "}
-                  2 (container [{:provider #(-> vim.b.term_title
-                                                (string.gsub "term://" "")
-                                                (string.gsub "//%d*:" " $ ")
-                                                (string.gsub ";#toggleterm#%d*" ""))}])})
+                  :init #(let [title (-> vim.b.term_title
+                                         (string.gsub "term://" "")
+                                         (string.gsub ";#toggleterm#%d*" ""))
+                               parts (vim.split title "//%d*:")]
+                           (tset $1 :path (core.first parts))
+                           (tset $1 :command (core.last parts)))
+                  1 [(container [{:provider #(sanitize-path $1.path)}
+                                 {:provider "  "}
+                                 {:provider #(sanitize-path $1.command 3)}])]})
 
 (def- line-number {:provider " %2{&nu ? (&rnu && v:relnum ? v:relnum : v:lnum) : ''} "
                    :condition #(-> vim.o.number)})
@@ -198,7 +206,8 @@
                     line-number
                     signs])
 
-(def- winbar [lsp-breadcrumb
+(def- winbar [term-title
+              lsp-breadcrumb
               dead-space
               push-right
               git-blame
@@ -208,15 +217,14 @@
                   1 vi-mode
                   2 macro-rec
                   3 git-block
-                  4 term-title
-                  5 dead-space
-                  6 push-right
-                  7 show-cmd
-                  8 diagnostics-block
-                  9 show-search})
+                  4 dead-space
+                  5 push-right
+                  6 show-cmd
+                  7 diagnostics-block
+                  8 show-search})
 
-(def- disabled-winbar {:buftype [:nofile :prompt :quickfix :terminal]
-                       :filetype [:^git.* :Trouble :toggleterm]})
+(def- disabled-winbar {:buftype [:nofile :prompt :quickfix]
+                       :filetype [:^git.* :Trouble]})
 
 (defn- initialize-heirline []
   (local opts {:colors (palettes.get_palette)
