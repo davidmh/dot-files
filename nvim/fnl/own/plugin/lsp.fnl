@@ -94,7 +94,6 @@
     (navic.attach client bufnr)))
 
 (def- git-root (util.root_pattern :.git))
-(def- eslint-root (util.root_pattern :.eslintrc.js :.eslintrc.json))
 
 (def- ts-root (util.root_pattern :package.json))
 (def- deno-root (util.root_pattern :deno.json :deno.jsonc))
@@ -120,7 +119,7 @@
                                                                         :after_each
                                                                         :pending]}
                                                 :workspace {:checkThirdParty false}}}}
-                      :eslint {:root_dir eslint-root}
+                      :eslint {:root_dir git-root}
                       :denols {:root_dir deno-root}
                       :cssls {:root_dir git-root}
                       :shellcheck {:root_dir git-root}})
@@ -136,6 +135,8 @@
 
 (lspconfig.solargraph.setup {:root_dir git-root
                              :cmd [:bundle :exec :solargraph :stdio]})
+
+; (lspconfig.postgres_lsp.setup {:root_dir git-root})
 
 (nvim.create_augroup :lsp-attach {:clear true})
 (nvim.create_autocmd :LspAttach {:callback on-attach
