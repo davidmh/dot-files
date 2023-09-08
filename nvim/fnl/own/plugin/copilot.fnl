@@ -16,7 +16,9 @@
                             :typescript true
                             :typescriptreact true
                             :fennel true
+                            :less true
                             :lua true
+                            :python true
                             :ruby true
                             :rust true
                             :zsh #(= nil (string.match (nvim.buf_get_name 0) ".*env.*"))
