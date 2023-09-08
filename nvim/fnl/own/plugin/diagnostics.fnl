@@ -4,6 +4,7 @@
              lint lint
              lint-selene lint.linters.selene
              lint-luacheck lint.linters.luacheck
+             lint-cspell lint.linters.cspell
              config own.config}
    require-macros [aniseed.macros.autocmds]})
 
@@ -58,6 +59,10 @@
 
 (set lint-luacheck.args (vim.list_extend [:--config (.. vim.env.HOME :/.config/home-manager/.luacheckrc)]
                                          lint-luacheck.args))
+
+(set lint-cspell.cmd #(let [local-cspell :./node_modules/.bin/cspell
+                            stat (vim.loop.fs_stat local-cspell)]
+                        (if stat local-cspell :cspell)))
 
 (set lint.linters_by_ft {:markdown [:cspell]
                          :lua [:luacheck :selene :cspell]
