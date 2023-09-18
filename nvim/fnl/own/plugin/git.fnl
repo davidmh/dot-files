@@ -1,5 +1,6 @@
 (module own.plugin.git
-  {autoload {actions telescope.actions
+  {autoload {core aniseed.core
+             actions telescope.actions
              builtin telescope.builtin
              core aniseed.core
              diff-view diffview
@@ -110,6 +111,25 @@
       (diff-view.close)
       (diff-view.open))))
 
+(defn- files-in-commit [ref]
+  (let [output (vim.fn.systemlist [:git :show :--name-only :--oneline ref])
+        title (core.first output)
+        files (->> output
+                  (core.rest)
+                  (vim.tbl_filter #(not (core.empty? $1))))
+        next-commit (->> (vim.fn.systemlist [:git :log :-n 1 :--oneline (.. ref :^)])
+                         (core.first)
+                         (.. "next: "))
+        next-ref (-> next-commit
+                     (str.split " ")
+                     (core.second))]
+    (table.insert files next-commit)
+    (vim.ui.select files {:prompt title} #(do
+                                            (if (= $1 nil) (lua :return))
+                                            (if (= $1 next-commit)
+                                              (files-in-commit next-ref)
+                                              (vim.cmd (.. "edit " $1)))))))
+
 (wk.register
   {:g {:name :git
        :s (cmd :Git "git status")
@@ -123,6 +143,7 @@
        :L [git-buffer-log "current buffer's git log"]
        :B (cmd "'<,'>GBrowse" "open in remote service")
        :f (cmd :GFixup "fixup staged changes")
+       "<space>" [#(files-in-commit :HEAD) "files in HEAD"]
        :h {:name "hunk"
            "[" (cmd "Gitsigns prev_hunk" :prev)
            "]" (cmd "Gitsigns next_hunk" :next)

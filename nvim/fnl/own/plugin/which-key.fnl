@@ -118,7 +118,8 @@
                   :p (cmd "Lazy profile" :profile)
                   :s (cmd "Lazy sync" :sync)}
               :n {:name :notifications
-                  :o (cmd "Telescope notify" :open)}}
+                  :o (cmd "Telescope notify" :open)
+                  :d [#(vim.notify.dismiss) :dismiss]}}
              {:prefix :<localleader>})
 
 (wk.register {:L (cmd :LToggle "list toggle")

@@ -8,7 +8,8 @@
              utils heirline.utils
              palettes catppuccin.palettes
              navic nvim-navic
-             nvim-web-devicons nvim-web-devicons}})
+             nvim-web-devicons nvim-web-devicons
+             config own.config}})
 
 (def- chrome-accent :crust)
 
@@ -80,6 +81,8 @@
                                     counter (.. "[" current :/ total "]")]
                                 (.. " " direction " " pattern " " counter))})
 
+(def- clock [(container [{:provider #(vim.fn.strftime "%H:%M")}])])
+
 (defn- sanitize-path [path size]
   (-> path
       (string.gsub vim.env.HOME "~")
@@ -141,14 +144,14 @@
 (def- push-right {:provider "%="})
 
 (defn- diagnostic [severity-code color]
-  {:provider #(.. " " (number-to-sub (. $1 severity-code) " "))
+  {:provider #(.. " " (. config.icons severity-code) " " (. $1 severity-code))
    :condition #(> (. $1 severity-code) 0)
    :hl {:fg color}})
 
 (defn- diagnostic-count [severity-code]
   (length (vim.diagnostic.get 0 {:severity (. vim.diagnostic.severity severity-code)})))
 
-(def- diagnostics-block {:conditon conditions.has_diagnostics
+(def- diagnostics-block {:conditon #(conditions.has_diagnostics)
                          :init (fn [self]
                                  (tset self :ERROR (diagnostic-count :ERROR))
                                  (tset self :WARN (diagnostic-count :WARN))
@@ -158,7 +161,8 @@
                          1 (diagnostic :ERROR :red)
                          2 (diagnostic :WARN :yellow)
                          3 (diagnostic :INFO :fg)
-                         4 (diagnostic :HINT :green)})
+                         4 (diagnostic :HINT :green)
+                         5 {:provider " "}})
 
 (defn- has-git-diff [kind]
   #(> (core.get-in $1 [:git kind] 0) 0))
@@ -221,7 +225,8 @@
                   5 push-right
                   6 show-cmd
                   7 diagnostics-block
-                  8 show-search})
+                  8 show-search
+                  9 clock})
 
 (def- disabled-winbar {:buftype [:nofile :prompt :quickfix]
                        :filetype [:^git.* :Trouble]})

@@ -4,8 +4,8 @@
 
 (def icons {:ERROR :
             :WARN  :
-            :HINT  :
-            :INFO  :})
+            :INFO  :
+            :HINT  :})
 
 (tset icons severity.ERROR icons.ERROR)
 (tset icons severity.WARN icons.WARN)

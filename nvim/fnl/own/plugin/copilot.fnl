@@ -15,6 +15,7 @@
                 :filetypes {:javascript true
                             :typescript true
                             :typescriptreact true
+                            :toggleterm true
                             :fennel true
                             :less true
                             :lua true
@@ -22,4 +23,5 @@
                             :ruby true
                             :rust true
                             :zsh #(= nil (string.match (nvim.buf_get_name 0) ".*env.*"))
+                            :sh true
                             :* false}})

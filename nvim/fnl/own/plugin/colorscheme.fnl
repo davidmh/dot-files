@@ -6,7 +6,7 @@
              notify notify
              {: custom-highlights } own.plugin.highlights}})
 
-(catppuccin.setup {:flavour :macchiato
+(catppuccin.setup {:flavour :mocha
                    :transparent_background false
                    :term_colors true
                    :integrations {:lsp_trouble true

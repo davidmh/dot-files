@@ -23,7 +23,6 @@
                                            :onsails/lspkind-nvim
                                            :hrsh7th/cmp-nvim-lsp
                                            :j-hui/fidget.nvim
-                                           :kevinhwang91/nvim-ufo
                                            :SmiteshP/nvim-navic
                                            :pmizio/typescript-tools.nvim]
                             :name :mason
@@ -132,9 +131,9 @@
   ;; improved quickfix window
   :kevinhwang91/nvim-bqf {}
 
-  ;; improved folding
-  :kevinhwang91/nvim-ufo {:dependencies [:kevinhwang91/promise-async]
-                          :mod :ultra-fold}
+  ; ;; improved folding
+  ; :kevinhwang91/nvim-ufo {:dependencies [:kevinhwang91/promise-async]
+  ;                         :mod :ultra-fold}
 
   ;; Organize mappings to encourage mnemonics
   :folke/which-key.nvim {:dependencies [:lewis6991/gitsigns.nvim]
