@@ -33,6 +33,7 @@ in
     jq
     lazygit
     leiningen
+    lsd
     lua51Packages.luarocks
     neovim
     pass
@@ -70,6 +71,7 @@ in
     };
     shellAliases = {
       vim = "nvim";
+      ll = "lsd";
     };
   };
 
