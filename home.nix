@@ -17,6 +17,7 @@ in
   home.sessionVariables = {
     EDITOR = "nvim";
     TIG_EDITOR = "nvim";
+    DIRENV_LOG_FORMAT = "";
   };
 
   home.packages = with pkgs; [
