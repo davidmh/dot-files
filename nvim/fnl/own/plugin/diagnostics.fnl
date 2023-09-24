@@ -1,12 +1,40 @@
 (module own.plugin.diagnostics
   {autoload {core aniseed.core
              nvim aniseed.nvim
-             lint lint
-             lint-selene lint.linters.selene
-             lint-luacheck lint.linters.luacheck
-             lint-cspell lint.linters.cspell
+             null-ls null-ls
+             lists own.lists
+             u null-ls.utils
+             cspell cspell
              config own.config}
    require-macros [aniseed.macros.autocmds]})
+
+(def- formatting null-ls.builtins.formatting)
+(def- diagnostics null-ls.builtins.diagnostics)
+(def- code_actions null-ls.builtins.code_actions)
+
+(defn- root-pattern [pattern]
+  (fn [{: bufname}]
+    (let [root-fn (u.root_pattern pattern)]
+      (root-fn (vim.fn.expand bufname)))))
+
+(defn- with-root-file [& files]
+  (fn [utils]
+    (utils.root_has_file files)))
+
+(def- cspell-filetypes [:css
+                        :gitcommit
+                        :clojure
+                        :html
+                        :javascript
+                        :json
+                        :less
+                        :lua
+                        :markdown
+                        :python
+                        :ruby
+                        :typescript
+                        :typescriptreact
+                        :yaml])
 
 (comment
   ; TODO: render gitsigns and diagnostic icons side to side
@@ -52,27 +80,46 @@
                                                :*.received.json$])]
     (core.empty? ignore-matches)))
 
-(nvim.create_augroup :own-diagnostics {:clear true})
+(defn- lsp-formatting [bufnr]
+  (vim.lsp.buf.format {:filter #(= $1.name :null-ls)
+                       :bufnr bufnr}))
 
-(set lint-selene.args (vim.list_extend [:--config (.. vim.env.HOME :/.config/home-manager/selene.toml)]
-                                       lint-selene.args))
+(nvim.create_augroup :lsp-formatting {:clear true})
 
-(set lint-luacheck.args (vim.list_extend [:--config (.. vim.env.HOME :/.config/home-manager/.luacheckrc)]
-                                         lint-luacheck.args))
+(defn- on-attach [client bufnr]
+  (when (client.supports_method :textDocument/formatting)
+        (should-format bufnr)
+    (nvim.create_autocmd :BufWritePre {:buffer bufnr
+                                       :callback #(lsp-formatting bufnr)
+                                       :group :lsp-formatting})))
 
-(set lint-cspell.cmd #(let [local-cspell :./node_modules/.bin/cspell
-                            stat (vim.loop.fs_stat local-cspell)]
-                        (if stat local-cspell :cspell)))
+(null-ls.setup
+  {:sources [diagnostics.shellcheck
+             ; diagnostics.pycodestyle
+             ; diagnostics.pydocstyle
+             (diagnostics.rubocop.with {:cwd (root-pattern :.rubocop.yml)})
+                                        ; :command :bundle
+                                        ; :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
+             (diagnostics.luacheck.with {:cwd (root-pattern :.luacheckrc)
+                                         :condition (with-root-file :.luacheckrc)})
+             (diagnostics.selene.with {:cwd (root-pattern :selene.toml)
+                                       :condition (with-root-file :selene.toml)})
+             ; (diagnostics.pylint.with  {:cwd (root-pattern :venv/)})
+             (cspell.diagnostics.with {:cwd (root-pattern :cspell.json)
+                                       :prefer_local :./node_modules/.bin
+                                       :filetypes cspell-filetypes
+                                       :diagnostics_postprocess #(tset $1 :severity vim.diagnostic.severity.W)})
 
-(set lint.linters_by_ft {:markdown [:cspell]
-                         :lua [:luacheck :selene :cspell]
-                         :ruby [:rubocop :cspell]
-                         :sh [:shellcheck :cspell]
-                         :javascript [:cspell]
-                         :typescript [:cspell]
-                         :typescriptreact [:cspell]
-                         :python [:pylint :pycodestyle :pydocstyle]
-                         :rust [:cspell]})
+             code_actions.shellcheck
+             (cspell.code_actions.with {:cwd (root-pattern :cspell.json)
+                                        :filetypes cspell-filetypes})
 
-(nvim.create_autocmd [:BufEnter :BufWritePost] {:callback #(lint.try_lint)
-                                                :group :own-diagnostics})
+             formatting.jq
+             (formatting.rubocop.with {:cwd (root-pattern :.rubocop.yml)})
+                                       ; :command :bundle
+                                       ; :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
+             formatting.stylua
+             formatting.terraform_fmt
+             formatting.rustfmt]
+
+   :on_attach on-attach})

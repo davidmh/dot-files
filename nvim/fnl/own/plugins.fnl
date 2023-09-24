@@ -29,11 +29,9 @@
                             :mod :lsp}
 
   ;; Diagnostics
-  :mfussenegger/nvim-lint {:dependencies [:nvim-lua/plenary.nvim]
-                           :mod :diagnostics}
-
-  ;; Formatting/fixing
-  :mhartington/formatter.nvim {:mod :formatting}
+  :jose-elias-alvarez/null-ls.nvim {:dependencies [:nvim-lua/plenary.nvim
+                                                   :davidmh/cspell.nvim]
+                                    :mod :diagnostics}
 
   :petertriho/cmp-git {:dependencies [:nvim-lua/plenary.nvim]}
 
@@ -186,7 +184,7 @@
 
   :airblade/vim-rooter {:config #(do
                                    (set vim.g.rooter_patterns [:.git])
-                                   (set vim.g.rooter_manual_only (if vim.g.neovide 0 1))
+                                   ; (set vim.g.rooter_manual_only (if vim.g.neovide 0 1))
                                    (set vim.g.rooter_silent_chdir true))}
 
   ;; Misc Utilities
