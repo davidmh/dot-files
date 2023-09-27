@@ -1,10 +1,8 @@
-(module own.plugin.colorscheme
-  {autoload {core aniseed.core
-             nvim aniseed.nvim
-             catppuccin catppuccin
-             palette catppuccin.palettes
-             notify notify
-             {: custom-highlights } own.plugin.highlights}})
+(import-macros {: augroup} :own.macros)
+
+(local core (require :nfnl.core))
+(local catppuccin (require :catppuccin))
+(local custom-highlights (require :own.plugin.highlights))
 
 (catppuccin.setup {:flavour :mocha
                    :transparent_background false
@@ -16,41 +14,41 @@
 
 (vim.cmd.colorscheme :catppuccin)
 
-(def- home-manager-path (vim.fn.expand "~/.config/home-manager/"))
-(def- wezterm-config-path (.. home-manager-path "wezterm.lua"))
-(def- nvim-colorscheme-path (.. home-manager-path "nvim/fnl/own/plugin/colorscheme.fnl"))
+(local home-manager-path (vim.fn.expand "~/.config/home-manager/"))
+(local wezterm-config-path (.. home-manager-path "wezterm.lua"))
+(local nvim-colorscheme-path (.. home-manager-path "nvim/fnl/own/plugin/colorscheme.fnl"))
 
-(defn- capitalize [text]
+(fn capitalize [text]
   (let [first-letter (text:sub 1 1)
         rest (text:sub 2)]
     (.. (first-letter:upper) rest)))
 
-(defn- symbolize [text]
+(fn symbolize [text]
   (.. :: text))
 
-(defn- get-wezterm-catppuccin-flavor []
+(fn get-wezterm-catppuccin-flavor []
   (let [(_ _ flavor) (-> wezterm-config-path
                         (core.slurp)
                         (string.lower)
                         (string.find "color_scheme = 'catppuccin (%w*)'"))]
     flavor))
 
-(defn- get-nvim-catppuccin-flavor []
+(fn get-nvim-catppuccin-flavor []
   (let [(_ _ flavor) (-> nvim-colorscheme-path
                          (core.slurp)
                          (string.find ":flavour :(%w*)"))]
     flavor))
 
-(defn- update-colorscheme [new-flavor]
+(fn update-colorscheme [new-flavor]
   (vim.cmd (.. "Catppuccin " new-flavor)))
 
-(defn- update-file-content [path from to]
+(fn update-file-content [path from to]
   (let [updated-content (-> path
                             (core.slurp)
                             (string.gsub from to))]
     (core.spit path updated-content)))
 
-(defn- on-wezterm-config-change []
+(fn on-wezterm-config-change []
   (let [new-flavor (get-wezterm-catppuccin-flavor)]
     (when (not= new-flavor catppuccin.flavour)
       (update-file-content nvim-colorscheme-path
@@ -58,9 +56,9 @@
                            (symbolize new-flavor))
       (update-colorscheme new-flavor))))
 
-(defn- on-nvim-config-change []
+(fn on-nvim-config-change []
   (let [(_ _ new-flavor) (-> (vim.fn.bufnr)
-                             (nvim.buf_get_lines 0 -1 false)
+                             (vim.api.nvim_buf_get_lines 0 -1 false)
                              (table.concat)
                              (string.find ":flavour :(%w*)"))
         wezterm-flavor (get-wezterm-catppuccin-flavor)]
@@ -70,7 +68,7 @@
                            (capitalize new-flavor))
       (update-colorscheme new-flavor))))
 
-(defn- on-update-from-command []
+(fn on-update-from-command []
   (let [new-flavor catppuccin.flavour
         wezterm-flavor (get-wezterm-catppuccin-flavor)
         nvim-flavor (get-nvim-catppuccin-flavor)]
@@ -83,16 +81,16 @@
                            (symbolize nvim-flavor)
                            (symbolize new-flavor)))))
 
-(nvim.create_augroup :update-colorscheme {:clear true})
+(vim.api.nvim_create_augroup :update-colorscheme {:clear true})
 
-(nvim.create_autocmd :BufWritePost {:pattern wezterm-config-path
-                                    :callback on-wezterm-config-change
-                                    :group :update-colorscheme})
+(vim.api.nvim_create_autocmd :BufWritePost {:pattern wezterm-config-path
+                                            :callback on-wezterm-config-change
+                                            :group :update-colorscheme})
 
-(nvim.create_autocmd :BufWritePost {:pattern nvim-colorscheme-path
-                                    :callback on-nvim-config-change
-                                    :group :update-colorscheme})
+(vim.api.nvim_create_autocmd :BufWritePost {:pattern nvim-colorscheme-path
+                                            :callback on-nvim-config-change
+                                            :group :update-colorscheme})
 
-(nvim.create_autocmd :ColorScheme {:pattern :*
-                                   :callback on-update-from-command
-                                   :group :update-colorscheme})
+(vim.api.nvim_create_autocmd :ColorScheme {:pattern :*
+                                           :callback on-update-from-command
+                                           :group :update-colorscheme})

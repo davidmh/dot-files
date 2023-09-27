@@ -1,9 +1,10 @@
-(module own.plugin.oil
-  {autoload {oil oil}})
+(import-macros {: map} :own.macros)
+
+(local oil (require :oil))
 
 (oil.setup {:view_options {:show_hidden true}})
 
-(vim.keymap.set :n :- #(do (vim.cmd :split)
-                           (oil.open)))
-(vim.keymap.set :n :\ #(do (vim.cmd :vsplit)
-                           (oil.open)))
+(map :n :- #(do (vim.cmd :split)
+                (oil.open)))
+(map :n :\ #(do (vim.cmd :vsplit)
+                (oil.open)))

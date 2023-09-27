@@ -1,14 +1,12 @@
-(module own.plugin.which-key
-  {autoload {nvim aniseed.nvim
-             str aniseed.string
-             core aniseed.core
-             config own.config
-             wk which-key
-             t telescope.builtin
-             telescope telescope
-             toggle-term toggleterm
-             gitsigns gitsigns
-             scratch own.scratch}})
+(local str (require :nfnl.string))
+(local core (require :nfnl.core))
+(local config (require :own.config))
+(local wk (require :which-key))
+(local t (require :telescope.builtin))
+(local telescope (require :telescope))
+(local toggle-term (require :toggleterm))
+(local gitsigns (require :gitsigns))
+(local scratch (require :own.scratch))
 
 (set vim.o.timeoutlen 2500)
 
@@ -23,35 +21,35 @@
                     :margin [2 30 2 30]
                     :winblend 10}})
 
-(defn- cmd [expression description]
+(fn cmd [expression description]
   [(.. :<cmd> expression :<cr>) description])
 
 ; helpers
-(defn- grep-buffer-content []
+(fn grep-buffer-content []
   (t.live_grep {:prompt_title "Find in open buffers"
                 :grep_open_files true}))
 
-(defn- telescope-file-browser [path]
+(fn telescope-file-browser [path]
   (t.find_files {:depth 4 :cwd path}))
 
-(defn- browse-plugins []
+(fn browse-plugins []
   (telescope-file-browser (.. (vim.fn.stdpath :data) "/lazy")))
 
-(defn- browse-runtime []
+(fn browse-runtime []
   (telescope-file-browser (vim.fn.expand "$VIMRUNTIME/lua")))
 
-(defn- set-font-size [func]
-  (let [font (str.split nvim.o.guifont ::h)]
-   (set nvim.o.guifont (.. (core.first font) ::h (func (core.last font))))))
+(fn set-font-size [func]
+  (let [font (str.split vim.o.guifont ::h)]
+   (set vim.o.guifont (.. (core.first font) ::h (func (core.last font))))))
 
-(defn- toggle-blame-line []
+(fn toggle-blame-line []
   (let [enabled? (gitsigns.toggle_current_line_blame)]
     (vim.notify
       (.. "Git blame line " (if enabled? :on :off))
       vim.log.levels.INFO
       {:title :toggle :timeout 1000})))
 
-(defn- find-files []
+(fn find-files []
   (t.find_files {:find_command [:fd
                                 :--hidden
                                 :--type :f
@@ -142,13 +140,13 @@
 ; It would be the equivalent of mapping all the
 ; iterations of the actions in normal and visual mode
 ; and their uppercase versions
-(def- shared-actions
+(local shared-actions
   {:y {:name :yank    :dir :into}
    :x {:name :delete  :dir :into}
    :p {:name :paste   :dir :from}
    :c {:name :change  :dir :into}})
 
-(defn- os-clipboard-cmd [action name direction]
+(fn os-clipboard-cmd [action name direction]
   [(.. "\"+" action) (.. name " " direction " the OS clipboard")])
 
 (let [os-mappings {}]

@@ -1,9 +1,7 @@
-(module own.package
-  {autoload {core aniseed.core
-             str aniseed.string
-             wk which-key}})
+(local core (require :nfnl.core))
+(local str (require :nfnl.string))
 
-(defn- get-package-paths [current-file]
+(fn get-package-paths [current-file]
   (let [paths []]
     (each [dir (vim.fs.parents current-file)]
       (when (= (vim.fn.filereadable (.. dir :/package.json)) 1)
@@ -12,12 +10,12 @@
         (when (= dir :./) (lua "return paths"))))
     paths))
 
-(defn- parse-package [package-path]
+(fn parse-package [package-path]
   (-> package-path
       (vim.fn.readfile "")
       (vim.fn.json_decode)))
 
-(defn- parse-scripts [package-path]
+(fn parse-scripts [package-path]
   (let [yarn-dir (-> package-path
                      (string.gsub (vim.fn.getcwd) "")
                      (string.gsub :package.json ""))
@@ -27,20 +25,20 @@
                  (core.keys))]
     (vim.tbl_map (fn [key] (.. yarn-dir " | " key)) keys)))
 
-(defn- format-script [script]
+(fn format-script [script]
   (let [parts (str.split script " | ")
         dir (core.first parts)
         cmd (core.second parts)]
     (.. "[" dir "] " cmd)))
 
-(defn- run-script [script]
+(fn run-script [script]
   (when script
     (let [parts (str.split script " | ")
           dir (core.first parts)
           cmd (core.second parts)]
       (vim.cmd (.. "Dispatch -dir=" dir " yarn run " cmd))))) 
 
-(defn- yarn-select []
+(fn yarn-select []
   (let [package-paths (get-package-paths (vim.fn.expand :%))
         scripts (vim.tbl_map parse-scripts package-paths)
         all (core.reduce core.concat [] scripts)]
@@ -50,19 +48,19 @@
        :format_item format-script}
       run-script)))
 
-(defn- setup-package-command []
+(fn setup-package-command []
   (let [has-paths (-> (vim.fn.expand :%)
                       (get-package-paths)
                       (core.first))]
     (when has-paths
-      (wk.register {:y [yarn-select :yarn]}
-                   {:prefix :<localleader>
-                    :buffer 0}))))
+      (vim.keymap.set :<localleader>y yarn-select {:desc :yarn :buffer 0}))))
 
 (vim.api.nvim_create_augroup :package-command {:clear true})
 
-(defn setup []
+(fn setup []
   (vim.api.nvim_create_autocmd
     [:BufEnter :BufCreate]
     {:callback setup-package-command
      :group :package-command}))
+
+{: setup}

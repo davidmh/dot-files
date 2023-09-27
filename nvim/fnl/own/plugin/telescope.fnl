@@ -1,6 +1,5 @@
-(module own.plugin.telescope
-  {autoload {nvim aniseed.nvim
-             telescope telescope}})
+(import-macros {: map} :own.macros)
+(local telescope (require :telescope))
 
 (telescope.setup {:defaults {:layout_strategy :horizontal
                              :layout_config {:horizontal {:prompt_position :top
@@ -18,5 +17,5 @@
                              :results_title false}
                   :pickers {:buffers {:sort_mru true}}})
 
-(vim.keymap.set :n :<M-x> ::Telescope<CR> {:nowait true})
-(vim.keymap.set :n :<D-x> ::Telescope<CR> {:nowait true})
+(map :n :<M-x> ::Telescope<CR> {:nowait true})
+(map :n :<D-x> ::Telescope<CR> {:nowait true})

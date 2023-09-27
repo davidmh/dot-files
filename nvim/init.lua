@@ -61,10 +61,9 @@ end
 -- Lazy.nvim as a plugin manager
 ensure('folke', 'lazy.nvim')
 
--- Aniseed compiles Fennel to Lua and loads it automatically.
-ensure('Olical', 'aniseed')
+-- nfnl compiles Fennel to Lua
+ensure('Olical', 'nfnl')
 
 ensure('catppuccin', 'nvim', 'catppuccin')
 
--- Enable Aniseed's automatic compilation and loading of Fennel source code.
-vim.g['aniseed#env'] = { module = 'own.init' } -- fnl/own/init.fnl
+require('own.init')

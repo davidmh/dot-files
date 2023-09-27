@@ -1,15 +1,16 @@
-(module own.plugins {autoload {config own.config
-                               {: load-plugins} own.lazy}})
+(local config (require :own.config))
+(local load-plugins (require :own.lazy))
 
 (load-plugins
   ;; lazy.nvim should manage itself
   :folke/lazy.nvim {}
 
-  :Olical/aniseed {:dependencies [:Olical/conjure]
-                   :config #(do
-                              (set vim.g.conjure#log#hud#border config.border)
-                              (set vim.g.conjure#filetype#sql nil)
-                              (set vim.g.conjure#filetype#python nil))}
+  :Olical/nfnl {:config true
+                :dependencies [:Olical/conjure]
+                :config #(do
+                           (set vim.g.conjure#log#hud#border config.border)
+                           (set vim.g.conjure#filetype#sql nil)
+                           (set vim.g.conjure#filetype#python nil))}
 
   :folke/neodev.nvim {:dependencies [:nvim-neotest/neotest]
                       :opts {:library {:plugins [:neotest]
@@ -49,12 +50,6 @@
 
   :zbirenbaum/copilot.lua {:mod :copilot
                            :event :InsertEnter}
-
-  ; ;; Debugger Adapter Protocol
-  :mfussenegger/nvim-dap {:mod :dap
-                          :dependencies [:rcarriga/nvim-dap-ui
-                                         :theHamsta/nvim-dap-virtual-text]
-                          :event :VeryLazy}
 
   ;; Tests
   :nvim-neotest/neotest {:dependencies [:nvim-lua/plenary.nvim

@@ -1,9 +1,7 @@
-(module own.plugin.testing
-  {autoload {neotest neotest
-             neotest-rspec neotest-rspec
-             neotest-plenary neotest-plenary
-             neotest-jest neotest-jest
-             wk which-key}})
+(local neotest (require :neotest))
+(local neotest-rspec (require :neotest-rspec))
+(local neotest-plenary (require :neotest-plenary))
+(local wk (require :which-key))
 
 (neotest.setup {:adapters [(neotest-rspec {:rspec_cmd [:bundle :exec :rspec]})
                            neotest-plenary]

@@ -1,17 +1,14 @@
-(module own.plugin.git
-  {autoload {core aniseed.core
-             actions telescope.actions
-             builtin telescope.builtin
-             core aniseed.core
-             diff-view diffview
-             git-signs gitsigns
-             nvim aniseed.nvim
-             previewers telescope.previewers
-             putils telescope.previewers.utils
-             state telescope.actions.state
-             str aniseed.string
-             utils telescope.utils
-             wk which-key}})
+(local core (require :nfnl.core))
+(local actions (require :telescope.actions))
+(local builtin (require :telescope.builtin))
+(local diff-view (require :diffview))
+(local git-signs (require :gitsigns))
+(local previewers (require :telescope.previewers))
+(local putils (require :telescope.previewers.utils))
+(local state (require :telescope.actions.state))
+(local str (require :nfnl.string))
+(local utils (require :telescope.utils))
+(local wk (require :which-key))
 
 (set vim.g.fugitive_legacy_commands false)
 (vim.cmd "cabbrev git Git")
@@ -20,10 +17,10 @@
 
 (diff-view.setup {:key_bindings {:disable_defaults false}})
 
-(defn- cmd [expression description]
+(fn cmd [expression description]
   [(.. :<cmd> expression :<cr>) description])
 
-(defn- git-fixup [prompt-bufnr]
+(fn git-fixup [prompt-bufnr]
   "Creates a fixup using the selected commit. Assumes there are staged files to
   be committed."
   (let [current-picker (state.get_current_picker prompt-bufnr)
@@ -37,25 +34,25 @@
               results (if (= ret 0) output ["Nothing to fixup, have you staged your changes?"])]
           (vim.fn.setqflist results :r {:title (str.join " " cmd)}))))))
 
-(defn- view-commit [target]
+(fn view-commit [target]
   "Open the selected commit using a fugitive command"
   (fn [prompt-bufnr]
     (let [selection (state.get_selected_entry)]
       (actions.close prompt-bufnr)
       (vim.cmd (.. target " " selection.value)))))
 
-(defn- yank-commit [propmt-bufnr]
+(fn yank-commit [propmt-bufnr]
   "Yank the selected commit into the default registry"
   (let [selection (state.get_selected_entry)]
     (actions.close propmt-bufnr)
     (vim.cmd (string.format "let @@='%s'" selection.value))))
 
-(defn- git-browse []
+(fn git-browse []
   "Open the selected commit in the platform hosting the remote. Depends on
   vim-fugitive's :GBrowse"
   (vim.cmd (.. "GBrowse " (. (state.get_selected_entry) :value))))
 
-(defn- git-commit-preview-fn [opts]
+(fn git-commit-preview-fn [opts]
   (previewers.new_buffer_previewer
     {:get_buffer_by_name (fn [_ entry] entry.value)
      :define_preview (fn [self entry]
@@ -67,9 +64,9 @@
                           :cwd opts.cwd})
                        (putils.regex_highlighter self.state.bufnr :git))}))
 
-(def- git-commit-preview (utils.make_default_callable git-commit-preview-fn {}))
+(local git-commit-preview (utils.make_default_callable git-commit-preview-fn {}))
 
-(defn- git-log-mappings [_ map]
+(fn git-log-mappings [_ map]
   (actions.select_default:replace (view-commit :Gtabedit))
   (map :i :<C-x> (view-commit :Gsplit))
   (map :n :<C-x> (view-commit :Gsplit))
@@ -86,7 +83,7 @@
   (map :n :<C-f> git-fixup)
   true)
 
-(defn- git-log [opts]
+(fn git-log [opts]
   (let [opts (or opts {})
         limit (or opts.limit 3000)
         command [:git :log
@@ -97,21 +94,21 @@
                           :previewer (git-commit-preview.new opts)
                           :git_command command})))
 
-(defn- git-buffer-log []
+(fn git-buffer-log []
   (git-log {:path (vim.fn.expand :%)}))
 
-(defn- git-blame-line []
+(fn git-blame-line []
   (git-signs.blame_line true))
 
-(defn- toggle-diff-view []
-  (let [buffer-prefix (-> (nvim.buf_get_name 0)
+(fn toggle-diff-view []
+  (let [buffer-prefix (-> (vim.api.nvim_buf_get_name 0)
                           (str.split ::)
                           (core.first))]
     (if (= buffer-prefix :diffview)
       (diff-view.close)
       (diff-view.open))))
 
-(defn- files-in-commit [ref]
+(fn files-in-commit [ref]
   (let [output (vim.fn.systemlist [:git :show :--name-only :--oneline ref])
         title (core.first output)
         files (->> output
@@ -154,14 +151,14 @@
            :b [git-blame-line :blame]}}}
   {:prefix :<leader>})
 
-(defn- copy-remote-url [opts]
+(fn copy-remote-url [opts]
   (-> (if (= opts.range 2)
         (.. opts.line1 "," opts.line2 :GBrowse!)
         :GBrowse!)
-      (nvim.exec2 {:output true})
+      (vim.api.nvim_exec2 {:output true})
       (core.get :output)
       (vim.notify vim.log.levels.INFO {:title "Copied to clipboard"
                                        :icon :})))
 
 ;; Same as :GBrowse! but redirects the message to the notify API
-(nvim.create_user_command :GCopy copy-remote-url {:range true :nargs 0})
+(vim.api.nvim_create_user_command :GCopy copy-remote-url {:range true :nargs 0})

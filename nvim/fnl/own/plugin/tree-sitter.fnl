@@ -1,42 +1,42 @@
-(module own.plugin.tree-sitter
-  {autoload {config nvim-treesitter.configs
-             Comment Comment
-             hook ts_context_commentstring.integrations.comment_nvim}})
+(local config (require :nvim-treesitter.configs))
+(local Comment (require :Comment))
+(local hook (require :ts_context_commentstring.integrations.comment_nvim))
 
-(def- additional-vim-regex-highlighting [])
-(def- ensure-installed [:bash
-                        :fennel
-                        :gitattributes
-                        :gitcommit
-                        :git_config
-                        :git_rebase
-                        :hcl
-                        :html
-                        :json
-                        :json5
-                        :lua
-                        :luadoc
-                        :make
-                        :markdown
-                        :markdown_inline
-                        :nix
-                        :python
-                        :query
-                        :regex
-                        :ruby
-                        :rust
-                        :sql
-                        :terraform
-                        :tsx
-                        :typescript
-                        :vim
-                        :vimdoc
-                        :yaml])
+(local additional-vim-regex-highlighting [])
+(local ensure-installed [:bash
+                         :fennel
+                         :gitattributes
+                         :gitcommit
+                         :git_config
+                         :git_rebase
+                         :hcl
+                         :html
+                         :json
+                         :json5
+                         :lua
+                         :luadoc
+                         :make
+                         :markdown
+                         :markdown_inline
+                         :nix
+                         :python
+                         :query
+                         :regex
+                         :ruby
+                         :rust
+                         :sql
+                         :terraform
+                         :tsx
+                         :typescript
+                         :vim
+                         :vimdoc
+                         :yaml])
 
-(when-let [(ok? org-mode) (pcall require :orgmode)]
-  (org-mode.setup_ts_grammar)
-  (table.insert ensure-installed :org)
-  (table.insert additional-vim-regex-highlighting :org))
+(let [(ok? org-mode) (pcall require :orgmode)]
+  (when ok?
+    (org-mode.setup_ts_grammar)
+    (table.insert ensure-installed :org)
+    (table.insert additional-vim-regex-highlighting :org)))
 
 (config.setup {:highlight {:enable true}
                :indent {:enable true}

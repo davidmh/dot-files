@@ -1,57 +1,55 @@
-(module own.plugin.completion
-  {autoload {nvim aniseed.nvim
-             core aniseed.core
-             cmp cmp
-             cmp-git cmp_git
-             ls luasnip
-             ls-types luasnip.util.types
-             lspkind lspkind}})
+(import-macros {: map} :own.macros)
 
-(set nvim.o.completeopt "menuone,noselect,preview")
+(local cmp (require :cmp))
+(local cmp-git (require :cmp_git))
+(local ls (require :luasnip))
+(local lspkind (require :lspkind))
+
+(set vim.o.completeopt "menuone,noselect,preview")
 
 (cmp-git.setup)
 
-(def- menu-sources {:path      "(path)"
-                    :luasnip   "(snip)"
-                    :nvim_lsp  "(lsp)"
-                    :emoji     "(emo)"
-                    :conjure   "(conj)"
-                    :orgmode   "(org)"
-                    :nerdfonts "(font)"
-                    :buffer    "(buff)"
-                    :nvim_lua  "(lua)"
-                    :git       "(git)"
-                    :omni      "(omni)"})
+(local menu-sources {:path      "(path)"
+                     :luasnip   "(snip)"
+                     :nvim_lsp  "(lsp)"
+                     :emoji     "(emo)"
+                     :conjure   "(conj)"
+                     :orgmode   "(org)"
+                     :nerdfonts "(font)"
+                     :buffer    "(buff)"
+                     :nvim_lua  "(lua)"
+                     :git       "(git)"
+                     :omni      "(omni)"})
 
 ;; use v2 nerdfonts
-(def- v2-symbol-map {:Text :
-                     :Method :
-                     :Function :
-                     :Constructor :
-                     :Field :
-                     :Variable :
-                     :Class :
-                     :Interface :
-                     :Module :
-                     :Property :
-                     :Unit :
-                     :Value :
-                     :Enum :
-                     :Keyword :
-                     :Snippet :
-                     :Color :
-                     :File :
-                     :Reference :
-                     :Folder :
-                     :EnumMember :
-                     :Constant :
-                     :Struct :
-                     :Event :
-                     :Operator :
-                     :TypeParameter :
-                     :Copilot :})
+(local v2-symbol-map {:Text :
+                      :Method :
+                      :Function :
+                      :Constructor :
+                      :Field :
+                      :Variable :
+                      :Class :
+                      :Interface :
+                      :Module :
+                      :Property :
+                      :Unit :
+                      :Value :
+                      :Enum :
+                      :Keyword :
+                      :Snippet :
+                      :Color :
+                      :File :
+                      :Reference :
+                      :Folder :
+                      :EnumMember :
+                      :Constant :
+                      :Struct :
+                      :Event :
+                      :Operator :
+                      :TypeParameter :
+                      :Copilot :})
 
-(defn- cmp-format [entry vim-item]
+(fn cmp-format [entry vim-item]
   (let [kind-fmt (lspkind.cmp_format {:mode :symbol
                                       :menu menu-sources
                                       :maxwidth 30
@@ -60,12 +58,12 @@
     (tset kind-item :kind (.. " " kind-item.kind " "))
     kind-item))
 
-(def- cmd-mappings {:<C-d> (cmp.mapping.scroll_docs -4)
-                    :<C-f> (cmp.mapping.scroll_docs 4)
-                    :<C-Space> (cmp.mapping.complete)
-                    :<C-e> (cmp.mapping.close)
-                    :<C-y> (cmp.mapping.confirm {:behavior cmp.ConfirmBehavior.Insert
-                                                 :select true})})
+(local cmd-mappings {:<C-d> (cmp.mapping.scroll_docs -4)
+                     :<C-f> (cmp.mapping.scroll_docs 4)
+                     :<C-Space> (cmp.mapping.complete)
+                     :<C-e> (cmp.mapping.close)
+                     :<C-y> (cmp.mapping.confirm {:behavior cmp.ConfirmBehavior.Insert
+                                                  :select true})})
 
 (cmp.setup {:mapping (cmp.mapping.preset.insert cmd-mappings)
             :sources (cmp.config.sources [{:name :luasnip}
@@ -89,25 +87,20 @@
                   :update_events "TextChanged,TextChangedI"
                   :enable_autosnippets true})
 
-(vim.keymap.set [:i :s]
-                :<c-k>
-                (fn [] (if (ls.expand_or_jumpable) (ls.expand_or_jump)))
-                {:silent true})
+(map [:i :s] :<c-k> #(if (ls.expand_or_jumpable) (ls.expand_or_jump)))
 
-(vim.keymap.set [:i]
-                :<c-l>
-                (fn [] (if (ls.choice_active) (ls.change_choice 1))))
+(map [:i] :<c-l> #(if (ls.choice_active) (ls.change_choice 1)))
 
 ;; snippets config
-(def- js-log (ls.snippet :debug [(ls.text_node "console.log('DEBUG', { ")
-                                 (ls.insert_node 0)
-                                 (ls.text_node " });")]))
+(local js-log (ls.snippet :debug [(ls.text_node "console.log('DEBUG', { ")
+                                  (ls.insert_node 0)
+                                  (ls.text_node " });")]))
 
-(def- js-test-case (ls.snippet :it [(ls.text_node "it('")
-                                    (ls.insert_node 1)
-                                    (ls.text_node "', () => {")
-                                    (ls.insert_node 0)
-                                    (ls.text_node "});")]))
+(local js-test-case (ls.snippet :it [(ls.text_node "it('")
+                                     (ls.insert_node 1)
+                                     (ls.text_node "', () => {")
+                                     (ls.insert_node 0)
+                                     (ls.text_node "});")]))
 
 (ls.add_snippets :all [(ls.snippet :todo [(ls.text_node "TODO(dmejorado): ")
                                           (ls.insert_node 0)])
