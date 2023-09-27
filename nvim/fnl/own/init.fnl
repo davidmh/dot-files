@@ -1,11 +1,3 @@
-(module own.init
-  {autoload {nvim aniseed.nvim
-             core aniseed.core
-             package own.package}
-   require [own.plugins
-            own.window-mappings
-            own.confirm-quit]})
-
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
 
@@ -32,7 +24,6 @@
 (set vim.wo.wrap false)
 (set vim.o.splitright true)
 (set vim.g.GuiWindowFrameless true)
-; (set vim.g.conjure#filetype#python nil)
 
 (when vim.g.neovide
   (set vim.g.neovide_cursor_animate_command_line false)
@@ -45,15 +36,18 @@
   (vim.schedule #(when (= (vim.loop.cwd) :/)
                     (vim.cmd "Telescope oldfiles"))))
 
-(package.setup)
-
-(defn- os-open [url]
+(fn os-open [url]
   (vim.fn.system (.. "xdg-open " url " || open " url)))
 
 ; I'm disabling netrw, and Fugitive needs a :Browse command
-(nvim.create_user_command :Browse (fn [opts] (os-open opts.args)) {:nargs 1})
+(vim.api.nvim_create_user_command :Browse (fn [opts] (os-open opts.args)) {:nargs 1})
 
-(nvim.create_augroup :auto-resize-windows {:clear true})
-(nvim.create_autocmd :VimResized {:pattern :*
-                                  :group :auto-resize-windows
-                                  :command "wincmd ="})
+(vim.api.nvim_create_augroup :auto-resize-windows {:clear true})
+(vim.api.nvim_create_autocmd :VimResized {:pattern :*
+                                          :group :auto-resize-windows
+                                          :command "wincmd ="})
+
+(require :own.plugins)
+(require :own.window-mappings)
+(require :own.confirm-quit)
+(require :own.package)

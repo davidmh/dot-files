@@ -6,6 +6,10 @@ touch ~/.env.zsh
 
 home-manager switch -v
 
+echo "Resetting compiled lua files..."
+rm -rf ~/.config/nvim/lua/own
+nvim --headless +q
+
 if [[  "$(uname)" == "Darwin" ]]; then
   HOME_APPS="$HOME"/Applications
   NIX_APPS="$HOME"/.nix-profile/Applications

@@ -1,12 +1,11 @@
-(module own.plugin.db
-  {autoload {cmp cmp
-             nvim aniseed.nvim}})
+(local {: autoload} (require :nfnl.module))
+(local cmp (autoload :cmp))
 
-(set nvim.g.dbs {:remix_development "postgres:remix_development"})
+(set vim.g.dbs {:remix_development "postgres:remix_development"})
 
-(defn- dadbod-setup []
+(fn dadbod-setup []
   (set vim.bo.omnifunc :vim_dadbod_completion#omni)
   (cmp.setup.buffer {:sources [{:name :vim-dadbod-completion}]}))
 
-(nvim.create_autocmd :FileType {:pattern :sql
-                                :callback dadbod-setup})
+(vim.api.nvim_create_autocmd :FileType {:pattern :sql
+                                        :callback dadbod-setup})

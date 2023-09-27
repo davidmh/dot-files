@@ -1,14 +1,15 @@
-(module own.lazy
-  {autoload {core aniseed.core
-             config own.config
-             lazy lazy}})
+(local {: autoload} (require :nfnl.module))
 
-(defn- load-module [name]
+(local config (autoload :own.config))
+(local core (autoload :nfnl.core))
+(local lazy (autoload :lazy))
+
+(fn load-module [name]
   (let [(ok? val-or-err) (pcall require (.. "own.plugin." name))]
     (when (not ok?)
       (print (.. "Plugin config error: " val-or-err)))))
 
-(defn load-plugins [...]
+(fn [...]
   (let [pkgs [...]
         plugins []]
     (for [i 1 (core.count pkgs) 2]

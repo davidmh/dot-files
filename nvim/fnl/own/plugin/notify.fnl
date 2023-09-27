@@ -1,7 +1,5 @@
-(module own.plugin.notify
-  {autoload {nvim aniseed.nvim
-             telescope telescope
-             notify notify}})
+(local telescope (require :telescope))
+(local notify (require :notify))
 
 (notify.setup {:timeout 2500
                :minimum_width 30

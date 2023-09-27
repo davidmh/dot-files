@@ -124,7 +124,7 @@ in
 
   xdg.configFile.nvim = {
     source = config.lib.file.mkOutOfStoreSymlink ./nvim;
-    recursive = true;
+    recursive = false;
   };
 
   xdg.configFile."wezterm/wezterm.lua" = {

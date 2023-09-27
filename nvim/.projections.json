@@ -1,16 +1,17 @@
 {
-  "fnl/own/plugin/*.fnl": {
-    "type": "plugin",
+  "fnl/own/*.fnl": {
+    "type": "source",
     "template": [
-      "(module own.plugin.{}",
-      "  {open}autoload {open}nvim aniseed.nvim{close}{close})"
+      "(local core (require :nfnl.core))"
+    ],
+    "alternate": [
+      "lua/own/{}.lua"
     ]
   },
-  "fnl/own/*.fnl": {
-    "type": "module",
-    "template": [
-      "(module own.{}",
-      "  {open}autoload {open}nvim aniseed.nvim{close}{close})"
+  "lua/own/*.lua": {
+    "type": "target",
+    "alternate": [
+      "fnl/own/{}.fnl"
     ]
   }
 }

@@ -1,7 +1,6 @@
-(module own.plugin.flatten
-  {autoload {flatten flatten}})
+(local flatten (require :flatten))
 
-(def- diff-mode #(vim.tbl_contains (or $1 []) :-d))
+(local diff-mode #(vim.tbl_contains (or $1 []) :-d))
 
 (flatten.setup {:window {:open :smart}
                 :callbacks {:should_block diff-mode}

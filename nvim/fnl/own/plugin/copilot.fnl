@@ -1,7 +1,5 @@
-(module own.plugin.copilot
-  {autoload {nvim aniseed.nvim
-             copilot copilot
-             copilot-panel copilot.panel}})
+(local copilot (require :copilot))
+(local copilot-panel (require :copilot.panel))
 
 (copilot.setup {:suggestion {:enabled true
                              :auto_trigger true
@@ -22,6 +20,6 @@
                             :python true
                             :ruby true
                             :rust true
-                            :zsh #(= nil (string.match (nvim.buf_get_name 0) ".*env.*"))
+                            :zsh #(= nil (string.match (vim.api.nvim_buf_get_name 0) ".*env.*"))
                             :sh true
                             :* false}})

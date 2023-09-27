@@ -1,9 +1,9 @@
-(module own.plugin.switch
-  {autoload {nvim aniseed.nvim}})
+(import-macros {: augroup
+                : map} :own.macros)
 
-(defn- fennel-rules []
+(fn fennel-rules []
   "Copies clojure's string definition from evaluating
-  nvim.g.switch_builtins.clojure_string"
+  vim.api.nvim_g.switch_builtins.clojure_string"
   (set
     vim.b.switch_custom_definitions
     [{; string -> symbol
@@ -11,19 +11,17 @@
       ; symbol -> string
       ":\\(\\k\\+\\)" "\"\\1\"\\2"}]))
 
-(defn- css-rules []
+(fn css-rules []
   "Fix rules pasted from javascript notation"
   (set
     vim.b.switch_custom_definitions
     [{; properties: backgroundColor: -> background-color:
       "\\(\\<\\l\\{1,\\}\\)\\(\\u\\l*\\):" "\\1-\\l\\2:"}]))
 
-(nvim.create_augroup :custom-switches {:clear true})
-(nvim.create_autocmd :FileType {:pattern :fennel
-                                :callback fennel-rules
-                                :group :custom-switches})
-(nvim.create_autocmd :FileType {:pattern "css,less"
-                                :callback css-rules
-                                :group :custom-switches})
+(augroup :custom-switches
+         [:FileType {:pattern :fennel
+                     :callback fennel-rules}]
+         [:FileType {:pattern "css,less"
+                     :callback css-rules}])
 
-(vim.keymap.set :n :!! "<Plug>(Switch)")
+(map :n :!! "<Plug>(Switch)")

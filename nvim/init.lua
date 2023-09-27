@@ -37,10 +37,6 @@ end
 vim.g.ruby_host_prog = '~/.gem/ruby/3.0.6/bin/neovim-ruby-host'
 vim.opt.termguicolors = true
 
--- luarocks support
-package.path = string.gsub(vim.fn.system('luarocks path --lr-path'), '\n', ';') .. package.path
-package.cpath = package.cpath .. ';.dylib'
-
 local data_path = fn.stdpath('data') .. '/lazy'
 
 --- Ensures a given github.com/USER/REPO is cloned in the lazy directory.
@@ -61,10 +57,17 @@ end
 -- Lazy.nvim as a plugin manager
 ensure('folke', 'lazy.nvim')
 
--- Aniseed compiles Fennel to Lua and loads it automatically.
-ensure('Olical', 'aniseed')
+-- nfnl compiles Fennel to Lua
+ensure('Olical', 'nfnl')
 
 ensure('catppuccin', 'nvim', 'catppuccin')
 
--- Enable Aniseed's automatic compilation and loading of Fennel source code.
-vim.g['aniseed#env'] = { module = 'own.init' } -- fnl/own/init.fnl
+if not pcall(require, 'own.init') then
+  -- disable notifications
+  vim.notify = function() end
+  -- compile all Fennel files
+  require('nfnl')['compile-all-files'](fn.stdpath('config'))
+  -- try loading the config again
+  package.loaded['own.init'] = nil
+  require('own.init')
+end

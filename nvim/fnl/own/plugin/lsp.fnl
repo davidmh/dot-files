@@ -1,19 +1,19 @@
-(module own.plugin.lsp
-  {autoload {nvim aniseed.nvim
-             core aniseed.core
-             config own.config
-             util lspconfig.util
-             cmp-lsp cmp_nvim_lsp
-             json-schemas own.json-schemas
-             lspconfig lspconfig
-             configs lspconfig.configs
-             kind lspkind
-             mason mason
-             mason-lspconfig mason-lspconfig
-             navic nvim-navic
-             wk which-key
-             fidget fidget
-             typescript-tools typescript-tools}})
+(import-macros {: augroup} :own.macros)
+(local {: autoload} (require :nfnl.module))
+
+(local core (autoload :nfnl.core))
+(local config (autoload :own.config))
+(local util (autoload :lspconfig.util))
+(local cmp-lsp (autoload :cmp_nvim_lsp))
+(local json-schemas (autoload :own.json-schemas))
+(local lspconfig (autoload :lspconfig))
+(local kind (autoload :lspkind))
+(local mason (autoload :mason))
+(local mason-lspconfig (autoload :mason-lspconfig))
+(local navic (autoload :nvim-navic))
+(local wk (autoload :which-key))
+(local fidget (autoload :fidget))
+(local typescript-tools (autoload :typescript-tools))
 
 (typescript-tools.setup {})
 
@@ -41,9 +41,9 @@
                                            :vimls]
                         :automatic_installation false})
 
-(def- win-opts {:border config.border
-                :max_width 100
-                :separator true})
+(local win-opts {:border config.border
+                 :max_width 100
+                 :separator true})
 (tset vim.lsp.handlers "textDocument/hover"
       (vim.lsp.with vim.lsp.handlers.hover win-opts))
 (tset vim.lsp.handlers "textDocument/signatureHelp"
@@ -52,17 +52,17 @@
 (vim.api.nvim_create_augroup :eslint-autofix {:clear true})
 
 ; https://github.com/neovim/nvim-lspconfig/blob/da7461b596d70fa47b50bf3a7acfaef94c47727d/lua/lspconfig/server_configurations/eslint.lua#L141-L145
-(defn- set-eslint-autofix [bufnr]
+(fn set-eslint-autofix [bufnr]
   (vim.api.nvim_create_autocmd
        :BufWritePre
        {:command :EslintFixAll
         :group :eslint-autofix
         :buffer bufnr}))
 
-(defn- on-attach [args]
+(fn on-attach [args]
   (local bufnr args.buf)
   (local client (vim.lsp.get_client_by_id args.data.client_id))
-  (nvim.buf_set_option 0 :omnifunc :v:lua.vim.lsp.omnifunc)
+  (vim.api.nvim_buf_set_option 0 :omnifunc :v:lua.vim.lsp.omnifunc)
 
   (local opts {:buffer true :silent true})
 
@@ -93,36 +93,39 @@
   (when client.server_capabilities.documentSymbolProvider
     (navic.attach client bufnr)))
 
-(def- git-root (util.root_pattern :.git))
+(local git-root (util.root_pattern :.git))
 
-(def- ts-root (util.root_pattern :package.json))
-(def- deno-root (util.root_pattern :deno.json :deno.jsonc))
+(local ts-root (util.root_pattern :package.json))
+(local deno-root (util.root_pattern :deno.json :deno.jsonc))
 
-(def- client-capabilities (->> (vim.lsp.protocol.make_client_capabilities)
-                               ; :kevinhwang91/nvim-ufo
-                               (vim.tbl_deep_extend :keep {:textDocument {:foldingRange {:dynamicRegistration false
-                                                                                         :lineFoldingOnly true}}})))
+(local client-capabilities (->> (vim.lsp.protocol.make_client_capabilities)
+                                ; :kevinhwang91/nvim-ufo
+                                (vim.tbl_deep_extend :keep {:textDocument {:foldingRange {:dynamicRegistration false
+                                                                                          :lineFoldingOnly true}}})))
 
-(def- base-settings {:capabilities (cmp-lsp.default_capabilities client-capabilities)
-                     :init_options {:preferences {:includeCompletionsWithSnippetText true
-                                                  :includeCompletionsForImportStatements true}}})
+(local base-settings {:capabilities (cmp-lsp.default_capabilities client-capabilities)
+                      :init_options {:preferences {:includeCompletionsWithSnippetText true
+                                                   :includeCompletionsForImportStatements true}}})
 
-(def- server-configs {:vtsls {:root_dir ts-root
-                              :settings {:typescript {:tsdk :./node_modules/typescript/lib}}}
-                                                      ; :tsserver {:pluginPaths [:.]}}}}
-                      :jsonls {:settings {:json {:schemas (json-schemas.get-all)}}}
-                      :lua_ls {:settings {:Lua {:completion :Replace
-                                                :diagnostics {:globals [:vim
-                                                                        :it
-                                                                        :describe
-                                                                        :before_each
-                                                                        :after_each
-                                                                        :pending]}
-                                                :workspace {:checkThirdParty false}}}}
-                      :eslint {:root_dir git-root}
-                      :denols {:root_dir deno-root}
-                      :cssls {:root_dir git-root}
-                      :shellcheck {:root_dir git-root}})
+(local server-configs {:vtsls {:root_dir ts-root
+                               :settings {:typescript {:tsdk :./node_modules/typescript/lib}}}
+                                                       ; :tsserver {:pluginPaths [:.]}}}}
+                       :jsonls {:settings {:json {:schemas (json-schemas.get-all)}}}
+                       :lua_ls {:settings {:Lua {:completion :Replace
+                                                 :diagnostics {:globals [:vim
+                                                                         :it
+                                                                         :describe
+                                                                         :before_each
+                                                                         :after_each
+                                                                         :pending]}
+                                                 :workspace {:checkThirdParty false}}}}
+                       :eslint {:root_dir git-root}
+                       :fennel_language_server {:single_file_support true
+                                                :settings {:fennel {:diagnostics {:globals [:vim :jit :comment]}
+                                                                    :workspace {:library (vim.api.nvim_list_runtime_paths)}}}}
+                       :denols {:root_dir deno-root}
+                       :cssls {:root_dir git-root}
+                       :shellcheck {:root_dir git-root}})
 
 (each [_ server-name (ipairs (mason-lspconfig.get_installed_servers))]
   (let [server-setup (core.get-in lspconfig [server-name :setup])]
@@ -138,6 +141,4 @@
 
 ; (lspconfig.postgres_lsp.setup {:root_dir git-root})
 
-(nvim.create_augroup :lsp-attach {:clear true})
-(nvim.create_autocmd :LspAttach {:callback on-attach
-                                 :group :lsp-attach})
+(augroup :lsp-attach [:LspAttach {:callback on-attach}])

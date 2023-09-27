@@ -1,12 +1,10 @@
-(module own.plugin.highlights
-  {autoload {nvim aniseed.nvim
-             palette catppuccin.palettes}})
+(local palette (require :catppuccin.palettes))
 
 ;; useful to get completion while writing the highlights
 ;; but the actual color will come from the function param
-(def- color (palette.get_palette))
+(local color (palette.get_palette))
 
-(defn custom-highlights [color]
+(fn custom-highlights [color]
   {:Comment {:style [:italic :bold]}
    :Pmenu {:bg color.crust}
    :WinSeparator {:fg color.overlay0 :bg :none}

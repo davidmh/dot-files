@@ -1,40 +1,36 @@
-(module own.plugin.diagnostics
-  {autoload {core aniseed.core
-             nvim aniseed.nvim
-             null-ls null-ls
-             lists own.lists
-             u null-ls.utils
-             cspell cspell
-             config own.config}
-   require-macros [aniseed.macros.autocmds]})
+(local core (require :nfnl.core))
+(local null-ls (require :null-ls))
+(local u (require :null-ls.utils))
+(local cspell (require :cspell))
+(local config (require :own.config))
 
-(def- formatting null-ls.builtins.formatting)
-(def- diagnostics null-ls.builtins.diagnostics)
-(def- code_actions null-ls.builtins.code_actions)
+(local formatting null-ls.builtins.formatting)
+(local diagnostics null-ls.builtins.diagnostics)
+(local code_actions null-ls.builtins.code_actions)
 
-(defn- root-pattern [pattern]
+(fn root-pattern [pattern]
   (fn [{: bufname}]
     (let [root-fn (u.root_pattern pattern)]
       (root-fn (vim.fn.expand bufname)))))
 
-(defn- with-root-file [& files]
+(fn with-root-file [& files]
   (fn [utils]
     (utils.root_has_file files)))
 
-(def- cspell-filetypes [:css
-                        :gitcommit
-                        :clojure
-                        :html
-                        :javascript
-                        :json
-                        :less
-                        :lua
-                        :markdown
-                        :python
-                        :ruby
-                        :typescript
-                        :typescriptreact
-                        :yaml])
+(local cspell-filetypes [:css
+                         :gitcommit
+                         :clojure
+                         :html
+                         :javascript
+                         :json
+                         :less
+                         :lua
+                         :markdown
+                         :python
+                         :ruby
+                         :typescript
+                         :typescriptreact
+                         :yaml])
 
 (comment
   ; TODO: render gitsigns and diagnostic icons side to side
@@ -47,14 +43,14 @@
   (vim.fn.sign_define :DiagnosticSignHint
                       {:text :● :texthl :DiagnosticSignHint}))
 
-(defn- get-source-name [diagnostic]
+(fn get-source-name [diagnostic]
   (or diagnostic.source
       (-?> diagnostic.namespace
            (vim.diagnostic.get_namespace)
            (. :name))
       (.. "ns:" (tostring diagnostic.namespace))))
 
-(defn- diagnostic-format [diagnostic]
+(fn diagnostic-format [diagnostic]
   (..
     (. config.icons diagnostic.severity)
     " [" (get-source-name diagnostic) "] "
@@ -69,29 +65,29 @@
                                 :border config.border
                                 :format diagnostic-format}})
 
-(defn- str-ends-with [str ending]
+(fn str-ends-with [str ending]
   (or (= ending "")
       (= ending (string.sub str (- (length ending))))))
 
-(defn- should-format [bufnr]
-  (let [path (nvim.buf_get_name bufnr)
+(fn should-format [bufnr]
+  (let [path (vim.api.nvim_buf_get_name bufnr)
         ignore-fn #(str-ends-with path $1)
         ignore-matches (core.filter ignore-fn [:*.approved.json$
                                                :*.received.json$])]
     (core.empty? ignore-matches)))
 
-(defn- lsp-formatting [bufnr]
+(fn lsp-formatting [bufnr]
   (vim.lsp.buf.format {:filter #(= $1.name :null-ls)
                        :bufnr bufnr}))
 
-(nvim.create_augroup :lsp-formatting {:clear true})
+(vim.api.nvim_create_augroup :lsp-formatting {:clear true})
 
-(defn- on-attach [client bufnr]
+(fn on-attach [client bufnr]
   (when (client.supports_method :textDocument/formatting)
         (should-format bufnr)
-    (nvim.create_autocmd :BufWritePre {:buffer bufnr
-                                       :callback #(lsp-formatting bufnr)
-                                       :group :lsp-formatting})))
+    (vim.api.nvim_create_autocmd :BufWritePre {:buffer bufnr
+                                               :callback #(lsp-formatting bufnr)
+                                               :group :lsp-formatting})))
 
 (null-ls.setup
   {:sources [diagnostics.shellcheck

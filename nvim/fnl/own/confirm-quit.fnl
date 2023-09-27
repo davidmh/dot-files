@@ -1,8 +1,8 @@
-(module own.confirm-quit
-  {autoload {nvim aniseed.nvim
-             core aniseed.core}})
+(import-macros {: map} :own.macros)
 
-(def- messages
+(local core (require :nfnl.core))
+
+(local messages
   ["Ya know, next time you come in here I'm gonna toast ya."
    "Go ahead and leave. See if I care."
    "Are you sure you want to quit this great editor?"
@@ -20,11 +20,11 @@
    "But if you leave who's gonna be bad at writing macros?"
    "Huh, never pegged you for a quitter."])
 
-(defn- get-message []
+(fn get-message []
   (math.randomseed (os.time))
   (. messages (math.random (core.count messages))))
 
-(defn confirm [should-write]
+(fn confirm [should-write]
   (if should-write
     (if vim.o.modifiable
       (vim.cmd :write)
@@ -41,3 +41,6 @@
       (if (= 1 (vim.fn.confirm (get-message) "Quit? &Yes\n&No" 2))
         (vim.cmd :quit)))
     (vim.cmd :quit)))
+
+(map :n :ZZ #(confirm true))
+(map :n :ZQ #(confirm false))

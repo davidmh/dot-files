@@ -1,26 +1,25 @@
-(module own.plugin.toggle-term
-  {autoload {toggle-term toggleterm
-             term-edit term-edit
-             terminal toggleterm.terminal
-             wk which-key}})
+(local toggle-term (require :toggleterm))
+(local term-edit (require :term-edit))
+(local terminal (require :toggleterm.terminal))
+(local wk (require :which-key))
 
-(def- term terminal.Terminal)
+(local term terminal.Terminal)
 
 (toggle-term.setup {:shade_terminals false})
 (term-edit.setup {:prompt_end " [ "})
 
-(defn term-tab [id]
+(fn term-tab [id]
   (toggle-term.toggle_command "direction=tab dir=. size=0" id))
 
-(defn term-split [id]
+(fn term-split [id]
   (toggle-term.toggle_command "direction=horizontal dir=. size=0" id))
 
-(defn term-vsplit [id]
+(fn term-vsplit [id]
   (toggle-term.toggle_command (.. "direction=vertical dir=. size=" (/ vim.o.columns 2)) id))
 
-(defonce- state {:tmux-term nil})
+(local state {:tmux-term nil})
 
-(defn toggle-tmux []
+(fn toggle-tmux []
   (if (= state.tmux-term nil)
      (tset state :tmux-term (term:new {:id 200
                                        :cmd "tmux -2 attach 2>/dev/null || tmux -2"
