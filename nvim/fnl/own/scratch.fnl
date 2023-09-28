@@ -5,7 +5,7 @@
 
 ; assumes state.bufnr ~= nil
 (fn new-scratch-split []
-  (vim.api.nvim_ex.botright :split)
+  (vim.cmd "botright split")
   (vim.api.nvim_win_set_buf (vim.api.nvim_get_current_win) state.bufnr)
   (vim.cmd "normal G"))
 
