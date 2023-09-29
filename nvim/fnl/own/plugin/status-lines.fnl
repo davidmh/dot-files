@@ -193,11 +193,10 @@
 
 (local winbar [term-title
                lsp-breadcrumb
-               dead-space
+               quickfix-title
                push-right
                git-blame
-               file-name-block
-               quickfix-title])
+               file-name-block])
 
 (local statusline {:hl {:bg :NONE}
                    1 vi-mode

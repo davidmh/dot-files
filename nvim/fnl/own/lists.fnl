@@ -1,4 +1,4 @@
-(local core :nfnl.core)
+(local core (require :nfnl.core))
 
 (fn find [pred xs]
   (vim.validate {:pred [pred :function]

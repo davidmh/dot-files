@@ -89,8 +89,6 @@
                                                    :numToStr/Comment.nvim]
                                     :build ::TSUpdate
                                     :mod :tree-sitter}
-  :Wansmer/treesj {:dependencies [:nvim-treesitter/nvim-treesitter]
-                   :config {:max_join_length 400}}
 
   ;; Icons
   :nvim-tree/nvim-web-devicons {:opts {:override {:scm {:color :#A6E3A1
@@ -113,13 +111,6 @@
                                       :information config.icons.INFO
                                       :other "﫠"}
                               :group false}}
-
-  ;; improved quickfix window
-  :kevinhwang91/nvim-bqf {}
-
-  ; ;; improved folding
-  ; :kevinhwang91/nvim-ufo {:dependencies [:kevinhwang91/promise-async]
-  ;                         :mod :ultra-fold}
 
   ;; Organize mappings to encourage mnemonics
   :folke/which-key.nvim {:dependencies [:lewis6991/gitsigns.nvim]
@@ -145,7 +136,7 @@
 
   :chomosuke/term-edit.nvim {:ft :toggleterm
                              :version :1.*}
-  ;; Manage terminal buffers in splits, tabs, etc
+  ;; Manage terminal buffers in splits tabs etc
   :akinsho/toggleterm.nvim {:branch :main
                             :dependencies [:chomosuke/term-edit.nvim]
                             :mod :toggle-term}
@@ -172,7 +163,6 @@
 
   :airblade/vim-rooter {:config #(do
                                    (set vim.g.rooter_patterns [:lazy-lock.json :.git])
-                                   ; (set vim.g.rooter_manual_only (if vim.g.neovide 0 1))
                                    (set vim.g.rooter_silent_chdir true))}
 
   ;; Misc Utilities

@@ -81,16 +81,18 @@
                            (symbolize nvim-flavor)
                            (symbolize new-flavor)))))
 
-(vim.api.nvim_create_augroup :update-colorscheme {:clear true})
+(augroup :update-colorscheme [:BufWritePost {:pattern wezterm-config-path
+                                             :callback on-wezterm-config-change}]
+                             [:BufWritePost {:pattern nvim-colorscheme-path
+                                             :callback on-nvim-config-change}]
+                             [:ColorScheme  {:pattern :*
+                                             :callback on-update-from-command}])
 
-(vim.api.nvim_create_autocmd :BufWritePost {:pattern wezterm-config-path
-                                            :callback on-wezterm-config-change
-                                            :group :update-colorscheme})
-
-(vim.api.nvim_create_autocmd :BufWritePost {:pattern nvim-colorscheme-path
-                                            :callback on-nvim-config-change
-                                            :group :update-colorscheme})
-
-(vim.api.nvim_create_autocmd :ColorScheme {:pattern :*
-                                           :callback on-update-from-command
-                                           :group :update-colorscheme})
+(vim.api.nvim_create_user_command :Color
+                                  ; telescope might be better to preview the
+                                  ; colorschemes on the fly
+                                  #(vim.ui.select [:mocha :latte :mocha :mocha]
+                                                  {:prompt "Catppuccin flavor"}
+                                                  (fn [choice] (when (not (core.empty? choice))
+                                                                 (update-colorscheme choice))))
+                                  {})

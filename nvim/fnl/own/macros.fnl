@@ -31,6 +31,6 @@
        (set opts#.silent true))
      (vim.keymap.set ,modes ,lhs ,rhs opts#)))
 
-{:autocmd autocmd
- :augroup augroup
- :map map}
+{: autocmd
+ : augroup
+ : map}

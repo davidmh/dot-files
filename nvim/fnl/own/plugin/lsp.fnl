@@ -121,6 +121,7 @@
                                                  :workspace {:checkThirdParty false}}}}
                        :eslint {:root_dir git-root}
                        :fennel_language_server {:single_file_support true
+                                                :root_dir (lspconfig.util.root_pattern :fnl)
                                                 :settings {:fennel {:diagnostics {:globals [:vim :jit :comment]}
                                                                     :workspace {:library (vim.api.nvim_list_runtime_paths)}}}}
                        :denols {:root_dir deno-root}
