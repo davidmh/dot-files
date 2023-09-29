@@ -87,12 +87,3 @@
                                              :callback on-nvim-config-change}]
                              [:ColorScheme  {:pattern :*
                                              :callback on-update-from-command}])
-
-(vim.api.nvim_create_user_command :Color
-                                  ; telescope might be better to preview the
-                                  ; colorschemes on the fly
-                                  #(vim.ui.select [:mocha :latte :mocha :mocha]
-                                                  {:prompt "Catppuccin flavor"}
-                                                  (fn [choice] (when (not (core.empty? choice))
-                                                                 (update-colorscheme choice))))
-                                  {})

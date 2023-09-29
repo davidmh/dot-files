@@ -63,20 +63,8 @@ local function on_update_from_command()
     return nil
   end
 end
-do
-  local group = vim.api.nvim_create_augroup("update-colorscheme", {clear = true})
-  vim.api.nvim_create_autocmd("BufWritePost", {pattern = wezterm_config_path, callback = on_wezterm_config_change, group = group})
-  vim.api.nvim_create_autocmd("BufWritePost", {pattern = nvim_colorscheme_path, callback = on_nvim_config_change, group = group})
-  vim.api.nvim_create_autocmd("ColorScheme", {pattern = "*", callback = on_update_from_command, group = group})
-end
-local function _5_()
-  local function _6_(choice)
-    if not core["empty?"](choice) then
-      return update_colorscheme(choice)
-    else
-      return nil
-    end
-  end
-  return vim.ui.select({"mocha", "latte", "mocha", "mocha"}, {prompt = "Catppuccin flavor"}, _6_)
-end
-return vim.api.nvim_create_user_command("Color", _5_, {})
+local group = vim.api.nvim_create_augroup("update-colorscheme", {clear = true})
+vim.api.nvim_create_autocmd("BufWritePost", {pattern = wezterm_config_path, callback = on_wezterm_config_change, group = group})
+vim.api.nvim_create_autocmd("BufWritePost", {pattern = nvim_colorscheme_path, callback = on_nvim_config_change, group = group})
+vim.api.nvim_create_autocmd("ColorScheme", {pattern = "*", callback = on_update_from_command, group = group})
+return nil
