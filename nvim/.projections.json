@@ -1,17 +1,41 @@
 {
-  "fnl/own/*.fnl": {
-    "type": "source",
+  "*.fnl": {
+    "type": "module",
+    "alternate": [
+      "{}.lua"
+    ]
+  },
+  "*.lua": {
+    "alternate": [
+      "{}.fnl"
+    ]
+  },
+  "fnl/*.fnl": {
+    "type": "module",
     "template": [
       "(local core (require :nfnl.core))"
     ],
     "alternate": [
-      "lua/own/{}.lua"
+      "lua/{}.lua"
     ]
   },
-  "lua/own/*.lua": {
-    "type": "target",
+  "lua/*.lua": {
     "alternate": [
-      "fnl/own/{}.fnl"
+      "fnl/{}.fnl"
+    ]
+  },
+  "fnl/own/plugin/*.fnl": {
+    "type": "plugin",
+    "template": [
+      "(local core (require :nfnl.core))"
+    ],
+    "alternate": [
+      "lua/own/plugin/{}.lua"
+    ]
+  },
+  "lua/own/plugin/*.lua": {
+    "alternate": [
+      "fnl/own/plugin/{}.fnl"
     ]
   }
 }
