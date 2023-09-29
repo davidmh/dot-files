@@ -20,3 +20,8 @@
 (map :t :<M-j> :<C-\><C-n><C-W>j)
 (map :t :<M-h> :<C-\><C-n><C-W>h)
 (map :t :<M-l> :<C-\><C-n><C-W>l)
+
+(vim.api.nvim_create_augroup :auto-resize-windows {:clear true})
+(vim.api.nvim_create_autocmd :VimResized {:pattern :*
+                                          :group :auto-resize-windows
+                                          :command "wincmd ="})

@@ -24,30 +24,10 @@
 (set vim.wo.wrap false)
 (set vim.o.splitright true)
 (set vim.g.GuiWindowFrameless true)
-
-(when vim.g.neovide
-  (set vim.g.neovide_cursor_animate_command_line false)
-  (set vim.g.neovide_input_use_logo true)
-  (set vim.g.neovide_padding_top 20)
-  (set vim.g.neovide_padding_bottom 5)
-  (set vim.g.neovide_padding_right 20)
-  (set vim.g.neovide_padding_left 20)
-  (set vim.g.neovide_input_macos_alt_is_meta true)
-  (vim.schedule #(when (= (vim.loop.cwd) :/)
-                    (vim.cmd "Telescope oldfiles"))))
+(set vim.g.ruby_host_prog "~/.gem/ruby/3.0.6/bin/neovim-ruby-host")
 
 (fn os-open [url]
   (vim.fn.system (.. "xdg-open " url " || open " url)))
 
 ; I'm disabling netrw, and Fugitive needs a :Browse command
 (vim.api.nvim_create_user_command :Browse (fn [opts] (os-open opts.args)) {:nargs 1})
-
-(vim.api.nvim_create_augroup :auto-resize-windows {:clear true})
-(vim.api.nvim_create_autocmd :VimResized {:pattern :*
-                                          :group :auto-resize-windows
-                                          :command "wincmd ="})
-
-(require :own.plugins)
-(require :own.window-mappings)
-(require :own.confirm-quit)
-(require :own.package)
