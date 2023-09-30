@@ -21,7 +21,16 @@
               :depth_limit_indicator " [  ] "
               :click true
               :highlight true
+              :format_text (fn [text]
+                             (if (or (text:match "^it%(")
+                                     (text:match "^describe%("))
+                               (-> text
+                                 (: :gsub "^it%('" "it ")
+                                 (: :gsub "^describe%('" "describe ")
+                                 (: :gsub "'%) callback$" ""))
+                               text))
               :icons config.navic-icons
+              :safe_output false
               :separator "  "})
 (kind.init)
 (fidget.setup {:align {:bottom false}

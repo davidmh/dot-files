@@ -34,6 +34,6 @@ local function _3_(...)
     end
     table.insert(plugins, plugin)
   end
-  return lazy.setup(plugins, {install = {colorscheme = {"catppuccin"}}, ui = {border = config.border, icons = {lazy = "\239\166\177"}}})
+  return lazy.setup(plugins, {install = {colorscheme = {"catppuccin"}}, dev = {path = (vim.env.HOME .. "/Projects"), fallback = true}, ui = {border = config.border, icons = {lazy = "\239\166\177"}}})
 end
 return _3_

@@ -30,5 +30,7 @@
         ; add it to the list of plugins
         (table.insert plugins plugin)))
     (lazy.setup plugins {:install {:colorscheme [:catppuccin]}
+                         :dev {:path (.. vim.env.HOME "/Projects")
+                               :fallback true}
                          :ui {:border config.border
                               :icons {:lazy :鈴}}})))

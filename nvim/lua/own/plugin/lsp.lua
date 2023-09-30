@@ -15,7 +15,14 @@ local wk = autoload("which-key")
 local fidget = autoload("fidget")
 local typescript_tools = autoload("typescript-tools")
 typescript_tools.setup({})
-navic.setup({depth_limit = 4, depth_limit_indicator = " [ \238\169\188 ] ", click = true, highlight = true, icons = config["navic-icons"], separator = " \238\170\182 "})
+local function _2_(text)
+  if (text:match("^it%(") or text:match("^describe%(")) then
+    return text:gsub("^it%('", "it "):gsub("^describe%('", "describe "):gsub("'%) callback$", "")
+  else
+    return text
+  end
+end
+navic.setup({depth_limit = 4, depth_limit_indicator = " [ \238\169\188 ] ", click = true, highlight = true, format_text = _2_, icons = config["navic-icons"], separator = " \238\170\182 ", safe_output = false})
 kind.init()
 fidget.setup({align = {bottom = false}, text = {spinner = "dots", done = "\238\174\179"}, window = {blend = 0, border = "none", zindex = 1}})
 mason.setup({ui = {border = config.border}})

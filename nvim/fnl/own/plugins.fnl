@@ -17,6 +17,10 @@
                                        :types true}}}
 
   ;; LSP
+  :davidmh/nvim-navic {:dev true
+                       :lazy true
+                       :branch :feature/format_text
+                       :name :nvim-navic}
   :j-hui/fidget.nvim {:tag :legacy}
   :williamboman/mason.nvim {:dependencies [:neovim/nvim-lspconfig
                                            :williamboman/mason-lspconfig.nvim
@@ -24,7 +28,7 @@
                                            :onsails/lspkind-nvim
                                            :hrsh7th/cmp-nvim-lsp
                                            :j-hui/fidget.nvim
-                                           :SmiteshP/nvim-navic
+                                           :nvim-navic
                                            :pmizio/typescript-tools.nvim]
                             :name :mason
                             :mod :lsp}
