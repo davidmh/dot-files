@@ -22,72 +22,28 @@ end
 cmp.setup({mapping = cmp.mapping.preset.insert(cmd_mappings), sources = cmp.config.sources({{name = "luasnip"}, {name = "nvim_lsp"}, {name = "orgmode"}, {name = "emoji"}, {name = "git"}, {name = "nerdfonts"}, {name = "conjure"}, {name = "buffer", keyword_length = 5}}), formatting = {fields = {"kind", "abbr", "menu"}, format = cmp_format}, snippet = {expand = _2_}, window = {completion = {winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None", col_offset = -3, side_padding = 0}}})
 cmp.setup.cmdline({mapping = cmp.mapping.preset.cmdline(cmd_mappings)})
 ls.config.setup({history = true, update_events = "TextChanged,TextChangedI", enable_autosnippets = true})
-do
-  local opts_1_auto
-  do
-    local tbl_14_auto = {}
-    for k_2_auto, v_3_auto in pairs((nil or {})) do
-      local k_15_auto, v_16_auto = k_2_auto, v_3_auto
-      if ((k_15_auto ~= nil) and (v_16_auto ~= nil)) then
-        tbl_14_auto[k_15_auto] = v_16_auto
-      else
-      end
-    end
-    opts_1_auto = tbl_14_auto
-  end
-  if (opts_1_auto.noremap == nil) then
-    opts_1_auto.noremap = true
+local function _3_()
+  if ls.expand_or_jumpable() then
+    return ls.expand_or_jump()
   else
+    return nil
   end
-  if (opts_1_auto.silent == nil) then
-    opts_1_auto.silent = true
-  else
-  end
-  local function _6_()
-    if ls.expand_or_jumpable() then
-      return ls.expand_or_jump()
-    else
-      return nil
-    end
-  end
-  vim.keymap.set({"i", "s"}, "<c-k>", _6_, opts_1_auto)
 end
-do
-  local opts_1_auto
-  do
-    local tbl_14_auto = {}
-    for k_2_auto, v_3_auto in pairs((nil or {})) do
-      local k_15_auto, v_16_auto = k_2_auto, v_3_auto
-      if ((k_15_auto ~= nil) and (v_16_auto ~= nil)) then
-        tbl_14_auto[k_15_auto] = v_16_auto
-      else
-      end
-    end
-    opts_1_auto = tbl_14_auto
-  end
-  if (opts_1_auto.noremap == nil) then
-    opts_1_auto.noremap = true
+vim.keymap.set({"i", "s"}, "<c-k>", _3_)
+local function _5_()
+  if ls.choice_active() then
+    return ls.change_choice(1)
   else
+    return nil
   end
-  if (opts_1_auto.silent == nil) then
-    opts_1_auto.silent = true
-  else
-  end
-  local function _11_()
-    if ls.choice_active() then
-      return ls.change_choice(1)
-    else
-      return nil
-    end
-  end
-  vim.keymap.set({"i"}, "<c-l>", _11_, opts_1_auto)
 end
+vim.keymap.set({"i"}, "<c-l>", _5_)
 local js_log = ls.snippet("debug", {ls.text_node("console.log('DEBUG', { "), ls.insert_node(0), ls.text_node(" });")})
 local js_test_case = ls.snippet("it", {ls.text_node("it('"), ls.insert_node(1), ls.text_node("', () => {"), ls.insert_node(0), ls.text_node("});")})
-local function _13_()
+local function _7_()
   return os.date("%Y-%m-%d")
 end
-ls.add_snippets("all", {ls.snippet("todo", {ls.text_node("TODO(dmejorado): "), ls.insert_node(0)}), ls.snippet("today", ls.function_node(_13_))})
+ls.add_snippets("all", {ls.snippet("todo", {ls.text_node("TODO(dmejorado): "), ls.insert_node(0)}), ls.snippet("today", ls.function_node(_7_))})
 ls.add_snippets("javascript", {js_log, js_test_case})
 ls.add_snippets("typescript", {js_log, js_test_case})
 ls.add_snippets("typescriptreact", {js_log, js_test_case})

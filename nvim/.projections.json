@@ -1,6 +1,5 @@
 {
   "*.fnl": {
-    "type": "module",
     "alternate": [
       "{}.lua"
     ]
@@ -10,24 +9,26 @@
       "{}.fnl"
     ]
   },
-  "fnl/*.fnl": {
+  "fnl/own/*.fnl": {
     "type": "module",
     "template": [
       "(local core (require :nfnl.core))"
     ],
     "alternate": [
-      "lua/{}.lua"
+      "lua/own/{}.lua"
     ]
   },
-  "lua/*.lua": {
+  "lua/own/*.lua": {
     "alternate": [
-      "fnl/{}.fnl"
+      "fnl/own/{}.fnl"
     ]
   },
   "fnl/own/plugin/*.fnl": {
     "type": "plugin",
     "template": [
-      "(local core (require :nfnl.core))"
+      "(import-macros {: map} :own.macros)",
+      "(local {: autoload} (require :nfnl.module))",
+      "(local core (autoload :nfnl.core))"
     ],
     "alternate": [
       "lua/own/plugin/{}.lua"

@@ -1,8 +1,13 @@
 (import-macros {: augroup} :own.macros)
 
 (local core (require :nfnl.core))
+(local config (require :nfnl.config))
+(local compile (require :nfnl.compile))
 (local catppuccin (require :catppuccin))
-(local custom-highlights (require :own.plugin.highlights))
+(local {: custom-highlights} (require :own.plugin.highlights))
+
+(local root-dir (vim.fn.stdpath :config))
+(local {: cfg} (config.find-and-load root-dir))
 
 (catppuccin.setup {:flavour :mocha
                    :transparent_background false
@@ -42,6 +47,14 @@
 (fn update-colorscheme [new-flavor]
   (vim.cmd (.. "Catppuccin " new-flavor)))
 
+; nfnl compiles the file on save, but when updating the colorscheme, this file
+; may not be open, so we need to recompile it manually
+(fn recompile-colorscheme []
+  (compile.into-file {: cfg
+                      : root-dir
+                      :path nvim-colorscheme-path
+                      :source (core.slurp nvim-colorscheme-path)}))
+
 (fn update-file-content [path from to]
   (let [updated-content (-> path
                             (core.slurp)
@@ -54,6 +67,7 @@
       (update-file-content nvim-colorscheme-path
                            (symbolize catppuccin.flavour)
                            (symbolize new-flavor))
+      (recompile-colorscheme)
       (update-colorscheme new-flavor))))
 
 (fn on-nvim-config-change []
@@ -79,7 +93,8 @@
     (when (not= new-flavor nvim-flavor)
       (update-file-content nvim-colorscheme-path
                            (symbolize nvim-flavor)
-                           (symbolize new-flavor)))))
+                           (symbolize new-flavor))
+      (recompile-colorscheme))))
 
 (augroup :update-colorscheme [:BufWritePost {:pattern wezterm-config-path
                                              :callback on-wezterm-config-change}]

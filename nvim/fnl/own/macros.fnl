@@ -19,18 +19,21 @@
          (vim.api.nvim_create_augroup ,name {:clear true})]
      ,cmds))
 
-(fn map [modes lhs rhs ?opt]
-  (assert-compile (or (= (type modes) :string) (sequence? modes)) "mode must be string or list" modes)
-  (assert-compile (= (type lhs) :string) "lhs must be string" lhs)
-  (assert-compile (or (= nil ?opt) (table? ?opt)) "?opt must be a table" ?opt)
-  `(let [opts# (collect [k# v# (pairs (or ,?opt {}))]
-                 (values k# v#))]
-     (when (= opts#.noremap nil)
-       (set opts#.noremap true))
-     (when (= opts#.silent nil)
-       (set opts#.silent true))
-     (vim.keymap.set ,modes ,lhs ,rhs opts#)))
+(fn map [mode from to opts]
+  `(vim.keymap.set ,mode ,from ,to ,opts))
+
+(fn nmap [from to opts]
+  `(vim.keymap.set :n ,from ,to ,opts))
+
+(fn vmap [from to opts]
+  `(vim.keymap.set :v ,from ,to ,opts))
+
+(fn tmap [from to opts]
+  `(vim.keymap.set :t ,from ,to ,opts))
 
 {: autocmd
  : augroup
- : map}
+ : map
+ : nmap
+ : vmap
+ : tmap}

@@ -1,4 +1,4 @@
-(import-macros {: map} :own.macros)
+(import-macros {: nmap} :own.macros)
 
 (local core (require :nfnl.core))
 
@@ -42,5 +42,5 @@
         (vim.cmd :quit)))
     (vim.cmd :quit)))
 
-(map :n :ZZ #(confirm true))
-(map :n :ZQ #(confirm false))
+(nmap :ZZ #(confirm true))
+(nmap :ZQ #(confirm false))

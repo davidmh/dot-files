@@ -1,4 +1,8 @@
-(local config (require :own.config))
+(import-macros {: map} :own.macros)
+(local {: autoload} (require :nfnl.module))
+
+(local {: compile-all-files} (autoload :nfnl))
+(local {: border : icons} (autoload :own.config))
 (local load-plugins (require :own.lazy))
 
 (load-plugins
@@ -8,9 +12,12 @@
   :Olical/nfnl {:config true
                 :dependencies [:Olical/conjure]
                 :config #(do
-                           (set vim.g.conjure#log#hud#border config.border)
+                           (set vim.g.conjure#log#hud#border border)
                            (set vim.g.conjure#filetype#sql nil)
-                           (set vim.g.conjure#filetype#python nil))}
+                           (set vim.g.conjure#filetype#python nil)
+                           (vim.api.nvim_create_user_command :NfnlCompileAllFiles
+                                                             #(compile-all-files (vim.fn.stdpath :config))
+                                                             {:nargs 0}))}
 
   :folke/neodev.nvim {:dependencies [:nvim-neotest/neotest]
                       :opts {:library {:plugins [:neotest]
@@ -109,10 +116,10 @@
                                   :mod :telescope}
   :folke/trouble.nvim {:dependencies [:nvim-tree/nvim-web-devicons]
                        :opts {:icons true
-                              :signs {:error config.icons.ERROR
-                                      :warning config.icons.WARN
-                                      :hint config.icons.HINT
-                                      :information config.icons.INFO
+                              :signs {:error icons.ERROR
+                                      :warning icons.WARN
+                                      :hint icons.HINT
+                                      :information icons.INFO
                                       :other "﫠"}
                               :group false}}
 
@@ -181,7 +188,7 @@
   :tpope/vim-projectionist  {}
   :tpope/vim-speeddating {}
   :junegunn/vim-slash  {}
-  :junegunn/vim-easy-align {:mod :easy-align}
+  :junegunn/vim-easy-align {:config #(map [:x :n] :ga "<Plug>(EasyAlign)")}
   :vim-scripts/BufOnly.vim  {}
   :mg979/vim-visual-multi  {}
   :Valloric/ListToggle {:mod :list-toggle}

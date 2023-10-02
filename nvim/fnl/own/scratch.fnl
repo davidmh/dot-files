@@ -13,9 +13,11 @@
   (var bufnr (vim.api.nvim_create_buf false false))
   (vim.api.nvim_buf_set_option bufnr :filetype :fennel)
   (vim.api.nvim_buf_set_option bufnr :buftype :nofile)
-  (vim.api.nvim_buf_set_lines bufnr 0 0 true ["(local core (require :nfnl.core))"
+  (vim.api.nvim_buf_set_lines bufnr 0 0 true ["(local {: compile-all-files} (require :nfnl))"
+                                              "(local nvim-path (vim.fn.stdpath :config))"
                                               ""
-                                              ""])
+                                              "(comment"
+                                              "  (compile-all-files nvim-path)"])
   (tset state :bufnr bufnr)
   (new-scratch-split)
   (vim.cmd :ConjureEvalBuf))

@@ -1,5 +1,5 @@
 (import-macros {: augroup
-                : map} :own.macros)
+                : nmap} :own.macros)
 
 (fn fennel-rules []
   "Copies clojure's string definition from evaluating
@@ -24,4 +24,4 @@
          [:FileType {:pattern "css,less"
                      :callback css-rules}])
 
-(map :n :!! "<Plug>(Switch)")
+(nmap :!! "<Plug>(Switch)")

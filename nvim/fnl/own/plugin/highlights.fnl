@@ -72,31 +72,33 @@
 
    :CmpItemKindCopilot {:fg color.crust :bg color.mauve}
 
-   :NavicIconsFile {:bg color.crust :fg color.blue}
-   :NavicIconsModule {:bg color.crust :fg color.blue}
-   :NavicIconsNamespace {:bg color.crust :fg color.green}
-   :NavicIconsPackage {:bg color.crust :fg color.maroon}
-   :NavicIconsClass {:bg color.crust :fg color.peach}
-   :NavicIconsMethod {:bg color.crust :fg color.lavender}
-   :NavicIconsProperty {:bg color.crust :fg color.blue}
-   :NavicIconsField {:bg color.crust :fg color.blue}
-   :NavicIconsConstructor {:bg color.crust :fg color.blue}
-   :NavicIconsEnum {:bg color.crust :fg color.blue}
-   :NavicIconsInterface {:bg color.crust :fg color.blue}
-   :NavicIconsFunction {:bg color.crust :fg color.blue}
-   :NavicIconsVariable {:bg color.crust :fg color.blue}
-   :NavicIconsConstant {:bg color.crust :fg color.blue}
-   :NavicIconsString {:bg color.crust :fg color.blue}
-   :NavicIconsNumber {:bg color.crust :fg color.blue}
-   :NavicIconsBoolean {:bg color.crust :fg color.blue}
-   :NavicIconsArray {:bg color.crust :fg color.blue}
-   :NavicIconsObject {:bg color.crust :fg color.blue}
-   :NavicIconsKey {:bg color.crust :fg color.blue}
-   :NavicIconsNull {:bg color.crust :fg color.blue}
-   :NavicIconsEnumMember {:bg color.crust :fg color.blue}
-   :NavicIconsStruct {:bg color.crust :fg color.blue}
-   :NavicIconsEvent {:bg color.crust :fg color.blue}
-   :NavicIconsOperator {:bg color.crust :fg color.blue}
-   :NavicIconsTypeParameter {:bg color.crust :fg color.blue}
-   :NavicText {:fg color.text :bg color.crust}
-   :NavicSeparator {:fg color.text :bg color.crust}})
+   :NavicIconsFile {:bg color.surface2 :fg color.blue}
+   :NavicIconsModule {:bg color.surface2 :fg color.blue}
+   :NavicIconsNamespace {:bg color.surface2 :fg color.green}
+   :NavicIconsPackage {:bg color.surface2 :fg color.maroon}
+   :NavicIconsClass {:bg color.surface2 :fg color.peach}
+   :NavicIconsMethod {:bg color.surface2 :fg color.lavender}
+   :NavicIconsProperty {:bg color.surface2 :fg color.blue}
+   :NavicIconsField {:bg color.surface2 :fg color.blue}
+   :NavicIconsConstructor {:bg color.surface2 :fg color.blue}
+   :NavicIconsEnum {:bg color.surface2 :fg color.blue}
+   :NavicIconsInterface {:bg color.surface2 :fg color.blue}
+   :NavicIconsFunction {:bg color.surface2 :fg color.blue}
+   :NavicIconsVariable {:bg color.surface2 :fg color.blue}
+   :NavicIconsConstant {:bg color.surface2 :fg color.blue}
+   :NavicIconsString {:bg color.surface2 :fg color.blue}
+   :NavicIconsNumber {:bg color.surface2 :fg color.blue}
+   :NavicIconsBoolean {:bg color.surface2 :fg color.blue}
+   :NavicIconsArray {:bg color.surface2 :fg color.blue}
+   :NavicIconsObject {:bg color.surface2 :fg color.blue}
+   :NavicIconsKey {:bg color.surface2 :fg color.blue}
+   :NavicIconsNull {:bg color.surface2 :fg color.blue}
+   :NavicIconsEnumMember {:bg color.surface2 :fg color.blue}
+   :NavicIconsStruct {:bg color.surface2 :fg color.blue}
+   :NavicIconsEvent {:bg color.surface2 :fg color.blue}
+   :NavicIconsOperator {:bg color.surface2 :fg color.blue}
+   :NavicIconsTypeParameter {:bg color.surface2 :fg color.blue}
+   :NavicText {:fg color.text :bg color.surface2}
+   :NavicSeparator {:fg color.text :bg color.surface2}})
+
+{: custom-highlights}

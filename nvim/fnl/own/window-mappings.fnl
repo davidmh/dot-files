@@ -1,27 +1,24 @@
-(import-macros {: map} :own.macros)
+(import-macros {: augroup : nmap : tmap} :own.macros)
 
 ; in normal mode
 ;
 ; resize faster
-(map :n "<M-,>" :<C-W>5<)
-(map :n :<M-.> :<C-W>5>)
-(map :n :<M--> :<C-W>5-)
-(map :n :<M-=> :<C-W>5+)
+(nmap "<M-,>" :<C-W>5<)
+(nmap :<M-.> :<C-W>5>)
+(nmap :<M--> :<C-W>5-)
+(nmap :<M-=> :<C-W>5+)
 
 ; in terminal mode
 ;
 ; resize faster
-(map :t "<M-,>" :<C-\><C-n><C-W>5<)
-(map :t :<M-.> :<C-\><C-n><C-W>5>)
-(map :t :<M--> :<C-\><C-n><C-W>5-)
-(map :t :<M-=> :<C-\><C-n><C-W>5+)
+(tmap "<M-,>" :<C-\><C-n><C-W>5<)
+(tmap :<M-.> :<C-\><C-n><C-W>5>)
+(tmap :<M--> :<C-\><C-n><C-W>5-)
+(tmap :<M-=> :<C-\><C-n><C-W>5+)
 ; move faster
-(map :t :<M-k> :<C-\><C-n><C-W>k)
-(map :t :<M-j> :<C-\><C-n><C-W>j)
-(map :t :<M-h> :<C-\><C-n><C-W>h)
-(map :t :<M-l> :<C-\><C-n><C-W>l)
+(tmap :<M-k> :<C-\><C-n><C-W>k)
+(tmap :<M-j> :<C-\><C-n><C-W>j)
+(tmap :<M-h> :<C-\><C-n><C-W>h)
+(tmap :<M-l> :<C-\><C-n><C-W>l)
 
-(vim.api.nvim_create_augroup :auto-resize-windows {:clear true})
-(vim.api.nvim_create_autocmd :VimResized {:pattern :*
-                                          :group :auto-resize-windows
-                                          :command "wincmd ="})
+(augroup :auto-resize-windows [:VimResized {:pattern :* :command "wincmd ="}])

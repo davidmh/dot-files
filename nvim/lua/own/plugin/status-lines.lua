@@ -6,7 +6,7 @@ local palettes = require("catppuccin.palettes")
 local navic = require("nvim-navic")
 local nvim_web_devicons = require("nvim-web-devicons")
 local config = require("own.config")
-local chrome_accent = "crust"
+local chrome_accent = "surface2"
 local function container(components)
   local solid_background = {hl = {fg = "fg", bg = chrome_accent}}
   return {{provider = "\238\130\182", hl = {fg = chrome_accent, bg = "none"}}, core.merge(solid_background, components), {provider = "\238\130\180", hl = {fg = chrome_accent, bg = "none"}}}

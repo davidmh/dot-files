@@ -8,7 +8,7 @@
 (local nvim-web-devicons (require :nvim-web-devicons))
 (local config (require :own.config))
 
-(local chrome-accent :crust)
+(local chrome-accent :surface2)
 
 (fn container [components]
   (let [solid-background {:hl {:fg :fg :bg chrome-accent}}]

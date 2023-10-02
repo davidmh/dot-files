@@ -114,7 +114,7 @@
              (formatting.rubocop.with {:cwd (root-pattern :.rubocop.yml)})
                                        ; :command :bundle
                                        ; :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
-             formatting.stylua
+             ; formatting.stylua
              formatting.terraform_fmt
              formatting.rustfmt]
 

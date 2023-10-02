@@ -1,4 +1,4 @@
-(import-macros {: augroup} :own.macros)
+(import-macros {: augroup : nmap} :own.macros)
 (local {: autoload} (require :nfnl.module))
 
 (local core (autoload :nfnl.core))
@@ -76,8 +76,8 @@
   (local opts {:buffer true :silent true})
 
   ;; Mappings
-  (vim.keymap.set :n :K vim.lsp.buf.hover opts)
-  (vim.keymap.set :n :gd vim.lsp.buf.definition opts)
+  (nmap :K vim.lsp.buf.hover opts)
+  (nmap :gd vim.lsp.buf.definition opts)
 
   (wk.register {:l {:name :LSP
                     :d [vim.lsp.buf.definition "go to definition"]

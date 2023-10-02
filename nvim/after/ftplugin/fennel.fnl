@@ -1,3 +1,1 @@
-(-> :own.fennel-lua-paths
-    (require)
-    (: :setup))
+(-> (require :own.fennel-lua-paths) (: :setup))

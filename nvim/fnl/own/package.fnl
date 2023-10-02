@@ -1,4 +1,4 @@
-(import-macros {: augroup} :own.macros)
+(import-macros {: augroup : nmap} :own.macros)
 (local {: autoload} (require :nfnl.module))
 
 (local core (autoload :nfnl.core))
@@ -56,7 +56,7 @@
                       (get-package-paths)
                       (core.first))]
     (when has-paths
-      (vim.keymap.set :n :<localleader>y yarn-select {:desc :yarn :buffer 0}))))
+      (nmap :<localleader>y yarn-select {:desc :yarn :buffer 0}))))
 
 (augroup :package-command [[:BufEnter :BufNew] {:pattern :*
                                                 :callback setup-package-command}])

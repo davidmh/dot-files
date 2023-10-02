@@ -1,4 +1,4 @@
-(import-macros {: map} :own.macros)
+(import-macros {: nmap} :own.macros)
 (local telescope (require :telescope))
 
 (telescope.setup {:defaults {:layout_strategy :horizontal
@@ -17,5 +17,5 @@
                              :results_title false}
                   :pickers {:buffers {:sort_mru true}}})
 
-(map :n :<M-x> ::Telescope<CR> {:nowait true})
-(map :n :<D-x> ::Telescope<CR> {:nowait true})
+(nmap :<M-x> ::Telescope<CR> {:nowait true})
+(nmap :<D-x> ::Telescope<CR> {:nowait true})

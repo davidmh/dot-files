@@ -44,7 +44,7 @@ end
 local function diagnostic_format(diagnostic)
   return (config.icons[diagnostic.severity] .. " [" .. get_source_name(diagnostic) .. "] " .. diagnostic.message)
 end
-vim.diagnostic.config({underline = true, severity_sort = true, float = {header = "", border = config.border, format = diagnostic_format}, virtual_text = false, update_in_insert = false, signs = false})
+vim.diagnostic.config({underline = true, severity_sort = true, float = {header = "", border = config.border, format = diagnostic_format}, signs = false, virtual_text = false, update_in_insert = false})
 local function str_ends_with(str, ending)
   return ((ending == "") or (ending == string.sub(str, ( - #ending))))
 end
@@ -80,4 +80,4 @@ local function _14_(_241)
   _241["severity"] = vim.diagnostic.severity.W
   return nil
 end
-return null_ls.setup({sources = {diagnostics.shellcheck, diagnostics.rubocop.with({cwd = root_pattern(".rubocop.yml")}), diagnostics.luacheck.with({cwd = root_pattern(".luacheckrc"), condition = with_root_file(".luacheckrc")}), diagnostics.selene.with({cwd = root_pattern("selene.toml"), condition = with_root_file("selene.toml")}), cspell.diagnostics.with({cwd = root_pattern("cspell.json"), prefer_local = "./node_modules/.bin", filetypes = cspell_filetypes, diagnostics_postprocess = _14_}), code_actions.shellcheck, cspell.code_actions.with({cwd = root_pattern("cspell.json"), filetypes = cspell_filetypes}), formatting.jq, formatting.rubocop.with({cwd = root_pattern(".rubocop.yml")}), formatting.stylua, formatting.terraform_fmt, formatting.rustfmt}, on_attach = on_attach})
+return null_ls.setup({sources = {diagnostics.shellcheck, diagnostics.rubocop.with({cwd = root_pattern(".rubocop.yml")}), diagnostics.luacheck.with({cwd = root_pattern(".luacheckrc"), condition = with_root_file(".luacheckrc")}), diagnostics.selene.with({cwd = root_pattern("selene.toml"), condition = with_root_file("selene.toml")}), cspell.diagnostics.with({cwd = root_pattern("cspell.json"), prefer_local = "./node_modules/.bin", filetypes = cspell_filetypes, diagnostics_postprocess = _14_}), code_actions.shellcheck, cspell.code_actions.with({cwd = root_pattern("cspell.json"), filetypes = cspell_filetypes}), formatting.jq, formatting.rubocop.with({cwd = root_pattern(".rubocop.yml")}), formatting.terraform_fmt, formatting.rustfmt}, on_attach = on_attach})

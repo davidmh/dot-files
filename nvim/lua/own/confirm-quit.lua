@@ -29,53 +29,11 @@ local function confirm(should_write)
     return vim.cmd("quit")
   end
 end
-do
-  local opts_1_auto
-  do
-    local tbl_14_auto = {}
-    for k_2_auto, v_3_auto in pairs((nil or {})) do
-      local k_15_auto, v_16_auto = k_2_auto, v_3_auto
-      if ((k_15_auto ~= nil) and (v_16_auto ~= nil)) then
-        tbl_14_auto[k_15_auto] = v_16_auto
-      else
-      end
-    end
-    opts_1_auto = tbl_14_auto
-  end
-  if (opts_1_auto.noremap == nil) then
-    opts_1_auto.noremap = true
-  else
-  end
-  if (opts_1_auto.silent == nil) then
-    opts_1_auto.silent = true
-  else
-  end
-  local function _9_()
-    return confirm(true)
-  end
-  vim.keymap.set("n", "ZZ", _9_, opts_1_auto)
+local function _6_()
+  return confirm(true)
 end
-local opts_1_auto
-do
-  local tbl_14_auto = {}
-  for k_2_auto, v_3_auto in pairs((nil or {})) do
-    local k_15_auto, v_16_auto = k_2_auto, v_3_auto
-    if ((k_15_auto ~= nil) and (v_16_auto ~= nil)) then
-      tbl_14_auto[k_15_auto] = v_16_auto
-    else
-    end
-  end
-  opts_1_auto = tbl_14_auto
-end
-if (opts_1_auto.noremap == nil) then
-  opts_1_auto.noremap = true
-else
-end
-if (opts_1_auto.silent == nil) then
-  opts_1_auto.silent = true
-else
-end
-local function _13_()
+vim.keymap.set("n", "ZZ", _6_)
+local function _7_()
   return confirm(false)
 end
-return vim.keymap.set("n", "ZQ", _13_, opts_1_auto)
+return vim.keymap.set("n", "ZQ", _7_)
