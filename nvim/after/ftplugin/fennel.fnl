@@ -26,10 +26,11 @@
                            (find-window-id-by-path)))
 
   (when lua-window-id
-    (vim.fn.win_gotoid lua-window-id)
-    (vim.cmd "sleep! 10m")
-    (vim.cmd "e!")
-    (vim.fn.win_gotoid fnl-window-id)))
+    (vim.schedule
+      #(do
+        (vim.fn.win_gotoid lua-window-id)
+        (vim.cmd :edit)
+        (vim.fn.win_gotoid fnl-window-id)))))
 
 (augroup :fennel-refresh-compiled-buffer [:BufWritePost {:pattern :*.fnl
                                                          :callback maybe-refresh-compiled-buffer-window}])

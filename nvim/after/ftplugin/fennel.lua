@@ -22,10 +22,12 @@ local function maybe_refresh_compiled_buffer_window()
   local fnl_window_id = vim.fn.win_getid()
   local lua_window_id = find_window_id_by_path(find_compiled_lua_path(vim.fn.expand("%:p")))
   if lua_window_id then
-    vim.fn.win_gotoid(lua_window_id)
-    vim.cmd("sleep! 10m")
-    vim.cmd("e!")
-    return vim.fn.win_gotoid(fnl_window_id)
+    local function _6_()
+      vim.fn.win_gotoid(lua_window_id)
+      vim.cmd("edit")
+      return vim.fn.win_gotoid(fnl_window_id)
+    end
+    return vim.schedule(_6_)
   else
     return nil
   end
