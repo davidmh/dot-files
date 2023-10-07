@@ -32,17 +32,6 @@
                          :typescriptreact
                          :yaml])
 
-(comment
-  ; TODO: render gitsigns and diagnostic icons side to side
-  (vim.fn.sign_define :DiagnosticSignError
-                      {:text :● :texthl :DiagnosticSignError})
-  (vim.fn.sign_define :DiagnosticSignWarn
-                      {:text :● :texthl :DiagnosticSignWarn})
-  (vim.fn.sign_define :DiagnosticSignInfo
-                      {:text :● :texthl :DiagnosticSignInfo})
-  (vim.fn.sign_define :DiagnosticSignHint
-                      {:text :● :texthl :DiagnosticSignHint}))
-
 (fn get-source-name [diagnostic]
   (or diagnostic.source
       (-?> diagnostic.namespace
@@ -58,7 +47,7 @@
 
 (vim.diagnostic.config {:underline true
                         :signs false
-                        :virtual_text false
+                        :virtual_text true
                         :update_in_insert false
                         :severity_sort true
                         :float {:header ""
@@ -93,9 +82,9 @@
   {:sources [diagnostics.shellcheck
              ; diagnostics.pycodestyle
              ; diagnostics.pydocstyle
-             (diagnostics.rubocop.with {:cwd (root-pattern :.rubocop.yml)})
-                                        ; :command :bundle
-                                        ; :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
+             (diagnostics.rubocop.with {:cwd (root-pattern :.rubocop.yml)
+                                        :command :bundle
+                                        :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
              (diagnostics.luacheck.with {:cwd (root-pattern :.luacheckrc)
                                          :condition (with-root-file :.luacheckrc)})
              (diagnostics.selene.with {:cwd (root-pattern :selene.toml)
@@ -111,9 +100,9 @@
                                         :filetypes cspell-filetypes})
 
              formatting.jq
-             (formatting.rubocop.with {:cwd (root-pattern :.rubocop.yml)})
-                                       ; :command :bundle
-                                       ; :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
+             ; (formatting.rubocop.with {:cwd (root-pattern :.rubocop.yml)
+             ;                           :command :bundle
+             ;                           :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
              ; formatting.stylua
              formatting.terraform_fmt
              formatting.rustfmt]

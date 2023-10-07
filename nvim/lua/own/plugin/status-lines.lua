@@ -1,11 +1,13 @@
 -- [nfnl] Compiled from fnl/own/plugin/status-lines.fnl by https://github.com/Olical/nfnl, do not edit.
-local core = require("nfnl.core")
+local _local_1_ = require("nfnl.module")
+local autoload = _local_1_["autoload"]
 local heirline = require("heirline")
-local conditions = require("heirline.conditions")
-local palettes = require("catppuccin.palettes")
-local navic = require("nvim-navic")
-local nvim_web_devicons = require("nvim-web-devicons")
-local config = require("own.config")
+local conditions = autoload("heirline.conditions")
+local core = autoload("nfnl.core")
+local palettes = autoload("catppuccin.palettes")
+local navic = autoload("nvim-navic")
+local nvim_web_devicons = autoload("nvim-web-devicons")
+local config = autoload("own.config")
 local chrome_accent = "surface2"
 local function container(components)
   local solid_background = {hl = {fg = "fg", bg = chrome_accent}}
@@ -13,57 +15,57 @@ local function container(components)
 end
 local mode_colors = {n = "fg", i = "green", v = "blue", V = "cyan", ["\22"] = "cyan", c = "orange", s = "purple", S = "purple", ["\19"] = "purple", R = "orange", r = "orange", ["!"] = "red", t = "green"}
 local not_a_term
-local function _1_()
+local function _2_()
   return ((vim.o.buftype ~= "terminal") and (vim.o.filetype ~= "toggleterm"))
 end
-not_a_term = _1_
+not_a_term = _2_
 local vi_mode
-local function _2_(_241)
+local function _3_(_241)
   _241["mode"] = vim.fn.mode(1)
   return nil
 end
-local function _3_(_241)
+local function _4_(_241)
   return {fg = mode_colors[_241.mode], bold = true}
 end
-vi_mode = {init = _2_, condition = not_a_term, provider = "\238\174\180 ", hl = _3_, update = {"ModeChanged", "ColorScheme"}}
+vi_mode = {init = _3_, condition = not_a_term, provider = "\238\174\180 ", hl = _4_, update = {"ModeChanged", "ColorScheme"}}
 local macro_rec
-local function _4_()
+local function _5_()
   return ((vim.fn.reg_recording() ~= "") and (vim.o.cmdheight == 0))
 end
-local function _5_()
+local function _6_()
   return (" [ \239\165\138 -> " .. vim.fn.reg_recording() .. " ] ")
 end
-macro_rec = {condition = _4_, update = {"RecordingEnter", "RecordingLeave", "ColorScheme"}, provider = _5_, hl = {fg = "red", bold = true}}
+macro_rec = {condition = _5_, update = {"RecordingEnter", "RecordingLeave", "ColorScheme"}, provider = _6_, hl = {fg = "red", bold = true}}
 local show_cmd
-local function _6_()
+local function _7_()
   return (vim.o.cmdheight == 0)
 end
-local function _7_()
+local function _8_()
   vim.opt.showcmdloc = "statusline"
   return nil
 end
-show_cmd = {condition = _6_, init = _7_, provider = "%3.5(%S%)"}
+show_cmd = {condition = _7_, init = _8_, provider = "%3.5(%S%)"}
 local show_search
-local function _8_()
-  local function _9_()
-    local _10_ = vim.fn.searchcount()
-    if (nil ~= _10_) then
-      local _11_ = (_10_).total
-      if (nil ~= _11_) then
-        return (_11_ > 0)
+local function _9_()
+  local function _10_()
+    local _11_ = vim.fn.searchcount()
+    if (nil ~= _11_) then
+      local _12_ = (_11_).total
+      if (nil ~= _12_) then
+        return (_12_ > 0)
       else
-        return _11_
+        return _12_
       end
     else
-      return _10_
+      return _11_
     end
   end
-  return ((vim.o.cmdheight == 0) and (vim.v.hlsearch ~= 0) and _9_())
+  return ((vim.o.cmdheight == 0) and (vim.v.hlsearch ~= 0) and _10_())
 end
-local function _14_()
-  local _let_15_ = vim.fn.searchcount()
-  local current = _let_15_["current"]
-  local total = _let_15_["total"]
+local function _15_()
+  local _let_16_ = vim.fn.searchcount()
+  local current = _let_16_["current"]
+  local total = _let_16_["total"]
   local direction
   if (vim.v.searchforward == 1) then
     direction = "\239\144\179"
@@ -74,12 +76,7 @@ local function _14_()
   local counter = ("[" .. current .. "/" .. total .. "]")
   return (" " .. direction .. " " .. pattern .. " " .. counter)
 end
-show_search = {condition = _8_, provider = _14_}
-local clock
-local function _17_()
-  return vim.fn.strftime("%H:%M")
-end
-clock = {container({{provider = _17_}})}
+show_search = {condition = _9_, provider = _15_}
 local function sanitize_path(path, size)
   return vim.fn.pathshorten(string.gsub(string.gsub(path, vim.env.HOME, "~"), vim.env.REMIX_HOME, "remix"), (size or 2))
 end
@@ -251,7 +248,7 @@ fold = {provider = _50_}
 local signs = {provider = "%s"}
 local statuscolumn = {fold, push_right, line_number, signs}
 local winbar = {term_title, lsp_breadcrumb, quickfix_title, push_right, git_blame, file_name_block}
-local statusline = {vi_mode, macro_rec, git_block, dead_space, push_right, show_cmd, diagnostics_block, show_search, clock, hl = {bg = "NONE"}}
+local statusline = {vi_mode, macro_rec, git_block, dead_space, push_right, show_cmd, diagnostics_block, show_search, hl = {bg = "NONE"}}
 local disabled_winbar = {buftype = {"nofile", "prompt"}, filetype = {"^git.*", "Trouble"}}
 local function initialize_heirline()
   local opts

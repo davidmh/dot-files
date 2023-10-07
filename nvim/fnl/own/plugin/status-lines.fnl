@@ -1,12 +1,13 @@
 (import-macros {: augroup} :own.macros)
+(local {: autoload} (require :nfnl.module))
 
-(local core (require :nfnl.core))
 (local heirline (require :heirline))
-(local conditions (require :heirline.conditions))
-(local palettes (require :catppuccin.palettes))
-(local navic (require :nvim-navic))
-(local nvim-web-devicons (require :nvim-web-devicons))
-(local config (require :own.config))
+(local conditions (autoload :heirline.conditions))
+(local core (autoload :nfnl.core))
+(local palettes (autoload :catppuccin.palettes))
+(local navic (autoload :nvim-navic))
+(local nvim-web-devicons (autoload :nvim-web-devicons))
+(local config (autoload :own.config))
 
 (local chrome-accent :surface2)
 
@@ -63,8 +64,6 @@
                                      pattern (vim.fn.getreg "/")
                                      counter (.. "[" current :/ total "]")]
                                  (.. " " direction " " pattern " " counter))})
-
-(local clock [(container [{:provider #(vim.fn.strftime "%H:%M")}])])
 
 (fn sanitize-path [path size]
   (-> path
@@ -206,8 +205,7 @@
                    5 push-right
                    6 show-cmd
                    7 diagnostics-block
-                   8 show-search
-                   9 clock})
+                   8 show-search})
 
 (local disabled-winbar {:buftype [:nofile :prompt]
                         :filetype [:^git.* :Trouble]})

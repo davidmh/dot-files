@@ -1,5 +1,3 @@
-(local core (require :nfnl.core))
-
 (fn find [pred xs]
   (vim.validate {:pred [pred :function]
                  :xs [xs :table]})
@@ -9,7 +7,7 @@
 (fn find-right [pred xs]
   (vim.validate {:pred [pred :function]
                  :xs [xs :table]})
-  (for [i 1 (- (core.count xs) 1)]
+  (for [i 1 (- (length xs) 1)]
     (let [x (. xs i)]
       (if (pred x i) (lua "return x")))))
 

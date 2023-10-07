@@ -4,7 +4,6 @@ let
   optionals = lib.optionals;
   os = builtins.currentSystem;
   isLinux = os == "x86_64-linux";
-  isDarwin = !isLinux;
   userName = builtins.getEnv "USER";
   homeDirectory = builtins.getEnv "HOME";
 in
@@ -57,21 +56,21 @@ in
     zplug = {
       enable = true;
       plugins = [
-        { name = "plugins/git"; tags = [from:oh-my-zsh]; }
-        { name = "plugins/dirhistory"; tags = [from:oh-my-zsh]; }
-        { name = "plugins/colorize"; tags = [from:oh-my-zsh]; }
-        { name = "plugins/chruby"; tags = [from:oh-my-zsh]; }
-        { name = "plugins/colored-man-pages"; tags = [from:oh-my-zsh]; }
+        { name = "plugins/git"; tags = ["from:oh-my-zsh"]; }
+        { name = "plugins/dirhistory"; tags = ["from:oh-my-zsh"]; }
+        { name = "plugins/colorize"; tags = ["from:oh-my-zsh"]; }
+        { name = "plugins/chruby"; tags = ["from:oh-my-zsh"]; }
+        { name = "plugins/colored-man-pages"; tags = ["from:oh-my-zsh"]; }
         { name = "zsh-users/zsh-syntax-highlighting"; }
         { name = "zsh-users/zsh-autosuggestions"; }
         { name = "zsh-users/zsh-completions"; }
         { name = "spwhitt/nix-zsh-completions"; }
-        { name = "subnixr/minimal"; tags = [as:theme]; }
+        { name = "subnixr/minimal"; tags = ["as:theme"]; }
       ];
     };
     shellAliases = {
       vim = "nvim";
-      ll = "lsd";
+      ll = "lsd -l";
     };
   };
 

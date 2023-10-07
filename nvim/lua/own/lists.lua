@@ -1,5 +1,4 @@
 -- [nfnl] Compiled from fnl/own/lists.fnl by https://github.com/Olical/nfnl, do not edit.
-local core = require("nfnl.core")
 local function find(pred, xs)
   vim.validate({pred = {pred, "function"}, xs = {xs, "table"}})
   for i, x in ipairs(xs) do
@@ -12,7 +11,7 @@ local function find(pred, xs)
 end
 local function find_right(pred, xs)
   vim.validate({pred = {pred, "function"}, xs = {xs, "table"}})
-  for i = 1, (core.count(xs) - 1) do
+  for i = 1, (#xs - 1) do
     local x = xs[i]
     if pred(x, i) then
       return x
