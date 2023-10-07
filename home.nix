@@ -1,16 +1,6 @@
 { config, pkgs, lib, ... }:
 
-let
-  optionals = lib.optionals;
-  os = builtins.currentSystem;
-  isLinux = os == "x86_64-linux";
-  userName = builtins.getEnv "USER";
-  homeDirectory = builtins.getEnv "HOME";
-in
 {
-  home.username = userName;
-  home.homeDirectory = homeDirectory;
-
   home.stateVersion = "23.05";
 
   home.sessionVariables = {
@@ -20,7 +10,6 @@ in
   };
 
   home.packages = with pkgs; [
-    deno
     cargo
     clojure
     evcxr
@@ -41,7 +30,7 @@ in
     teamocil
     tig
     yabai
-  ] ++ (optionals isLinux [ tdesktop xclip ]);
+  ];
 
   programs.home-manager.enable = true;
 
@@ -123,7 +112,7 @@ in
 
   xdg.configFile.nvim = {
     source = config.lib.file.mkOutOfStoreSymlink ./nvim;
-    recursive = false;
+    recursive = true;
   };
 
   xdg.configFile."wezterm/wezterm.lua" = {
@@ -142,6 +131,4 @@ in
     source = config.lib.file.mkOutOfStoreSymlink ./skhd;
     recursive = true;
   };
-
-  imports = [] ++ (optionals isLinux [ ./linux.nix ]);
 }

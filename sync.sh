@@ -4,7 +4,7 @@ set -eo pipefail
 
 touch ~/.env.zsh
 
-home-manager switch -v
+home-manager switch --impure
 
 git clean -fdx -- ~/.config/home-manager/nvim/lua
 
