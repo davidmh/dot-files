@@ -11,6 +11,12 @@
     (let [x (. xs i)]
       (if (pred x i) (lua "return x")))))
 
+(fn find-index [pred xs]
+  (vim.validate {:pred [pred :function]
+                 :xs [xs :table]})
+  (each [i x (ipairs xs)]
+    (if (pred x i) (lua "return i"))))
+
 (fn not-empty [x] (and (~= x nil) (~= x "")))
 
 (fn join [xs sep]
@@ -20,4 +26,5 @@
 
 {: find
  : find-right
+ : find-index
  : join}
