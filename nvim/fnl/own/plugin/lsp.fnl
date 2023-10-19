@@ -28,7 +28,8 @@
                                  (: :gsub "^it%('" "it ")
                                  (: :gsub "^describe%('" "describe ")
                                  (: :gsub "'%) callback$" ""))
-                               text))
+                               (-> text
+                                 (: :gsub " callback$" ""))))
               :icons config.navic-icons
               :safe_output false
               :separator "  "})

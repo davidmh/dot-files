@@ -6,9 +6,8 @@
 (local ensure-installed [:bash
                          :fennel
                          :gitattributes
-                         :gitcommit
                          :git_config
-                         :git_rebase
+                         :graphql
                          :hcl
                          :html
                          :json
@@ -46,7 +45,20 @@
                                                  :node_incremental :<tab>
                                                  :node_decremental :<s-tab>
                                                  :scope_incremental :<leader><tab>}}
-               :textobjects {:enable true}
+               :textobjects {:select {:enable true
+                                      :lookahead true
+                                      :keymaps {:aa "@parameter.outer"
+                                                :ia "@parameter.inner"
+                                                :af "@function.outer"
+                                                :if "@function.inner"
+                                                :ac "@class.outer"
+                                                :ic "@class.inner"}}
+                             :move {:enable true
+                                    :set_jumps true
+                                    :goto_next_start {"]]" "@function.outer"}
+                                    :goto_next_end {"][" "@function.outer"}
+                                    :goto_previous_start {"[[" "@function.outer"}
+                                    :go_to_previous_end {"[]" "@function.outer"}}}
                :ensure_installed ensure-installed
                :table_of_contents {:enable true}
                :context_commentstring {:enable true

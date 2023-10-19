@@ -5,9 +5,9 @@ local function _1_()
   vim.cmd("split")
   return oil.open()
 end
-vim.keymap.set("n", "-", _1_)
+vim.keymap.set("n", "-", _1_, {nowait = true, desc = "open oil in an horizontal split"})
 local function _2_()
   vim.cmd("vsplit")
   return oil.open()
 end
-return vim.keymap.set("n", "\\", _2_)
+return vim.keymap.set("n", "|", _2_, {nowait = true, desc = "open oil in a vertical split"})

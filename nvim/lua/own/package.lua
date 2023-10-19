@@ -45,7 +45,7 @@ local function run_script(script)
   end
 end
 local function yarn_select()
-  local package_paths = get_package_paths(vim.fn.expand("%:p"))
+  local package_paths = get_package_paths(vim.fn.expand("%"))
   local scripts = vim.tbl_map(parse_scripts, package_paths)
   local all = core.reduce(core.concat, {}, scripts)
   return vim.ui.select(all, {prompt = "yarn scripts", format_item = format_script}, run_script)

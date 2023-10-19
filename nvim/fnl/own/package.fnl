@@ -42,7 +42,7 @@
       (vim.cmd (.. "Dispatch -dir=" dir " yarn run " cmd))))) 
 
 (fn yarn-select []
-  (let [package-paths (get-package-paths (vim.fn.expand :%:p))
+  (let [package-paths (get-package-paths (vim.fn.expand :%))
         scripts (vim.tbl_map parse-scripts package-paths)
         all (core.reduce core.concat [] scripts)]
     (vim.ui.select

@@ -19,3 +19,5 @@
 
 (nmap :<M-x> ::Telescope<CR> {:nowait true})
 (nmap :<D-x> ::Telescope<CR> {:nowait true})
+(nmap :<M-h> ":Telescope help_tags<CR>" {:nowait true})
+(nmap :<M-m> ":Telescope marks<CR>" {:nowait true})

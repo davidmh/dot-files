@@ -33,7 +33,6 @@
                                            :williamboman/mason-lspconfig.nvim
                                            :folke/neodev.nvim
                                            :onsails/lspkind-nvim
-                                           :hrsh7th/cmp-nvim-lsp
                                            :j-hui/fidget.nvim
                                            :nvim-navic
                                            :pmizio/typescript-tools.nvim]
@@ -45,7 +44,8 @@
                                                    :davidmh/cspell.nvim]
                                     :mod :diagnostics}
 
-  :petertriho/cmp-git {:dependencies [:nvim-lua/plenary.nvim]}
+  :petertriho/cmp-git {:dependencies [:nvim-lua/plenary.nvim]
+                       :event :InsertEnter}
 
   ;; Completion
   :hrsh7th/nvim-cmp {:dependencies [:hrsh7th/cmp-nvim-lsp
@@ -57,6 +57,7 @@
                                     :onsails/lspkind-nvim
                                     :petertriho/cmp-git
                                     :hrsh7th/cmp-emoji]
+                     :event :InsertEnter
                      :mod :completion}
 
   :zbirenbaum/copilot.lua {:mod :copilot
@@ -76,15 +77,15 @@
                                  :lewis6991/gitsigns.nvim
                                  ; :folke/which-key.nvim
                                  :norcalli/nvim-terminal.lua
-                                 :nvim-telescope/telescope.nvim]}
+                                 :nvim-telescope/telescope.nvim]
+                  :event :VeryLazy}
 
   ;; Ruby
-  :tpope/vim-rails {}
-  :tpope/vim-rake {}
+  :tpope/vim-rails {:ft :ruby}
+  :tpope/vim-rake {:ft :ruby}
 
   ;; (parens (for (days)))
-  :gpanders/nvim-parinfer {}
-  :clojure-vim/vim-jack-in {}
+  :gpanders/nvim-parinfer {:ft [:clojure :fennel :query]}
 
   ;; Colorscheme
   :catppuccin/nvim {:name :catppuccin
@@ -92,11 +93,8 @@
                     :lazy false}
 
   ;; Syntax hightlighting
-  :yasuhiroki/circleci.vim {}
-  :aklt/plantuml-syntax {}
-  :nvim-treesitter/playground {:cmd :TSPlaygroundToggle}
-  :nvim-treesitter/nvim-treesitter {:dependencies [:nvim-treesitter/playground
-                                                   :JoosepAlviste/nvim-ts-context-commentstring
+  :yasuhiroki/circleci.vim {:ft :yaml.circleci}
+  :nvim-treesitter/nvim-treesitter {:dependencies [:JoosepAlviste/nvim-ts-context-commentstring
                                                    :numToStr/Comment.nvim]
                                     :build ::TSUpdate
                                     :mod :tree-sitter}
@@ -127,13 +125,9 @@
   :folke/which-key.nvim {:dependencies [:lewis6991/gitsigns.nvim]
                          :mod :which-key}
 
-  ;; TMUX integration
-  :christoomey/vim-tmux-navigator {}
-
   ;; Status lines
   :rebelot/heirline.nvim {:dependencies [:catppuccin
-                                         :nvim-tree/nvim-web-devicons
-                                         :mason]
+                                         :nvim-tree/nvim-web-devicons]
                           :mod :status-lines}
 
   :rcarriga/nvim-notify {:dependencies [:nvim-telescope/telescope.nvim
@@ -159,8 +153,9 @@
                       :mod :db}
 
   ;; netrwho?
-  :stevearc/oil.nvim {:mod :oil}
-  :chrishrb/gx.nvim {:event [:BufEnter]
+  :stevearc/oil.nvim {:mod :oil
+                      :keys [:- :|]}
+  :chrishrb/gx.nvim {:keys [:gx]
                      :config true}
 
   ;; open files from a terminal buffer in the current instance
@@ -178,7 +173,7 @@
 
   ;; Misc Utilities
   :danilamihailov/beacon.nvim {}
-  :tommcdo/vim-exchange {}
+  :tommcdo/vim-exchange {:keys [:cx :cX :c<Space>]}
   :radenling/vim-dispatch-neovim {:dependencies [:tpope/vim-dispatch]}
   :tpope/vim-eunuch  {}
   :tpope/vim-repeat  {}
@@ -186,10 +181,11 @@
   :tpope/vim-surround  {}
   :tpope/vim-unimpaired  {}
   :tpope/vim-projectionist  {}
-  :tpope/vim-speeddating {}
+  :tpope/vim-speeddating {:keys [:<C-a> :<C-x>]}
   :junegunn/vim-slash  {}
-  :junegunn/vim-easy-align {:config #(map [:x :n] :ga "<Plug>(EasyAlign)")}
-  :vim-scripts/BufOnly.vim  {}
-  :mg979/vim-visual-multi  {}
+  :junegunn/vim-easy-align {:config #(map [:x :n] :ga "<Plug>(EasyAlign)")
+                            :keys [:ga]}
+  :vim-scripts/BufOnly.vim {:keys :<leader>bo}
+  :mg979/vim-visual-multi  {:keys [:<C-n> :\\A]}
   :Valloric/ListToggle {:mod :list-toggle}
   :AndrewRadev/switch.vim {:mod :switch})

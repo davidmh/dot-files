@@ -109,10 +109,16 @@
                                       2 file-name
                                       3 file-flags})})
 
-(local quickfix-title {:condition #(= vim.o.filetype :qf)
-                       1 (container {:provider #(-> (vim.fn.getqflist {:title 1})
-                                                    (. :title)
-                                                    (or " - "))})})
+(fn get-quickfix-title []
+  (-> (vim.fn.getqflist {:title 1}) (. :title)))
+
+(fn show-quickfix-title []
+  (and
+    (= vim.o.filetype :qf)
+    (~= "" (get-quickfix-title))))
+
+(local quickfix-title {:condition show-quickfix-title
+                       1 (container {:provider #(get-quickfix-title)})})
 
 (local lsp-breadcrumb {:condition #(and (navic.is_available)
                                         (> (length (navic.get_location)) 0))

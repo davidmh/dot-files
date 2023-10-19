@@ -20,7 +20,7 @@ in
   };
 
   home.packages = with pkgs; [
-    deno
+    bat
     cargo
     clojure
     evcxr
@@ -58,9 +58,7 @@ in
       plugins = [
         { name = "plugins/git"; tags = ["from:oh-my-zsh"]; }
         { name = "plugins/dirhistory"; tags = ["from:oh-my-zsh"]; }
-        { name = "plugins/colorize"; tags = ["from:oh-my-zsh"]; }
         { name = "plugins/chruby"; tags = ["from:oh-my-zsh"]; }
-        { name = "plugins/colored-man-pages"; tags = ["from:oh-my-zsh"]; }
         { name = "zsh-users/zsh-syntax-highlighting"; }
         { name = "zsh-users/zsh-autosuggestions"; }
         { name = "zsh-users/zsh-completions"; }

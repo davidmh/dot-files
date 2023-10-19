@@ -19,7 +19,7 @@ local function _2_(text)
   if (text:match("^it%(") or text:match("^describe%(")) then
     return text:gsub("^it%('", "it "):gsub("^describe%('", "describe "):gsub("'%) callback$", "")
   else
-    return text
+    return text:gsub(" callback$", "")
   end
 end
 navic.setup({depth_limit = 4, depth_limit_indicator = " [ \238\169\188 ] ", click = true, highlight = true, format_text = _2_, icons = config["navic-icons"], separator = " \238\170\182 ", safe_output = false})
