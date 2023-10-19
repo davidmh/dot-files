@@ -4,4 +4,5 @@ telescope.setup({defaults = {layout_strategy = "horizontal", layout_config = {ho
 vim.keymap.set("n", "<M-x>", ":Telescope<CR>", {nowait = true})
 vim.keymap.set("n", "<D-x>", ":Telescope<CR>", {nowait = true})
 vim.keymap.set("n", "<M-h>", ":Telescope help_tags<CR>", {nowait = true})
-return vim.keymap.set("n", "<M-m>", ":Telescope marks<CR>", {nowait = true})
+vim.keymap.set("n", "<M-m>", ":Telescope marks<CR>", {nowait = true})
+return vim.keymap.set("n", "<M-k>", ":Telescope keymaps<CR>", {nowait = true})

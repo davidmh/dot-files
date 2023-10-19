@@ -11,13 +11,12 @@ local putils = autoload("telescope.previewers.utils")
 local state = autoload("telescope.actions.state")
 local str = autoload("nfnl.string")
 local utils = autoload("telescope.utils")
-local wk = autoload("which-key")
 vim.g.fugitive_legacy_commands = false
 vim.cmd("cabbrev git Git")
 git_signs.setup({current_line_blame = false})
 diff_view.setup({key_bindings = {disable_defaults = false}})
-local function cmd(expression, description)
-  return {("<cmd>" .. expression .. "<cr>"), description}
+local function cmd(expression)
+  return ("<cmd>" .. expression .. "<cr>")
 end
 local function git_fixup(prompt_bufnr)
   local current_picker = state.get_current_picker(prompt_bufnr)
@@ -123,10 +122,29 @@ local function files_in_commit(ref)
   end
   return vim.ui.select(files, {prompt = title}, _9_)
 end
+local function gmap(keymap, callback, desc)
+  return vim.keymap.set("n", ("<leader>g" .. keymap), callback, {desc = desc, nowait = true, silent = true})
+end
+gmap("s", cmd("Git"), "git status")
+gmap("c", cmd("Telescope git_branches"), "git checkout branch")
+gmap("w", cmd("Gwrite"), "write into the git tree")
+gmap("r", cmd("Gread"), "read from the git tree")
+gmap("e", cmd("Gedit"), "edit from the git tree")
+gmap("b", cmd("Git blame"), "git blame")
+gmap("d", toggle_diff_view, "toggle git diff")
+gmap("l", git_log, "git log")
+gmap("L", git_buffer_log, "current buffer's git log")
 local function _12_()
   return files_in_commit("HEAD")
 end
-wk.register({g = {name = "git", s = cmd("Git", "git status"), c = cmd("Telescope git_branches", "checkout branch"), w = cmd("Gwrite", "write into the git tree"), r = cmd("Gread", "read from the git tree"), e = cmd("Gedit", "edit from the git tree"), b = cmd("Git blame", "blame"), d = {toggle_diff_view, "view diff"}, l = {git_log, "git log"}, L = {git_buffer_log, "current buffer's git log"}, B = cmd("'<,'>GBrowse", "open in remote service"), f = cmd("GFixup", "fixup staged changes"), ["<space>"] = {_12_, "files in HEAD"}, h = {name = "hunk", ["["] = cmd("Gitsigns prev_hunk", "prev"), ["]"] = cmd("Gitsigns next_hunk", "next"), s = cmd("Gitsigns stage_hunk", "stage"), u = cmd("Gitsigns undo_stage_hunk", "unstage"), r = cmd("Gitsigns reset_hunk", "reset"), p = cmd("Gitsigns preview_hunk", "preview"), b = {git_blame_line, "blame"}}}}, {prefix = "<leader>"})
+gmap("<space>", _12_, "files in git HEAD")
+gmap("h[", cmd("Gitsigns prev_hunk"), "previous git hunk")
+gmap("h]", cmd("Gitsigns next_hunk"), "next git hunk")
+gmap("hs", cmd("Gitsigns stage_hunk"), "stage git hunk")
+gmap("hu", cmd("Gitsigns undo_stage_hunk"), "unstage git hunk")
+gmap("hr", cmd("Gitsigns reset_hunk"), "reset git hunk")
+gmap("hp", cmd("Gitsigns preview_hunk"), "preview git hunk")
+gmap("hb", git_blame_line, "blame current git hunk")
 local function copy_remote_url(opts)
   local _13_
   if (opts.range == 2) then

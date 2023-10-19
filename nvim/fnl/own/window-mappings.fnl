@@ -21,4 +21,6 @@
 (tmap :<M-h> :<C-\><C-n><C-W>h)
 (tmap :<M-l> :<C-\><C-n><C-W>l)
 
+(nmap :<leader>wz "<cmd>tabnew %<cr>" {:desc "zoom window"})
+
 (augroup :auto-resize-windows [:VimResized {:pattern :* :command "wincmd ="}])

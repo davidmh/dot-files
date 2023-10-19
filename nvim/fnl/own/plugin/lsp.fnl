@@ -1,4 +1,4 @@
-(import-macros {: augroup : nmap} :own.macros)
+(import-macros {: augroup : nmap : vmap} :own.macros)
 (local {: autoload} (require :nfnl.module))
 
 (local core (autoload :nfnl.core))
@@ -11,7 +11,6 @@
 (local mason (autoload :mason))
 (local mason-lspconfig (autoload :mason-lspconfig))
 (local navic (autoload :nvim-navic))
-(local wk (autoload :which-key))
 (local fidget (autoload :fidget))
 (local typescript-tools (autoload :typescript-tools))
 
@@ -69,34 +68,31 @@
         :group :eslint-autofix
         :buffer bufnr}))
 
+(fn buf-map [keymap callback desc]
+  (nmap keymap callback {:buffer true
+                         :silent true
+                         :desc desc}))
+
 (fn on-attach [args]
   (local bufnr args.buf)
   (local client (vim.lsp.get_client_by_id args.data.client_id))
   (vim.api.nvim_buf_set_option 0 :omnifunc :v:lua.vim.lsp.omnifunc)
 
-  (local opts {:buffer true :silent true})
-
   ;; Mappings
-  (nmap :K vim.lsp.buf.hover opts)
-  (nmap :gd vim.lsp.buf.definition opts)
+  (buf-map :K vim.lsp.buf.hover "lsp: hover")
+  (buf-map :gd vim.lsp.buf.definition "lsp: go to definition")
 
-  (wk.register {:l {:name :LSP
-                    :d [vim.lsp.buf.definition "go to definition"]
-                    :f [vim.lsp.buf.references "find references"]
-                    :i [vim.lsp.buf.implementation "go to implementation"]
-                    :s [vim.lsp.buf.signature_help "signature"]
-                    :t [vim.lsp.buf.type_definition "type definition"]
-                    :a [vim.lsp.buf.code_action "code actions"]
-                    :r [vim.lsp.buf.rename "rename"]
-                    :F [vim.lsp.buf.format "format"]
-                    :R [":LspRestart<CR>" "restart"]}}
-               {:prefix :<leader>
-                :buffer 0})
-  (wk.register {:l {:name :LSP
-                    :a [vim.lsp.buf.code_action "code actions"]}}
-               {:prefix :<leader>
-                :mode :v
-                :buffer 0})
+  (buf-map :<leader>ld vim.lsp.buf.declaration "lsp: go to declaration")
+  (buf-map :<leader>lf vim.lsp.buf.references "lsp: find references")
+  (buf-map :<leader>li vim.lsp.buf.implementation "lsp: go to implementation")
+  (buf-map :<leader>ls vim.lsp.buf.signature_help "lsp: signature")
+  (buf-map :<leader>lt vim.lsp.buf.type_definition "lsp: type definition")
+  (buf-map :<leader>la vim.lsp.buf.code_action "lsp: code actions")
+  (buf-map :<leader>lr vim.lsp.buf.rename "lsp: rename")
+  (buf-map :<leader>lR :<cmd>LspRestart<CR> "lsp: restart")
+
+  (vmap :<leader>la #(vim.lsp.buf.range_code_action) {:buffer true
+                                                      :desc "lsp: code actions"})
 
   (when (= client.name :eslint) (set-eslint-autofix bufnr))
 

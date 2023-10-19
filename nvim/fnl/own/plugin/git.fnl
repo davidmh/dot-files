@@ -1,3 +1,4 @@
+(import-macros {: nmap} :own.macros)
 (local {: autoload} (require :nfnl.module))
 (local core (autoload :nfnl.core))
 (local actions (autoload :telescope.actions))
@@ -9,7 +10,6 @@
 (local state (autoload :telescope.actions.state))
 (local str (autoload :nfnl.string))
 (local utils (autoload :telescope.utils))
-(local wk (autoload :which-key))
 
 (set vim.g.fugitive_legacy_commands false)
 (vim.cmd "cabbrev git Git")
@@ -18,8 +18,8 @@
 
 (diff-view.setup {:key_bindings {:disable_defaults false}})
 
-(fn cmd [expression description]
-  [(.. :<cmd> expression :<cr>) description])
+(fn cmd [expression]
+  (.. :<cmd> expression :<cr>))
 
 (fn git-fixup [prompt-bufnr]
   "Creates a fixup using the selected commit. Assumes there are staged files to
@@ -128,29 +128,28 @@
                                               (files-in-commit next-ref)
                                               (vim.cmd (.. "edit " $1)))))))
 
-(wk.register
-  {:g {:name :git
-       :s (cmd :Git "git status")
-       :c (cmd "Telescope git_branches" "checkout branch")
-       :w (cmd "Gwrite" "write into the git tree")
-       :r (cmd "Gread" "read from the git tree")
-       :e (cmd "Gedit" "edit from the git tree") ; open the latest committed version of the current file
-       :b (cmd "Git blame" "blame")
-       :d [toggle-diff-view "view diff"]
-       :l [git-log "git log"]
-       :L [git-buffer-log "current buffer's git log"]
-       :B (cmd "'<,'>GBrowse" "open in remote service")
-       :f (cmd :GFixup "fixup staged changes")
-       "<space>" [#(files-in-commit :HEAD) "files in HEAD"]
-       :h {:name "hunk"
-           "[" (cmd "Gitsigns prev_hunk" :prev)
-           "]" (cmd "Gitsigns next_hunk" :next)
-           :s (cmd "Gitsigns stage_hunk" :stage)
-           :u (cmd "Gitsigns undo_stage_hunk" :unstage)
-           :r (cmd "Gitsigns reset_hunk" :reset)
-           :p (cmd "Gitsigns preview_hunk" :preview)
-           :b [git-blame-line :blame]}}}
-  {:prefix :<leader>})
+(fn gmap [keymap callback desc]
+  (nmap (.. :<leader>g keymap) callback {:desc desc
+                                         :nowait true
+                                         :silent true}))
+
+(gmap :s (cmd "Git") "git status")
+(gmap :c (cmd "Telescope git_branches") "git checkout branch")
+(gmap :w (cmd "Gwrite") "write into the git tree")
+(gmap :r (cmd "Gread") "read from the git tree")
+(gmap :e (cmd "Gedit") "edit from the git tree") ; open the latest committed version of the current file
+(gmap :b (cmd "Git blame") "git blame")
+(gmap :d toggle-diff-view "toggle git diff")
+(gmap :l git-log "git log")
+(gmap :L git-buffer-log "current buffer's git log")
+(gmap :<space> #(files-in-commit :HEAD) "files in git HEAD")
+(gmap "h[" (cmd "Gitsigns prev_hunk") "previous git hunk")
+(gmap "h]" (cmd "Gitsigns next_hunk") "next git hunk")
+(gmap "hs" (cmd "Gitsigns stage_hunk") "stage git hunk")
+(gmap "hu" (cmd "Gitsigns undo_stage_hunk") "unstage git hunk")
+(gmap "hr" (cmd "Gitsigns reset_hunk") "reset git hunk")
+(gmap "hp" (cmd "Gitsigns preview_hunk") "preview git hunk")
+(gmap "hb" git-blame-line "blame current git hunk")
 
 (fn copy-remote-url [opts]
   (-> (if (= opts.range 2)

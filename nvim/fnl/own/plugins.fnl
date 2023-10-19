@@ -75,7 +75,6 @@
                                  :nvim-lua/plenary.nvim
                                  :sindrets/diffview.nvim
                                  :lewis6991/gitsigns.nvim
-                                 ; :folke/which-key.nvim
                                  :norcalli/nvim-terminal.lua
                                  :nvim-telescope/telescope.nvim]
                   :event :VeryLazy}
@@ -120,10 +119,6 @@
                                       :information icons.INFO
                                       :other "﫠"}
                               :group false}}
-
-  ;; Organize mappings to encourage mnemonics
-  :folke/which-key.nvim {:dependencies [:lewis6991/gitsigns.nvim]
-                         :mod :which-key}
 
   ;; Status lines
   :rebelot/heirline.nvim {:dependencies [:catppuccin
@@ -185,7 +180,7 @@
   :junegunn/vim-slash  {}
   :junegunn/vim-easy-align {:config #(map [:x :n] :ga "<Plug>(EasyAlign)")
                             :keys [:ga]}
-  :vim-scripts/BufOnly.vim {:keys :<leader>bo}
+  :vim-scripts/BufOnly.vim {}
   :mg979/vim-visual-multi  {:keys [:<C-n> :\\A]}
   :Valloric/ListToggle {:mod :list-toggle}
   :AndrewRadev/switch.vim {:mod :switch})

@@ -2,5 +2,8 @@
 (require :own.bootstrap)
 (require :own.options)
 (require :own.plugins)
-(require :own.window-mappings)
-(require :own.package)
+
+(vim.schedule #(do
+                (require :own.mappings)
+                (require :own.window-mappings)
+                (require :own.package)))
