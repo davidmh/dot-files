@@ -135,11 +135,12 @@
                                                               :height #(math.min $2 15)}}}}
 
   :chomosuke/term-edit.nvim {:ft :toggleterm
-                             :version :1.*}
+                             :version :1.*
+                             :opts {:prompt_end " [ "}}
   ;; Manage terminal buffers in splits tabs etc
   :akinsho/toggleterm.nvim {:branch :main
                             :dependencies [:chomosuke/term-edit.nvim]
-                            :mod :toggle-term}
+                            :opts {:shade_terminals false}}
 
   ;; Databases
   :tpope/vim-dadbod  {:dependencies [:kristijanhusak/vim-dadbod-completion

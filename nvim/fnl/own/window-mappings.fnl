@@ -7,6 +7,11 @@
 (nmap :<M-.> :<C-W>5>)
 (nmap :<M--> :<C-W>5-)
 (nmap :<M-=> :<C-W>5+)
+; move faster
+(nmap :<C-k> :<C-W>k)
+(nmap :<C-j> :<C-W>j)
+(nmap :<C-h> :<C-W>h)
+(nmap :<C-l> :<C-W>l)
 
 ; in terminal mode
 ;

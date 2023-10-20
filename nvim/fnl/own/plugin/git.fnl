@@ -33,7 +33,8 @@
         (let [cmd [:git :commit :--fixup selection.value]
               (output ret) (utils.get_os_command_output cmd current-picker.cwd)
               results (if (= ret 0) output ["Nothing to fixup, have you staged your changes?"])]
-          (vim.fn.setqflist results :r {:title (str.join " " cmd)}))))))
+          (vim.schedule
+            #(vim.notify (table.concat results "\n") vim.log.levels.INFO {:title "git fixup" :icon :})))))))
 
 (fn view-commit [target]
   "Open the selected commit using a fugitive command"

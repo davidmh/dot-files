@@ -32,18 +32,21 @@ local function git_fixup(prompt_bufnr)
     else
       results = {"Nothing to fixup, have you staged your changes?"}
     end
-    return vim.fn.setqflist(results, "r", {title = str.join(" ", cmd0)})
+    local function _3_()
+      return vim.notify(table.concat(results, "\n"), vim.log.levels.INFO, {title = "git fixup", icon = "\238\153\157"})
+    end
+    return vim.schedule(_3_)
   else
     return nil
   end
 end
 local function view_commit(target)
-  local function _4_(prompt_bufnr)
+  local function _5_(prompt_bufnr)
     local selection = state.get_selected_entry()
     actions.close(prompt_bufnr)
     return vim.cmd((target .. " " .. selection.value))
   end
-  return _4_
+  return _5_
 end
 local function yank_commit(propmt_bufnr)
   local selection = state.get_selected_entry()
@@ -54,14 +57,14 @@ local function git_browse()
   return vim.cmd(("GBrowse " .. state.get_selected_entry().value))
 end
 local function git_commit_preview_fn(opts)
-  local function _5_(_, entry)
+  local function _6_(_, entry)
     return entry.value
   end
-  local function _6_(self, entry)
+  local function _7_(self, entry)
     putils.job_maker({"git", "--no-pager", "show", (entry.value .. "^!")}, self.state.bufnr, {value = entry.value, bufname = self.state.bufname, cwd = opts.cwd})
     return putils.regex_highlighter(self.state.bufnr, "git")
   end
-  return previewers.new_buffer_previewer({get_buffer_by_name = _5_, define_preview = _6_})
+  return previewers.new_buffer_previewer({get_buffer_by_name = _6_, define_preview = _7_})
 end
 local git_commit_preview = utils.make_default_callable(git_commit_preview_fn, {})
 local function git_log_mappings(_, map)
@@ -102,14 +105,14 @@ local function files_in_commit(ref)
   local output = vim.fn.systemlist({"git", "show", "--name-only", "--oneline", ref})
   local title = core.first(output)
   local files
-  local function _8_(_241)
+  local function _9_(_241)
     return not core["empty?"](_241)
   end
-  files = vim.tbl_filter(_8_, core.rest(output))
+  files = vim.tbl_filter(_9_, core.rest(output))
   local next_commit = ("next: " .. core.first(vim.fn.systemlist({"git", "log", "-n", 1, "--oneline", (ref .. "^")})))
   local next_ref = core.second(str.split(next_commit, " "))
   table.insert(files, next_commit)
-  local function _9_(_241)
+  local function _10_(_241)
     if (_241 == nil) then
       return
     else
@@ -120,7 +123,7 @@ local function files_in_commit(ref)
       return vim.cmd(("edit " .. _241))
     end
   end
-  return vim.ui.select(files, {prompt = title}, _9_)
+  return vim.ui.select(files, {prompt = title}, _10_)
 end
 local function gmap(keymap, callback, desc)
   return vim.keymap.set("n", ("<leader>g" .. keymap), callback, {desc = desc, nowait = true, silent = true})
@@ -134,10 +137,10 @@ gmap("b", cmd("Git blame"), "git blame")
 gmap("d", toggle_diff_view, "toggle git diff")
 gmap("l", git_log, "git log")
 gmap("L", git_buffer_log, "current buffer's git log")
-local function _12_()
+local function _13_()
   return files_in_commit("HEAD")
 end
-gmap("<space>", _12_, "files in git HEAD")
+gmap("<space>", _13_, "files in git HEAD")
 gmap("h[", cmd("Gitsigns prev_hunk"), "previous git hunk")
 gmap("h]", cmd("Gitsigns next_hunk"), "next git hunk")
 gmap("hs", cmd("Gitsigns stage_hunk"), "stage git hunk")
@@ -146,12 +149,12 @@ gmap("hr", cmd("Gitsigns reset_hunk"), "reset git hunk")
 gmap("hp", cmd("Gitsigns preview_hunk"), "preview git hunk")
 gmap("hb", git_blame_line, "blame current git hunk")
 local function copy_remote_url(opts)
-  local _13_
+  local _14_
   if (opts.range == 2) then
-    _13_ = (opts.line1 .. "," .. opts.line2 .. "GBrowse!")
+    _14_ = (opts.line1 .. "," .. opts.line2 .. "GBrowse!")
   else
-    _13_ = "GBrowse!"
+    _14_ = "GBrowse!"
   end
-  return vim.notify(core.get(vim.api.nvim_exec2(_13_, {output = true}), "output"), vim.log.levels.INFO, {title = "Copied to clipboard", icon = "\239\131\170"})
+  return vim.notify(core.get(vim.api.nvim_exec2(_14_, {output = true}), "output"), vim.log.levels.INFO, {title = "Copied to clipboard", icon = "\239\131\170"})
 end
 return vim.api.nvim_create_user_command("GCopy", copy_remote_url, {range = true, nargs = 0})

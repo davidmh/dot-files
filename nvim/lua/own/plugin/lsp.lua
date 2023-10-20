@@ -51,7 +51,7 @@ local function on_attach(args)
   buf_map("<leader>lr", vim.lsp.buf.rename, "lsp: rename")
   buf_map("<leader>lR", "<cmd>LspRestart<CR>", "lsp: restart")
   local function _4_()
-    return vim.lsp.buf.range_code_action()
+    return vim.lsp.buf.code_action()
   end
   vim.keymap.set("v", "<leader>la", _4_, {buffer = true, desc = "lsp: code actions"})
   if (client.name == "eslint") then

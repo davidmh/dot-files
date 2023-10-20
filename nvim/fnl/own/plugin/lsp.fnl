@@ -91,8 +91,8 @@
   (buf-map :<leader>lr vim.lsp.buf.rename "lsp: rename")
   (buf-map :<leader>lR :<cmd>LspRestart<CR> "lsp: restart")
 
-  (vmap :<leader>la #(vim.lsp.buf.range_code_action) {:buffer true
-                                                      :desc "lsp: code actions"})
+  (vmap :<leader>la #(vim.lsp.buf.code_action) {:buffer true
+                                                :desc "lsp: code actions"})
 
   (when (= client.name :eslint) (set-eslint-autofix bufnr))
 
