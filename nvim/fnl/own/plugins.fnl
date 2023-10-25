@@ -157,11 +157,17 @@
   ;; open files from a terminal buffer in the current instance
   :willothy/flatten.nvim {:mod :flatten}
 
-  ; ;; orgmode - are we there yet?
-  :nvim-orgmode/orgmode {:dependencies [:nvim-treesitter/nvim-treesitter
-                                        :akinsho/org-bullets.nvim]
-                         :ft :org
-                         :mod :org}
+  :nvim-neorg/neorg {:build ":Neorg sync-parsers"
+                     :dependencies [:nvim-lua/plenary.nvim
+                                    :nvim-treesitter/nvim-treesitter]
+                     :opts {:load {:core.defaults {}
+                                   :core.concealer {}
+                                   :core.completion {:config {:engine :nvim-cmp}}
+                                   :core.integrations.treesitter {:config {:configure_parsers true
+                                                                           :install_parsers true}}
+                                   :core.export {:config {:export_dir :/tmp/}}
+                                   :core.export.markdown {:config {:extension :.md}}
+                                   :core.dirman {:config {:workspaces {:notes "~/Documents/neorg"}}}}}}
 
   :airblade/vim-rooter {:config #(do
                                    (set vim.g.rooter_patterns [:lazy-lock.json :.git])
@@ -182,6 +188,6 @@
   :junegunn/vim-easy-align {:config #(map [:x :n] :ga "<Plug>(EasyAlign)")
                             :keys [:ga]}
   :vim-scripts/BufOnly.vim {}
-  :mg979/vim-visual-multi  {:keys [:<C-n> :\\A]}
+  :mg979/vim-visual-multi  {}
   :Valloric/ListToggle {:mod :list-toggle}
   :AndrewRadev/switch.vim {:mod :switch})

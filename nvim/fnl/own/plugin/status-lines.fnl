@@ -11,6 +11,8 @@
 
 (local chrome-accent :surface2)
 
+(vim.schedule #(nvim-web-devicons.set_icon {:norg {:icon :}}))
+
 (fn container [components]
   (let [solid-background {:hl {:fg :fg :bg chrome-accent}}]
     [{:provider :

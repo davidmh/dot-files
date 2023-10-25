@@ -83,7 +83,7 @@ vim.keymap.set("n", "<leader>bb", _7_, opts("list buffers"))
 vim.keymap.set("n", "<leader>bk", cmd("bprevious <bar> bdelete! #"), opts("kill buffer"))
 vim.keymap.set("n", "<leader>bo", cmd("BufOnly!"), opts("kill other buffers"))
 local function _8_()
-  return telescope_file_browser("~/Documents/org/")
+  return telescope_file_browser("~/Documents/neorg/")
 end
 vim.keymap.set("n", "<leader>ob", _8_, opts("org browse"))
 local function _9_()

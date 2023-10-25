@@ -84,8 +84,8 @@
 (nmap :<leader>bk (cmd "bprevious <bar> bdelete! #") (opts "kill buffer"))
 (nmap :<leader>bo (cmd :BufOnly!) (opts "kill other buffers"))
 
-;; orgmode
-(nmap :<leader>ob #(telescope-file-browser "~/Documents/org/") (opts "org browse"))
+;; neog
+(nmap :<leader>ob #(telescope-file-browser "~/Documents/neorg/") (opts "org browse"))
 
 ;; toggle term
 

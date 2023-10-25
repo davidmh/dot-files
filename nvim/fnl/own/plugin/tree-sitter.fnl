@@ -4,6 +4,7 @@
 
 (local additional-vim-regex-highlighting [])
 (local ensure-installed [:bash
+                         :diff
                          :fennel
                          :gitattributes
                          :git_config
@@ -30,12 +31,6 @@
                          :vim
                          :vimdoc
                          :yaml])
-
-(let [(ok? org-mode) (pcall require :orgmode)]
-  (when ok?
-    (org-mode.setup_ts_grammar)
-    (table.insert ensure-installed :org)
-    (table.insert additional-vim-regex-highlighting :org)))
 
 (config.setup {:highlight {:enable true}
                :indent {:enable true}
