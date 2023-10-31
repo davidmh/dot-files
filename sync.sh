@@ -6,8 +6,6 @@ touch ~/.env.zsh
 
 home-manager switch -v
 
-git clean -fdx -- ~/.config/home-manager/nvim/lua
-
 if [[  "$(uname)" == "Darwin" ]]; then
   HOME_APPS="$HOME"/Applications
   NIX_APPS="$HOME"/.nix-profile/Applications

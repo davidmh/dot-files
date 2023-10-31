@@ -17,6 +17,7 @@ in
     EDITOR = "nvim";
     TIG_EDITOR = "nvim";
     DIRENV_LOG_FORMAT = "";
+    OVERCOMMIT_COLOR = 0;
   };
 
   home.packages = with pkgs; [
@@ -45,11 +46,22 @@ in
 
   programs.home-manager.enable = true;
 
-  programs.direnv.enable = true;
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
+
+  programs.starship.enable = true;
 
   programs.zsh = {
     enable = true;
-    enableCompletion = false;
+    completionInit = ''
+      autoload -Uz compinit
+      for dump in ~/.zcompdump(N.mh+24); do
+        compinit
+      done
+      compinit -C
+    '';
     envExtra = builtins.readFile ~/.env.zsh;
     autocd = true;
     history.ignoreSpace = true;
@@ -62,8 +74,6 @@ in
         { name = "zsh-users/zsh-syntax-highlighting"; }
         { name = "zsh-users/zsh-autosuggestions"; }
         { name = "zsh-users/zsh-completions"; }
-        { name = "spwhitt/nix-zsh-completions"; }
-        { name = "subnixr/minimal"; tags = ["as:theme"]; }
       ];
     };
     shellAliases = {
@@ -117,6 +127,10 @@ in
         '';
       }
     ];
+  };
+
+  xdg.configFile."starship.toml" = {
+    source = config.lib.file.mkOutOfStoreSymlink ./starship.toml;
   };
 
   xdg.configFile.nvim = {
