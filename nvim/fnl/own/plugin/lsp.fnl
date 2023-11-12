@@ -141,7 +141,7 @@
 
 ;; grammarly is not installed through mason see:
 ;; https://github.com/znck/grammarly/issues/334
-(lspconfig.grammarly.setup {:filetypes [:markdown :org :txt :gitcommit]})
+(lspconfig.grammarly.setup {:filetypes [:markdown :norg :txt :gitcommit]})
 
 (lspconfig.solargraph.setup {:root_dir git-root
                              :cmd [:bundle :exec :solargraph :stdio]})

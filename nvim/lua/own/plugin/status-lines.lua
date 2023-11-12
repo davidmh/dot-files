@@ -256,7 +256,7 @@ local signs = {provider = "%s"}
 local statuscolumn = {fold, push_right, line_number, signs}
 local winbar = {term_title, lsp_breadcrumb, quickfix_title, push_right, git_blame, file_name_block}
 local statusline = {vi_mode, macro_rec, git_block, dead_space, push_right, show_cmd, diagnostics_block, show_search, hl = {bg = "NONE"}}
-local disabled_winbar = {buftype = {"nofile", "prompt"}, filetype = {"^git.*", "Trouble"}}
+local disabled_winbar = {buftype = {"nofile", "prompt"}, filetype = {"^git.*"}}
 local function initialize_heirline()
   local opts
   local function _53_(_241)

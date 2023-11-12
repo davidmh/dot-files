@@ -144,13 +144,18 @@
 (gmap :l git-log "git log")
 (gmap :L git-buffer-log "current buffer's git log")
 (gmap :<space> #(files-in-commit :HEAD) "files in git HEAD")
-(gmap "h[" (cmd "Gitsigns prev_hunk") "previous git hunk")
-(gmap "h]" (cmd "Gitsigns next_hunk") "next git hunk")
 (gmap "hs" (cmd "Gitsigns stage_hunk") "stage git hunk")
 (gmap "hu" (cmd "Gitsigns undo_stage_hunk") "unstage git hunk")
 (gmap "hr" (cmd "Gitsigns reset_hunk") "reset git hunk")
 (gmap "hp" (cmd "Gitsigns preview_hunk") "preview git hunk")
 (gmap "hb" git-blame-line "blame current git hunk")
+
+(nmap "[h" (cmd "Gitsigns prev_hunk") {:desc "previous git hunk"
+                                       :nowait true
+                                       :silent true})
+(nmap "]h" (cmd "Gitsigns next_hunk") {:desc "next git hunk"
+                                       :nowait true
+                                       :silent true})
 
 (fn copy-remote-url [opts]
   (-> (if (= opts.range 2)

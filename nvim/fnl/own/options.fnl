@@ -4,6 +4,7 @@
 (set vim.o.cmdheight 0)
 (set vim.o.cursorline true)
 (set vim.o.expandtab true)
+(set vim.o.foldlevel 99)
 (set vim.o.grepprg "ag -S --vimgrep")
 (set vim.o.guifont "Hasklug Nerd Font:h14")
 (set vim.o.hidden true)
@@ -24,7 +25,7 @@
 (set vim.wo.wrap false)
 (set vim.o.splitright true)
 (set vim.g.GuiWindowFrameless true)
-(set vim.g.ruby_host_prog "~/.gem/ruby/3.0.6/bin/neovim-ruby-host")
+(set vim.g.ruby_host_prog (vim.fn.exepath :neovim-ruby-host))
 
 (fn os-open [url]
   (vim.fn.system (.. "xdg-open " url " || open " url)))

@@ -13,12 +13,14 @@
                              :prompt_prefix "   "
                              :selection_caret " "
                              :set_env {:COLORTERM true}
-                             :vimgrep_arguments [:ag :--nocolor :--vimgrep :--smart-case]
                              :results_title false}
                   :pickers {:buffers {:sort_mru true}}})
+
+(telescope.load_extension :notify)
 
 (nmap :<M-x> ::Telescope<CR> {:nowait true})
 (nmap :<D-x> ::Telescope<CR> {:nowait true})
 (nmap :<M-h> ":Telescope help_tags<CR>" {:nowait true})
 (nmap :<M-m> ":Telescope marks<CR>" {:nowait true})
 (nmap :<M-k> ":Telescope keymaps<CR>" {:nowait true})
+(nmap :<M-c> ":Telescope commands<CR>" {:nowait true})

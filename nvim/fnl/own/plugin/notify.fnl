@@ -1,4 +1,3 @@
-(local telescope (require :telescope))
 (local notify (require :notify))
 
 (notify.setup {:timeout 2500
@@ -7,5 +6,3 @@
                :fps 60})
 
 (set vim.notify notify)
-
-(telescope.load_extension :notify)

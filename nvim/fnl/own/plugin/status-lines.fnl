@@ -216,7 +216,7 @@
                    8 show-search})
 
 (local disabled-winbar {:buftype [:nofile :prompt]
-                        :filetype [:^git.* :Trouble]})
+                        :filetype [:^git.*]})
 
 (fn initialize-heirline []
   (local opts {:colors (palettes.get_palette)

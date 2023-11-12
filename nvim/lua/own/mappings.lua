@@ -58,7 +58,7 @@ local function toggle_tmux()
   return (state["tmux-term"]):toggle()
 end
 local function opts(desc)
-  return {silent = true, nowait = true, desc = desc}
+  return {silent = true, desc = desc}
 end
 vim.keymap.set("n", "<leader><leader>", find_files, opts("find files"))
 vim.keymap.set("n", "<leader>/b", grep_buffer_content, opts("find in open buffers"))
@@ -160,7 +160,7 @@ local function _24_()
   return vim.diagnostic.goto_next()
 end
 vim.keymap.set("n", "]d", _24_, opts("previous diagnostic"))
-for _, action in ipairs({"y", "x", "p", "c"}) do
+for _, action in ipairs({"y", "d", "p", "c"}) do
   local Action = string.upper(action)
   vim.keymap.set("n", ("<leader>" .. action), ("\"+" .. action))
   vim.keymap.set("v", ("<leader>" .. action), ("\"+" .. action))

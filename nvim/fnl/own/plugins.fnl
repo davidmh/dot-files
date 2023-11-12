@@ -10,7 +10,8 @@
   :folke/lazy.nvim {}
 
   :Olical/nfnl {:config true
-                :dependencies [:Olical/conjure]
+                :dependencies [:Olical/conjure
+                               :clojure-vim/vim-jack-in]
                 :config #(do
                            (set vim.g.conjure#log#hud#border border)
                            (set vim.g.conjure#filetype#sql nil)
@@ -19,9 +20,7 @@
                                                              #(compile-all-files (vim.fn.stdpath :config))
                                                              {:nargs 0}))}
 
-  :folke/neodev.nvim {:dependencies [:nvim-neotest/neotest]
-                      :opts {:library {:plugins [:neotest]
-                                       :types true}}}
+  :folke/neodev.nvim {:opts {:library {:types true}}}
 
   ;; LSP
   :davidmh/nvim-navic {:dev true
@@ -31,7 +30,6 @@
   :j-hui/fidget.nvim {:tag :legacy}
   :williamboman/mason.nvim {:dependencies [:neovim/nvim-lspconfig
                                            :williamboman/mason-lspconfig.nvim
-                                           :folke/neodev.nvim
                                            :onsails/lspkind-nvim
                                            :j-hui/fidget.nvim
                                            :nvim-navic
@@ -75,8 +73,7 @@
                                  :nvim-lua/plenary.nvim
                                  :sindrets/diffview.nvim
                                  :lewis6991/gitsigns.nvim
-                                 :norcalli/nvim-terminal.lua
-                                 :nvim-telescope/telescope.nvim]
+                                 :norcalli/nvim-terminal.lua]
                   :event :VeryLazy}
 
   ;; Ruby
@@ -110,6 +107,7 @@
   :nvim-telescope/telescope.nvim {:dependencies [:nvim-lua/plenary.nvim
                                                  :nvim-lua/popup.nvim
                                                  :rcarriga/nvim-notify]
+                                  :event :VeryLazy
                                   :mod :telescope}
   :folke/trouble.nvim {:dependencies [:nvim-tree/nvim-web-devicons]
                        :opts {:icons true
@@ -118,6 +116,7 @@
                                       :hint icons.HINT
                                       :information icons.INFO
                                       :other "﫠"}
+                              :padding false
                               :group false}}
 
   ;; Status lines
@@ -127,10 +126,12 @@
 
   :rcarriga/nvim-notify {:dependencies [:nvim-telescope/telescope.nvim
                                         :catppuccin]
-                         :mod :notify}
+                         :mod :notify
+                         :event :VeryLazy}
 
   ;; Improve vim.ui.input and vim.ui.select
-  :stevearc/dressing.nvim {:opts {:select {:backend :telescope}
+  :stevearc/dressing.nvim {:event :VeryLazy
+                           :opts {:select {:backend :telescope}
                                   :telescope {:layout_config {:width #(math.min $2 80)
                                                               :height #(math.min $2 15)}}}}
 
@@ -160,6 +161,7 @@
   :nvim-neorg/neorg {:build ":Neorg sync-parsers"
                      :dependencies [:nvim-lua/plenary.nvim
                                     :nvim-treesitter/nvim-treesitter]
+                     :ft :norg
                      :opts {:load {:core.defaults {}
                                    :core.concealer {}
                                    :core.completion {:config {:engine :nvim-cmp}}
@@ -168,14 +170,22 @@
                                    :core.export {:config {:export_dir :/tmp/}}
                                    :core.export.markdown {:config {:extension :.md}}
                                    :core.dirman {:config {:workspaces {:notes "~/Documents/neorg"}}}}}}
+                                   ;; These dependencies need nvim 0.10.x
+                                   ; :core.ui.calendar {}
+                                   ; :core.ui.calendar.views.monthly {}
+                                   ; :core.tempus {}
 
   :airblade/vim-rooter {:config #(do
                                    (set vim.g.rooter_patterns [:lazy-lock.json :.git])
                                    (set vim.g.rooter_silent_chdir true))}
 
+  :folke/which-key.nvim {:dependencies [:nvim-lua/plenary.nvim]
+                         :event :VeryLazy
+                         :opts {}}
+
   ;; Misc Utilities
   :danilamihailov/beacon.nvim {}
-  :tommcdo/vim-exchange {:keys [:cx :cX :c<Space>]}
+  :tommcdo/vim-exchange {:keys [:cx :cX :c<Space> :X]}
   :radenling/vim-dispatch-neovim {:dependencies [:tpope/vim-dispatch]}
   :tpope/vim-eunuch  {}
   :tpope/vim-repeat  {}
@@ -183,7 +193,6 @@
   :tpope/vim-surround  {}
   :tpope/vim-unimpaired  {}
   :tpope/vim-projectionist  {}
-  :tpope/vim-speeddating {:keys [:<C-a> :<C-x>]}
   :junegunn/vim-slash  {}
   :junegunn/vim-easy-align {:config #(map [:x :n] :ga "<Plug>(EasyAlign)")
                             :keys [:ga]}

@@ -4,6 +4,7 @@ vim.g.maplocalleader = ","
 vim.o.cmdheight = 0
 vim.o.cursorline = true
 vim.o.expandtab = true
+vim.o.foldlevel = 99
 vim.o.grepprg = "ag -S --vimgrep"
 vim.o.guifont = "Hasklug Nerd Font:h14"
 vim.o.hidden = true
@@ -24,7 +25,7 @@ vim.o.updatetime = 100
 vim.wo.wrap = false
 vim.o.splitright = true
 vim.g.GuiWindowFrameless = true
-vim.g.ruby_host_prog = "~/.gem/ruby/3.0.6/bin/neovim-ruby-host"
+vim.g.ruby_host_prog = vim.fn.exepath("neovim-ruby-host")
 local function os_open(url)
   return vim.fn.system(("xdg-open " .. url .. " || open " .. url))
 end

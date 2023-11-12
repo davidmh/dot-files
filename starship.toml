@@ -19,19 +19,18 @@ error_symbol = "[❯](red)"
 vimcmd_symbol = "[❮](green)"
 
 [git_branch]
-format = "[$branch]($style)"
-style = "bright-black"
+format = " $branch"
 
 [git_status]
-format = "[[(*$conflicted$untracked$modified$staged$renamed$deleted)](218) ($ahead_behind$stashed)]($style)"
-style = "cyan"
-conflicted = "​"
-untracked = "​"
-modified = "​"
-staged = "​"
-renamed = "​"
-deleted = "​"
-stashed = "≡"
+untracked = '[ $count]() '
+deleted = '[-$count]() '
+modified = '[±$count]() '
+staged = '[+$count]() '
+renamed = '[ $count]() '
+behind = '[ ]() '
+ahead = '[ ]() '
+diverged = '[נּ]($style)'
+format = "[ [($conflicted$untracked$modified$deleted$staged$renamed)](218) ($ahead_behind)]($style)"
 
 [git_state]
 format = '\([$state( $progress_current/$progress_total)]($style)\) '

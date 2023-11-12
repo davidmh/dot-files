@@ -61,7 +61,7 @@
   (state.tmux-term:toggle))
 
 
-(fn opts [desc] {:silent true :nowait true : desc})
+(fn opts [desc] {:silent true : desc})
 
 ; normal mode mappings
 (nmap :<leader><leader> find-files (opts "find files"))
@@ -130,7 +130,7 @@
 ;
 ; Creates a map of handful of actions to share with
 ; the system clipbpard using the + registry.
-(each [_ action (ipairs [:y :x :p :c])]
+(each [_ action (ipairs [:y :d :p :c])]
    (let [Action (string.upper action)]
       (nmap (.. :<leader> action) (.. "\"+" action))
       (vmap (.. :<leader> action) (.. "\"+" action))

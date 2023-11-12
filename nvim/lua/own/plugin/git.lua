@@ -141,13 +141,13 @@ local function _13_()
   return files_in_commit("HEAD")
 end
 gmap("<space>", _13_, "files in git HEAD")
-gmap("h[", cmd("Gitsigns prev_hunk"), "previous git hunk")
-gmap("h]", cmd("Gitsigns next_hunk"), "next git hunk")
 gmap("hs", cmd("Gitsigns stage_hunk"), "stage git hunk")
 gmap("hu", cmd("Gitsigns undo_stage_hunk"), "unstage git hunk")
 gmap("hr", cmd("Gitsigns reset_hunk"), "reset git hunk")
 gmap("hp", cmd("Gitsigns preview_hunk"), "preview git hunk")
 gmap("hb", git_blame_line, "blame current git hunk")
+vim.keymap.set("n", "[h", cmd("Gitsigns prev_hunk"), {desc = "previous git hunk", nowait = true, silent = true})
+vim.keymap.set("n", "]h", cmd("Gitsigns next_hunk"), {desc = "next git hunk", nowait = true, silent = true})
 local function copy_remote_url(opts)
   local _14_
   if (opts.range == 2) then
