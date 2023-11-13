@@ -8,6 +8,7 @@ $git_status\
 $cmd_duration\
 $line_break\
 $python\
+$nix_shell\
 $character"""
 
 [directory]
@@ -43,3 +44,8 @@ style = "yellow"
 [python]
 format = "[$virtualenv]($style) "
 style = "bright-black"
+
+[nix_shell]
+format = "[$symbol $name]($style) "
+heuristic = true
+symbol = " "
