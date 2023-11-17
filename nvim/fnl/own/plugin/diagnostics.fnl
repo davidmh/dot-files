@@ -82,9 +82,9 @@
   {:sources [diagnostics.shellcheck
              ; diagnostics.pycodestyle
              ; diagnostics.pydocstyle
-             (diagnostics.rubocop.with {:cwd (root-pattern :.rubocop.yml)
-                                        :command :bundle
-                                        :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
+             ; (diagnostics.rubocop.with {:cwd (root-pattern :.rubocop.yml)
+             ;                            :command :bundle
+             ;                            :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
              (diagnostics.luacheck.with {:cwd (root-pattern :.luacheckrc)
                                          :condition (with-root-file :.luacheckrc)})
              (diagnostics.selene.with {:cwd (root-pattern :selene.toml)
@@ -97,6 +97,7 @@
 
              code_actions.shellcheck
              (cspell.code_actions.with {:cwd (root-pattern :cspell.json)
+                                        :prefer_local :node_modules/.bin
                                         :filetypes cspell-filetypes})
 
              formatting.jq

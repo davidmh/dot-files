@@ -46,6 +46,6 @@ format = "[$virtualenv]($style) "
 style = "bright-black"
 
 [nix_shell]
-format = "[$symbol $name]($style) "
+format = "[$symbol]($style) "
 heuristic = true
 symbol = " "

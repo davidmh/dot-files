@@ -38,6 +38,8 @@
                             :mod :lsp}
 
   ;; Diagnostics
+  :davidmh/cspell.nvim {:dependencies [:nvim-lua/plenary.nvim]
+                        :dev true}
   :jose-elias-alvarez/null-ls.nvim {:dependencies [:nvim-lua/plenary.nvim
                                                    :davidmh/cspell.nvim]
                                     :mod :diagnostics}
@@ -89,7 +91,7 @@
                     :lazy false}
 
   ;; Syntax hightlighting
-  :yasuhiroki/circleci.vim {:ft :yaml.circleci}
+  ; :yasuhiroki/circleci.vim {:ft :yaml.circleci}
   :nvim-treesitter/nvim-treesitter {:dependencies [:JoosepAlviste/nvim-ts-context-commentstring
                                                    :numToStr/Comment.nvim]
                                     :build ::TSUpdate

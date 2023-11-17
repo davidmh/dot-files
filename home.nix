@@ -28,7 +28,6 @@ in
     fd
     (nerdfonts.override { fonts = [ "Hasklig" ]; })
     fx
-    gh
     htop
     jq
     lazygit
@@ -38,6 +37,7 @@ in
     neovim
     pass
     silver-searcher
+    ripgrep
     sketchybar
     teamocil
     tig
