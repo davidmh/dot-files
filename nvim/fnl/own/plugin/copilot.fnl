@@ -1,5 +1,6 @@
+(local {: autoload} (require :nfnl.module))
 (local copilot (require :copilot))
-(local copilot-panel (require :copilot.panel))
+(local str (autoload :own.string))
 
 (copilot.setup {:suggestion {:enabled true
                              :auto_trigger true
@@ -22,7 +23,10 @@
                             :python true
                             :ruby true
                             :rust true
-                            :zsh #(= nil (string.match (vim.api.nvim_buf_get_name 0) ".*env.*"))
+                            :zsh #(let [path (vim.api.nvim_buf_get_name 0)]
+                                    (and
+                                     (= nil (string.match path ".*env.*"))
+                                     (not (str.ends-with path :.zprofile))))
                             :sh true
                             :sql true
                             :* false}})

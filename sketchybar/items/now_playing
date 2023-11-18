@@ -1,4 +1,0 @@
-#!/usr/bin/env bash
-
-# TODO: Get the "Now Playing" data from the Menu Bar/Control Center, so we don't
-# have to rely on a specific player to show the media details.

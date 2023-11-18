@@ -1,23 +1,26 @@
-{ config, pkgs, lib, ... }:
+{ pkgs, inputs, ... }:
 
-let
-  optionals = lib.optionals;
-  os = builtins.currentSystem;
-  isLinux = os == "x86_64-linux";
-  userName = builtins.getEnv "USER";
-  homeDirectory = builtins.getEnv "HOME";
-in
 {
-  home.username = userName;
-  home.homeDirectory = homeDirectory;
-
-  home.stateVersion = "23.05";
-
   home.sessionVariables = {
     EDITOR = "nvim";
     TIG_EDITOR = "nvim";
     DIRENV_LOG_FORMAT = "";
     OVERCOMMIT_COLOR = 0;
+  };
+
+  nixpkgs = {
+    config = {
+      allowUnfree = true;
+      allowUnfreePredicate = (pkgs: true);
+    };
+    overlays = [
+      (final: prev: {
+        unstable = import inputs.unstable {
+          system = final.system;
+          config.allowUnfree = true;
+        };
+      })
+    ];
   };
 
   home.packages = with pkgs; [
@@ -34,15 +37,16 @@ in
     leiningen
     lsd
     lua51Packages.luarocks
-    neovim
+    nodejs_18
+    yarn
     pass
     silver-searcher
     ripgrep
-    sketchybar
     teamocil
     tig
-    yabai
-  ] ++ (optionals isLinux [ tdesktop xclip ]);
+    wezterm
+    unstable.neovim
+  ];
 
   programs.home-manager.enable = true;
 
@@ -59,7 +63,6 @@ in
       done
       compinit -C
     '';
-    envExtra = builtins.readFile ~/.env.zsh;
     autocd = true;
     history.ignoreSpace = true;
     zplug = {
@@ -104,10 +107,6 @@ in
     lfs.enable = true;
   };
 
-  programs.wezterm = {
-    enable = true;
-  };
-
   programs.tmux = {
     enable = true;
     keyMode = "vi";
@@ -127,32 +126,4 @@ in
       }
     ];
   };
-
-  xdg.configFile."starship.toml" = {
-    source = config.lib.file.mkOutOfStoreSymlink ./starship.toml;
-  };
-
-  xdg.configFile.nvim = {
-    source = config.lib.file.mkOutOfStoreSymlink ./nvim;
-    recursive = false;
-  };
-
-  xdg.configFile."wezterm/wezterm.lua" = {
-    source = config.lib.file.mkOutOfStoreSymlink ./wezterm.lua;
-  };
-
-  xdg.configFile.sketchybar = {
-    source = config.lib.file.mkOutOfStoreSymlink ./sketchybar;
-    recursive = true;
-  };
-  xdg.configFile.yabai = {
-    source = config.lib.file.mkOutOfStoreSymlink ./yabai;
-    recursive = true;
-  };
-  xdg.configFile.skhd = {
-    source = config.lib.file.mkOutOfStoreSymlink ./skhd;
-    recursive = true;
-  };
-
-  imports = [] ++ (optionals isLinux [ ./linux.nix ]);
 }
