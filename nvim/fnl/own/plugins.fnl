@@ -40,9 +40,9 @@
   ;; Diagnostics
   :davidmh/cspell.nvim {:dependencies [:nvim-lua/plenary.nvim]
                         :dev true}
-  :jose-elias-alvarez/null-ls.nvim {:dependencies [:nvim-lua/plenary.nvim
-                                                   :davidmh/cspell.nvim]
-                                    :mod :diagnostics}
+  :nvimtools/none-ls.nvim {:dependencies [:nvim-lua/plenary.nvim
+                                          :davidmh/cspell.nvim]
+                           :mod :diagnostics}
 
   :petertriho/cmp-git {:dependencies [:nvim-lua/plenary.nvim]
                        :event :InsertEnter}

@@ -54,44 +54,28 @@
                                 :border config.border
                                 :format diagnostic-format}})
 
-(fn str-ends-with [str ending]
-  (or (= ending "")
-      (= ending (string.sub str (- (length ending))))))
-
-(fn should-format [bufnr]
-  (let [path (vim.api.nvim_buf_get_name bufnr)
-        ignore-fn #(str-ends-with path $1)
-        ignore-matches (core.filter ignore-fn [:*.approved.json$
-                                               :*.received.json$])]
-    (core.empty? ignore-matches)))
-
-(fn lsp-formatting [bufnr]
-  (vim.lsp.buf.format {:filter #(= $1.name :null-ls)
-                       :bufnr bufnr}))
-
 (vim.api.nvim_create_augroup :lsp-formatting {:clear true})
 
 (fn on-attach [client bufnr]
   (when (client.supports_method :textDocument/formatting)
-        (should-format bufnr)
     (vim.api.nvim_create_autocmd :BufWritePre {:buffer bufnr
-                                               :callback #(lsp-formatting bufnr)
+                                               :callback #(vim.lsp.buf.format {:bufnr bufnr})
                                                :group :lsp-formatting})))
 
 (null-ls.setup
   {:sources [diagnostics.shellcheck
              ; diagnostics.pycodestyle
              ; diagnostics.pydocstyle
-             ; (diagnostics.rubocop.with {:cwd (root-pattern :.rubocop.yml)
-             ;                            :command :bundle
-             ;                            :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
+             (diagnostics.rubocop.with {:cwd (root-pattern :.rubocop.yml)
+                                        :command :bundle
+                                        :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
              (diagnostics.luacheck.with {:cwd (root-pattern :.luacheckrc)
                                          :condition (with-root-file :.luacheckrc)})
              (diagnostics.selene.with {:cwd (root-pattern :selene.toml)
                                        :condition (with-root-file :selene.toml)})
              ; (diagnostics.pylint.with  {:cwd (root-pattern :venv/)})
              (cspell.diagnostics.with {:cwd (root-pattern :cspell.json)
-                                       :prefer_local :./node_modules/.bin
+                                       :prefer_local :node_modules/.bin
                                        :filetypes cspell-filetypes
                                        :diagnostics_postprocess #(tset $1 :severity vim.diagnostic.severity.W)})
 
@@ -101,10 +85,10 @@
                                         :filetypes cspell-filetypes})
 
              formatting.jq
-             ; (formatting.rubocop.with {:cwd (root-pattern :.rubocop.yml)
-             ;                           :command :bundle
-             ;                           :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
-             ; formatting.stylua
+             (formatting.rubocop.with {:cwd (root-pattern :.rubocop.yml)
+                                       :command :bundle
+                                       :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
+             formatting.stylua
              formatting.terraform_fmt
              formatting.rustfmt]
 
