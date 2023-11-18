@@ -7,17 +7,15 @@ $git_state\
 $git_status\
 $cmd_duration\
 $line_break\
-$python\
-$nix_shell\
 $character"""
 
 [directory]
 style = "blue"
 
 [character]
-success_symbol = "[❯](purple)"
-error_symbol = "[❯](red)"
-vimcmd_symbol = "[❮](green)"
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[❯](bold white)"
 
 [git_branch]
 format = " $branch"
