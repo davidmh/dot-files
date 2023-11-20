@@ -1,6 +1,12 @@
 (local config (require :nvim-treesitter.configs))
 (local Comment (require :Comment))
 (local hook (require :ts_context_commentstring.integrations.comment_nvim))
+(local commentstring (require :ts_context_commentstring))
+
+(set vim.g.skip_ts_context_commentstring_module true)
+
+(commentstring.setup {:highlight true})
+(Comment.setup {:pre_hook (hook.create_pre_hook)})
 
 (local additional-vim-regex-highlighting [])
 (local ensure-installed [:bash
@@ -55,8 +61,4 @@
                                     :goto_previous_start {"[[" "@function.outer"}
                                     :go_to_previous_end {"[]" "@function.outer"}}}
                :ensure_installed ensure-installed
-               :table_of_contents {:enable true}
-               :context_commentstring {:enable true
-                                       :enable_autocmd false}})
-
-(Comment.setup {:pre_hook (hook.create_pre_hook)})
+               :table_of_contents {:enable true}})
