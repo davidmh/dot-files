@@ -3,6 +3,7 @@
 (local u (require :null-ls.utils))
 (local cspell (require :cspell))
 (local config (require :own.config))
+(local str (require :own.string))
 
 (local formatting null-ls.builtins.formatting)
 (local diagnostics null-ls.builtins.diagnostics)
@@ -62,6 +63,19 @@
                                                :callback #(vim.lsp.buf.format {:bufnr bufnr})
                                                :group :lsp-formatting})))
 
+(fn on-add-to-json [{: cspell_config_path}]
+  (-> "jq -S '.words |= sort' ${path} > ${path}.tmp && mv ${path}.tmp ${path}"
+      (str.format {:path cspell_config_path})
+      (os.execute)))
+
+(fn on-add-to-dictionary [{: dictionary_path}]
+  (-> "sort ${path} -o ${path}"
+      (str.format {:path dictionary_path})
+      (os.execute)))
+
+(local cspell-config {:on_add_to_json on-add-to-json
+                      :on_add_to_dictionary on-add-to-dictionary})
+
 (null-ls.setup
   {:sources [diagnostics.shellcheck
              ; diagnostics.pycodestyle
@@ -77,12 +91,14 @@
              (cspell.diagnostics.with {:cwd (root-pattern :cspell.json)
                                        :prefer_local :node_modules/.bin
                                        :filetypes cspell-filetypes
-                                       :diagnostics_postprocess #(tset $1 :severity vim.diagnostic.severity.W)})
+                                       :diagnostics_postprocess #(tset $1 :severity vim.diagnostic.severity.W)
+                                       :config cspell-config})
 
              code_actions.shellcheck
              (cspell.code_actions.with {:cwd (root-pattern :cspell.json)
                                         :prefer_local :node_modules/.bin
-                                        :filetypes cspell-filetypes})
+                                        :filetypes cspell-filetypes
+                                        :config cspell-config})
 
              formatting.jq
              (formatting.rubocop.with {:cwd (root-pattern :.rubocop.yml)

@@ -124,6 +124,7 @@
                                                                          :before_each
                                                                          :after_each
                                                                          :pending]}
+                                                 :format {:enable false}
                                                  :workspace {:checkThirdParty false}}}}
                        :eslint {:root_dir git-root}
                        :fennel_language_server {:single_file_support true

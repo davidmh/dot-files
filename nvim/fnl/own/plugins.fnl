@@ -163,7 +163,7 @@
   :nvim-neorg/neorg {:build ":Neorg sync-parsers"
                      :dependencies [:nvim-lua/plenary.nvim
                                     :nvim-treesitter/nvim-treesitter]
-                     :ft :norg
+                     :event :VeryLazy
                      :opts {:load {:core.defaults {}
                                    :core.concealer {}
                                    :core.completion {:config {:engine :nvim-cmp}}

@@ -5,4 +5,10 @@ end
 local function ends_with(str, suffix)
   return ((suffix == "") or (suffix == string.sub(str, ( - #suffix))))
 end
-return {["starts-with"] = starts_with, ["ends-with"] = ends_with}
+local function format(str, tbl)
+  local function _1_(param)
+    return (tbl[string.sub(param, 3, -2)] or param)
+  end
+  return str:gsub("$%b{}", _1_)
+end
+return {["starts-with"] = starts_with, ["ends-with"] = ends_with, format = format}
