@@ -20,6 +20,7 @@
           config.allowUnfree = true;
         };
       })
+      inputs.neovim-nightly-overlay.overlay
     ];
   };
 
@@ -29,23 +30,25 @@
     clojure
     evcxr
     fd
-    (nerdfonts.override { fonts = [ "Hasklig" ]; })
+    (nerdfonts.override { fonts = [ "SpaceMono" ]; })
     fx
     htop
+    jdk
     jq
     lazygit
     leiningen
     lsd
     lua51Packages.luarocks
+    # moreutils
     nodejs_18
     yarn
     pass
     silver-searcher
     ripgrep
-    teamocil
     tig
-    wezterm
-    unstable.neovim
+    neovim
+    unstable.gh
+    unstable.wezterm
   ];
 
   programs.home-manager.enable = true;
@@ -71,7 +74,7 @@
         { name = "plugins/git"; tags = ["from:oh-my-zsh"]; }
         { name = "plugins/dirhistory"; tags = ["from:oh-my-zsh"]; }
         { name = "plugins/chruby"; tags = ["from:oh-my-zsh"]; }
-        { name = "mattberther/zsh-pyenv"; }
+        # { name = "mattberther/zsh-pyenv"; }
         { name = "zsh-users/zsh-syntax-highlighting"; }
         { name = "zsh-users/zsh-autosuggestions"; }
         { name = "zsh-users/zsh-completions"; }
