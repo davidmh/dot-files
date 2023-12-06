@@ -75,7 +75,7 @@ for _, server_name in ipairs(mason_lspconfig.get_installed_servers()) do
   server_setup(core.merge(base_settings, core.get(server_configs, server_name, {})))
 end
 lspconfig.grammarly.setup({filetypes = {"markdown", "norg", "txt", "gitcommit"}})
-lspconfig.ruby_ls.setup({root_dir = git_root, cmd = {"bundle", "exec", "ruby-lsp"}})
+lspconfig.solargraph.setup({root_dir = git_root, cmd = {"bundle", "exec", "solargraph", "stdio"}})
 local group = vim.api.nvim_create_augroup("lsp-attach", {clear = true})
 vim.api.nvim_create_autocmd("LspAttach", {callback = on_attach, group = group})
 return nil

@@ -144,9 +144,7 @@
 ;; https://github.com/znck/grammarly/issues/334
 (lspconfig.grammarly.setup {:filetypes [:markdown :norg :txt :gitcommit]})
 
-(lspconfig.ruby_ls.setup {:root_dir git-root
-                          :cmd [:bundle :exec :ruby-lsp]})
-
-; (lspconfig.postgres_lsp.setup {:root_dir git-root})
+(lspconfig.solargraph.setup {:root_dir git-root
+                             :cmd [:bundle :exec :solargraph :stdio]})
 
 (augroup :lsp-attach [:LspAttach {:callback on-attach}])
