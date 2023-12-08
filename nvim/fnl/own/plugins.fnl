@@ -1,7 +1,6 @@
 (import-macros {: map} :own.macros)
 (local {: autoload} (require :nfnl.module))
 
-(local {: compile-all-files} (autoload :nfnl))
 (local {: border : icons} (autoload :own.config))
 (local load-plugins (require :own.lazy))
 
@@ -15,31 +14,23 @@
                 :config #(do
                            (set vim.g.conjure#log#hud#border border)
                            (set vim.g.conjure#filetype#sql nil)
-                           (set vim.g.conjure#filetype#python nil)
-                           (vim.api.nvim_create_user_command :NfnlCompileAllFiles
-                                                             #(compile-all-files (vim.fn.stdpath :config))
-                                                             {:nargs 0}))}
+                           (set vim.g.conjure#filetype#python nil))}
 
   :folke/neodev.nvim {:opts {:library {:types true}}}
 
   ;; LSP
-  :davidmh/nvim-navic {:dev true
-                       :lazy true
-                       :branch :feature/format_text
-                       :name :nvim-navic}
-  :j-hui/fidget.nvim {:tag :legacy}
+  :j-hui/fidget.nvim {:tag :v1.0.0}
   :williamboman/mason.nvim {:dependencies [:neovim/nvim-lspconfig
                                            :williamboman/mason-lspconfig.nvim
                                            :onsails/lspkind-nvim
                                            :j-hui/fidget.nvim
-                                           :nvim-navic
+                                           :SmiteshP/nvim-navic
                                            :pmizio/typescript-tools.nvim]
                             :name :mason
                             :mod :lsp}
 
   ;; Diagnostics
-  :davidmh/cspell.nvim {:dependencies [:nvim-lua/plenary.nvim]
-                        :dev true}
+  :davidmh/cspell.nvim {:dependencies [:nvim-lua/plenary.nvim]}
   :nvimtools/none-ls.nvim {:dependencies [:nvim-lua/plenary.nvim
                                           :davidmh/cspell.nvim]
                            :mod :diagnostics}
@@ -100,10 +91,10 @@
   ;; Icons
   :nvim-tree/nvim-web-devicons {:opts {:override {:scm {:color :#A6E3A1
                                                         :name :query
-                                                        :icon :ﬦ}
+                                                        :icon :󰘧}
                                                   :fnl {:color :cyan
                                                         :name :blue
-                                                        :icon :}}}}
+                                                        :icon :}}}}
 
   ;; Lists
   :nvim-telescope/telescope.nvim {:dependencies [:nvim-lua/plenary.nvim
@@ -122,12 +113,10 @@
                               :group false}}
 
   ;; Status lines
-  :rebelot/heirline.nvim {:dependencies [:catppuccin
-                                         :nvim-tree/nvim-web-devicons]
+  :rebelot/heirline.nvim {:dependencies [:nvim-tree/nvim-web-devicons]
                           :mod :status-lines}
 
-  :rcarriga/nvim-notify {:dependencies [:nvim-telescope/telescope.nvim
-                                        :catppuccin]
+  :rcarriga/nvim-notify {:dependencies [:nvim-telescope/telescope.nvim]
                          :mod :notify
                          :event :VeryLazy}
 
@@ -163,19 +152,8 @@
   :nvim-neorg/neorg {:build ":Neorg sync-parsers"
                      :dependencies [:nvim-lua/plenary.nvim
                                     :nvim-treesitter/nvim-treesitter]
-                     :event :VeryLazy
-                     :opts {:load {:core.defaults {}
-                                   :core.concealer {}
-                                   :core.completion {:config {:engine :nvim-cmp}}
-                                   :core.integrations.treesitter {:config {:configure_parsers true
-                                                                           :install_parsers true}}
-                                   :core.export {:config {:export_dir :/tmp/}}
-                                   :core.export.markdown {:config {:extension :.md}}
-                                   :core.dirman {:config {:workspaces {:notes "~/Documents/neorg"}}}}}}
-                                   ;; These dependencies need nvim 0.10.x
-                                   ; :core.ui.calendar {}
-                                   ; :core.ui.calendar.views.monthly {}
-                                   ; :core.tempus {}
+                     :ft :norg
+                     :mod :neorg}
 
   :airblade/vim-rooter {:config #(do
                                    (set vim.g.rooter_patterns [:lazy-lock.json :.git])

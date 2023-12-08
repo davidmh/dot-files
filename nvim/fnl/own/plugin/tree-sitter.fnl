@@ -10,6 +10,7 @@
 
 (local additional-vim-regex-highlighting [])
 (local ensure-installed [:bash
+                         :clojure
                          :diff
                          :fennel
                          :gitattributes

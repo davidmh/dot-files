@@ -8,7 +8,7 @@ local custom_highlights = _local_1_["custom-highlights"]
 local root_dir = vim.fn.stdpath("config")
 local _local_2_ = config["find-and-load"](root_dir)
 local cfg = _local_2_["cfg"]
-catppuccin.setup({flavour = "mocha", term_colors = true, integrations = {lsp_trouble = true, telescope = true, which_key = true}, custom_highlights = custom_highlights, transparent_background = false})
+catppuccin.setup({flavour = "macchiato", term_colors = true, integrations = {lsp_trouble = true, telescope = true, which_key = true}, custom_highlights = custom_highlights, transparent_background = false})
 vim.cmd.colorscheme("catppuccin")
 local home_manager_path = vim.fn.expand("~/.config/home-manager/")
 local wezterm_config_path = (home_manager_path .. "wezterm.lua")

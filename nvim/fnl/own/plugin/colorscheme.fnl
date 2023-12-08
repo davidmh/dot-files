@@ -9,7 +9,7 @@
 (local root-dir (vim.fn.stdpath :config))
 (local {: cfg} (config.find-and-load root-dir))
 
-(catppuccin.setup {:flavour :mocha
+(catppuccin.setup {:flavour :macchiato
                    :transparent_background false
                    :term_colors true
                    :integrations {:lsp_trouble true

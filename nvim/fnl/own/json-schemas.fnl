@@ -6,23 +6,16 @@
 (local local-catalog-path
   (.. (vim.fn.stdpath :data) "/json-schema-catalog.json"))
 
-(fn notify-info [message]
-  (vim.notify message :info {:title "JSON LSP Schemas"}))
-
-(fn notify-error [message]
-  (vim.notify message :error {:title "JSON LSP Schemas"}))
-
-(fn on-start [] (notify-info "Fetching catalog"))
-(fn on-exit [job exit-code]
-  (if (= exit-code 0)
-    (notify-info "Catalog download complete")
-    (notify-error (.. "Couldn't download catalog.\ncurl responded with exit code: " exit-code))))
+(fn on-exit [_ exit-code]
+  (if (~= exit-code 0)
+    (vim.notify (.. "Couldn't download catalog.\ncurl responded with exit code: " exit-code)
+                :error
+                {:title "JSON LSP Schemas"})))
 
 (fn download-catalog []
   (Job:new {:command :curl
             :args [:https://www.schemastore.org/api/json/catalog.json
                    :-o local-catalog-path]
-            :on_start on-start
             :on_exit on-exit}))
 
 ; List of JSON schemas, downloaded from schemastore.org.
@@ -34,7 +27,8 @@
         (vim.fn.json_decode)
         (core.get :schemas []))
     (do
-      (print "Run refetch-catalog to get JSON schema hovers")
+      (vim.defer_fn #(vim.schedule #(: (download-catalog) :sync))
+                    500)
       [])))
 
 (fn refetch-catalog []

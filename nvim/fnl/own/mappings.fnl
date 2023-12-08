@@ -1,11 +1,15 @@
-(import-macros {: nmap : vmap : map} :own.macros)
+(import-macros {: nmap
+                : vmap
+                : map
+                : autocmd
+                : augroup} :own.macros)
 (local {: autoload} (require :nfnl.module))
 
 (local t (autoload :telescope.builtin))
 (local gitsigns (autoload :gitsigns))
-(local scratch (autoload :own.scratch))
 (local toggle-term (autoload :toggleterm))
 (local terminal (autoload :toggleterm.terminal))
+(local navic (autoload :nvim-navic))
 
 (local state {:tmux-term nil})
 
@@ -69,8 +73,7 @@
 (nmap :<leader>/p #(t.live_grep) (opts "find in project"))
 (nmap :<leader>/w #(t.grep_string) (opts "find word under cursor"))
 
-(nmap :<leader>so scratch.show (opts "open scratch buffer"))
-(nmap :<leader>sk scratch.kill (opts "kill scratch buffer"))
+(nmap :<leader>so ":botright split /tmp/scratch.fnl<cr>" (opts "open scratch buffer"))
 
 (nmap :<leader>vp browse-plugins (opts "vim plugins"))
 (nmap :<leader>vr browse-runtime (opts "vim runtime"))
@@ -125,6 +128,51 @@
 ;; diagnostics
 (nmap "[d" #(vim.diagnostic.goto_prev) (opts "next diagnostic"))
 (nmap "]d" #(vim.diagnostic.goto_next) (opts "previous diagnostic"))
+
+; LSP mappings
+; Set only to the buffer where the LSP client is attached
+
+(vim.api.nvim_create_augroup :eslint-autofix {:clear true})
+
+; https://github.com/neovim/nvim-lspconfig/blob/da7461b596d70fa47b50bf3a7acfaef94c47727d/lua/lspconfig/server_configurations/eslint.lua#L141-L145
+(fn set-eslint-autofix [bufnr]
+  (autocmd :BufWritePre {:command :EslintFixAll
+                         :group :eslint-autofix
+                         :buffer bufnr}))
+
+(fn buf-map [keymap callback desc]
+  (nmap keymap callback {:buffer true
+                         :silent true
+                         : desc}))
+
+(fn on-attach [args]
+  (local bufnr args.buf)
+  (local client (vim.lsp.get_client_by_id args.data.client_id))
+  (vim.api.nvim_buf_set_option 0 :omnifunc :v:lua.vim.lsp.omnifunc)
+
+  ;; Mappings
+  (buf-map :K vim.lsp.buf.hover "lsp: hover")
+  (buf-map :gd vim.lsp.buf.definition "lsp: go to definition")
+
+  (buf-map :<leader>ld vim.lsp.buf.declaration "lsp: go to declaration")
+  (buf-map :<leader>lf vim.lsp.buf.references "lsp: find references")
+  (buf-map :<leader>li vim.lsp.buf.implementation "lsp: go to implementation")
+  (buf-map :<leader>ls vim.lsp.buf.signature_help "lsp: signature")
+  (buf-map :<leader>lt vim.lsp.buf.type_definition "lsp: type definition")
+  (buf-map :<leader>la vim.lsp.buf.code_action "lsp: code actions")
+  (buf-map :<leader>lr vim.lsp.buf.rename "lsp: rename")
+  (buf-map :<leader>lR :<cmd>LspRestart<CR> "lsp: restart")
+
+  (vmap :<leader>la #(vim.lsp.buf.code_action) {:buffer true
+                                                :desc "lsp: code actions"})
+
+  (when (= client.name :eslint) (set-eslint-autofix bufnr))
+
+  (when client.server_capabilities.documentSymbolProvider
+    (navic.attach client bufnr)))
+
+
+(augroup :lsp-attach [:LspAttach {:callback on-attach}])
 
 ; On-demand OS clipboard sharing
 ;

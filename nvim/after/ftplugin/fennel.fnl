@@ -1,6 +1,7 @@
 (import-macros {: augroup} :own.macros)
 (local {: autoload} (require :nfnl.module))
 (local {: find} (autoload :own.lists))
+(local {: empty?} (autoload :nfnl.core))
 (local {: find-and-load} (autoload :nfnl.config))
 
 (-> (require :own.fennel-lua-paths) (: :setup))
@@ -34,3 +35,13 @@
 
 (augroup :fennel-refresh-compiled-buffer [:BufWritePost {:pattern :*.fnl
                                                          :callback maybe-refresh-compiled-buffer-window}])
+
+(fn setup-scratch-buffer []
+  (let [content (vim.api.nvim_buf_get_lines 0 0 -1 true)]
+    (when (empty? (table.concat content ""))
+      (vim.api.nvim_buf_set_lines 0 0 -1 true [";; scratch"
+                                               ""])
+      (vim.cmd "normal GG"))))
+
+(augroup :fennel-scratch-buffer [:BufEnter {:pattern :/tmp/scratch.fnl
+                                            :callback setup-scratch-buffer}])

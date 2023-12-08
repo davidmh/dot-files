@@ -14,7 +14,7 @@
 (set vim.g.fugitive_legacy_commands false)
 (vim.cmd "cabbrev git Git")
 
-(git-signs.setup {:current_line_blame false})
+(git-signs.setup {:current_line_blame true})
 
 (diff-view.setup {:key_bindings {:disable_defaults false}})
 

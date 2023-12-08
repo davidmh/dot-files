@@ -13,7 +13,7 @@ local str = autoload("nfnl.string")
 local utils = autoload("telescope.utils")
 vim.g.fugitive_legacy_commands = false
 vim.cmd("cabbrev git Git")
-git_signs.setup({current_line_blame = false})
+git_signs.setup({current_line_blame = true})
 diff_view.setup({key_bindings = {disable_defaults = false}})
 local function cmd(expression)
   return ("<cmd>" .. expression .. "<cr>")

@@ -30,7 +30,7 @@
     clojure
     evcxr
     fd
-    (nerdfonts.override { fonts = [ "SpaceMono" ]; })
+    (nerdfonts.override { fonts = [ "Hasklig" "SpaceMono" ]; })
     fx
     htop
     jdk

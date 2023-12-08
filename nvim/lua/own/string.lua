@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/own/string.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] Compiled from nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/nvim/fnl/own/string.fnl by https://github.com/Olical/nfnl, do not edit.
 local function starts_with(text, prefix)
   return (string.sub(text, 0, #prefix) == prefix)
 end

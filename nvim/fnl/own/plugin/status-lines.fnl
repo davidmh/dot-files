@@ -8,8 +8,11 @@
 (local navic (autoload :nvim-navic))
 (local nvim-web-devicons (autoload :nvim-web-devicons))
 (local config (autoload :own.config))
+(local neorg-mode (autoload :neorg.modules.core.mode.module))
 
 (local chrome-accent :surface2)
+
+(set vim.o.showmode false)
 
 (vim.schedule #(nvim-web-devicons.set_icon {:norg {:icon :}}))
 
@@ -35,13 +38,27 @@
                     :!    :red
                     :t    :green})
 
+(local mode-label {:n    :NORMAL
+                   :i    :INSERT
+                   :v    :VISUAL
+                   :V    :V-LINE
+                   "\22" :V-BLOCK
+                   :c    :COMMAND
+                   :s    :SELECT
+                   :S    :S-LINE
+                   "\19" :S-BLOCK
+                   :R    :REPLACE
+                   :r    :REPLACE
+                   :!    :SHELL
+                   :t    :TERMINAL
+                   :nt   :T-NORMAL})
+
 (local not-a-term #(and
                     (not= vim.o.buftype :terminal)
                     (not= vim.o.filetype :toggleterm)))
 
 (local vi-mode {:init #(tset $1 :mode (vim.fn.mode 1))
-                :condition not-a-term
-                :provider " "
+                :provider #(.. (core.get mode-label $1.mode $1.mode) " ")
                 :hl #(-> {:fg (. mode-colors $1.mode)
                           :bold true})
                 :update [:ModeChanged :ColorScheme]})
@@ -49,7 +66,7 @@
 (local macro-rec {:condition #(and (not= (vim.fn.reg_recording) "")
                                    (= vim.o.cmdheight 0))
                   :update [:RecordingEnter :RecordingLeave :ColorScheme]
-                  :provider #(.. " [ 壘 -> " (vim.fn.reg_recording) " ] ")
+                  :provider #(.. "  " (vim.fn.reg_recording) " ")
                   :hl {:fg :red :bold true}})
 
 (local show-cmd {:condition #(= vim.o.cmdheight 0)
@@ -66,6 +83,10 @@
                                      pattern (vim.fn.getreg "/")
                                      counter (.. "[" current :/ total "]")]
                                  (.. " " direction " " pattern " " counter))})
+
+(local neorg-mode {:condition #(and (= vim.bo.filetype :norg)
+                                    (not= (neorg-mode.public.get_mode) :norg))
+                   1 (container {:provider #(.. " " (neorg-mode.public.get_mode))})})
 
 (fn sanitize-path [path size]
   (-> path
@@ -213,7 +234,8 @@
                    5 push-right
                    6 show-cmd
                    7 diagnostics-block
-                   8 show-search})
+                   8 show-search
+                   9 neorg-mode})
 
 (local disabled-winbar {:buftype [:nofile :prompt]
                         :filetype [:^git.*]})

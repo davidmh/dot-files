@@ -21,7 +21,7 @@ vimcmd_symbol = "[❯](bold white)"
 format = " $branch"
 
 [git_status]
-untracked = '[ $count]() '
+untracked = '[ $count]() '
 deleted = '[-$count]() '
 modified = '[±$count]() '
 staged = '[+$count]() '

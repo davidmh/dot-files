@@ -3,9 +3,9 @@ local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
 local t = autoload("telescope.builtin")
 local gitsigns = autoload("gitsigns")
-local scratch = autoload("own.scratch")
 local toggle_term = autoload("toggleterm")
 local terminal = autoload("toggleterm.terminal")
+local navic = autoload("nvim-navic")
 local state = {["tmux-term"] = nil}
 local function cmd(expression)
   return ("<cmd>" .. expression .. "<cr>")
@@ -70,8 +70,7 @@ local function _6_()
   return t.grep_string()
 end
 vim.keymap.set("n", "<leader>/w", _6_, opts("find word under cursor"))
-vim.keymap.set("n", "<leader>so", scratch.show, opts("open scratch buffer"))
-vim.keymap.set("n", "<leader>sk", scratch.kill, opts("kill scratch buffer"))
+vim.keymap.set("n", "<leader>so", ":botright split /tmp/scratch.fnl<cr>", opts("open scratch buffer"))
 vim.keymap.set("n", "<leader>vp", browse_plugins, opts("vim plugins"))
 vim.keymap.set("n", "<leader>vr", browse_runtime, opts("vim runtime"))
 vim.keymap.set("n", "<leader>tb", toggle_blame_line, opts("toggle blame line"))
@@ -160,6 +159,45 @@ local function _24_()
   return vim.diagnostic.goto_next()
 end
 vim.keymap.set("n", "]d", _24_, opts("previous diagnostic"))
+vim.api.nvim_create_augroup("eslint-autofix", {clear = true})
+local function set_eslint_autofix(bufnr)
+  return vim.api.nvim_create_autocmd("BufWritePre", {command = "EslintFixAll", group = "eslint-autofix", buffer = bufnr})
+end
+local function buf_map(keymap, callback, desc)
+  return vim.keymap.set("n", keymap, callback, {buffer = true, silent = true, desc = desc})
+end
+local function on_attach(args)
+  local bufnr = args.buf
+  local client = vim.lsp.get_client_by_id(args.data.client_id)
+  vim.api.nvim_buf_set_option(0, "omnifunc", "v:lua.vim.lsp.omnifunc")
+  buf_map("K", vim.lsp.buf.hover, "lsp: hover")
+  buf_map("gd", vim.lsp.buf.definition, "lsp: go to definition")
+  buf_map("<leader>ld", vim.lsp.buf.declaration, "lsp: go to declaration")
+  buf_map("<leader>lf", vim.lsp.buf.references, "lsp: find references")
+  buf_map("<leader>li", vim.lsp.buf.implementation, "lsp: go to implementation")
+  buf_map("<leader>ls", vim.lsp.buf.signature_help, "lsp: signature")
+  buf_map("<leader>lt", vim.lsp.buf.type_definition, "lsp: type definition")
+  buf_map("<leader>la", vim.lsp.buf.code_action, "lsp: code actions")
+  buf_map("<leader>lr", vim.lsp.buf.rename, "lsp: rename")
+  buf_map("<leader>lR", "<cmd>LspRestart<CR>", "lsp: restart")
+  local function _25_()
+    return vim.lsp.buf.code_action()
+  end
+  vim.keymap.set("v", "<leader>la", _25_, {buffer = true, desc = "lsp: code actions"})
+  if (client.name == "eslint") then
+    set_eslint_autofix(bufnr)
+  else
+  end
+  if client.server_capabilities.documentSymbolProvider then
+    return navic.attach(client, bufnr)
+  else
+    return nil
+  end
+end
+do
+  local group = vim.api.nvim_create_augroup("lsp-attach", {clear = true})
+  vim.api.nvim_create_autocmd("LspAttach", {callback = on_attach, group = group})
+end
 for _, action in ipairs({"y", "d", "p", "c"}) do
   local Action = string.upper(action)
   vim.keymap.set("n", ("<leader>" .. action), ("\"+" .. action))

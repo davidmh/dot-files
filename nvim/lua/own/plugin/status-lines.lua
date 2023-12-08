@@ -8,7 +8,9 @@ local palettes = autoload("catppuccin.palettes")
 local navic = autoload("nvim-navic")
 local nvim_web_devicons = autoload("nvim-web-devicons")
 local config = autoload("own.config")
+local neorg_mode = autoload("neorg.modules.core.mode.module")
 local chrome_accent = "surface2"
+vim.o.showmode = false
 local function _2_()
   return nvim_web_devicons.set_icon({norg = {icon = "\238\152\179"}})
 end
@@ -18,6 +20,7 @@ local function container(components)
   return {{provider = "\238\130\182", hl = {fg = chrome_accent, bg = "none"}}, core.merge(solid_background, components), {provider = "\238\130\180", hl = {fg = chrome_accent, bg = "none"}}}
 end
 local mode_colors = {n = "fg", i = "green", v = "blue", V = "cyan", ["\22"] = "cyan", c = "orange", s = "purple", S = "purple", ["\19"] = "purple", R = "orange", r = "orange", ["!"] = "red", t = "green"}
+local mode_label = {n = "NORMAL", i = "INSERT", v = "VISUAL", V = "V-LINE", ["\22"] = "V-BLOCK", c = "COMMAND", s = "SELECT", S = "S-LINE", ["\19"] = "S-BLOCK", R = "REPLACE", r = "REPLACE", ["!"] = "SHELL", t = "TERMINAL", nt = "T-NORMAL"}
 local not_a_term
 local function _3_()
   return ((vim.o.buftype ~= "terminal") and (vim.o.filetype ~= "toggleterm"))
@@ -29,47 +32,50 @@ local function _4_(_241)
   return nil
 end
 local function _5_(_241)
+  return (core.get(mode_label, _241.mode, _241.mode) .. " ")
+end
+local function _6_(_241)
   return {fg = mode_colors[_241.mode], bold = true}
 end
-vi_mode = {init = _4_, condition = not_a_term, provider = "\238\174\180 ", hl = _5_, update = {"ModeChanged", "ColorScheme"}}
+vi_mode = {init = _4_, provider = _5_, hl = _6_, update = {"ModeChanged", "ColorScheme"}}
 local macro_rec
-local function _6_()
+local function _7_()
   return ((vim.fn.reg_recording() ~= "") and (vim.o.cmdheight == 0))
 end
-local function _7_()
-  return (" [ \239\165\138 -> " .. vim.fn.reg_recording() .. " ] ")
-end
-macro_rec = {condition = _6_, update = {"RecordingEnter", "RecordingLeave", "ColorScheme"}, provider = _7_, hl = {fg = "red", bold = true}}
-local show_cmd
 local function _8_()
+  return ("\239\145\132 \238\170\159 " .. vim.fn.reg_recording() .. " ")
+end
+macro_rec = {condition = _7_, update = {"RecordingEnter", "RecordingLeave", "ColorScheme"}, provider = _8_, hl = {fg = "red", bold = true}}
+local show_cmd
+local function _9_()
   return (vim.o.cmdheight == 0)
 end
-local function _9_()
+local function _10_()
   vim.opt.showcmdloc = "statusline"
   return nil
 end
-show_cmd = {condition = _8_, init = _9_, provider = "%3.5(%S%)"}
+show_cmd = {condition = _9_, init = _10_, provider = "%3.5(%S%)"}
 local show_search
-local function _10_()
-  local function _11_()
-    local _12_ = vim.fn.searchcount()
-    if (nil ~= _12_) then
-      local _13_ = (_12_).total
-      if (nil ~= _13_) then
-        return (_13_ > 0)
+local function _11_()
+  local function _12_()
+    local _13_ = vim.fn.searchcount()
+    if (nil ~= _13_) then
+      local _14_ = (_13_).total
+      if (nil ~= _14_) then
+        return (_14_ > 0)
       else
-        return _13_
+        return _14_
       end
     else
-      return _12_
+      return _13_
     end
   end
-  return ((vim.o.cmdheight == 0) and (vim.v.hlsearch ~= 0) and _11_())
+  return ((vim.o.cmdheight == 0) and (vim.v.hlsearch ~= 0) and _12_())
 end
-local function _16_()
-  local _let_17_ = vim.fn.searchcount()
-  local current = _let_17_["current"]
-  local total = _let_17_["total"]
+local function _17_()
+  local _let_18_ = vim.fn.searchcount()
+  local current = _let_18_["current"]
+  local total = _let_18_["total"]
   local direction
   if (vim.v.searchforward == 1) then
     direction = "\239\144\179"
@@ -80,12 +86,20 @@ local function _16_()
   local counter = ("[" .. current .. "/" .. total .. "]")
   return (" " .. direction .. " " .. pattern .. " " .. counter)
 end
-show_search = {condition = _10_, provider = _16_}
+show_search = {condition = _11_, provider = _17_}
+local neorg_mode0
+local function _20_()
+  return ("\238\152\179 " .. neorg_mode.public.get_mode())
+end
+local function _21_()
+  return ((vim.bo.filetype == "norg") and (neorg_mode.public.get_mode() ~= "norg"))
+end
+neorg_mode0 = {container({provider = _20_}), condition = _21_}
 local function sanitize_path(path, size)
   return vim.fn.pathshorten(string.gsub(string.gsub(path, vim.env.HOME, "~"), vim.env.REMIX_HOME, "remix"), (size or 2))
 end
 local file_icon
-local function _19_(_241)
+local function _22_(_241)
   local file_name = _241["file-name"]
   local ext = vim.fn.fnamemodify(file_name, ":e")
   local icon, color = nvim_web_devicons.get_icon_color(file_name, ext, {default = true})
@@ -93,15 +107,15 @@ local function _19_(_241)
   _241["color"] = color
   return nil
 end
-local function _20_(_241)
+local function _23_(_241)
   return (_241.icon and (_241.icon .. " "))
 end
-local function _21_(_241)
+local function _24_(_241)
   return {fg = _241.color}
 end
-file_icon = {init = _19_, provider = _20_, hl = _21_}
+file_icon = {init = _22_, provider = _23_, hl = _24_}
 local file_name
-local function _22_()
+local function _25_()
   local file_name0 = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":.")
   if (file_name0 == "") then
     return "[no name]"
@@ -113,34 +127,34 @@ local function _22_()
     end
   end
 end
-local function _25_()
+local function _28_()
   if vim.bo.modified then
     return {fg = "fg", bold = true, force = true}
   else
     return nil
   end
 end
-file_name = {provider = _22_, hl = _25_}
+file_name = {provider = _25_, hl = _28_}
 local modified_3f
-local function _27_()
+local function _30_()
   return vim.bo.modified
 end
-modified_3f = {condition = _27_, provider = " [+]", hl = {fg = "green"}}
+modified_3f = {condition = _30_, provider = " [+]", hl = {fg = "green"}}
 local read_only_3f
-local function _28_()
+local function _31_()
   return (not vim.bo.modifiable or vim.bo.readonly)
 end
-read_only_3f = {condition = _28_, provider = " \239\128\163", hl = {fg = "orange"}}
+read_only_3f = {condition = _31_, provider = " \239\128\163", hl = {fg = "orange"}}
 local file_flags = {modified_3f, read_only_3f}
 local file_name_block
-local function _29_(_241)
+local function _32_(_241)
   _241["file-name"] = vim.api.nvim_buf_get_name(0)
   return nil
 end
-local function _30_()
+local function _33_()
   return ((vim.o.filetype ~= "fugitiveblame") and (vim.o.filetype ~= "qf") and not_a_term())
 end
-file_name_block = {container({file_icon, file_name, file_flags, init = _29_}), condition = _30_}
+file_name_block = {container({file_icon, file_name, file_flags, init = _32_}), condition = _33_}
 local function get_quickfix_title()
   return (vim.fn.getqflist({title = 1})).title
 end
@@ -148,98 +162,98 @@ local function show_quickfix_title()
   return ((vim.o.filetype == "qf") and ("" ~= get_quickfix_title()))
 end
 local quickfix_title
-local function _31_()
+local function _34_()
   return get_quickfix_title()
 end
-quickfix_title = {container({provider = _31_}), condition = show_quickfix_title}
+quickfix_title = {container({provider = _34_}), condition = show_quickfix_title}
 local lsp_breadcrumb
-local function _32_()
+local function _35_()
   return navic.get_location({highlight = true})
 end
-local function _33_()
+local function _36_()
   return (navic.is_available() and (#navic.get_location() > 0))
 end
-lsp_breadcrumb = {container({provider = _32_}), condition = _33_, update = {"CursorMoved", "ColorScheme"}, hl = {fg = "fg"}}
+lsp_breadcrumb = {container({provider = _35_}), condition = _36_, update = {"CursorMoved", "ColorScheme"}, hl = {fg = "fg"}}
 local dead_space = {provider = "             "}
 local push_right = {provider = "%="}
 local function diagnostic(severity_code, color)
-  local function _34_(_241)
+  local function _37_(_241)
     return (" " .. config.icons[severity_code] .. " " .. (_241)[severity_code])
   end
-  local function _35_(_241)
+  local function _38_(_241)
     return ((_241)[severity_code] > 0)
   end
-  return {provider = _34_, condition = _35_, hl = {fg = color}}
+  return {provider = _37_, condition = _38_, hl = {fg = color}}
 end
 local function diagnostic_count(severity_code)
   return #vim.diagnostic.get(0, {severity = vim.diagnostic.severity[severity_code]})
 end
 local diagnostics_block
-local function _36_()
+local function _39_()
   return conditions.has_diagnostics()
 end
-local function _37_(self)
+local function _40_(self)
   self["ERROR"] = diagnostic_count("ERROR")
   do end (self)["WARN"] = diagnostic_count("WARN")
   do end (self)["INFO"] = diagnostic_count("INFO")
   do end (self)["HINT"] = diagnostic_count("HINT")
   return nil
 end
-diagnostics_block = {diagnostic("ERROR", "red"), diagnostic("WARN", "yellow"), diagnostic("INFO", "fg"), diagnostic("HINT", "green"), {provider = " "}, conditon = _36_, init = _37_, update = {"DiagnosticChanged", "BufEnter", "ColorScheme"}}
+diagnostics_block = {diagnostic("ERROR", "red"), diagnostic("WARN", "yellow"), diagnostic("INFO", "fg"), diagnostic("HINT", "green"), {provider = " "}, conditon = _39_, init = _40_, update = {"DiagnosticChanged", "BufEnter", "ColorScheme"}}
 local function has_git_diff(kind)
-  local function _38_(_241)
+  local function _41_(_241)
     return (core["get-in"](_241, {"git", kind}, 0) > 0)
   end
-  return _38_
+  return _41_
 end
 local git_block
-local function _39_(_241)
+local function _42_(_241)
   return ("\239\144\152 " .. _241.git.head)
 end
-local function _40_(_241)
+local function _43_(_241)
   return (" +" .. _241.git.added)
 end
-local function _41_(_241)
+local function _44_(_241)
   return (" \194\177" .. _241.git.changed)
 end
-local function _42_(_241)
+local function _45_(_241)
   return (" \226\136\146" .. _241.git.removed)
 end
-local function _43_(_241)
+local function _46_(_241)
   _241["git"] = vim.b.gitsigns_status_dict
   return nil
 end
-git_block = {container({{provider = _39_}, {provider = _40_, condition = has_git_diff("added")}, {provider = _41_, condition = has_git_diff("changed")}, {provider = _42_, condition = has_git_diff("removed")}}), condition = conditions.is_git_repo, init = _43_, hl = {bg = chrome_accent}}
+git_block = {container({{provider = _42_}, {provider = _43_, condition = has_git_diff("added")}, {provider = _44_, condition = has_git_diff("changed")}, {provider = _45_, condition = has_git_diff("removed")}}), condition = conditions.is_git_repo, init = _46_, hl = {bg = chrome_accent}}
 local git_blame
-local function _44_()
+local function _47_()
   return (vim.o.filetype == "fugitiveblame")
 end
-git_blame = {container({{provider = "git blame", hl = {bold = true}}}), condition = _44_}
+git_blame = {container({{provider = "git blame", hl = {bold = true}}}), condition = _47_}
 local term_title
-local function _45_(_241)
+local function _48_(_241)
   return sanitize_path(_241.path)
 end
-local function _46_(_241)
+local function _49_(_241)
   return sanitize_path(_241.command, 3)
 end
-local function _47_()
+local function _50_()
   return (nil ~= vim.b.term_title)
 end
-local function _48_(_241)
+local function _51_(_241)
   local title = string.gsub(string.gsub(vim.b.term_title, "term://", ""), ";#toggleterm#%d*", "")
   local parts = vim.split(title, "//%d*:")
   do end (_241)["path"] = core.first(parts)
   do end (_241)["command"] = core.last(parts)
   return nil
 end
-term_title = {{container({{provider = _45_}, {provider = " \238\170\182 "}, {provider = _46_}})}, condition = _47_, init = _48_}
+term_title = {{container({{provider = _48_}, {provider = " \238\170\182 "}, {provider = _49_}})}, condition = _50_, init = _51_}
 local line_number
-local function _49_()
+local function _52_()
   return vim.o.number
 end
-line_number = {provider = " %2{&nu ? (&rnu && v:relnum ? v:relnum : v:lnum) : ''} ", condition = _49_}
+line_number = {provider = " %2{&nu ? (&rnu && v:relnum ? v:relnum : v:lnum) : ''} ", condition = _52_}
 local fold
-local function _50_()
+local function _53_()
   local line_num = vim.v.lnum
   if (vim.fn.foldlevel(line_num) > vim.fn.foldlevel((line_num - 1))) then
     if (vim.fn.foldclosed(line_num) == -1) then
@@ -251,18 +265,18 @@ local function _50_()
     return nil
   end
 end
-fold = {provider = _50_}
+fold = {provider = _53_}
 local signs = {provider = "%s"}
 local statuscolumn = {fold, push_right, line_number, signs}
 local winbar = {term_title, lsp_breadcrumb, quickfix_title, push_right, git_blame, file_name_block}
-local statusline = {vi_mode, macro_rec, git_block, dead_space, push_right, show_cmd, diagnostics_block, show_search, hl = {bg = "NONE"}}
+local statusline = {vi_mode, macro_rec, git_block, dead_space, push_right, show_cmd, diagnostics_block, show_search, neorg_mode0, hl = {bg = "NONE"}}
 local disabled_winbar = {buftype = {"nofile", "prompt"}, filetype = {"^git.*"}}
 local function initialize_heirline()
   local opts
-  local function _53_(_241)
+  local function _56_(_241)
     return conditions.buffer_matches(disabled_winbar, _241.buf)
   end
-  opts = {colors = palettes.get_palette(), disable_winbar_cb = _53_}
+  opts = {colors = palettes.get_palette(), disable_winbar_cb = _56_}
   return heirline.setup({winbar = winbar, statuscolumn = statuscolumn, statusline = statusline, opts = opts})
 end
 initialize_heirline()

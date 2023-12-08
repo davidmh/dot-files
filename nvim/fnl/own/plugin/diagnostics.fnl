@@ -63,18 +63,18 @@
                                                :callback #(vim.lsp.buf.format {:bufnr bufnr})
                                                :group :lsp-formatting})))
 
-(fn on-add-to-json [{: cspell_config_path}]
+(fn on_add_to_json [{: cspell_config_path}]
   (-> "jq -S '.words |= sort' ${path} > ${path}.tmp && mv ${path}.tmp ${path}"
       (str.format {:path cspell_config_path})
       (os.execute)))
 
-(fn on-add-to-dictionary [{: dictionary_path}]
+(fn on_add_to_dictionary [{: dictionary_path}]
   (-> "sort ${path} -o ${path}"
       (str.format {:path dictionary_path})
       (os.execute)))
 
-(local cspell-config {:on_add_to_json on-add-to-json
-                      :on_add_to_dictionary on-add-to-dictionary})
+(local cspell-config {: on_add_to_json
+                      : on_add_to_dictionary})
 
 (null-ls.setup
   {:sources [diagnostics.shellcheck

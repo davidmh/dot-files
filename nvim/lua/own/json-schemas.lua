@@ -4,24 +4,15 @@ local autoload = _local_1_["autoload"]
 local core = autoload("nfnl.core")
 local Job = require("plenary.job")
 local local_catalog_path = (vim.fn.stdpath("data") .. "/json-schema-catalog.json")
-local function notify_info(message)
-  return vim.notify(message, "info", {title = "JSON LSP Schemas"})
-end
-local function notify_error(message)
-  return vim.notify(message, "error", {title = "JSON LSP Schemas"})
-end
-local function on_start()
-  return notify_info("Fetching catalog")
-end
-local function on_exit(job, exit_code)
-  if (exit_code == 0) then
-    return notify_info("Catalog download complete")
+local function on_exit(_, exit_code)
+  if (exit_code ~= 0) then
+    return vim.notify(("Couldn't download catalog.\ncurl responded with exit code: " .. exit_code), "error", {title = "JSON LSP Schemas"})
   else
-    return notify_error(("Couldn't download catalog.\ncurl responded with exit code: " .. exit_code))
+    return nil
   end
 end
 local function download_catalog()
-  return Job:new({command = "curl", args = {"https://www.schemastore.org/api/json/catalog.json", "-o", local_catalog_path}, on_start = on_start, on_exit = on_exit})
+  return Job:new({command = "curl", args = {"https://www.schemastore.org/api/json/catalog.json", "-o", local_catalog_path}, on_exit = on_exit})
 end
 local function get_all()
   local function _3_()
@@ -43,7 +34,13 @@ local function get_all()
     end
   end
   local function _10_()
-    print("Run refetch-catalog to get JSON schema hovers")
+    local function _11_()
+      local function _12_()
+        return download_catalog():sync()
+      end
+      return vim.schedule(_12_)
+    end
+    vim.defer_fn(_11_, 500)
     return {}
   end
   return (_3_() or _10_())
