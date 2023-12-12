@@ -1,7 +1,7 @@
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
 
-(set vim.o.cmdheight 0)
+(set vim.o.cmdheight 1)
 (set vim.o.cursorline true)
 (set vim.o.expandtab true)
 (set vim.o.foldlevel 99)

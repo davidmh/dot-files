@@ -43,10 +43,7 @@
                                            :cssls
                                            :jsonls
                                            :lua_ls
-                                           ; :vtsls
-                                           :eslint
-                                           :denols
-                                           :vimls]
+                                           :eslint]
                         :automatic_installation false})
 
 (local win-opts {:border config.border
@@ -59,9 +56,6 @@
 
 (local git-root (util.root_pattern :.git))
 
-(local ts-root (util.root_pattern :package.json))
-(local deno-root (util.root_pattern :deno.json :deno.jsonc))
-
 (local client-capabilities (->> (vim.lsp.protocol.make_client_capabilities)
                                 ; :kevinhwang91/nvim-ufo
                                 (vim.tbl_deep_extend :keep {:textDocument {:foldingRange {:dynamicRegistration false
@@ -71,10 +65,7 @@
                       :init_options {:preferences {:includeCompletionsWithSnippetText true
                                                    :includeCompletionsForImportStatements true}}})
 
-(local server-configs {:vtsls {:root_dir ts-root
-                               :settings {:typescript {:tsdk :./node_modules/typescript/lib}}}
-                                                       ; :tsserver {:pluginPaths [:.]}}}}
-                       :jsonls {:settings {:json {:schemas (json-schemas.get-all)}}}
+(local server-configs {:jsonls {:settings {:json {:schemas (json-schemas.get-all)}}}
                        :lua_ls {:settings {:Lua {:completion :Replace
                                                  :diagnostics {:globals [:vim
                                                                          :it
@@ -85,11 +76,11 @@
                                                  :format {:enable false}
                                                  :workspace {:checkThirdParty false}}}}
                        :eslint {:root_dir git-root}
+                       :grammarly {:filetypes [:markdown :norg :txt :gitcommit]}
                        :fennel_language_server {:single_file_support true
                                                 :root_dir (lspconfig.util.root_pattern :fnl)
                                                 :settings {:fennel {:diagnostics {:globals [:vim :jit :comment]}
                                                                     :workspace {:library (vim.api.nvim_list_runtime_paths)}}}}
-                       :denols {:root_dir deno-root}
                        :cssls {:root_dir git-root}
                        :shellcheck {:root_dir git-root}})
 
@@ -97,10 +88,6 @@
   (let [server-setup (core.get-in lspconfig [server-name :setup])]
     (server-setup (core.merge base-settings
                               (core.get server-configs server-name {})))))
-
-;; grammarly is not installed through mason see:
-;; https://github.com/znck/grammarly/issues/334
-(lspconfig.grammarly.setup {:filetypes [:markdown :norg :txt :gitcommit]})
 
 (lspconfig.solargraph.setup {:root_dir git-root
                              :cmd [:bundle :exec :solargraph :stdio]})
