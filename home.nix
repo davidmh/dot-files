@@ -47,6 +47,7 @@
     ripgrep
     tig
     neovim
+    unstable.cbc
     unstable.gh
     unstable.wezterm
   ];
