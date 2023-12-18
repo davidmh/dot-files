@@ -11,7 +11,7 @@
                                              :preview_cutoff 120}
                              :sorting_strategy :ascending
                              :prompt_prefix "   "
-                             :selection_caret " "
+                             :selection_caret " "
                              :set_env {:COLORTERM true}
                              :results_title false}
                   :pickers {:buffers {:sort_mru true}}})

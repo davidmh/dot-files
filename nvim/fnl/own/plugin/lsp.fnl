@@ -7,7 +7,6 @@
 (local json-schemas (autoload :own.json-schemas))
 (local lspconfig (autoload :lspconfig))
 (local kind (autoload :lspkind))
-(local mason (autoload :mason))
 (local mason-lspconfig (autoload :mason-lspconfig))
 (local navic (autoload :nvim-navic))
 (local fidget (autoload :fidget))
@@ -38,7 +37,6 @@
                                        :border :none
                                        :y_padding 2
                                        :zindex 1}}})
-(mason.setup {:ui {:border config.border}})
 (mason-lspconfig.setup {:ensure_installed [:clojure_lsp
                                            :cssls
                                            :jsonls

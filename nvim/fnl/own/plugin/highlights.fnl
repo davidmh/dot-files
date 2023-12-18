@@ -72,6 +72,11 @@
 
    :CmpItemKindCopilot {:fg color.crust :bg color.mauve}
 
+   :MiniStarterItemBullet {:fg :NONE :bg :NONE}
+   :MiniStarterItemPrefix {:fg color.blue :bg :NONE}
+   :MiniStarterQuery {:fg color.crust :bg color.blue}
+   :MiniStarterFooter {:fg color.subtext0 :bg :NONE}
+
    :NavicIconsFile {:bg color.surface2 :fg color.blue}
    :NavicIconsModule {:bg color.surface2 :fg color.blue}
    :NavicIconsNamespace {:bg color.surface2 :fg color.green}

@@ -24,6 +24,19 @@ return {
       mods = 'CMD',
       action = 'ReloadConfiguration',
     },
+
+    {
+      key = 'd',
+      mods = 'SHIFT|CTRL',
+      action = wezterm.action.DetachDomain('CurrentPaneDomain'),
+    },
   },
   window_decorations = 'RESIZE',
+
+  -- Multiplexing
+  unix_domains = {
+    { name = 'default' },
+    { name = 'remix' },
+  },
+  default_gui_startup_args = { 'connect', 'default' },
 }

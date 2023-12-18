@@ -20,7 +20,7 @@
           config.allowUnfree = true;
         };
       })
-      inputs.neovim-nightly-overlay.overlay
+      # inputs.neovim-nightly-overlay.overlay
     ];
   };
 
@@ -47,7 +47,8 @@
     ripgrep
     tig
     neovim
-    unstable.cbc
+    # unstable.cbc
+    unstable.fortune-kind
     unstable.gh
     unstable.wezterm
   ];
@@ -83,6 +84,7 @@
       ];
     };
     shellAliases = {
+      v = "nvim";
       vim = "nvim";
       ll = "lsd -l";
     };

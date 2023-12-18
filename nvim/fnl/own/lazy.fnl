@@ -32,5 +32,4 @@
     (lazy.setup plugins {:install {:colorscheme [:catppuccin]}
                          :dev {:path (.. vim.env.HOME "/Projects")
                                :fallback true}
-                         :ui {:border config.border
-                              :icons {:lazy :鈴}}})))
+                         :ui {:border config.border}})))

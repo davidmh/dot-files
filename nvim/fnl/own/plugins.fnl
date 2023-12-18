@@ -18,16 +18,20 @@
 
   :folke/neodev.nvim {:opts {:library {:types true}}}
 
+  :echasnovski/mini.starter {:mod :starter}
+
+  ; cli tools manager
+  :williamboman/mason.nvim {:mod :mason}
+
   ;; LSP
   :j-hui/fidget.nvim {:tag :v1.0.0}
-  :williamboman/mason.nvim {:dependencies [:neovim/nvim-lspconfig
-                                           :williamboman/mason-lspconfig.nvim
-                                           :onsails/lspkind-nvim
-                                           :j-hui/fidget.nvim
-                                           :SmiteshP/nvim-navic
-                                           :pmizio/typescript-tools.nvim]
-                            :name :mason
-                            :mod :lsp}
+  :neovim/nvim-lspconfig {:dependencies [:williamboman/mason.nvim
+                                         :williamboman/mason-lspconfig.nvim
+                                         :onsails/lspkind-nvim
+                                         :j-hui/fidget.nvim
+                                         :SmiteshP/nvim-navic
+                                         :pmizio/typescript-tools.nvim]
+                          :mod :lsp}
 
   ;; Diagnostics
   :davidmh/cspell.nvim {:dependencies [:nvim-lua/plenary.nvim]}
@@ -161,7 +165,7 @@
 
   :folke/which-key.nvim {:dependencies [:nvim-lua/plenary.nvim]
                          :event :VeryLazy
-                         :opts {}}
+                         :mod :which-key}
 
   ;; Misc Utilities
   :danilamihailov/beacon.nvim {}

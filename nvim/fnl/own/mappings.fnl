@@ -73,7 +73,7 @@
 (nmap :<leader>/p #(t.live_grep) (opts "find in project"))
 (nmap :<leader>/w #(t.grep_string) (opts "find word under cursor"))
 
-(nmap :<leader>so ":botright split /tmp/scratch.fnl<cr>" (opts "open scratch buffer"))
+(nmap :<leader>s ":botright split /tmp/scratch.fnl<cr>" (opts "open scratch buffer"))
 
 (nmap :<leader>vp browse-plugins (opts "vim plugins"))
 (nmap :<leader>vr browse-runtime (opts "vim runtime"))
@@ -115,6 +115,9 @@
 (nmap :<localleader>ls (cmd "Lazy show") (opts "lazy show"))
 (nmap :<localleader>lc (cmd "Lazy clean") (opts "lazy clean"))
 (nmap :<localleader>lu (cmd "Lazy update") (opts "lazy update"))
+
+; mason
+(nmap :<localleader>m (cmd :Mason) (opts :mason))
 
 ;; notifications
 (nmap :<localleader>no (cmd "Telescope notify") (opts "open notifications"))
