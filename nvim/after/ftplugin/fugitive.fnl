@@ -6,3 +6,6 @@
 (vim.api.nvim_win_set_height 0 (-> (vim.fn.winheight 0)
                                    (math.min buffer-line-count)
                                    (math.max minimum-window-height)))
+
+(vim.keymap.set :n :<leader>gp "<cmd>Git! pushc<cr>" {:silent true
+                                                      :buffer 0})
