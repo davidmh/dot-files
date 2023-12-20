@@ -8,4 +8,5 @@
                      :<leader>b {:name :buffer}
                      :<leader>t {:name :toggle}
                      :<leader>v {:name :vim}
+                     :<leader>n {:name :neo-tree}
                      :<leader>/ {:name :find}})

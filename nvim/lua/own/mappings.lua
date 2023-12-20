@@ -139,9 +139,7 @@ local function _21_()
 end
 vim.keymap.set("n", "<localleader>c", _21_, opts("home manager config"))
 vim.keymap.set("n", "<localleader>d", cmd("DBUIToggle"), opts("dadbod ui"))
-vim.keymap.set("n", "<localleader>ls", cmd("Lazy show"), opts("lazy show"))
-vim.keymap.set("n", "<localleader>lc", cmd("Lazy clean"), opts("lazy clean"))
-vim.keymap.set("n", "<localleader>lu", cmd("Lazy update"), opts("lazy update"))
+vim.keymap.set("n", "<localleader>l", cmd("Lazy show"), opts("lazy ui"))
 vim.keymap.set("n", "<localleader>m", cmd("Mason"), opts("mason"))
 vim.keymap.set("n", "<localleader>no", cmd("Telescope notify"), opts("open notifications"))
 local function _22_()
@@ -199,6 +197,11 @@ do
   local group = vim.api.nvim_create_augroup("lsp-attach", {clear = true})
   vim.api.nvim_create_autocmd("LspAttach", {callback = on_attach, group = group})
 end
+vim.keymap.set("n", "<leader>ne", cmd("Neotree toggle reveal"), opts("explore"))
+vim.keymap.set("n", "<leader>nv", cmd("vsplit | Neotree current reveal"), opts("in vertical split"))
+vim.keymap.set("n", "<leader>ns", cmd("split | Neotree current reveal"), opts("in horizontal split"))
+vim.keymap.set("n", "<leader>nw", cmd("Neotree current reveal"), opts("in current window"))
+vim.keymap.set("n", "<leader>ng", cmd("Neotree source=git_status reveal"), opts("git status"))
 for _, action in ipairs({"y", "d", "p", "c"}) do
   local Action = string.upper(action)
   vim.keymap.set("n", ("<leader>" .. action), ("\"+" .. action))

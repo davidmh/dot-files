@@ -145,8 +145,15 @@
                       :mod :db}
 
   ;; netrwho?
-  :stevearc/oil.nvim {:mod :oil
-                      :keys [:- :|]}
+  :s1n7ax/nvim-window-picker {:event :VeryLazy
+                              :opts {}}
+  :nvim-neo-tree/neo-tree.nvim {:branch :v3.x
+                                :dependencies [:nvim-lua/plenary.nvim
+                                               :kyazdani42/nvim-web-devicons
+                                               :MunifTanjim/nui.nvim
+                                               :s1n7ax/nvim-window-picker]
+                                :mod :neo-tree}
+
   :chrishrb/gx.nvim {:keys [:gx]
                      :config true}
 

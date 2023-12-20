@@ -111,10 +111,8 @@
 (nmap :<localleader>c #(telescope-file-browser "~/.config/home-manager") (opts "home manager config"))
 (nmap :<localleader>d (cmd :DBUIToggle) (opts "dadbod ui"))
 
-;; lazy
-(nmap :<localleader>ls (cmd "Lazy show") (opts "lazy show"))
-(nmap :<localleader>lc (cmd "Lazy clean") (opts "lazy clean"))
-(nmap :<localleader>lu (cmd "Lazy update") (opts "lazy update"))
+;; lazy ui
+(nmap :<localleader>l (cmd "Lazy show") (opts "lazy ui"))
 
 ; mason
 (nmap :<localleader>m (cmd :Mason) (opts :mason))
@@ -176,6 +174,18 @@
 
 
 (augroup :lsp-attach [:LspAttach {:callback on-attach}])
+
+; Neotree
+(nmap :<leader>ne (cmd "Neotree toggle reveal")
+                  (opts "explore"))
+(nmap :<leader>nv (cmd "vsplit | Neotree current reveal")
+                  (opts "in vertical split"))
+(nmap :<leader>ns (cmd "split | Neotree current reveal")
+                  (opts "in horizontal split"))
+(nmap :<leader>nw (cmd "Neotree current reveal")
+                  (opts "in current window"))
+(nmap :<leader>ng (cmd "Neotree source=git_status reveal")
+                  (opts "git status"))
 
 ; On-demand OS clipboard sharing
 ;
