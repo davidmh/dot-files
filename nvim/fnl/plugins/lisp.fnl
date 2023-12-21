@@ -3,7 +3,7 @@
 
 [:Olical/nfnl ; Fennel
 
- :clojure-vim/vim-jack-in ; Clojure
+ (use :clojure-vim/vim-jack-in {:ft [:clojure]})
 
  (use :gpanders/nvim-parinfer {:ft [:clojure :fennel :query]})
 

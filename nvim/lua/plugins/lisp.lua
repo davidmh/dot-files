@@ -7,4 +7,4 @@ local function _2_()
   vim.g["conjure#filetype#python"] = nil
   return nil
 end
-return {"Olical/nfnl", "clojure-vim/vim-jack-in", {"gpanders/nvim-parinfer", ft = {"clojure", "fennel", "query"}}, {"Olical/conjure", config = _2_}}
+return {"Olical/nfnl", {"clojure-vim/vim-jack-in", ft = {"clojure"}}, {"gpanders/nvim-parinfer", ft = {"clojure", "fennel", "query"}}, {"Olical/conjure", config = _2_}}

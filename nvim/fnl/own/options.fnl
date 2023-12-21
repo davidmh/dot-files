@@ -6,7 +6,7 @@
 (set vim.o.expandtab true)
 (set vim.o.foldlevel 99)
 (set vim.o.grepprg "ag -S --vimgrep")
-(set vim.o.guifont "Hasklug Nerd Font:h14")
+(set vim.o.guifont "Hasklug Nerd Font,Noto Color Emoji,:h14")
 (set vim.o.hidden true)
 (set vim.o.ignorecase true)
 (set vim.o.inccommand :split)

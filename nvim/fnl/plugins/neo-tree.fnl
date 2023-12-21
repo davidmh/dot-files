@@ -37,6 +37,12 @@
                       :kyazdani42/nvim-web-devicons
                       :MunifTanjim/nui.nvim
                       :s1n7ax/nvim-window-picker]
-       :opts {:hide_hidden false
+       :opts {:filesystem {:filtered_items {:hide_dotfiles false}}
               :window {:mappings {:- (use git/stage-unstage {:desc :stage/unstage})
-                                  :X (use :git_revert_file {:desc :revert})}}}})]
+                                  :X (use :git_revert_file {:desc :revert})}}}
+
+       :keys [(use :<leader>fe "<cmd>Neotree toggle reveal<cr>" {:desc "explore"})
+              (use :<leader>fv "<cmd>vsplit | Neotree current reveal<cr>" {:desc "in vertical split"})
+              (use :<leader>fs "<cmd>split | Neotree current reveal<cr>" {:desc "in horizontal split"})
+              (use :<leader>fw "<cmd>Neotree current reveal<cr>" {:desc "in current window"})
+              (use :<leader>fg "<cmd>Neotree source=git_status reveal<cr>" {:desc "git status"})]})]

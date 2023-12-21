@@ -11,7 +11,6 @@
 (local mason-registry (autoload :mason-registry))
 (local mason-lspconfig (autoload :mason-lspconfig))
 (local navic (autoload :nvim-navic))
-(local fidget (autoload :fidget))
 (local typescript-tools (autoload :typescript-tools))
 
 ;; mason
@@ -39,38 +38,16 @@
 
 (fn lsp-config []
   (typescript-tools.setup {})
-
-  (navic.setup {:depth_limit 4
-                :depth_limit_indicator " [  ] "
-                :click true
-                :highlight true
-                :format_text (fn [text]
-                               (if (or (text:match "^it%(")
-                                       (text:match "^describe%("))
-                                 (-> text
-                                   (: :gsub "^it%('" "it ")
-                                   (: :gsub "^describe%('" "describe ")
-                                   (: :gsub "'%) callback$" ""))
-                                 (-> text
-                                   (: :gsub " callback$" ""))))
-                :icons cfg.navic-icons
-                :safe_output false
-                :separator "  "})
   (kind.init)
-  (fidget.setup {:progress {:display {:done_icon :}}
-                 :notification {:window {:align :top
-                                         :winblend 0
-                                         :border :none
-                                         :y_padding 2
-                                         :zindex 1}}})
 
-  (local win-opts {:border cfg.border
-                   :max_width 100
-                   :separator true})
-  (tset vim.lsp.handlers "textDocument/hover"
-        (vim.lsp.with vim.lsp.handlers.hover win-opts))
-  (tset vim.lsp.handlers "textDocument/signatureHelp"
-        (vim.lsp.with vim.lsp.handlers.signature_help win-opts))
+  (comment
+    (local win-opts {:border cfg.border
+                     :max_width 100
+                     :separator true})
+    (tset vim.lsp.handlers "textDocument/hover"
+          (vim.lsp.with vim.lsp.handlers.hover win-opts))
+    (tset vim.lsp.handlers "textDocument/signatureHelp"
+          (vim.lsp.with vim.lsp.handlers.signature_help win-opts)))
 
   (local git-root (util.root_pattern :.git))
 
@@ -110,9 +87,7 @@
   (lspconfig.solargraph.setup {:root_dir git-root
                                :cmd [:bundle :exec :solargraph :stdio]}))
 
-[(use :j-hui/fidget.nvim {:tag :v1.0.0})
-
- (use :folke/neodev.nvim {:opts {:library {:types true}}
+[(use :folke/neodev.nvim {:opts {:library {:types true}}
                           :config true})
 
  (use :williamboman/mason.nvim {:config mason-config
@@ -127,11 +102,28 @@
                                                                     :fennel_language_server]}
                                           :config true})
 
+ (use :SmiteshP/nvim-navic {:opts {:depth_limit 4
+                                   :depth_limit_indicator " [  ] "
+                                   :click true
+                                   :highlight true
+                                   :format_text (fn [text]
+                                                  (if (or (text:match "^it%(")
+                                                          (text:match "^describe%("))
+                                                    (-> text
+                                                      (: :gsub "^it%('" "it ")
+                                                      (: :gsub "^describe%('" "describe ")
+                                                      (: :gsub "'%) callback$" ""))
+                                                    (-> text
+                                                      (: :gsub " callback$" ""))))
+                                   :icons cfg.navic-icons
+                                   :safe_output false
+                                   :separator "  "}
+                            :config true})
+
  (use :neovim/nvim-lspconfig {:dependencies [:williamboman/mason.nvim
                                              :williamboman/mason-lspconfig.nvim
                                              :onsails/lspkind-nvim
                                              :hrsh7th/cmp-nvim-lsp
-                                             :j-hui/fidget.nvim
                                              :SmiteshP/nvim-navic
                                              :pmizio/typescript-tools.nvim]
                               :config lsp-config

@@ -20,7 +20,7 @@
           config.allowUnfree = true;
         };
       })
-      # inputs.neovim-nightly-overlay.overlay
+      inputs.neovim-nightly-overlay.overlay
     ];
   };
 

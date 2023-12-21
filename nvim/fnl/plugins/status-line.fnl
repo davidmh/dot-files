@@ -1,5 +1,6 @@
 (import-macros {: augroup : use} :own.macros)
 (local {: autoload} (require :nfnl.module))
+(local {: sanitize-path} (require :own.helpers))
 
 (local heirline (autoload :heirline))
 (local conditions (autoload :heirline.conditions))
@@ -83,12 +84,6 @@
 (local neorg-mode {:condition #(and (= vim.bo.filetype :norg)
                                     (not= (neorg-mode.public.get_mode) :norg))
                    1 (container {:provider #(.. " " (neorg-mode.public.get_mode))})})
-
-(fn sanitize-path [path size]
-  (-> path
-      (string.gsub vim.env.HOME "~")
-      (string.gsub vim.env.REMIX_HOME "remix")
-      (vim.fn.pathshorten (or size 2))))
 
 (local file-icon {:init #(let [file-name $1.file-name
                                ext (vim.fn.fnamemodify file-name ::e)

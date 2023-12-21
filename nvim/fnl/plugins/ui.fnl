@@ -4,9 +4,9 @@
 
 [:danilamihailov/beacon.nvim
 
- (use :nvim-tree/nvim-web-devicons {:opts {:override {:scm {:color :#A6E3A1}
-                                                           :name :query
-                                                           :icon :󰘧
+ (use :nvim-tree/nvim-web-devicons {:opts {:override {:scm {:color :#A6E3A1
+                                                            :name :query
+                                                            :icon :󰘧}
                                                       :fnl {:color :cyan
                                                             :name :blue
                                                             :icon :}
@@ -20,8 +20,17 @@
 
  (use :rcarriga/nvim-notify {:dependencies [:nvim-telescope/telescope.nvim]
                              :event :VeryLazy
-                             :opts {:timeout 2500
-                                    :minimum_width 30
-                                    :top_down false
-                                    :fps 60}
-                             :config #(set vim.notify notify)})]
+                             :config #(do (notify.setup {:timeout 2500
+                                                         :minimum_width 30
+                                                         :top_down false
+                                                         :fps 60})
+                                          (set vim.notify notify))})
+
+ (use :folke/noice.nvim {:config true
+                         :event :VeryLazy
+                         :opts {:lsp {:override {:vim.lsp.util.convert_input_to_markdown_lines true
+                                                 :vim.lsp.util.stylize_markdown true
+                                                 :cmp.entry.get_documentation true}}}
+                         :dependencies [:MunifTanjim/nui.nvim
+                                        :rcarriga/nvim-notify]})]
+

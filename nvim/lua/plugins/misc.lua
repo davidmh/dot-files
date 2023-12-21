@@ -9,4 +9,4 @@ local function _2_()
   vim.g.lt_quickfix_list_toggle_map = "Q"
   return nil
 end
-return {"vim-scripts/BufOnly.vim", {"airblade/vim-rooter", config = _1_}, {"Valloric/ListToggle", config = _2_}}
+return {"vim-scripts/BufOnly.vim", {"airblade/vim-rooter", config = _1_}, {"Valloric/ListToggle", event = "VeryLazy", config = _2_}}

@@ -9,7 +9,8 @@ local function _3_(_241, _242)
   return math.min(_242, 15)
 end
 local function _4_()
+  notify.setup({timeout = 2500, minimum_width = 30, fps = 60, top_down = false})
   vim.notify = notify
   return nil
 end
-return {"danilamihailov/beacon.nvim", {"nvim-tree/nvim-web-devicons", opts = {override = {scm = {color = "#A6E3A1"}, name = "query", icon = "\243\176\152\167", fnl = {color = "cyan", name = "blue", icon = "\238\143\146"}, norg = {icon = "\238\152\179"}}}, config = true}, {"stevearc/dressing.nvim", event = "VeryLazy", opts = {select = {backend = "telescope"}, telescope = {layout_config = {width = _2_, height = _3_}}}}, {"rcarriga/nvim-notify", dependencies = {"nvim-telescope/telescope.nvim"}, event = "VeryLazy", opts = {timeout = 2500, minimum_width = 30, fps = 60, top_down = false}, config = _4_}}
+return {"danilamihailov/beacon.nvim", {"nvim-tree/nvim-web-devicons", opts = {override = {scm = {color = "#A6E3A1", name = "query", icon = "\243\176\152\167"}, fnl = {color = "cyan", name = "blue", icon = "\238\143\146"}, norg = {icon = "\238\152\179"}}}, config = true}, {"stevearc/dressing.nvim", event = "VeryLazy", opts = {select = {backend = "telescope"}, telescope = {layout_config = {width = _2_, height = _3_}}}}, {"rcarriga/nvim-notify", dependencies = {"nvim-telescope/telescope.nvim"}, event = "VeryLazy", config = _4_}, {"folke/noice.nvim", config = true, event = "VeryLazy", opts = {lsp = {override = {["vim.lsp.util.convert_input_to_markdown_lines"] = true, ["vim.lsp.util.stylize_markdown"] = true, ["cmp.entry.get_documentation"] = true}}}, dependencies = {"MunifTanjim/nui.nvim", "rcarriga/nvim-notify"}}}

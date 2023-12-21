@@ -8,6 +8,7 @@ local lazy = require("lazy")
 lazy.setup("plugins", {dev = {path = (vim.env.HOME .. "/Projects")}, fallback = true, ui = {border = border}})
 local function _2_()
   require("own.mappings")
-  return require("own.package")
+  require("own.package")
+  return require("own.projects")
 end
 return vim.schedule(_2_)

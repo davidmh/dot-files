@@ -9,4 +9,7 @@ local function get_largest_window_id()
   end
   return windows_by_size[table.maxn(windows_by_size)]
 end
-return {["window-size"] = window_size, ["get-largest-window-id"] = get_largest_window_id}
+local function sanitize_path(path, size)
+  return vim.fn.pathshorten(string.gsub(string.gsub(path, vim.env.HOME, "~"), vim.env.REMIX_HOME, "remix"), (size or 2))
+end
+return {["window-size"] = window_size, ["get-largest-window-id"] = get_largest_window_id, ["sanitize-path"] = sanitize_path}

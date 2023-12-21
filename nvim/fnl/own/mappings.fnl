@@ -11,6 +11,7 @@
 (local toggle-term (autoload :toggleterm))
 (local terminal (autoload :toggleterm.terminal))
 (local navic (autoload :nvim-navic))
+(local projects (autoload :own.projects))
 
 (local state {:tmux-term nil})
 
@@ -39,12 +40,6 @@
       vim.log.levels.INFO
       {:title :toggle :timeout 1000})))
 
-(fn find-files []
-  (t.find_files {:find_command [:fd
-                                :--hidden
-                                :--type :f
-                                :--exclude :.git]}))
-
 (fn term-tab [id]
   (toggle-term.toggle_command "direction=tab dir=. size=0" id))
 
@@ -69,7 +64,7 @@
 (fn opts [desc] {:silent true : desc})
 
 ; normal mode mappings
-(nmap :<leader><leader> find-files (opts "find files"))
+(nmap :<leader><leader> #(projects.find-files) (opts "find files"))
 (nmap :<leader>/b grep-buffer-content (opts "find in open buffers"))
 (nmap :<leader>/p #(t.live_grep) (opts "find in project"))
 (nmap :<leader>/w #(t.grep_string) (opts "find word under cursor"))
@@ -176,25 +171,12 @@
 (augroup :lsp-attach [:LspAttach {:callback on-attach}])
 
 ; Telescope
-(nmap :<M-x> ::Telescope<CR> {:nowait true})
-(nmap :<D-x> ::Telescope<CR> {:nowait true})
-(nmap :<M-h> ":Telescope help_tags<CR>" {:nowait true})
-(nmap :<M-m> ":Telescope marks<CR>" {:nowait true})
-(nmap :<M-k> ":Telescope keymaps<CR>" {:nowait true})
-(nmap :<M-c> ":Telescope commands<CR>" {:nowait true})
-
-; Neotree
-(nmap :<leader>ne (cmd "Neotree toggle reveal")
-                  (opts "explore"))
-(nmap :<leader>nv (cmd "vsplit | Neotree current reveal")
-                  (opts "in vertical split"))
-(nmap :<leader>ns (cmd "split | Neotree current reveal")
-                  (opts "in horizontal split"))
-(nmap :<leader>nw (cmd "Neotree current reveal")
-                  (opts "in current window"))
-(nmap :<leader>ng (cmd "Neotree source=git_status reveal")
-                  (opts "git status"))
-
+(nmap :<M-x> ::Telescope<CR> {:nowait true :silent true})
+(nmap :<D-x> ::Telescope<CR> {:nowait true :silent true})
+(nmap :<M-h> ":Telescope help_tags<CR>" {:nowait true :silent true})
+(nmap :<M-m> ":Telescope marks<CR>" {:nowait true :silent true})
+(nmap :<M-k> ":Telescope keymaps<CR>" {:nowait true :silent true})
+(nmap :<M-c> ":Telescope commands<CR>" {:nowait true :silent true})
 
 ; Windows
 ;

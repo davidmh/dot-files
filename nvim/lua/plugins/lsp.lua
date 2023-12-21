@@ -12,7 +12,6 @@ local mason = autoload("mason")
 local mason_registry = autoload("mason-registry")
 local mason_lspconfig = autoload("mason-lspconfig")
 local navic = autoload("nvim-navic")
-local fidget = autoload("fidget")
 local typescript_tools = autoload("typescript-tools")
 local function on_linter_install(pkg)
   local function _2_()
@@ -38,19 +37,8 @@ local function mason_config()
 end
 local function lsp_config()
   typescript_tools.setup({})
-  local function _5_(text)
-    if (text:match("^it%(") or text:match("^describe%(")) then
-      return text:gsub("^it%('", "it "):gsub("^describe%('", "describe "):gsub("'%) callback$", "")
-    else
-      return text:gsub(" callback$", "")
-    end
-  end
-  navic.setup({depth_limit = 4, depth_limit_indicator = " [ \238\169\188 ] ", click = true, highlight = true, format_text = _5_, icons = cfg["navic-icons"], separator = " \238\170\182 ", safe_output = false})
   kind.init()
-  fidget.setup({progress = {display = {done_icon = "\238\174\179"}}, notification = {window = {align = "top", winblend = 0, border = "none", y_padding = 2, zindex = 1}}})
-  local win_opts = {border = cfg.border, max_width = 100, separator = true}
-  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, win_opts)
-  do end (vim.lsp.handlers)["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, win_opts)
+  --[[ (local win-opts {:border cfg.border :max_width 100 :separator true}) (tset vim.lsp.handlers "textDocument/hover" (vim.lsp.with vim.lsp.handlers.hover win-opts)) (tset vim.lsp.handlers "textDocument/signatureHelp" (vim.lsp.with vim.lsp.handlers.signature_help win-opts)) ]]
   local git_root = util.root_pattern(".git")
   local client_capabilities = vim.tbl_deep_extend("keep", {textDocument = {foldingRange = {lineFoldingOnly = true, dynamicRegistration = false}}}, vim.lsp.protocol.make_client_capabilities())
   local base_settings = {capabilities = cmp_lsp.default_capabilities(client_capabilities), init_options = {preferences = {includeCompletionsWithSnippetText = true, includeCompletionsForImportStatements = true}}}
@@ -61,4 +49,11 @@ local function lsp_config()
   end
   return lspconfig.solargraph.setup({root_dir = git_root, cmd = {"bundle", "exec", "solargraph", "stdio"}})
 end
-return {{"j-hui/fidget.nvim", tag = "v1.0.0"}, {"folke/neodev.nvim", opts = {library = {types = true}}, config = true}, {"williamboman/mason.nvim", config = mason_config, lazy = false}, {"williamboman/mason-lspconfig.nvim", opts = {ensure_installed = {"clojure_lsp", "cssls", "jsonls", "lua_ls", "eslint", "fennel_language_server"}}, config = true, lazy = false}, {"neovim/nvim-lspconfig", dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim", "onsails/lspkind-nvim", "hrsh7th/cmp-nvim-lsp", "j-hui/fidget.nvim", "SmiteshP/nvim-navic", "pmizio/typescript-tools.nvim"}, config = lsp_config, event = "VeryLazy"}}
+local function _5_(text)
+  if (text:match("^it%(") or text:match("^describe%(")) then
+    return text:gsub("^it%('", "it "):gsub("^describe%('", "describe "):gsub("'%) callback$", "")
+  else
+    return text:gsub(" callback$", "")
+  end
+end
+return {{"folke/neodev.nvim", opts = {library = {types = true}}, config = true}, {"williamboman/mason.nvim", config = mason_config, lazy = false}, {"williamboman/mason-lspconfig.nvim", opts = {ensure_installed = {"clojure_lsp", "cssls", "jsonls", "lua_ls", "eslint", "fennel_language_server"}}, config = true, lazy = false}, {"SmiteshP/nvim-navic", opts = {depth_limit = 4, depth_limit_indicator = " [ \238\169\188 ] ", click = true, highlight = true, format_text = _5_, icons = cfg["navic-icons"], separator = " \238\170\182 ", safe_output = false}, config = true}, {"neovim/nvim-lspconfig", dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim", "onsails/lspkind-nvim", "hrsh7th/cmp-nvim-lsp", "SmiteshP/nvim-navic", "pmizio/typescript-tools.nvim"}, config = lsp_config, event = "VeryLazy"}}

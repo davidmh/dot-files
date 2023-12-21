@@ -5,11 +5,12 @@
 (use :folke/which-key.nvim {:dependencies [:nvim-lua/plenary.nvim]
                             :event :VeryLazy
                             :config #(which-key.register {:mode [:n]
-                                                          :<leader>g {:name :git}
+                                                          :<leader>g {:name :git
+                                                                      :h {:name :hunk}}
                                                           :<leader>l {:name :lsp}
                                                           :<leader>o {:name :org}
                                                           :<leader>b {:name :buffer}
                                                           :<leader>t {:name :toggle}
                                                           :<leader>v {:name :vim}
-                                                          :<leader>n {:name :neo-tree}
+                                                          :<leader>f {:name :file-tree}
                                                           :<leader>/ {:name :find}})})
