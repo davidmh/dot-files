@@ -10,5 +10,4 @@ local function ensure(user, repo, alias)
   return (vim.opt.runtimepath):prepend(install_path)
 end
 ensure("folke", "lazy.nvim")
-ensure("Olical", "nfnl")
-return ensure("catppuccin", "nvim", "catppuccin")
+return ensure("Olical", "nfnl")

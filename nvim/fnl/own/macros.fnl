@@ -31,9 +31,33 @@
 (fn tmap [from to opts]
   `(vim.keymap.set :t ,from ,to ,opts))
 
+(fn use [...]
+  "
+  Merge sequential and key-value tables.
+
+  For example, in Lua, we can write:
+
+  {'some-string', a = 1, b = 2}
+
+  And automatically store the string with a numeric key.
+
+  Fennel can't mix both, so to generate the table above,
+  we would call it as:
+
+  (use :some-string {:a 1 :b 2})
+  "
+  (local input [...])
+  (local last-index (length input))
+  (local props (. input last-index))
+  (each [i v (ipairs input)]
+    (if (~= i last-index)
+      (tset props i v)))
+  `(-> ,props))
+
 {: autocmd
  : augroup
  : map
  : nmap
  : vmap
- : tmap}
+ : tmap
+ : use}

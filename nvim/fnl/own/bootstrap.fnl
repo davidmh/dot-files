@@ -9,4 +9,3 @@
 
 (ensure :folke :lazy.nvim)
 (ensure :Olical :nfnl)
-(ensure :catppuccin :nvim :catppuccin)

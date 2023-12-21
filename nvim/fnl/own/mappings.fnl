@@ -1,5 +1,6 @@
 (import-macros {: nmap
                 : vmap
+                : tmap
                 : map
                 : autocmd
                 : augroup} :own.macros)
@@ -91,7 +92,6 @@
 (nmap :<leader>ob #(telescope-file-browser "~/Documents/neorg/") (opts "org browse"))
 
 ;; toggle term
-
 (map [:n :t] :<C-t> #(term-split 100) (opts "split term"))
 (map [:n :t] :<C-1> #(term-split 1) (opts "split term 1"))
 (map [:n :t] :<C-2> #(term-split 2) (opts "split term 2"))
@@ -175,6 +175,14 @@
 
 (augroup :lsp-attach [:LspAttach {:callback on-attach}])
 
+; Telescope
+(nmap :<M-x> ::Telescope<CR> {:nowait true})
+(nmap :<D-x> ::Telescope<CR> {:nowait true})
+(nmap :<M-h> ":Telescope help_tags<CR>" {:nowait true})
+(nmap :<M-m> ":Telescope marks<CR>" {:nowait true})
+(nmap :<M-k> ":Telescope keymaps<CR>" {:nowait true})
+(nmap :<M-c> ":Telescope commands<CR>" {:nowait true})
+
 ; Neotree
 (nmap :<leader>ne (cmd "Neotree toggle reveal")
                   (opts "explore"))
@@ -186,6 +194,36 @@
                   (opts "in current window"))
 (nmap :<leader>ng (cmd "Neotree source=git_status reveal")
                   (opts "git status"))
+
+
+; Windows
+;
+; in normal mode
+;
+; resize faster
+(nmap "<M-,>" :<C-W>5<)
+(nmap :<M-.> :<C-W>5>)
+(nmap :<M--> :<C-W>5-)
+(nmap :<M-=> :<C-W>5+)
+; move faster
+(nmap :<C-k> :<C-W>k)
+(nmap :<C-j> :<C-W>j)
+(nmap :<C-h> :<C-W>h)
+(nmap :<C-l> :<C-W>l)
+; in terminal mode
+;
+; resize faster
+(tmap "<M-,>" :<C-\><C-n><C-W>5<)
+(tmap :<M-.> :<C-\><C-n><C-W>5>)
+(tmap :<M--> :<C-\><C-n><C-W>5-)
+(tmap :<M-=> :<C-\><C-n><C-W>5+)
+; move faster
+(tmap :<M-k> :<C-\><C-n><C-W>k)
+(tmap :<M-j> :<C-\><C-n><C-W>j)
+(tmap :<M-h> :<C-\><C-n><C-W>h)
+(tmap :<M-l> :<C-\><C-n><C-W>l)
+
+(augroup :auto-resize-windows [:VimResized {:pattern :* :command "wincmd ="}])
 
 ; On-demand OS clipboard sharing
 ;

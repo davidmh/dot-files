@@ -23,20 +23,22 @@
       "fnl/own/{}.fnl"
     ]
   },
-  "fnl/own/plugin/*.fnl": {
+  "fnl/plugins/*.fnl": {
     "type": "plugin",
     "template": [
-      "(import-macros {: map} :own.macros)",
-      "(local {: autoload} (require :nfnl.module))",
-      "(local core (autoload :nfnl.core))"
+      "(import-macros {open}: use{close} :own.macros)",
+      "(local {open}: autoload{close} (require :nfnl.module))",
+      "(local core (autoload :nfnl.core))",
+      "",
+      "(use :plugin-url {open}{close})"
     ],
     "alternate": [
-      "lua/own/plugin/{}.lua"
+      "lua/plugins/{}.lua"
     ]
   },
-  "lua/own/plugin/*.lua": {
+  "lua/plugins/*.lua": {
     "alternate": [
-      "fnl/own/plugin/{}.fnl"
+      "fnl/plugins/{}.fnl"
     ]
   }
 }
