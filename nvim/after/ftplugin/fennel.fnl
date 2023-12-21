@@ -40,7 +40,10 @@
   (let [content (vim.api.nvim_buf_get_lines 0 0 -1 true)]
     (when (empty? (table.concat content ""))
       (vim.api.nvim_buf_set_lines 0 0 -1 true [";; scratch"
-                                               ""])
+                                               ""
+                                               "(comment"
+                                               "  (let [nfnl (require :nfnl.api)]"
+                                               "    (nfnl.compile-all-files (vim.fn.expand :$HOME/.config/home-manager/nvim))"])
       (vim.cmd "normal GG"))))
 
 (augroup :fennel-scratch-buffer [:BufEnter {:pattern :/tmp/scratch.fnl

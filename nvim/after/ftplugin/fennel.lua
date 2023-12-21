@@ -41,7 +41,7 @@ end
 local function setup_scratch_buffer()
   local content = vim.api.nvim_buf_get_lines(0, 0, -1, true)
   if empty_3f(table.concat(content, "")) then
-    vim.api.nvim_buf_set_lines(0, 0, -1, true, {";; scratch", ""})
+    vim.api.nvim_buf_set_lines(0, 0, -1, true, {";; scratch", "", "(comment", "  (let [nfnl (require :nfnl.api)]", "    (nfnl.compile-all-files (vim.fn.expand :$HOME/.config/home-manager/nvim))"})
     return vim.cmd("normal GG")
   else
     return nil
