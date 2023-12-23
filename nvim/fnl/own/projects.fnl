@@ -20,18 +20,15 @@
 
 (fn add-project [project-path]
   ;; Some special buffers may yield a cwd that does not exist
-  ;; https://stackoverflow.com/a/40195356
-  (local exists? (-> project-path (Path:new) (: :is_dir)))
+  (when (string.match project-path ::)
+      (lua :return))
 
-  (if exists?
-    (do
-      (local projects (get-projects))
-      (local name (vim.fn.fnamemodify project-path ":t"))
-      (local project {:name name
-                      :timestamp (os.time)
-                      :visible true})
-      (spit projects-path (vim.json.encode (merge {project-path project} projects))))
-    (vim.notify (.. "Project " project-path " does not exist"))))
+  (local projects (get-projects))
+  (local name (vim.fn.fnamemodify project-path ":t"))
+  (local project {:name name
+                  :timestamp (os.time)
+                  :visible true})
+  (spit projects-path (vim.json.encode (merge {project-path project} projects))))
 
 
 (fn find-files [cwd]

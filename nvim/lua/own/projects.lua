@@ -25,15 +25,14 @@ local function get_projects()
   return vim.json.decode(slurp(projects_path))
 end
 local function add_project(project_path)
-  local exists_3f = Path:new(project_path):is_dir()
-  if exists_3f then
-    local projects = get_projects()
-    local name = vim.fn.fnamemodify(project_path, ":t")
-    local project = {name = name, timestamp = os.time(), visible = true}
-    return spit(projects_path, vim.json.encode(merge({[project_path] = project}, projects)))
+  if string.match(project_path, ":") then
+    return
   else
-    return vim.notify(("Project " .. project_path .. " does not exist"))
   end
+  local projects = get_projects()
+  local name = vim.fn.fnamemodify(project_path, ":t")
+  local project = {name = name, timestamp = os.time(), visible = true}
+  return spit(projects_path, vim.json.encode(merge({[project_path] = project}, projects)))
 end
 local function find_files(cwd)
   return t.find_files({cwd = (cwd or vim.fn.getcwd()), find_command = {"fd", "--hidden", "--type", "f", "--exclude", ".git"}})
