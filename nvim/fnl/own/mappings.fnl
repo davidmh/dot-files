@@ -116,6 +116,9 @@
 (nmap :<localleader>no (cmd "Telescope notify") (opts "open notifications"))
 (nmap :<localleader>nd #(vim.notify.dismiss) (opts "dismiss notifications"))
 
+;; projects
+(nmap :<localleader>p #(projects.select-project) (opts "switch projects"))
+
 ;; single key mappings
 (nmap :L (cmd :LToggle) (opts "list toggle"))
 (nmap :Q (cmd :QToggle) (opts "quickfix toggle"))

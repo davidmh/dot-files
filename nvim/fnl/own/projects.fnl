@@ -8,6 +8,7 @@
 (local {: autoload} (require :nfnl.module))
 (local {: sanitize-path} (require :own.helpers))
 (local t (autoload :telescope.builtin))
+(local Path (autoload :plenary.path))
 
 (local projects-path (.. (vim.fn.stdpath :state) "/projects.json"))
 
@@ -18,12 +19,20 @@
   (vim.json.decode (slurp projects-path)))
 
 (fn add-project [project-path]
-  (local projects (get-projects))
-  (local name (vim.fn.fnamemodify project-path ":t"))
-  (local project {:name name
-                  :timestamp (os.time)
-                  :visible true})
-  (spit projects-path (vim.json.encode (merge {project-path project} projects))))
+  ;; Some special buffers may yield a cwd that does not exist
+  ;; https://stackoverflow.com/a/40195356
+  (local exists? (-> project-path (Path:new) (: :is_dir)))
+
+  (if exists?
+    (do
+      (local projects (get-projects))
+      (local name (vim.fn.fnamemodify project-path ":t"))
+      (local project {:name name
+                      :timestamp (os.time)
+                      :visible true})
+      (spit projects-path (vim.json.encode (merge {project-path project} projects))))
+    (vim.notify (.. "Project " project-path " does not exist"))))
+
 
 (fn find-files [cwd]
   (t.find_files {:cwd (or cwd (vim.fn.getcwd))
@@ -52,9 +61,18 @@
                          acc))
                [])))
 
+(fn pick-project [choice]
+  (when choice (choice.action)))
+
+(fn select-project []
+  (vim.ui.select (recent-projects)
+                 {:prompt "switch to a project"
+                  :format_item (fn [{: name}] name)}
+                 pick-project))
+
 (autocmd :User {:pattern :RooterChDir
                 :callback #(add-project (vim.fn.getcwd))})
 
-{: get-projects
- : find-files
- : recent-projects}
+{: find-files
+ : recent-projects
+ : select-project}
