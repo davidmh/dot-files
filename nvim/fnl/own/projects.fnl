@@ -5,10 +5,10 @@
         : reduce
         : spit
         : slurp} (require :nfnl.core))
+(local {: take} (require :own.lists))
 (local {: autoload} (require :nfnl.module))
 (local {: sanitize-path} (require :own.helpers))
 (local t (autoload :telescope.builtin))
-(local Path (autoload :plenary.path))
 
 (local projects-path (.. (vim.fn.stdpath :state) "/projects.json"))
 
@@ -28,7 +28,7 @@
   (local project {:name name
                   :timestamp (os.time)
                   :visible true})
-  (spit projects-path (vim.json.encode (merge {project-path project} projects))))
+  (spit projects-path (vim.json.encode (merge projects {project-path project}))))
 
 
 (fn find-files [cwd]
@@ -47,11 +47,12 @@
   (table.sort projects (fn [[_ a] [_ b]] (> a.timestamp b.timestamp)))
   projects)
 
-(fn recent-projects []
+(fn recent-projects [limit]
   "Returns a list of recent projects to be used by mini.starter"
   (->> (get-projects)
        (kv-pairs)
        (sort-projects)
+       (take (or limit 30))
        (reduce (fn [acc [path project]]
                    (if project.visible
                          (concat acc [(format-project path project.name)])

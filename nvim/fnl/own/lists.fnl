@@ -24,7 +24,39 @@
                  :s [sep :string]})
   (table.concat (vim.tbl_filter not-empty xs) sep))
 
+(fn take [n xs]
+  (vim.validate {:n [n :number]
+                 :xs [xs :table]})
+  (vim.list_slice xs 1 n))
+
+(fn min-by [f xs]
+  (vim.validate {:f [f :function]
+                 :xs [xs :table]})
+  (var min math.huge)
+  (var min-x nil)
+  (each [_ x (ipairs xs)]
+    (local v (f x))
+    (if (< v min)
+       (do (set min v)
+           (set min-x x))))
+  min-x)
+
+(fn max-by [f xs]
+  (vim.validate {:f [f :function]
+                 :xs [xs :table]})
+  (var max (- math.huge))
+  (var max-x nil)
+  (each [_ x (ipairs xs)]
+    (local v (f x))
+    (if (> v max)
+       (do (set max v)
+           (set max-x x))))
+  max-x)
+
 {: find
  : find-right
  : find-index
- : join}
+ : min-by
+ : max-by
+ : join
+ : take}

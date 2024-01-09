@@ -3,6 +3,7 @@
 (local cmp (autoload :cmp))
 (local ls (autoload :luasnip))
 (local lspkind (autoload :lspkind))
+(local from-vscode (autoload :luasnip.loaders.from_vscode))
 
 (set vim.o.completeopt "menuone,noselect,preview")
 
@@ -56,6 +57,7 @@
     kind-item))
 
 (fn config []
+  (from-vscode.lazy_load)
   (local cmd-mappings {:<C-d> (cmp.mapping.scroll_docs -4)
                        :<C-f> (cmp.mapping.scroll_docs 4)
                        :<C-Space> (cmp.mapping.complete)
@@ -120,6 +122,7 @@
                                         :davidmh/cmp-nerdfonts
                                         :onsails/lspkind-nvim
                                         :petertriho/cmp-git
-                                        :hrsh7th/cmp-emoji]
+                                        :hrsh7th/cmp-emoji
+                                        :rafamadriz/friendly-snippets]
                          :event :InsertEnter
                          : config})]

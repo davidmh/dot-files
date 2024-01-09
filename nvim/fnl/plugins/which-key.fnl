@@ -13,4 +13,5 @@
                                                           :<leader>t {:name :toggle}
                                                           :<leader>v {:name :vim}
                                                           :<leader>f {:name :file-tree}
-                                                          :<leader>/ {:name :find}})})
+                                                          :<leader>/ {:name :find}
+                                                          :<localleader>t {:name :test}})})

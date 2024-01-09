@@ -71,7 +71,8 @@
       (str.format {:path dictionary_path})
       (os.execute)))
 
-(local cspell-config {: on_add_to_json
+(local cspell-config {:read_config_synchronously false
+                      : on_add_to_json
                       : on_add_to_dictionary})
 
 (fn config []
@@ -103,6 +104,7 @@
                                           :filetypes cspell-filetypes
                                           :config cspell-config})
 
+               formatting.gofmt
                formatting.jq
                (formatting.rubocop.with {:cwd (root-pattern :.rubocop.yml)
                                          :command :bundle
@@ -123,6 +125,9 @@
                                   :padding false
                                   :group false}
                            :config true})
+
+ (use :davidmh/cspell.nvim {:dev true})
+
  (use :nvimtools/none-ls.nvim {:dependencies [:nvim-lua/plenary.nvim
                                               :davidmh/cspell.nvim]
                                : config})]

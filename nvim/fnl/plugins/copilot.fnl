@@ -13,6 +13,7 @@
                                                            :dismiss "<m-[>"}}
                                              :panel {:enabled true}
                                              :filetypes {:clojure true
+                                                         :go true
                                                          :javascript true
                                                          :typescript true
                                                          :typescriptreact true

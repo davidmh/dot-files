@@ -4,6 +4,7 @@ local autoload = _local_1_["autoload"]
 local cmp = autoload("cmp")
 local ls = autoload("luasnip")
 local lspkind = autoload("lspkind")
+local from_vscode = autoload("luasnip.loaders.from_vscode")
 vim.o.completeopt = "menuone,noselect,preview"
 local menu_sources = {path = "(path)", luasnip = "(snip)", nvim_lsp = "(lsp)", emoji = "(emo)", conjure = "(conj)", orgmode = "(org)", nerdfonts = "(font)", buffer = "(buff)", nvim_lua = "(lua)", git = "(git)", omni = "(omni)"}
 local v2_symbol_map = {Text = "\238\170\147", Method = "\238\170\140", Function = "\239\158\148", Constructor = "\238\170\140", Field = "\238\173\159", Variable = "\238\170\136", Class = "\238\173\155", Interface = "\238\173\161", Module = "\238\170\139", Property = "\238\173\165", Unit = "\238\170\150", Value = "\238\170\149", Enum = "\238\170\149", Keyword = "\238\173\162", Snippet = "\238\173\166", Color = "\238\173\156", File = "\238\169\187", Reference = "\238\170\148", Folder = "\238\170\131", EnumMember = "\238\170\149", Constant = "\238\173\157", Struct = "\238\170\145", Event = "\238\170\134", Operator = "\238\173\164", TypeParameter = "\238\170\146", Copilot = "\239\132\147"}
@@ -14,6 +15,7 @@ local function cmp_format(entry, vim_item)
   return kind_item
 end
 local function config()
+  from_vscode.lazy_load()
   local cmd_mappings = {["<C-d>"] = cmp.mapping.scroll_docs(-4), ["<C-f>"] = cmp.mapping.scroll_docs(4), ["<C-Space>"] = cmp.mapping.complete(), ["<C-e>"] = cmp.mapping.close(), ["<C-y>"] = cmp.mapping.confirm({behavior = cmp.ConfirmBehavior.Insert, select = true})}
   local function _2_(args)
     return ls.lsp_expand(args.body)
@@ -49,4 +51,4 @@ local function config()
   ls.add_snippets("gitcommit", {ls.parser.parse_snippet("cab", "Co-Authored-By: $0")})
   return ls.add_snippets("org", {ls.parser.parse_snippet("<s", "#+BEGIN_SRC ${1}\n${0}\n#+END_SRC\n")})
 end
-return {{"petertriho/cmp-git", dependencies = {"nvim-lua/plenary.nvim"}, config = true, event = "InsertEnter"}, {"hrsh7th/nvim-cmp", dependencies = {"hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "PaterJason/cmp-conjure", "saadparwaiz1/cmp_luasnip", "L3MON4D3/LuaSnip", "davidmh/cmp-nerdfonts", "onsails/lspkind-nvim", "petertriho/cmp-git", "hrsh7th/cmp-emoji"}, event = "InsertEnter", config = config}}
+return {{"petertriho/cmp-git", dependencies = {"nvim-lua/plenary.nvim"}, config = true, event = "InsertEnter"}, {"hrsh7th/nvim-cmp", dependencies = {"hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "PaterJason/cmp-conjure", "saadparwaiz1/cmp_luasnip", "L3MON4D3/LuaSnip", "davidmh/cmp-nerdfonts", "onsails/lspkind-nvim", "petertriho/cmp-git", "hrsh7th/cmp-emoji", "rafamadriz/friendly-snippets"}, event = "InsertEnter", config = config}}

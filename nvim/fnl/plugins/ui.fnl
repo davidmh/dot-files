@@ -7,7 +7,7 @@
  (use :nvim-tree/nvim-web-devicons {:opts {:override {:scm {:color :#A6E3A1
                                                             :name :query
                                                             :icon :󰘧}
-                                                      :fnl {:color :cyan
+                                                      :fnl {:color :teal
                                                             :name :blue
                                                             :icon :}
                                                       :norg {:icon :}}}
@@ -30,7 +30,8 @@
                          :event :VeryLazy
                          :opts {:lsp {:override {:vim.lsp.util.convert_input_to_markdown_lines true
                                                  :vim.lsp.util.stylize_markdown true
-                                                 :cmp.entry.get_documentation true}}}
+                                                 :cmp.entry.get_documentation true}
+                                      :hover {:opts {:size {:max_height 10
+                                                            :max_width 80}}}}}
                          :dependencies [:MunifTanjim/nui.nvim
                                         :rcarriga/nvim-notify]})]
-

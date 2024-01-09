@@ -86,6 +86,7 @@ local function _9_()
   return telescope_file_browser("~/Documents/neorg/")
 end
 vim.keymap.set("n", "<leader>ob", _9_, opts("org browse"))
+vim.keymap.set("n", "<leader>oj", cmd("Neorg journal"), opts("org journal"))
 local function _10_()
   return term_split(100)
 end
@@ -208,6 +209,7 @@ vim.keymap.set("n", "<M-h>", ":Telescope help_tags<CR>", {nowait = true, silent 
 vim.keymap.set("n", "<M-m>", ":Telescope marks<CR>", {nowait = true, silent = true})
 vim.keymap.set("n", "<M-k>", ":Telescope keymaps<CR>", {nowait = true, silent = true})
 vim.keymap.set("n", "<M-c>", ":Telescope commands<CR>", {nowait = true, silent = true})
+vim.keymap.set("n", "<M-o>", ":Telescope oldfiles<CR>", {nowait = true, silent = true})
 vim.keymap.set("n", "<M-,>", "<C-W>5<")
 vim.keymap.set("n", "<M-.>", "<C-W>5>")
 vim.keymap.set("n", "<M-->", "<C-W>5-")

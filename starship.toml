@@ -47,3 +47,6 @@ style = "bright-black"
 format = "[$symbol]($style) "
 heuristic = true
 symbol = " "
+
+[ruby]
+disabled = true

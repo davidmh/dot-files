@@ -5,7 +5,7 @@ local _local_2_ = require("nfnl.module")
 local autoload = _local_2_["autoload"]
 local catppuccin = autoload("catppuccin")
 local function _3_()
-  catppuccin.setup({flavour = "macchiato", term_colors = true, integrations = {lsp_trouble = true, telescope = true, which_key = true}, custom_highlights = custom_highlights, transparent_background = false})
-  return vim.cmd.colorscheme("catppuccin-macchiato")
+  catppuccin.setup({flavour = "mocha", term_colors = true, integrations = {lsp_trouble = true, telescope = true, which_key = true}, custom_highlights = custom_highlights, transparent_background = false})
+  return vim.cmd.colorscheme("catppuccin-mocha")
 end
 return {"catppuccin/nvim", name = "catppuccin", config = _3_}

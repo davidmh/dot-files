@@ -1,7 +1,7 @@
 (import-macros {: use} :own.macros)
 (local {: border} (require :own.config))
 
-[:Olical/nfnl ; Fennel
+[(use :Olical/nfnl {:ft :fennel})
 
  (use :clojure-vim/vim-jack-in {:ft [:clojure]})
 

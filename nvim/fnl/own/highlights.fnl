@@ -98,6 +98,14 @@
    :NavicIconsOperator {:bg color.surface2 :fg color.blue}
    :NavicIconsTypeParameter {:bg color.surface2 :fg color.blue}
    :NavicText {:fg color.text :bg color.surface2}
-   :NavicSeparator {:fg color.text :bg color.surface2}})
+   :NavicSeparator {:fg color.text :bg color.surface2}
+
+   :NoiceCmdline {:fg color.text :bg color.crust}
+   :NoiceCmdlineIcon {:fg color.sky :bg color.crust}
+   :NoiceCmdlineIconSearch {:fg color.yellow :bg color.crust}
+   :NoiceCmdlinePopup {:fg color.text :bg color.crust}
+   :NoiceCmdlinePopupBorder {:fg color.crust :bg color.crust}
+   :NoiceCmdlinePopupBorderSearch {:fg color.crust :bg color.crust}
+   :NoiceConfirmBorder {:fg color.crust :bg color.crust}})
 
 {: custom-highlights}

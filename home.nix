@@ -32,6 +32,7 @@
     fd
     (nerdfonts.override { fonts = [ "Hasklig" "SpaceMono" ]; })
     fx
+    go
     htop
     jdk
     jq
@@ -75,7 +76,7 @@
       plugins = [
         { name = "plugins/git"; tags = ["from:oh-my-zsh"]; }
         { name = "plugins/dirhistory"; tags = ["from:oh-my-zsh"]; }
-        { name = "plugins/chruby"; tags = ["from:oh-my-zsh"]; }
+        # { name = "plugins/chruby"; tags = ["from:oh-my-zsh"]; }
         # { name = "mattberther/zsh-pyenv"; }
         { name = "zsh-users/zsh-syntax-highlighting"; }
         { name = "zsh-users/zsh-autosuggestions"; }

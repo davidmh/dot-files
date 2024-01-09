@@ -85,6 +85,7 @@
 
 ;; neog
 (nmap :<leader>ob #(telescope-file-browser "~/Documents/neorg/") (opts "org browse"))
+(nmap :<leader>oj (cmd "Neorg journal") (opts "org journal"))
 
 ;; toggle term
 (map [:n :t] :<C-t> #(term-split 100) (opts "split term"))
@@ -180,6 +181,7 @@
 (nmap :<M-m> ":Telescope marks<CR>" {:nowait true :silent true})
 (nmap :<M-k> ":Telescope keymaps<CR>" {:nowait true :silent true})
 (nmap :<M-c> ":Telescope commands<CR>" {:nowait true :silent true})
+(nmap :<M-o> ":Telescope oldfiles<CR>" {:nowait true :silent true})
 
 ; Windows
 ;

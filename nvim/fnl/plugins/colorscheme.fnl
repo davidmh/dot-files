@@ -5,11 +5,11 @@
 
 (use :catppuccin/nvim {:name :catppuccin
                        :config (fn []
-                                 (catppuccin.setup {:flavour :macchiato
+                                 (catppuccin.setup {:flavour :mocha
                                                     :transparent_background false
                                                     :term_colors true
                                                     :integrations {:lsp_trouble true
                                                                    :telescope true
                                                                    :which_key true}
                                                     :custom_highlights custom-highlights})
-                                 (vim.cmd.colorscheme :catppuccin-macchiato))})
+                                 (vim.cmd.colorscheme :catppuccin-mocha))})

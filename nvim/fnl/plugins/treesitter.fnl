@@ -15,10 +15,13 @@
   (local ensure-installed [:bash
                            :clojure
                            :diff
+                           :dockerfile
                            :fennel
                            :gitattributes
                            :git_config
                            :graphql
+                           :go
+                           :gomod
                            :hcl
                            :html
                            :json

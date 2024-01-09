@@ -6,12 +6,9 @@
 (local cmp-lsp (autoload :cmp_nvim_lsp))
 (local json-schemas (autoload :own.json-schemas))
 (local lspconfig (autoload :lspconfig))
-(local kind (autoload :lspkind))
 (local mason (autoload :mason))
 (local mason-registry (autoload :mason-registry))
 (local mason-lspconfig (autoload :mason-lspconfig))
-(local navic (autoload :nvim-navic))
-(local typescript-tools (autoload :typescript-tools))
 
 ;; mason
 (fn on-linter-install [pkg]
@@ -37,19 +34,8 @@
     100))
 
 (fn lsp-config []
-  (typescript-tools.setup {})
-  (kind.init)
-
-  (comment
-    (local win-opts {:border cfg.border
-                     :max_width 100
-                     :separator true})
-    (tset vim.lsp.handlers "textDocument/hover"
-          (vim.lsp.with vim.lsp.handlers.hover win-opts))
-    (tset vim.lsp.handlers "textDocument/signatureHelp"
-          (vim.lsp.with vim.lsp.handlers.signature_help win-opts)))
-
   (local git-root (util.root_pattern :.git))
+  (local ruby-root (util.root_pattern :Gemfile))
 
   (local client-capabilities (->> (vim.lsp.protocol.make_client_capabilities)
                                   ; :kevinhwang91/nvim-ufo
@@ -80,9 +66,11 @@
                          :shellcheck {:root_dir git-root}})
 
   (each [_ server-name (ipairs (mason-lspconfig.get_installed_servers))]
-    (let [server-setup (core.get-in lspconfig [server-name :setup])]
-      (server-setup (core.merge base-settings
-                                (core.get server-configs server-name {})))))
+    (let [server-setup (core.get-in lspconfig [server-name :setup])
+          server-config (core.get server-configs server-name {})]
+      (if (= server-name :gopls)
+          (server-setup server-config)
+          (server-setup (core.merge base-settings server-config)))))
 
   (lspconfig.solargraph.setup {:root_dir git-root
                                :cmd [:bundle :exec :solargraph :stdio]}))
@@ -90,10 +78,9 @@
 [(use :folke/neodev.nvim {:opts {:library {:types true}}
                           :config true})
 
- (use :williamboman/mason.nvim {:config mason-config
-                                :lazy false})
+ (use :williamboman/mason.nvim {:config mason-config})
 
- (use :williamboman/mason-lspconfig.nvim {:lazy false
+ (use :williamboman/mason-lspconfig.nvim {:dependencies [:williamboman/mason.nvim]
                                           :opts {:ensure_installed [:clojure_lsp
                                                                     :cssls
                                                                     :jsonls
@@ -118,13 +105,16 @@
                                    :icons cfg.navic-icons
                                    :safe_output false
                                    :separator "  "}
-                            :config true})
+                            :config true
+                            :dependencies [:williamboman/mason.nvim
+                                           :williamboman/mason-lspconfig.nvim]})
 
  (use :neovim/nvim-lspconfig {:dependencies [:williamboman/mason.nvim
                                              :williamboman/mason-lspconfig.nvim
-                                             :onsails/lspkind-nvim
+                                             ; :onsails/lspkind-nvim
                                              :hrsh7th/cmp-nvim-lsp
-                                             :SmiteshP/nvim-navic
-                                             :pmizio/typescript-tools.nvim]
-                              :config lsp-config
-                              :event :VeryLazy})]
+                                             :SmiteshP/nvim-navic]
+                              :config lsp-config})
+
+ (use :pmizio/typescript-tools.nvim {:dependencies :neovim/nvim-lspconfig
+                                     :config true})]
