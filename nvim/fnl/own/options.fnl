@@ -26,9 +26,3 @@
 (set vim.o.splitright true)
 (set vim.g.GuiWindowFrameless true)
 (set vim.g.ruby_host_prog (vim.fn.exepath :neovim-ruby-host))
-
-(fn os-open [url]
-  (vim.fn.system (.. "xdg-open " url " || open " url)))
-
-; I'm disabling netrw, and Fugitive needs a :Browse command
-(vim.api.nvim_create_user_command :Browse (fn [opts] (os-open opts.args)) {:nargs 1})

@@ -26,10 +26,4 @@ vim.wo.wrap = false
 vim.o.splitright = true
 vim.g.GuiWindowFrameless = true
 vim.g.ruby_host_prog = vim.fn.exepath("neovim-ruby-host")
-local function os_open(url)
-  return vim.fn.system(("xdg-open " .. url .. " || open " .. url))
-end
-local function _1_(opts)
-  return os_open(opts.args)
-end
-return vim.api.nvim_create_user_command("Browse", _1_, {nargs = 1})
+return nil

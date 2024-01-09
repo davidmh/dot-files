@@ -4,10 +4,6 @@
                         :getscriptPlugin
                         :gzip
                         :logipat
-                        :netrw
-                        :netrwPlugin
-                        :netrwSettings
-                        :netrwFileHandlers
                         :matchit
                         :tar
                         :tarPlugin
