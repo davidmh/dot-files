@@ -36,11 +36,4 @@ return {
   },
   window_decorations = 'RESIZE',
   window_close_confirmation = 'NeverPrompt',
-
-  -- Multiplexing
-  unix_domains = {
-    { name = 'default' },
-    { name = 'remix' },
-  },
-  default_gui_startup_args = { 'connect', 'default' },
 }

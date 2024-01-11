@@ -2,7 +2,7 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 vim.o.cmdheight = 0
-vim.o.cursorline = true
+vim.o.cursorline = false
 vim.o.expandtab = true
 vim.o.foldlevel = 99
 vim.o.grepprg = "ag -S --vimgrep"
