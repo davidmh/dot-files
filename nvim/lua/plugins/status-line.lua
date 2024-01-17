@@ -115,7 +115,7 @@ end
 local function _28_(_241)
   _241["icon"] = "\238\152\179"
   _241["color"] = "purple"
-  _241["content"] = neorg_mode.public.get_mode()
+  _241["content"] = (" " .. neorg_mode.public.get_mode())
   return nil
 end
 neorg_mode0 = {pill, condition = _27_, init = _28_}
@@ -276,7 +276,7 @@ local function _53_()
 end
 fold = {provider = _53_}
 local signs = {provider = "%s"}
-local statuscolumn = {fold, push_right, line_number, signs}
+local statuscolumn = {fold, push_right, signs, line_number}
 local winbar = {term_title, lsp_breadcrumb, quickfix_title, push_right, git_blame, file_name_block}
 local statusline = {vi_mode, macro_rec, dead_space, push_right, show_cmd, diagnostics_block, show_search, neorg_mode0, git_block, hl = {bg = "NONE"}}
 local disabled_winbar = {buftype = {"nofile", "prompt"}, filetype = {"^git.*"}}

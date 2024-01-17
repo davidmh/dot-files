@@ -96,7 +96,7 @@
                                              (not= (neorg-mode.public.get_mode) :norg))
                              :init #(do (tset $1 :icon :)
                                         (tset $1 :color :purple)
-                                        (tset $1 :content (neorg-mode.public.get_mode)))}))
+                                        (tset $1 :content (.. " " (neorg-mode.public.get_mode))))}))
 
 (fn file-name []
   (let [file-name (vim.fn.fnamemodify (vim.api.nvim_buf_get_name 0) ::.)]
@@ -217,8 +217,8 @@
 
 (local statuscolumn [fold
                      push-right
-                     line-number
-                     signs])
+                     signs
+                     line-number])
 
 (local winbar [term-title
                lsp-breadcrumb
