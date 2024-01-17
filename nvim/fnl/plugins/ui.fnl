@@ -35,6 +35,7 @@
                                                  :vim.lsp.util.stylize_markdown true
                                                  :cmp.entry.get_documentation true}
                                       :hover {:opts {:size {:max_height 10
-                                                            :max_width 80}}}}}
+                                                            :max_width 80}}}}
+                                :messages {:view_search false}}
                          :dependencies [:MunifTanjim/nui.nvim
                                         :rcarriga/nvim-notify]})]
