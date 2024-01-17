@@ -4,11 +4,12 @@ local autoload = _local_1_["autoload"]
 local neotest = autoload("neotest")
 local neotest_lib = autoload("neotest.lib")
 local neotest_go = autoload("neotest-go")
+local neotest_python = autoload("neotest-python")
 local function config()
   local function _2_()
     return "noop"
   end
   neotest_lib.notify = _2_
-  return neotest.setup({adapters = {neotest_go}})
+  return neotest.setup({adapters = {neotest_go, neotest_python}, benchmark = {enabled = true}, icons = {failed = "\239\145\167", passed = "\239\144\174", running = "\239\145\170", watching = "\239\145\129"}})
 end
-return {"nvim-neotest/neotest", dependencies = {"nvim-lua/plenary.nvim", "antoinemadec/FixCursorHold.nvim", "nvim-treesitter/nvim-treesitter", "nvim-neotest/neotest-go"}, keys = {{"<localleader>ta", "<cmd>Neotest attach<cr>", desc = "attach"}, {"<localleader>tr", "<cmd>Neotest run<cr>", desc = "run"}, {"<localleader>ts", "<cmd>Neotest summary<cr>", desc = "summary"}, {"<localleader>to", "<cmd>Neotest output<cr>", desc = "output"}, {"<localleader>tp", "<cmd>Neotest output-panel<cr>", desc = "panel"}}, config = config}
+return {"nvim-neotest/neotest", dependencies = {"nvim-lua/plenary.nvim", "antoinemadec/FixCursorHold.nvim", "nvim-treesitter/nvim-treesitter", "nvim-neotest/neotest-go", "nvim-neotest/neotest-python"}, keys = {{"<localleader>ta", "<cmd>Neotest attach<cr>", desc = "attach"}, {"<localleader>tr", "<cmd>Neotest run<cr>", desc = "run"}, {"<localleader>ts", "<cmd>Neotest summary<cr>", desc = "summary"}, {"<localleader>to", "<cmd>Neotest output<cr>", desc = "output"}, {"<localleader>tp", "<cmd>Neotest output-panel<cr>", desc = "panel"}, {"]t", "<cmd>Neotest jump next<cr>", desc = "next"}, {"[t", "<cmd>Neotest jump previous<cr>", desc = "previous"}}, config = config}
