@@ -111,7 +111,7 @@
 
  (use :neovim/nvim-lspconfig {:dependencies [:williamboman/mason.nvim
                                              :williamboman/mason-lspconfig.nvim
-                                             ; :onsails/lspkind-nvim
+                                             :folke/neodev.nvim
                                              :hrsh7th/cmp-nvim-lsp
                                              :SmiteshP/nvim-navic]
                               :config lsp-config})
