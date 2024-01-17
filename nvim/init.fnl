@@ -5,8 +5,8 @@
 
 (local lazy (require :lazy))
 
-(lazy.setup :plugins {:dev {:path (.. vim.env.HOME :/Projects)}
-                           :fallback true
+(lazy.setup :plugins {:dev {:path (.. vim.env.HOME :/Projects)
+                            :fallback true}
                       :ui {:border border}})
 
 (vim.schedule #(do
