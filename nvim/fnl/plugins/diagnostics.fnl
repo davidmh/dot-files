@@ -126,8 +126,6 @@
                                   :group false}
                            :config true})
 
- (use :davidmh/cspell.nvim {:dev true})
-
  (use :nvimtools/none-ls.nvim {:dependencies [:nvim-lua/plenary.nvim
                                               :davidmh/cspell.nvim]
                                : config})]
