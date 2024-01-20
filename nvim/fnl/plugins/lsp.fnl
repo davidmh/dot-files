@@ -20,7 +20,7 @@
 ;; The mason-lspconfig plugin allows you to define a list of LSP servers
 ;; to install automatically, this is meant to replicate that functionality
 ;; for linters and formatters.
-(local ensure-linters [:cspell :luacheck :selene])
+(local ensure-linters [:cspell :luacheck :selene :stylua])
 
 (fn mason-config []
   (mason.setup {:ui {:border cfg.border}})
