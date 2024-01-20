@@ -4,7 +4,7 @@
 (local cfg (autoload :own.config))
 (local util (autoload :lspconfig.util))
 (local cmp-lsp (autoload :cmp_nvim_lsp))
-(local json-schemas (autoload :own.json-schemas))
+(local schema-store (autoload :schemastore))
 (local lspconfig (autoload :lspconfig))
 (local mason (autoload :mason))
 (local mason-registry (autoload :mason-registry))
@@ -46,7 +46,8 @@
                         :init_options {:preferences {:includeCompletionsWithSnippetText true
                                                      :includeCompletionsForImportStatements true}}})
 
-  (local server-configs {:jsonls {:settings {:json {:schemas (json-schemas.get-all)}}}
+  (local server-configs {:jsonls {:settings {:json {:schemas (schema-store.json.schemas)
+                                                    :validate {:enable true}}}}
                          :lua_ls {:settings {:Lua {:completion :Replace
                                                    :diagnostics {:globals [:vim
                                                                            :it
@@ -113,7 +114,8 @@
                                              :williamboman/mason-lspconfig.nvim
                                              :folke/neodev.nvim
                                              :hrsh7th/cmp-nvim-lsp
-                                             :SmiteshP/nvim-navic]
+                                             :SmiteshP/nvim-navic
+                                             :b0o/SchemaStore.nvim]
                               :config lsp-config})
 
  (use :pmizio/typescript-tools.nvim {:dependencies :neovim/nvim-lspconfig

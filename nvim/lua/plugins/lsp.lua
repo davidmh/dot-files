@@ -5,7 +5,7 @@ local core = autoload("nfnl.core")
 local cfg = autoload("own.config")
 local util = autoload("lspconfig.util")
 local cmp_lsp = autoload("cmp_nvim_lsp")
-local json_schemas = autoload("own.json-schemas")
+local schema_store = autoload("schemastore")
 local lspconfig = autoload("lspconfig")
 local mason = autoload("mason")
 local mason_registry = autoload("mason-registry")
@@ -37,7 +37,7 @@ local function lsp_config()
   local ruby_root = util.root_pattern("Gemfile")
   local client_capabilities = vim.tbl_deep_extend("keep", {textDocument = {foldingRange = {lineFoldingOnly = true, dynamicRegistration = false}}}, vim.lsp.protocol.make_client_capabilities())
   local base_settings = {capabilities = cmp_lsp.default_capabilities(client_capabilities), init_options = {preferences = {includeCompletionsWithSnippetText = true, includeCompletionsForImportStatements = true}}}
-  local server_configs = {jsonls = {settings = {json = {schemas = json_schemas["get-all"]()}}}, lua_ls = {settings = {Lua = {completion = "Replace", diagnostics = {globals = {"vim", "it", "describe", "before_each", "after_each", "pending"}}, format = {enable = false}, workspace = {checkThirdParty = false}}}}, eslint = {root_dir = git_root}, grammarly = {filetypes = {"markdown", "norg", "txt", "gitcommit"}}, fennel_language_server = {single_file_support = true, root_dir = lspconfig.util.root_pattern("fnl"), settings = {fennel = {diagnostics = {globals = {"vim", "jit", "comment"}}, workspace = {library = vim.api.nvim_list_runtime_paths()}}}}, cssls = {root_dir = git_root}, shellcheck = {root_dir = git_root}}
+  local server_configs = {jsonls = {settings = {json = {schemas = schema_store.json.schemas(), validate = {enable = true}}}}, lua_ls = {settings = {Lua = {completion = "Replace", diagnostics = {globals = {"vim", "it", "describe", "before_each", "after_each", "pending"}}, format = {enable = false}, workspace = {checkThirdParty = false}}}}, eslint = {root_dir = git_root}, grammarly = {filetypes = {"markdown", "norg", "txt", "gitcommit"}}, fennel_language_server = {single_file_support = true, root_dir = lspconfig.util.root_pattern("fnl"), settings = {fennel = {diagnostics = {globals = {"vim", "jit", "comment"}}, workspace = {library = vim.api.nvim_list_runtime_paths()}}}}, cssls = {root_dir = git_root}, shellcheck = {root_dir = git_root}}
   for _, server_name in ipairs(mason_lspconfig.get_installed_servers()) do
     local server_setup = core["get-in"](lspconfig, {server_name, "setup"})
     local server_config = core.get(server_configs, server_name, {})
@@ -56,4 +56,4 @@ local function _6_(text)
     return text:gsub(" callback$", "")
   end
 end
-return {{"folke/neodev.nvim", opts = {library = {types = true}}, config = true}, {"williamboman/mason.nvim", config = mason_config}, {"williamboman/mason-lspconfig.nvim", dependencies = {"williamboman/mason.nvim"}, opts = {ensure_installed = {"clojure_lsp", "cssls", "jsonls", "lua_ls", "eslint", "fennel_language_server"}}, config = true}, {"SmiteshP/nvim-navic", opts = {depth_limit = 4, depth_limit_indicator = " [ \238\169\188 ] ", click = true, highlight = true, format_text = _6_, icons = cfg["navic-icons"], separator = " \238\170\182 ", safe_output = false}, config = true, dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim"}}, {"neovim/nvim-lspconfig", dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim", "folke/neodev.nvim", "hrsh7th/cmp-nvim-lsp", "SmiteshP/nvim-navic"}, config = lsp_config}, {"pmizio/typescript-tools.nvim", dependencies = "neovim/nvim-lspconfig", config = true}}
+return {{"folke/neodev.nvim", opts = {library = {types = true}}, config = true}, {"williamboman/mason.nvim", config = mason_config}, {"williamboman/mason-lspconfig.nvim", dependencies = {"williamboman/mason.nvim"}, opts = {ensure_installed = {"clojure_lsp", "cssls", "jsonls", "lua_ls", "eslint", "fennel_language_server"}}, config = true}, {"SmiteshP/nvim-navic", opts = {depth_limit = 4, depth_limit_indicator = " [ \238\169\188 ] ", click = true, highlight = true, format_text = _6_, icons = cfg["navic-icons"], separator = " \238\170\182 ", safe_output = false}, config = true, dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim"}}, {"neovim/nvim-lspconfig", dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim", "folke/neodev.nvim", "hrsh7th/cmp-nvim-lsp", "SmiteshP/nvim-navic", "b0o/SchemaStore.nvim"}, config = lsp_config}, {"pmizio/typescript-tools.nvim", dependencies = "neovim/nvim-lspconfig", config = true}}
