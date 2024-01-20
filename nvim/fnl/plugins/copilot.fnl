@@ -13,6 +13,7 @@
                                                            :dismiss "<m-[>"}}
                                              :panel {:enabled true}
                                              :filetypes {:clojure true
+                                                         :gitcommit true
                                                          :go true
                                                          :javascript true
                                                          :typescript true
@@ -29,6 +30,7 @@
                                                                  (and
                                                                   (= nil (string.match path ".*env.*"))
                                                                   (not (str.ends-with path :.zprofile))))
+                                                         :norg true
                                                          :sh true
                                                          :sql true
                                                          :* false}}})
