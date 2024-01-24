@@ -26,17 +26,14 @@
    :TelescopeResultsDiffChange {:fg color.yellow}
    :TelescopeResultsDiffDelete {:fg color.red}
 
-   :NotifyINFOBody {:bg color.mantle}
-   :NotifyWARNBody {:bg color.mantle}
-   :NotifyERRORBody {:bg color.mantle}
-   :NotifyDEBUGBody {:bg color.mantle}
-   :NotifyTRACEBody {:bg color.mantle}
+   :NotifyINFOIcon  {:fg color.mauve}
+   :NotifyINFOTitle  {:fg color.mauve}
+   :NotifyINFOBorder  {:fg color.mauve}
 
-   :NotifyINFOBorder  {:fg color.mantle :bg color.mantle}
-   :NotifyWARNBorder  {:fg color.mantle :bg color.mantle}
-   :NotifyERRORBorder {:fg color.mantle :bg color.mantle}
-   :NotifyDEBUGBorder {:fg color.mantle :bg color.mantle}
-   :NotifyTRACEBorder {:fg color.mantle :bg color.mantle}
+   :NotifyWARNBorder  {:fg color.overlay0}
+   :NotifyERRORBorder {:fg color.overlay0}
+   :NotifyDEBUGBorder {:fg color.overlay0}
+   :NotifyTRACEBorder {:fg color.overlay0}
 
    :CmpItemKindSnippet {:fg color.crust :bg color.mauve}
    :CmpItemKindKeyword {:fg color.crust :bg color.red}

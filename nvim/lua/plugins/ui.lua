@@ -12,7 +12,10 @@ local function _3_(_241, _242)
   return math.min(_242, 15)
 end
 local function _4_()
-  notify.setup({timeout = 2500, minimum_width = 30, fps = 60, top_down = false})
+  local function _5_(win, _record)
+    return vim.api.nvim_win_set_config(win, {border = "solid"})
+  end
+  notify.setup({timeout = 2500, minimum_width = 30, fps = 60, on_open = _5_, render = "wrapped-compact", top_down = false})
   vim.notify = notify
   return nil
 end

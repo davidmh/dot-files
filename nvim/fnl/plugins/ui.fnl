@@ -26,7 +26,10 @@
                              :config #(do (notify.setup {:timeout 2500
                                                          :minimum_width 30
                                                          :top_down false
-                                                         :fps 60})
+                                                         :fps 60
+                                                         :on_open (fn [win _record]
+                                                                    (vim.api.nvim_win_set_config win {:border :solid}))
+                                                         :render :wrapped-compact})
                                           (set vim.notify notify))})
 
  (use :folke/noice.nvim {:config true
