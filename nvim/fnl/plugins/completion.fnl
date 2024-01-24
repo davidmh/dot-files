@@ -7,51 +7,9 @@
 
 (set vim.o.completeopt "menuone,noselect,preview")
 
-(local menu-sources {:path      "(path)"
-                     :luasnip   "(snip)"
-                     :nvim_lsp  "(lsp)"
-                     :emoji     "(emo)"
-                     :conjure   "(conj)"
-                     :orgmode   "(org)"
-                     :nerdfonts "(font)"
-                     :buffer    "(buff)"
-                     :nvim_lua  "(lua)"
-                     :git       "(git)"
-                     :omni      "(omni)"})
-
-;; use v2 nerdfonts
-(local v2-symbol-map {:Text :
-                      :Method :
-                      :Function :
-                      :Constructor :
-                      :Field :
-                      :Variable :
-                      :Class :
-                      :Interface :
-                      :Module :
-                      :Property :
-                      :Unit :
-                      :Value :
-                      :Enum :
-                      :Keyword :
-                      :Snippet :
-                      :Color :
-                      :File :
-                      :Reference :
-                      :Folder :
-                      :EnumMember :
-                      :Constant :
-                      :Struct :
-                      :Event :
-                      :Operator :
-                      :TypeParameter :
-                      :Copilot :})
-
 (fn cmp-format [entry vim-item]
   (let [kind-fmt (lspkind.cmp_format {:mode :symbol
-                                      :menu menu-sources
-                                      :maxwidth 30
-                                      :symbol_map v2-symbol-map})
+                                      :maxwidth 30})
         kind-item (kind-fmt entry vim-item)]
     (tset kind-item :kind (.. " " kind-item.kind " "))
     kind-item))
@@ -68,6 +26,7 @@
   (cmp.setup {:mapping (cmp.mapping.preset.insert cmd-mappings)
               :sources (cmp.config.sources [{:name :luasnip}
                                             {:name :nvim_lsp}
+                                            {:name :cmp_nvim_r}
                                             {:name :orgmode}
                                             {:name :emoji}
                                             {:name :git}
@@ -112,8 +71,7 @@
   (ls.add_snippets :org [(ls.parser.parse_snippet "<s" "#+BEGIN_SRC ${1}\n${0}\n#+END_SRC\n")]))
 
 [(use :petertriho/cmp-git {:dependencies [:nvim-lua/plenary.nvim]
-                           :config true
-                           :event :InsertEnter})
+                           :config true})
  (use :hrsh7th/nvim-cmp {:dependencies [:hrsh7th/cmp-nvim-lsp
                                         :hrsh7th/cmp-buffer
                                         :PaterJason/cmp-conjure
@@ -123,6 +81,6 @@
                                         :onsails/lspkind-nvim
                                         :petertriho/cmp-git
                                         :hrsh7th/cmp-emoji
+                                        :jalvesaq/cmp-nvim-r
                                         :rafamadriz/friendly-snippets]
-                         :event :InsertEnter
                          : config})]
