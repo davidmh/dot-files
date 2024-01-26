@@ -71,11 +71,14 @@
                           :bold true})
                 :update [:ModeChanged :ColorScheme]})
 
-(local macro-rec {:condition #(and (not= (vim.fn.reg_recording) "")
-                                   (= vim.o.cmdheight 0))
-                  :update [:RecordingEnter :RecordingLeave :ColorScheme]
-                  :provider #(.. "  " (vim.fn.reg_recording) " ")
-                  :hl {:fg :red :bold true}})
+(local macro-rec (use pill {:condition #(and (not= (vim.fn.reg_recording) "")
+                                             (= vim.o.cmdheight 0))
+                            :init #(do
+                                       (local macro-key (vim.fn.reg_recording))
+                                       (tset $1 :icon :macro)
+                                       (tset $1 :color :coral)
+                                       (tset $1 :content (.. " " macro-key)))
+                            :update [:RecordingEnter :RecordingLeave :ColorScheme]}))
 
 (local show-cmd {:condition #(= vim.o.cmdheight 0)
                   :init #(set vim.opt.showcmdloc :statusline)

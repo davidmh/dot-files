@@ -63,10 +63,14 @@ local macro_rec
 local function _14_()
   return ((vim.fn.reg_recording() ~= "") and (vim.o.cmdheight == 0))
 end
-local function _15_()
-  return ("\239\145\132 \238\170\159 " .. vim.fn.reg_recording() .. " ")
+local function _15_(_241)
+  local macro_key = vim.fn.reg_recording()
+  do end (_241)["icon"] = "macro"
+  _241["color"] = "coral"
+  _241["content"] = (" " .. macro_key)
+  return nil
 end
-macro_rec = {condition = _14_, update = {"RecordingEnter", "RecordingLeave", "ColorScheme"}, provider = _15_, hl = {fg = "red", bold = true}}
+macro_rec = {pill, condition = _14_, init = _15_, update = {"RecordingEnter", "RecordingLeave", "ColorScheme"}}
 local show_cmd
 local function _16_()
   return (vim.o.cmdheight == 0)
