@@ -27,8 +27,6 @@
                                                          :minimum_width 30
                                                          :top_down false
                                                          :fps 60
-                                                         :on_open (fn [win _record]
-                                                                    (vim.api.nvim_win_set_config win {:border :solid}))
                                                          :render :wrapped-compact})
                                           (set vim.notify notify))})
 
@@ -39,6 +37,9 @@
                                                  :cmp.entry.get_documentation true}
                                       :hover {:opts {:size {:max_height 10
                                                             :max_width 80}}}}
-                                :messages {:view_search false}}
+                                :messages {:enabled false
+                                           :view_search false}
+                                :views {:mini {:position {:row 2
+                                                          :col "100%"}}}}
                          :dependencies [:MunifTanjim/nui.nvim
                                         :rcarriga/nvim-notify]})]
