@@ -7,6 +7,8 @@
 
 (lazy.setup :plugins {:dev {:path (.. vim.env.HOME :/Projects)
                             :fallback true}
+                      :checker {:enabled true
+                                :notify false}
                       :ui {:border border}})
 
 (vim.schedule #(do
