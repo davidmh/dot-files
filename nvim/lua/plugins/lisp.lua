@@ -4,6 +4,7 @@ local border = _local_1_["border"]
 local function _2_()
   vim.g["conjure#log#hud#border"] = border
   vim.g["conjure#filetype#sql"] = nil
+  vim.g["conjure#filetype#rust"] = nil
   vim.g["conjure#filetype#python"] = nil
   return nil
 end
