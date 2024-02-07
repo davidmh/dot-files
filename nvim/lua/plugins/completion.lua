@@ -37,15 +37,14 @@ local function config()
     end
   end
   vim.keymap.set({"i"}, "<c-l>", _5_)
-  local js_log = ls.snippet("debug", {ls.text_node("console.log('DEBUG', { "), ls.insert_node(0), ls.text_node(" });")})
-  local js_test_case = ls.snippet("it", {ls.text_node("it('"), ls.insert_node(1), ls.text_node("', () => {"), ls.insert_node(0), ls.text_node("});")})
+  local js_log = ls.parser.parse_snippet("debug", "console.log('DEBUG', { $0 });")
   local function _7_()
     return os.date("%Y-%m-%d")
   end
   ls.add_snippets("all", {ls.snippet("todo", {ls.text_node("TODO(dmejorado): "), ls.insert_node(0)}), ls.snippet("today", ls.function_node(_7_))})
-  ls.add_snippets("javascript", {js_log, js_test_case})
-  ls.add_snippets("typescript", {js_log, js_test_case})
-  ls.add_snippets("typescriptreact", {js_log, js_test_case})
+  ls.add_snippets("javascript", {js_log})
+  ls.add_snippets("typescript", {js_log})
+  ls.add_snippets("typescriptreact", {js_log})
   ls.add_snippets("gitcommit", {ls.parser.parse_snippet("cab", "Co-Authored-By: $0")})
   return ls.add_snippets("org", {ls.parser.parse_snippet("<s", "#+BEGIN_SRC ${1}\n${0}\n#+END_SRC\n")})
 end

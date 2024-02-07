@@ -51,22 +51,14 @@
   (map [:i] :<c-l> #(if (ls.choice_active) (ls.change_choice 1)))
 
   ;; snippets config
-  (local js-log (ls.snippet :debug [(ls.text_node "console.log('DEBUG', { ")
-                                    (ls.insert_node 0)
-                                    (ls.text_node " });")]))
-
-  (local js-test-case (ls.snippet :it [(ls.text_node "it('")
-                                       (ls.insert_node 1)
-                                       (ls.text_node "', () => {")
-                                       (ls.insert_node 0)
-                                       (ls.text_node "});")]))
+  (local js-log (ls.parser.parse_snippet :debug "console.log('DEBUG', { $0 });"))
 
   (ls.add_snippets :all [(ls.snippet :todo [(ls.text_node "TODO(dmejorado): ")
                                             (ls.insert_node 0)])
                          (ls.snippet :today (ls.function_node (fn [] (os.date "%Y-%m-%d"))))])
-  (ls.add_snippets :javascript [js-log js-test-case])
-  (ls.add_snippets :typescript [js-log js-test-case])
-  (ls.add_snippets :typescriptreact [js-log js-test-case])
+  (ls.add_snippets :javascript [js-log])
+  (ls.add_snippets :typescript [js-log])
+  (ls.add_snippets :typescriptreact [js-log])
   (ls.add_snippets :gitcommit [(ls.parser.parse_snippet "cab" "Co-Authored-By: $0")])
   (ls.add_snippets :org [(ls.parser.parse_snippet "<s" "#+BEGIN_SRC ${1}\n${0}\n#+END_SRC\n")]))
 
