@@ -7,7 +7,7 @@ local toggle_term = autoload("toggleterm")
 local terminal = autoload("toggleterm.terminal")
 local navic = autoload("nvim-navic")
 local projects = autoload("own.projects")
-local state = {["tmux-term"] = nil}
+local state = {["tmux-term"] = nil, ["tig-term"] = nil}
 local function cmd(expression)
   return ("<cmd>" .. expression .. "<cr>")
 end
@@ -55,115 +55,128 @@ local function toggle_tmux()
   end
   return (state["tmux-term"]):toggle()
 end
+local function toggle_lazy_git()
+  local term = terminal.Terminal
+  if (state["tig-term"] == nil) then
+    local function _5_()
+      state["tig-term"] = nil
+      return nil
+    end
+    state["tig-term"] = term:new({id = 300, cmd = "tig", close_on_exit = true, direction = "float", on_exit = _5_})
+  else
+  end
+  return (state["tig-term"]):toggle()
+end
 local function opts(desc)
   return {silent = true, desc = desc}
 end
-local function _5_()
+local function _7_()
   return projects["find-files"]()
 end
-vim.keymap.set("n", "<leader><leader>", _5_, opts("find files"))
+vim.keymap.set("n", "<leader><leader>", _7_, opts("find files"))
 vim.keymap.set("n", "<leader>/b", grep_buffer_content, opts("find in open buffers"))
-local function _6_()
+local function _8_()
   return t.live_grep()
 end
-vim.keymap.set("n", "<leader>/p", _6_, opts("find in project"))
-local function _7_()
+vim.keymap.set("n", "<leader>/p", _8_, opts("find in project"))
+local function _9_()
   return t.grep_string()
 end
-vim.keymap.set("n", "<leader>/w", _7_, opts("find word under cursor"))
+vim.keymap.set("n", "<leader>/w", _9_, opts("find word under cursor"))
 vim.keymap.set("n", "<leader>s", ":botright split /tmp/scratch.fnl<cr>", opts("open scratch buffer"))
 vim.keymap.set("n", "<leader>vp", browse_plugins, opts("vim plugins"))
 vim.keymap.set("n", "<leader>vr", browse_runtime, opts("vim runtime"))
 vim.keymap.set("n", "<leader>tb", toggle_blame_line, opts("toggle blame line"))
 vim.keymap.set("n", "<leader>td", cmd("Trouble document_diagnostics"), opts("toggle diagnostics"))
-local function _8_()
+local function _10_()
   return t.buffers()
 end
-vim.keymap.set("n", "<leader>bb", _8_, opts("list buffers"))
+vim.keymap.set("n", "<leader>bb", _10_, opts("list buffers"))
 vim.keymap.set("n", "<leader>bk", cmd("bprevious <bar> bdelete! #"), opts("kill buffer"))
 vim.keymap.set("n", "<leader>bo", cmd("BufOnly!"), opts("kill other buffers"))
-local function _9_()
+local function _11_()
   return telescope_file_browser("~/Documents/neorg/")
 end
-vim.keymap.set("n", "<leader>ob", _9_, opts("org browse"))
+vim.keymap.set("n", "<leader>ob", _11_, opts("org browse"))
 vim.keymap.set("n", "<leader>oj", cmd("Neorg journal"), opts("org journal"))
-local function _10_()
+local function _12_()
   return term_split(100)
 end
-vim.keymap.set({"n", "t"}, "<C-t>", _10_, opts("split term"))
-local function _11_()
+vim.keymap.set({"n", "t"}, "<C-t>", _12_, opts("split term"))
+local function _13_()
   return term_split(1)
 end
-vim.keymap.set({"n", "t"}, "<C-1>", _11_, opts("split term 1"))
-local function _12_()
+vim.keymap.set({"n", "t"}, "<C-1>", _13_, opts("split term 1"))
+local function _14_()
   return term_split(2)
 end
-vim.keymap.set({"n", "t"}, "<C-2>", _12_, opts("split term 2"))
-local function _13_()
+vim.keymap.set({"n", "t"}, "<C-2>", _14_, opts("split term 2"))
+local function _15_()
   return term_split(3)
 end
-vim.keymap.set({"n", "t"}, "<C-3>", _13_, opts("split term 3"))
-local function _14_()
+vim.keymap.set({"n", "t"}, "<C-3>", _15_, opts("split term 3"))
+local function _16_()
   return term_split(4)
 end
-vim.keymap.set({"n", "t"}, "<C-4>", _14_, opts("split term 4"))
-local function _15_()
+vim.keymap.set({"n", "t"}, "<C-4>", _16_, opts("split term 4"))
+local function _17_()
   return term_split(5)
 end
-vim.keymap.set({"n", "t"}, "<C-5>", _15_, opts("split term 5"))
-local function _16_()
+vim.keymap.set({"n", "t"}, "<C-5>", _17_, opts("split term 5"))
+local function _18_()
   return term_vsplit(100)
 end
-vim.keymap.set({"n", "t"}, "<M-\\>", _16_, opts("vertical split term"))
-local function _17_()
+vim.keymap.set({"n", "t"}, "<M-\\>", _18_, opts("vertical split term"))
+local function _19_()
   return term_tab(1)
 end
-vim.keymap.set({"n", "t"}, "<M-1>", _17_, opts("tab term 1"))
-local function _18_()
+vim.keymap.set({"n", "t"}, "<M-1>", _19_, opts("tab term 1"))
+local function _20_()
   return term_tab(2)
 end
-vim.keymap.set({"n", "t"}, "<M-2>", _18_, opts("tab term 2"))
-local function _19_()
+vim.keymap.set({"n", "t"}, "<M-2>", _20_, opts("tab term 2"))
+local function _21_()
   return term_tab(3)
 end
-vim.keymap.set({"n", "t"}, "<M-3>", _19_, opts("tab term 3"))
-local function _20_()
+vim.keymap.set({"n", "t"}, "<M-3>", _21_, opts("tab term 3"))
+local function _22_()
   return term_tab(4)
 end
-vim.keymap.set({"n", "t"}, "<M-4>", _20_, opts("tab term 4"))
-local function _21_()
+vim.keymap.set({"n", "t"}, "<M-4>", _22_, opts("tab term 4"))
+local function _23_()
   return term_tab(5)
 end
-vim.keymap.set({"n", "t"}, "<M-5>", _21_, opts("tab term 5"))
+vim.keymap.set({"n", "t"}, "<M-5>", _23_, opts("tab term 5"))
 vim.keymap.set({"n", "t"}, "<M-t>", toggle_tmux, opts("tmux"))
-local function _22_()
+vim.keymap.set({"n", "t"}, "<M-g>", toggle_lazy_git, opts("lazygit"))
+local function _24_()
   return telescope_file_browser("~/.config/home-manager")
 end
-vim.keymap.set("n", "<localleader>c", _22_, opts("home manager config"))
+vim.keymap.set("n", "<localleader>c", _24_, opts("home manager config"))
 vim.keymap.set("n", "<localleader>d", cmd("DBUIToggle"), opts("dadbod ui"))
 vim.keymap.set("n", "<localleader>l", cmd("Lazy show"), opts("lazy ui"))
 vim.keymap.set("n", "<localleader>m", cmd("Mason"), opts("mason"))
 vim.keymap.set("n", "<localleader>no", cmd("Telescope notify"), opts("open notifications"))
-local function _23_()
+local function _25_()
   return vim.notify.dismiss()
 end
-vim.keymap.set("n", "<localleader>nd", _23_, opts("dismiss notifications"))
-local function _24_()
+vim.keymap.set("n", "<localleader>nd", _25_, opts("dismiss notifications"))
+local function _26_()
   return projects["select-project"]()
 end
-vim.keymap.set("n", "<localleader>p", _24_, opts("switch projects"))
+vim.keymap.set("n", "<localleader>p", _26_, opts("switch projects"))
 vim.keymap.set("n", "L", cmd("LToggle"), opts("list toggle"))
 vim.keymap.set("n", "Q", cmd("QToggle"), opts("quickfix toggle"))
 vim.keymap.set("n", "<M-s>", cmd("write silent!"), opts("write file"))
 vim.keymap.set("n", "z=", cmd("Telescope spell_suggest theme=get_cursor"), opts("suggest spelling"))
-local function _25_()
+local function _27_()
   return vim.diagnostic.goto_prev()
 end
-vim.keymap.set("n", "[d", _25_, opts("next diagnostic"))
-local function _26_()
+vim.keymap.set("n", "[d", _27_, opts("next diagnostic"))
+local function _28_()
   return vim.diagnostic.goto_next()
 end
-vim.keymap.set("n", "]d", _26_, opts("previous diagnostic"))
+vim.keymap.set("n", "]d", _28_, opts("previous diagnostic"))
 vim.api.nvim_create_augroup("eslint-autofix", {clear = true})
 local function set_eslint_autofix(bufnr)
   return vim.api.nvim_create_autocmd("BufWritePre", {command = "EslintFixAll", group = "eslint-autofix", buffer = bufnr})
@@ -185,10 +198,10 @@ local function on_attach(args)
   buf_map("<leader>la", vim.lsp.buf.code_action, "lsp: code actions")
   buf_map("<leader>lr", vim.lsp.buf.rename, "lsp: rename")
   buf_map("<leader>lR", "<cmd>LspRestart<CR>", "lsp: restart")
-  local function _27_()
+  local function _29_()
     return vim.lsp.buf.code_action()
   end
-  vim.keymap.set("v", "<leader>la", _27_, {buffer = true, desc = "lsp: code actions"})
+  vim.keymap.set("v", "<leader>la", _29_, {buffer = true, desc = "lsp: code actions"})
   if (client.name == "eslint") then
     set_eslint_autofix(bufnr)
   else
@@ -203,13 +216,10 @@ do
   local group = vim.api.nvim_create_augroup("lsp-attach", {clear = true})
   vim.api.nvim_create_autocmd("LspAttach", {callback = on_attach, group = group})
 end
-vim.keymap.set("n", "<M-x>", ":Telescope<CR>", {nowait = true, silent = true})
-vim.keymap.set("n", "<D-x>", ":Telescope<CR>", {nowait = true, silent = true})
-vim.keymap.set("n", "<M-h>", ":Telescope help_tags<CR>", {nowait = true, silent = true})
-vim.keymap.set("n", "<M-m>", ":Telescope marks<CR>", {nowait = true, silent = true})
-vim.keymap.set("n", "<M-k>", ":Telescope keymaps<CR>", {nowait = true, silent = true})
-vim.keymap.set("n", "<M-c>", ":Telescope commands<CR>", {nowait = true, silent = true})
-vim.keymap.set("n", "<M-o>", ":Telescope oldfiles<CR>", {nowait = true, silent = true})
+vim.keymap.set("n", "<localleader>x", ":Telescope<CR>", {nowait = true, silent = true})
+vim.keymap.set("n", "<localleader>h", ":Telescope help_tags<CR>", {nowait = true, silent = true})
+vim.keymap.set("n", "<localleader>k", ":Telescope keymaps<CR>", {nowait = true, silent = true})
+vim.keymap.set("n", "<localleader>o", ":Telescope oldfiles<CR>", {nowait = true, silent = true})
 vim.keymap.set("n", "<M-,>", "<C-W>5<")
 vim.keymap.set("n", "<M-.>", "<C-W>5>")
 vim.keymap.set("n", "<M-->", "<C-W>5-")

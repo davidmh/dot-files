@@ -13,7 +13,8 @@
 (local navic (autoload :nvim-navic))
 (local projects (autoload :own.projects))
 
-(local state {:tmux-term nil})
+(local state {:tmux-term nil
+              :tig-term nil})
 
 ; helpers
 
@@ -60,6 +61,16 @@
                                        :on_exit #(tset state :tmux-term nil)})))
   (state.tmux-term:toggle))
 
+(fn toggle-lazy-git []
+  (local term terminal.Terminal)
+
+  (if (= state.tig-term nil)
+     (tset state :tig-term (term:new {:id 300
+                                      :cmd :tig
+                                      :close_on_exit true
+                                      :direction :float
+                                      :on_exit #(tset state :tig-term nil)})))
+  (state.tig-term:toggle))
 
 (fn opts [desc] {:silent true : desc})
 
@@ -101,6 +112,7 @@
 (map [:n :t] :<M-4> #(term-tab 4) (opts "tab term 4"))
 (map [:n :t] :<M-5> #(term-tab 5) (opts "tab term 5"))
 (map [:n :t] :<M-t> toggle-tmux (opts "tmux"))
+(map [:n :t] :<M-g> toggle-lazy-git (opts "lazygit"))
 
 ;; less used commands, grouped by feature
 
@@ -175,13 +187,10 @@
 (augroup :lsp-attach [:LspAttach {:callback on-attach}])
 
 ; Telescope
-(nmap :<M-x> ::Telescope<CR> {:nowait true :silent true})
-(nmap :<D-x> ::Telescope<CR> {:nowait true :silent true})
-(nmap :<M-h> ":Telescope help_tags<CR>" {:nowait true :silent true})
-(nmap :<M-m> ":Telescope marks<CR>" {:nowait true :silent true})
-(nmap :<M-k> ":Telescope keymaps<CR>" {:nowait true :silent true})
-(nmap :<M-c> ":Telescope commands<CR>" {:nowait true :silent true})
-(nmap :<M-o> ":Telescope oldfiles<CR>" {:nowait true :silent true})
+(nmap :<localleader>x ::Telescope<CR> {:nowait true :silent true})
+(nmap :<localleader>h ":Telescope help_tags<CR>" {:nowait true :silent true})
+(nmap :<localleader>k ":Telescope keymaps<CR>" {:nowait true :silent true})
+(nmap :<localleader>o ":Telescope oldfiles<CR>" {:nowait true :silent true})
 
 ; Windows
 ;
