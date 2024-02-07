@@ -1,6 +1,9 @@
 (import-macros {: augroup : use} :own.macros)
 (local {: autoload} (require :nfnl.module))
 (local {: sanitize-path} (require :own.helpers))
+(local {: show-quickfix-title?
+        : get-quickfix-title
+        : quickfix-history-status-component} (require :own.quickfix))
 
 (local heirline (autoload :heirline))
 (local conditions (autoload :heirline.conditions))
@@ -134,15 +137,7 @@
                                               (not-a-term))
                              :init #(tset $1 :file-name (vim.api.nvim_buf_get_name 0))}))
 
-(fn get-quickfix-title []
-  (-> (vim.fn.getqflist {:title 1}) (. :title)))
-
-(fn show-quickfix-title []
-  (and
-    (= vim.o.filetype :qf)
-    (~= "" (get-quickfix-title))))
-
-(local quickfix-title (use pill {:condition show-quickfix-title
+(local quickfix-title (use pill {:condition show-quickfix-title?
                                  :hl {:fg :crust}
                                  :init #(do (tset $1 :icon :)
                                             (tset $1 :color :lavender)
@@ -227,6 +222,7 @@
                lsp-breadcrumb
                quickfix-title
                push-right
+               quickfix-history-status-component
                git-blame
                file-name-block])
 
