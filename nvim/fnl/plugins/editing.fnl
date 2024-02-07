@@ -29,6 +29,10 @@
 (fn config-easy-align []
   (map [:x :n] :ga "<Plug>(EasyAlign)"))
 
+(fn config-mundo []
+  (set vim.o.undofile true)
+  (set vim.o.undodir (.. (vim.fn.stdpath "data") "/undo")))
+
 [:junegunn/vim-slash
  :mg979/vim-visual-multi
 
@@ -47,4 +51,9 @@
  (use :tommcdo/vim-exchange {:keys [:cx :cX :c<Space> :X]})
 
  (use :junegunn/vim-easy-align {:config config-easy-align
-                                :keys [:ga]})]
+                                :keys [:ga]})
+
+ (use :simnalamburt/vim-mundo {:config config-mundo
+                               :event :VeryLazy})
+
+ (use :dhruvasagar/vim-table-mode {:ft :markdown})]
