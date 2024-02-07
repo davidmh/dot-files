@@ -30,7 +30,6 @@
     clojure
     evcxr
     fd
-    (nerdfonts.override { fonts = [ "Hasklig" "SpaceMono" ]; })
     fx
     go
     htop
@@ -53,6 +52,7 @@
     unstable.fortune-kind
     unstable.gh
     unstable.wezterm
+    (unstable.nerdfonts.override { fonts = [ "Hasklig" ]; })
   ];
 
   programs.home-manager.enable = true;
