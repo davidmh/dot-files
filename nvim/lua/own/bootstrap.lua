@@ -2,7 +2,7 @@
 local data_path = vim.fn.stdpath("data")
 local function ensure(user, repo, alias)
   local install_path = string.format("%s/lazy/%s", data_path, (alias or repo))
-  local repo_url = string.format("https://github.com/%s/%s", user, repo)
+  local repo_url = string.format("https://github.com/%s/%s.git", user, repo)
   if (vim.fn.empty(vim.fn.glob(install_path)) > 0) then
     vim.fn.system({"git", "clone", "--filter=blob:none", "--single-branch", repo_url, install_path})
   else
