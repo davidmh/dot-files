@@ -12,7 +12,6 @@ local state = autoload("telescope.actions.state")
 local str = autoload("nfnl.string")
 local utils = autoload("telescope.utils")
 vim.g.fugitive_legacy_commands = false
-vim.cmd("cabbrev git Git")
 local function cmd(expression)
   return ("<cmd>" .. expression .. "<cr>")
 end

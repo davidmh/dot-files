@@ -12,7 +12,6 @@
 (local utils (autoload :telescope.utils))
 
 (set vim.g.fugitive_legacy_commands false)
-(vim.cmd "cabbrev git Git")
 
 (fn cmd [expression]
   (.. :<cmd> expression :<cr>))
