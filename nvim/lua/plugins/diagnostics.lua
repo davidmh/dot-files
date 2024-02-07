@@ -23,7 +23,7 @@ local function with_root_file(...)
   end
   return _5_
 end
-local cspell_filetypes = {"css", "gitcommit", "clojure", "html", "javascript", "json", "less", "lua", "markdown", "python", "ruby", "typescript", "typescriptreact", "yaml"}
+local cspell_filetypes = {"css", "gitcommit", "clojure", "html", "javascript", "json", "less", "lua", "markdown", "nix", "python", "ruby", "typescript", "typescriptreact", "yaml"}
 local function get_source_name(diagnostic)
   local function _6_()
     local _7_ = diagnostic.namespace

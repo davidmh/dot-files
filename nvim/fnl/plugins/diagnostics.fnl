@@ -25,6 +25,7 @@
                          :less
                          :lua
                          :markdown
+                         :nix
                          :python
                          :ruby
                          :typescript
