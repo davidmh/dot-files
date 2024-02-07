@@ -30,10 +30,17 @@
    :NotifyINFOTitle  {:fg color.mauve}
    :NotifyINFOBorder  {:fg color.mauve}
 
-   :NotifyWARNBorder  {:fg color.overlay0}
-   :NotifyERRORBorder {:fg color.overlay0}
-   :NotifyDEBUGBorder {:fg color.overlay0}
-   :NotifyTRACEBorder {:fg color.overlay0}
+   :NotifyINFOBody {:bg color.mantle}
+   :NotifyWARNBody {:bg color.mantle}
+   :NotifyERRORBody {:bg color.mantle}
+   :NotifyDEBUGBody {:bg color.mantle}
+   :NotifyTRACEBody {:bg color.mantle}
+ 
+   :NotifyINFOBorder  {:fg color.mantle :bg color.mantle}
+   :NotifyWARNBorder  {:fg color.mantle :bg color.mantle}
+   :NotifyERRORBorder {:fg color.mantle :bg color.mantle}
+   :NotifyDEBUGBorder {:fg color.mantle :bg color.mantle}
+   :NotifyTRACEBorder {:fg color.mantle :bg color.mantle}
 
    :CmpItemKindSnippet {:fg color.crust :bg color.mauve}
    :CmpItemKindKeyword {:fg color.crust :bg color.red}
