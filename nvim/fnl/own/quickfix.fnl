@@ -10,8 +10,30 @@
       (vim.cmd (.. direction " " (vim.api.nvim_buf_get_name bufnr)))
       (vim.fn.cursor lnum col)))
 
-(local previous-qf-stack-entry-key "<")
-(local next-qf-stack-entry-key ">")
+(local qf-older-key "<")
+(local qf-newer-key ">")
+
+(fn get-quickfix-history-size []
+  (-> (vim.fn.getqflist {:nr :$}) (. :nr)))
+
+(fn get-quickfix-current-index []
+  (-> (vim.fn.getqflist {:nr 0}) (. :nr)))
+
+(fn has-older-qf-stack-entry? []
+  (> (get-quickfix-current-index) 1))
+
+(fn has-newer-qf-stack-entry? []
+  (< (get-quickfix-current-index) (get-quickfix-history-size)))
+
+(fn qf-older-fn []
+  ":colder without the error message when there is no older quickfix list."
+  (if (has-older-qf-stack-entry?)
+    (vim.api.nvim_command :colder)))
+
+(fn qf-newer-fn []
+  ":cnewer without the error message when there is no newer quickfix list."
+  (if (has-newer-qf-stack-entry?)
+    (vim.api.nvim_command :cnewer)))
 
 (fn set-quickfix-mappings []
   "Mappings to navigate the quickfix history stack and open quickfix items in splits."
@@ -25,19 +47,13 @@
   (nmap :<c-x> (on-alternative-open :split) opts)
 
   ; older quickfix list
-  (nmap previous-qf-stack-entry-key ":silent colder<cr>" opts)
+  (nmap qf-older-key qf-older-fn opts)
 
   ; newer quickfix list
-  (nmap next-qf-stack-entry-key ":silent cnewer<cr>" opts))
+  (nmap qf-newer-key qf-newer-fn opts))
 
 (fn get-quickfix-title []
   (-> (vim.fn.getqflist {:title 1}) (. :title)))
-
-(fn get-quickfix-history-size []
-  (-> (vim.fn.getqflist {:nr :$}) (. :nr)))
-
-(fn get-quickfix-current-index []
-  (-> (vim.fn.getqflist {:nr 0}) (. :nr)))
 
 (fn show-quickfix-title? []
   (and
@@ -45,14 +61,14 @@
     (~= "" (get-quickfix-title))))
 
 (local quickfix-history-status-component
-       (use {:provider (.. " " previous-qf-stack-entry-key " ")
-             :hl #(-> {:fg (if (> (get-quickfix-current-index) 1)
+       (use {:provider (.. " " qf-older-key " ")
+             :hl #(-> {:fg (if (has-older-qf-stack-entry?)
                                :lavender
                                :surface1)})}
             {:provider #(.. (get-quickfix-current-index) "/" (get-quickfix-history-size))
              :hl {:fg :lavender}}
-            {:provider (.. " " next-qf-stack-entry-key " ")
-             :hl #(-> {:fg (if (< (get-quickfix-current-index) (get-quickfix-history-size))
+            {:provider (.. " " qf-newer-key " ")
+             :hl #(-> {:fg (if (has-newer-qf-stack-entry?)
                              :lavender
                              :surface1)})}
             {:condition #(and (show-quickfix-title?)

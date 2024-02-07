@@ -15,51 +15,71 @@ local function on_alternative_open(direction)
   end
   return _3_
 end
-local previous_qf_stack_entry_key = "<"
-local next_qf_stack_entry_key = ">"
-local function set_quickfix_mappings()
-  local opts = {buffer = 0, silent = true, nowait = true}
-  vim.keymap.set("n", "<c-v>", on_alternative_open("vsplit"), opts)
-  vim.keymap.set("n", "<c-x>", on_alternative_open("split"), opts)
-  vim.keymap.set("n", previous_qf_stack_entry_key, ":silent colder<cr>", opts)
-  return vim.keymap.set("n", next_qf_stack_entry_key, ":silent cnewer<cr>", opts)
-end
-local function get_quickfix_title()
-  return (vim.fn.getqflist({title = 1})).title
-end
+local qf_older_key = "<"
+local qf_newer_key = ">"
 local function get_quickfix_history_size()
   return (vim.fn.getqflist({nr = "$"})).nr
 end
 local function get_quickfix_current_index()
   return (vim.fn.getqflist({nr = 0})).nr
 end
+local function has_older_qf_stack_entry_3f()
+  return (get_quickfix_current_index() > 1)
+end
+local function has_newer_qf_stack_entry_3f()
+  return (get_quickfix_current_index() < get_quickfix_history_size())
+end
+local function qf_older_fn()
+  if has_older_qf_stack_entry_3f() then
+    return vim.api.nvim_command("colder")
+  else
+    return nil
+  end
+end
+local function qf_newer_fn()
+  if has_newer_qf_stack_entry_3f() then
+    return vim.api.nvim_command("cnewer")
+  else
+    return nil
+  end
+end
+local function set_quickfix_mappings()
+  local opts = {buffer = 0, silent = true, nowait = true}
+  vim.keymap.set("n", "<c-v>", on_alternative_open("vsplit"), opts)
+  vim.keymap.set("n", "<c-x>", on_alternative_open("split"), opts)
+  vim.keymap.set("n", qf_older_key, qf_older_fn, opts)
+  return vim.keymap.set("n", qf_newer_key, qf_newer_fn, opts)
+end
+local function get_quickfix_title()
+  return (vim.fn.getqflist({title = 1})).title
+end
 local function show_quickfix_title_3f()
   return ((vim.o.filetype == "qf") and ("" ~= get_quickfix_title()))
 end
 local quickfix_history_status_component
-local function _5_()
-  local _6_
-  if (get_quickfix_current_index() > 1) then
-    _6_ = "lavender"
+local function _7_()
+  local _8_
+  if has_older_qf_stack_entry_3f() then
+    _8_ = "lavender"
   else
-    _6_ = "surface1"
+    _8_ = "surface1"
   end
-  return {fg = _6_}
+  return {fg = _8_}
 end
-local function _8_()
+local function _10_()
   return (get_quickfix_current_index() .. "/" .. get_quickfix_history_size())
 end
-local function _9_()
-  local _10_
-  if (get_quickfix_current_index() < get_quickfix_history_size()) then
-    _10_ = "lavender"
+local function _11_()
+  local _12_
+  if has_newer_qf_stack_entry_3f() then
+    _12_ = "lavender"
   else
-    _10_ = "surface1"
+    _12_ = "surface1"
   end
-  return {fg = _10_}
+  return {fg = _12_}
 end
-local function _12_()
+local function _14_()
   return (show_quickfix_title_3f() and (get_quickfix_history_size() > 1))
 end
-quickfix_history_status_component = {{provider = (" " .. previous_qf_stack_entry_key .. " "), hl = _5_}, {provider = _8_, hl = {fg = "lavender"}}, {provider = (" " .. next_qf_stack_entry_key .. " "), hl = _9_}, condition = _12_}
+quickfix_history_status_component = {{provider = (" " .. qf_older_key .. " "), hl = _7_}, {provider = _10_, hl = {fg = "lavender"}}, {provider = (" " .. qf_newer_key .. " "), hl = _11_}, condition = _14_}
 return {["set-quickfix-mappings"] = set_quickfix_mappings, ["get-quickfix-title"] = get_quickfix_title, ["show-quickfix-title?"] = show_quickfix_title_3f, ["quickfix-history-status-component"] = quickfix_history_status_component}
