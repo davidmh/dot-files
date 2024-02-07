@@ -60,19 +60,16 @@
                                                    :af "@function.outer"
                                                    :if "@function.inner"
                                                    :ac "@class.outer"
-                                                   :ic "@class.inner"}}
-                                :move {:enable true
-                                       :set_jumps true
-                                       :goto_next_start {"]]" "@function.outer"}
-                                       :goto_next_end {"][" "@function.outer"}
-                                       :goto_previous_start {"[[" "@function.outer"}
-                                       :go_to_previous_end {"[]" "@function.outer"}}}
+                                                   :ic "@class.inner"}}}
                   :ensure_installed ensure-installed
                   :table_of_contents {:enable true}}))
 
-(use :nvim-treesitter/nvim-treesitter
-     {:dependencies [:JoosepAlviste/nvim-ts-context-commentstring
-                     :numToStr/Comment.nvim]
-      :build ::TSUpdate
-      :config config})
+[(use :nvim-treesitter/nvim-treesitter
+      {:dependencies [:nvim-treesitter/nvim-treesitter-textobjects
+                      :JoosepAlviste/nvim-ts-context-commentstring
+                      :numToStr/Comment.nvim]
+       :build ::TSUpdate
+       :config config})
 
+ (use :davidmh/mdx.nvim {:dependencies [:nvim-treesitter/nvim-treesitter]
+                         :config true})]
