@@ -31,14 +31,14 @@ local function has_newer_qf_stack_entry_3f()
 end
 local function qf_older_fn()
   if has_older_qf_stack_entry_3f() then
-    return vim.api.nvim_command("colder")
+    return vim.api.nvim_command("silent colder")
   else
     return nil
   end
 end
 local function qf_newer_fn()
   if has_newer_qf_stack_entry_3f() then
-    return vim.api.nvim_command("cnewer")
+    return vim.api.nvim_command("silent cnewer")
   else
     return nil
   end

@@ -28,12 +28,12 @@
 (fn qf-older-fn []
   ":colder without the error message when there is no older quickfix list."
   (if (has-older-qf-stack-entry?)
-    (vim.api.nvim_command :colder)))
+    (vim.api.nvim_command "silent colder")))
 
 (fn qf-newer-fn []
   ":cnewer without the error message when there is no newer quickfix list."
   (if (has-newer-qf-stack-entry?)
-    (vim.api.nvim_command :cnewer)))
+    (vim.api.nvim_command "silent cnewer")))
 
 (fn set-quickfix-mappings []
   "Mappings to navigate the quickfix history stack and open quickfix items in splits."
