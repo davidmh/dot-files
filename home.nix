@@ -51,6 +51,7 @@
     # unstable.cbc
     unstable.fortune-kind
     unstable.gh
+    unstable.git-absorb
     unstable.wezterm
     (unstable.nerdfonts.override { fonts = [ "Hasklig" ]; })
   ];
