@@ -15,7 +15,10 @@ style = "blue"
 [character]
 success_symbol = "[❯](bold green)"
 error_symbol = "[❯](bold red)"
-vimcmd_symbol = "[❯](bold white)"
+vimcmd_symbol = "[󰰔 ❯](bold white)"
+vimcmd_replace_one_symbol = "[󰰠 ❯](bold gray)"
+vimcmd_replace_symbol = "[󰰠 ❯](bold gray)"
+vimcmd_visual_symbol = "[󰰬 ❯](bold gray)"
 
 [git_branch]
 format = " $branch"
