@@ -75,6 +75,9 @@
         compinit
       done
       compinit -C
+
+      autoload -U select-word-style
+      select-word-style bash
     '';
     autocd = true;
     history.ignoreSpace = true;
