@@ -1,4 +1,5 @@
 (import-macros {: augroup : use} :own.macros)
+(local lazy-status (require :lazy.status))
 (local {: autoload} (require :nfnl.module))
 (local {: sanitize-path} (require :own.helpers))
 (local {: show-quickfix-title?
@@ -16,6 +17,8 @@
 
 (local chrome-accent :surface2)
 (local solid-background {:hl {:fg :fg :bg chrome-accent}})
+
+(local empty-space {:provider " "})
 
 (local pill [{:provider : :hl #(-> {:bg :none :fg :surface1})}
              {:provider #(.. $1.icon " ") :hl #(-> {:fg $1.color
@@ -164,7 +167,7 @@
                               (diagnostic :WARN :yellow)
                               (diagnostic :INFO :fg)
                               (diagnostic :HINT :green)
-                              {:provider " "}
+                              empty-space
                               {:conditon #(conditions.has_diagnostics)
                                :init (fn [self]
                                        (tset self :ERROR (diagnostic-count :ERROR))
@@ -173,7 +176,7 @@
                                        (tset self :HINT (diagnostic-count :HINT)))
                                :update [:DiagnosticChanged :BufEnter :ColorScheme]}))
 
-(local git-block [{:provider " "}
+(local git-block [empty-space
                   (use pill {:condition #(conditions.is_git_repo)
                              :init #(do (local {: head} vim.b.gitsigns_status_dict)
                                         (local status (vim.trim (or vim.b.gitsigns_status "")))
@@ -213,6 +216,14 @@
 ; TODO: split gitsigns, breakpoints and diagnostics into separate columns
 (local signs {:provider :%s})
 
+(local plugin-updates (use empty-space
+                           (use pill {:init #(let [[icon count] (-> (lazy-status.updates)
+                                                                    (vim.split " "))]
+                                               (tset $1 :icon icon)
+                                               (tset $1 :content (.. " " count))
+                                               (tset $1 :color :rosewater))})
+                           {:condition #(lazy-status.has_updates)}))
+
 (local statuscolumn [fold
                      push-right
                      signs
@@ -235,6 +246,7 @@
                        show-search
                        neorg-mode
                        git-block
+                       plugin-updates
                        {:hl {:bg :NONE}}))
 
 (local disabled-winbar {:buftype [:nofile :prompt]

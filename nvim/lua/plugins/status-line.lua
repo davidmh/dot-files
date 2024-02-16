@@ -1,4 +1,5 @@
 -- [nfnl] Compiled from fnl/plugins/status-line.fnl by https://github.com/Olical/nfnl, do not edit.
+local lazy_status = require("lazy.status")
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
 local _local_2_ = require("own.helpers")
@@ -17,6 +18,7 @@ local config = autoload("own.config")
 local neorg_mode = autoload("neorg.modules.core.mode.module")
 local chrome_accent = "surface2"
 local solid_background = {hl = {fg = "fg", bg = chrome_accent}}
+local empty_space = {provider = " "}
 local pill
 local function _4_()
   return {bg = "none", fg = "surface1"}
@@ -214,7 +216,7 @@ local function _43_(self)
   do end (self)["HINT"] = diagnostic_count("HINT")
   return nil
 end
-diagnostics_block = {diagnostic("ERROR", "red"), diagnostic("WARN", "yellow"), diagnostic("INFO", "fg"), diagnostic("HINT", "green"), {provider = " "}, conditon = _42_, init = _43_, update = {"DiagnosticChanged", "BufEnter", "ColorScheme"}}
+diagnostics_block = {diagnostic("ERROR", "red"), diagnostic("WARN", "yellow"), diagnostic("INFO", "fg"), diagnostic("HINT", "green"), empty_space, conditon = _42_, init = _43_, update = {"DiagnosticChanged", "BufEnter", "ColorScheme"}}
 local git_block
 local function _44_()
   return conditions.is_git_repo()
@@ -228,7 +230,7 @@ local function _45_(_241)
   _241["content"] = (" " .. head .. " " .. status)
   return nil
 end
-git_block = {{provider = " "}, {pill, condition = _44_, init = _45_, hl = {bg = chrome_accent, bold = true}}}
+git_block = {empty_space, {pill, condition = _44_, init = _45_, hl = {bg = chrome_accent, bold = true}}}
 local git_blame
 local function _47_(_241)
   _241["icon"] = "\238\156\130"
@@ -278,17 +280,31 @@ local function _54_()
 end
 fold = {provider = _54_}
 local signs = {provider = "%s"}
+local plugin_updates
+local function _57_(_241)
+  local _let_58_ = vim.split(lazy_status.updates(), " ")
+  local icon = _let_58_[1]
+  local count = _let_58_[2]
+  _241["icon"] = icon
+  _241["content"] = (" " .. count)
+  do end (_241)["color"] = "rosewater"
+  return nil
+end
+local function _59_()
+  return lazy_status.has_updates()
+end
+plugin_updates = {empty_space, {pill, init = _57_}, condition = _59_}
 local statuscolumn = {fold, push_right, signs, line_number}
 local winbar = {term_title, lsp_breadcrumb, quickfix_title, push_right, quickfix_history_status_component, git_blame, file_name_block}
-local statusline = {vi_mode, macro_rec, dead_space, push_right, show_cmd, diagnostics_block, show_search, neorg_mode0, git_block, hl = {bg = "NONE"}}
+local statusline = {vi_mode, macro_rec, dead_space, push_right, show_cmd, diagnostics_block, show_search, neorg_mode0, git_block, plugin_updates, hl = {bg = "NONE"}}
 local disabled_winbar = {buftype = {"nofile", "prompt"}, filetype = {"^git.*"}}
 local function initialize_heirline()
   vim.o.showmode = false
   local opts
-  local function _57_(_241)
+  local function _60_(_241)
     return conditions.buffer_matches(disabled_winbar, _241.buf)
   end
-  opts = {colors = palettes.get_palette(), disable_winbar_cb = _57_}
+  opts = {colors = palettes.get_palette(), disable_winbar_cb = _60_}
   return heirline.setup({winbar = winbar, statuscolumn = statuscolumn, statusline = statusline, opts = opts})
 end
 do
