@@ -136,7 +136,7 @@ local function gmap(keymap, callback, desc)
   return vim.keymap.set("n", ("<leader>g" .. keymap), callback, {desc = desc, nowait = true, silent = true})
 end
 local function config()
-  gmap("s", cmd("Git"), "git status")
+  gmap("s", cmd("Neogit"), "git status")
   gmap("c", cmd("Telescope git_branches"), "git checkout branch")
   gmap("w", cmd("Gwrite"), "write into the git tree")
   gmap("r", cmd("Gread"), "read from the git tree")
@@ -157,4 +157,4 @@ local function config()
   vim.keymap.set("n", "[h", cmd("Gitsigns prev_hunk"), {desc = "previous git hunk", nowait = true, silent = true})
   return vim.keymap.set("n", "]h", cmd("Gitsigns next_hunk"), {desc = "next git hunk", nowait = true, silent = true})
 end
-return {{"lewis6991/gitsigns.nvim", opts = {current_line_blame = true}, config = true}, {"sindrets/diffview.nvim", opts = {key_bindings = {disable_defaults = false}}, config = true}, {"tpope/vim-git", dependencies = {"tpope/vim-fugitive", "tpope/vim-rhubarb", "nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "lewis6991/gitsigns.nvim", "norcalli/nvim-terminal.lua"}, event = "VeryLazy", config = config}}
+return {{"lewis6991/gitsigns.nvim", opts = {current_line_blame = true}, config = true}, {"sindrets/diffview.nvim", opts = {key_bindings = {disable_defaults = false}}, config = true}, {"tpope/vim-git", dependencies = {"tpope/vim-fugitive", "tpope/vim-rhubarb", "nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "lewis6991/gitsigns.nvim", "norcalli/nvim-terminal.lua"}, event = "VeryLazy", config = config}, {"NeogitOrg/neogit", dependencies = {"nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "nvim-telescope/telescope.nvim"}, config = true, event = "VeryLazy"}}

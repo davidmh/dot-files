@@ -34,6 +34,7 @@
   "mini.starter": { "branch": "main", "commit": "0ee58ac8975a929e90c8b104987fabfd13015e25" },
   "neo-tree.nvim": { "branch": "v3.x", "commit": "f3941c57ec85d7bdb44fa53fd858fd80f159018f" },
   "neodev.nvim": { "branch": "main", "commit": "365ef03dbf5b8579e6eb205b3500fc3bee17484a" },
+  "neogit": { "branch": "master", "commit": "1c0369a39587054ff473179c1c04e793fb3d6378" },
   "neorg": { "branch": "main", "commit": "7b3e794aa8722826418501608c8a3ffe4e19ea30" },
   "neotest": { "branch": "master", "commit": "d1417bc81b16a83ba0c89979a3104d8c70492ade" },
   "neotest-go": { "branch": "main", "commit": "ba5d536304ed6971f00d16b48ec26997622ffb43" },

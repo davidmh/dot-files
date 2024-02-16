@@ -140,7 +140,7 @@
                                          :silent true}))
 
 (fn config []
-  (gmap :s (cmd "Git") "git status")
+  (gmap :s (cmd "Neogit") "git status")
   (gmap :c (cmd "Telescope git_branches") "git checkout branch")
   (gmap :w (cmd "Gwrite") "write into the git tree")
   (gmap :r (cmd "Gread") "read from the git tree")
@@ -177,5 +177,10 @@
                                      :lewis6991/gitsigns.nvim
                                      :norcalli/nvim-terminal.lua]
                       :event :VeryLazy
-                      : config})]
+                      : config})
 
+ (use :NeogitOrg/neogit {:dependencies [:nvim-lua/plenary.nvim
+                                        :sindrets/diffview.nvim
+                                        :nvim-telescope/telescope.nvim]
+                         :config true
+                         :event :VeryLazy})]
