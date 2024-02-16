@@ -7,7 +7,7 @@ local toggle_term = autoload("toggleterm")
 local terminal = autoload("toggleterm.terminal")
 local navic = autoload("nvim-navic")
 local projects = autoload("own.projects")
-local state = {["tmux-term"] = nil, ["tig-term"] = nil}
+local state = {["tmux-term"] = nil, ["lazygit-term"] = nil}
 local function cmd(expression)
   return ("<cmd>" .. expression .. "<cr>")
 end
@@ -57,15 +57,15 @@ local function toggle_tmux()
 end
 local function toggle_lazy_git()
   local term = terminal.Terminal
-  if (state["tig-term"] == nil) then
+  if (state["lazygit-term"] == nil) then
     local function _5_()
-      state["tig-term"] = nil
+      state["lazygit-term"] = nil
       return nil
     end
-    state["tig-term"] = term:new({id = 300, cmd = "tig", close_on_exit = true, direction = "float", on_exit = _5_})
+    state["lazygit-term"] = term:new({id = 300, cmd = "lazygit", close_on_exit = true, direction = "float", on_exit = _5_})
   else
   end
-  return (state["tig-term"]):toggle()
+  return (state["lazygit-term"]):toggle()
 end
 local function opts(desc)
   return {silent = true, desc = desc}

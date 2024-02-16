@@ -14,7 +14,7 @@
 (local projects (autoload :own.projects))
 
 (local state {:tmux-term nil
-              :tig-term nil})
+              :lazygit-term nil})
 
 ; helpers
 
@@ -64,13 +64,13 @@
 (fn toggle-lazy-git []
   (local term terminal.Terminal)
 
-  (if (= state.tig-term nil)
-     (tset state :tig-term (term:new {:id 300
-                                      :cmd :tig
-                                      :close_on_exit true
-                                      :direction :float
-                                      :on_exit #(tset state :tig-term nil)})))
-  (state.tig-term:toggle))
+  (if (= state.lazygit-term nil)
+     (tset state :lazygit-term (term:new {:id 300
+                                          :cmd :lazygit
+                                          :close_on_exit true
+                                          :direction :float
+                                          :on_exit #(tset state :lazygit-term nil)})))
+  (state.lazygit-term:toggle))
 
 (fn opts [desc] {:silent true : desc})
 
