@@ -4,11 +4,17 @@
 (local neotest-lib (autoload :neotest.lib))
 (local neotest-go (autoload :neotest-go))
 (local neotest-python (autoload :neotest-python))
+(local neotest-playwright (autoload :neotest-playwright))
+(local neotest-playwright-consumers (autoload :neotest-playwright.consumers))
 
 (fn config []
   (set neotest-lib.notify #(-> :noop))
   (neotest.setup {:adapters [neotest-go
-                             neotest-python]
+                             neotest-python
+                             (neotest-playwright.adapter {:options {:preset :headed
+                                                                    :persist_project_selection true}})]
+                  :consumers {:playwright neotest-playwright-consumers.consumers}
+                  :discovery {:enabled false}
                   :benchmark {:enabled true}
                   :icons {:failed :
                           :passed :
@@ -19,8 +25,9 @@
                                            :antoinemadec/FixCursorHold.nvim
                                            :nvim-treesitter/nvim-treesitter
                                            :nvim-neotest/neotest-go
-                                           :nvim-neotest/neotest-python]
-                            :keys [(use :<localleader>ta "<cmd>Neotest attach<cr>" {:desc :attach})
+                                           :nvim-neotest/neotest-python
+                                           :thenbe/neotest-playwright]
+                            :keys [(use :<localleader>ta #(neotest.playwright.attachment) {:desc :attachments})
                                    (use :<localleader>tr "<cmd>Neotest run<cr>" {:desc :run})
                                    (use :<localleader>ts "<cmd>Neotest summary<cr>" {:desc :summary})
                                    (use :<localleader>to "<cmd>Neotest output<cr>" {:desc :output})
