@@ -112,6 +112,7 @@
                                          :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
                formatting.stylua
                formatting.terraform_fmt
+               formatting.nixpkgs_fmt
                formatting.rustfmt]
 
      :on_attach on-attach}))

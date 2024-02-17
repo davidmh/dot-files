@@ -15,7 +15,8 @@
       pkgs = nixpkgs.legacyPackages.${system};
       username = "david.mejorado";
       homeDirectory = "/Users/david.mejorado";
-    in {
+    in
+    {
       homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
 
