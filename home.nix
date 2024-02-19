@@ -119,6 +119,7 @@
     extraConfig = {
       init.defaultBranch = "main";
       rebase.autosquash = true;
+      fetch.writeCommitGraph = true;
     };
 
     diff-so-fancy.enable = true;
