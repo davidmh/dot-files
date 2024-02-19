@@ -5,6 +5,7 @@
 (use :folke/which-key.nvim {:dependencies [:nvim-lua/plenary.nvim]
                             :event :VeryLazy
                             :config #(which-key.register {:mode [:n]
+                                                          :<leader>a {:name :alternate}
                                                           :<leader>g {:name :git
                                                                       :h {:name :hunk}}
                                                           :<leader>l {:name :lsp}
