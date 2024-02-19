@@ -5,7 +5,12 @@
 
  (use :clojure-vim/vim-jack-in {:ft [:clojure]})
 
- (use :gpanders/nvim-parinfer {:ft [:clojure :fennel :query]})
+ (use :gpanders/nvim-parinfer {:ft [:clojure :fennel :query]
+                               :config #(set vim.g.parinfer_filetypes [:clojure
+                                                                       :scheme
+                                                                       :lisp
+                                                                       :fennel
+                                                                       :query])})
 
  (use :Olical/conjure ; repl, but better
       {:config #(do
