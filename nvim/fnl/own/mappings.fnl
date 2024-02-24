@@ -13,8 +13,7 @@
 (local navic (autoload :nvim-navic))
 (local projects (autoload :own.projects))
 
-(local state {:tmux-term nil
-              :lazygit-term nil})
+(local state {:tmux-term nil})
 
 ; helpers
 
@@ -61,17 +60,6 @@
                                        :on_exit #(tset state :tmux-term nil)})))
   (state.tmux-term:toggle))
 
-(fn toggle-lazy-git []
-  (local term terminal.Terminal)
-
-  (if (= state.lazygit-term nil)
-     (tset state :lazygit-term (term:new {:id 300
-                                          :cmd :lazygit
-                                          :close_on_exit true
-                                          :direction :float
-                                          :on_exit #(tset state :lazygit-term nil)})))
-  (state.lazygit-term:toggle))
-
 (fn opts [desc] {:silent true : desc})
 
 ; normal mode mappings
@@ -112,7 +100,6 @@
 (map [:n :t] :<M-4> #(term-tab 4) (opts "tab term 4"))
 (map [:n :t] :<M-5> #(term-tab 5) (opts "tab term 5"))
 (map [:n :t] :<M-t> toggle-tmux (opts "tmux"))
-(map [:n :t] :<M-g> toggle-lazy-git (opts "lazygit"))
 
 ;; less used commands, grouped by feature
 
