@@ -34,7 +34,7 @@
  (use :nvim-neo-tree/neo-tree.nvim
       {:branch :v3.x
        :dependencies [:nvim-lua/plenary.nvim
-                      :kyazdani42/nvim-web-devicons
+                      :nvim-tree/nvim-web-devicons
                       :MunifTanjim/nui.nvim
                       :s1n7ax/nvim-window-picker]
        :opts {:filesystem {:filtered_items {:hide_dotfiles false}}
