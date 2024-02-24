@@ -37,6 +37,8 @@
                                                  :cmp.entry.get_documentation true}
                                       :hover {:opts {:size {:max_height 10
                                                             :max_width 80}}}}
+                                :cmdline {:format {:filter {:title "Shell command"
+                                                            :icon ""}}}
                                 :messages {:enabled false
                                            :view_search false}
                                 :views {:mini {:position {:row 2
