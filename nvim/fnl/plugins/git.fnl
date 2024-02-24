@@ -1,5 +1,7 @@
 (import-macros {: nmap : use} :own.macros)
 (local {: autoload} (require :nfnl.module))
+(local {: ends-with} (require :own.string))
+(local fs (autoload :nfnl.fs))
 (local core (autoload :nfnl.core))
 (local actions (autoload :telescope.actions))
 (local builtin (autoload :telescope.builtin))
@@ -139,10 +141,22 @@
                                          :nowait true
                                          :silent true}))
 
+(fn git-write []
+  ; Write the current buffer and stage it
+  (vim.cmd :Gwrite)
+
+  ; If this is a fennel file, also stage the corresponding lua file
+  (local current-file (vim.fn.expand :%:p))
+  (if (ends-with current-file ".fnl")
+      (vim.schedule #(let [lua-file (fs.fnl-path->lua-path current-file)]
+                       (if (= (vim.fn.filereadable lua-file) 1)
+                           (vim.cmd (.. "Git add " lua-file)))))))
+
 (fn config []
-  (gmap :s (cmd "Neogit") "git status")
-  (gmap :c (cmd "Telescope git_branches") "git checkout branch")
-  (gmap :w (cmd "Gwrite") "write into the git tree")
+  (gmap :g (cmd "Neogit") "git status")
+  (gmap :c (cmd "Neogit commit") "git commit")
+  (gmap :s (cmd "Telescope git_branches") "git switch")
+  (gmap :w git-write "write into the git tree")
   (gmap :r (cmd "Gread") "read from the git tree")
   (gmap :e (cmd "Gedit") "edit from the git tree") ; open the latest committed version of the current file
   (gmap :b (cmd "Git blame") "git blame")
