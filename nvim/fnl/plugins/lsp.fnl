@@ -82,7 +82,8 @@
  (use :williamboman/mason.nvim {:config mason-config})
 
  (use :williamboman/mason-lspconfig.nvim {:dependencies [:williamboman/mason.nvim]
-                                          :opts {:ensure_installed [:clojure_lsp
+                                          :opts {:ensure_installed [:bashls
+                                                                    :clojure_lsp
                                                                     :cssls
                                                                     :jsonls
                                                                     :lua_ls

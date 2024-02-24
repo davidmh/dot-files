@@ -79,41 +79,31 @@
 (fn config []
   (local formatting null-ls.builtins.formatting)
   (local diagnostics null-ls.builtins.diagnostics)
-  (local code_actions null-ls.builtins.code_actions)
 
   (null-ls.setup
-    {:sources [diagnostics.shellcheck
-               ; diagnostics.pycodestyle
-               ; diagnostics.pydocstyle
-               (diagnostics.rubocop.with {:cwd (root-pattern :.rubocop.yml)
-                                          :command :bundle
-                                          :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
-               (diagnostics.luacheck.with {:cwd (root-pattern :.luacheckrc)
-                                           :condition (with-root-file :.luacheckrc)})
+    {:sources [(diagnostics.rubocop.with {:cwd (root-pattern :.rubocop.yml
+                                                                               :command :bundle
+                                                                               :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args))})
                (diagnostics.selene.with {:cwd (root-pattern :selene.toml)
                                          :condition (with-root-file :selene.toml)})
-               ; (diagnostics.pylint.with  {:cwd (root-pattern :venv/)})
                (cspell.diagnostics.with {:cwd (root-pattern :cspell.json)
                                          :prefer_local :node_modules/.bin
                                          :filetypes cspell-filetypes
                                          :diagnostics_postprocess #(tset $1 :severity vim.diagnostic.severity.W)
                                          :config cspell-config})
 
-               code_actions.shellcheck
                (cspell.code_actions.with {:cwd (root-pattern :cspell.json)
                                           :prefer_local :node_modules/.bin
                                           :filetypes cspell-filetypes
                                           :config cspell-config})
 
                formatting.gofmt
-               formatting.jq
                (formatting.rubocop.with {:cwd (root-pattern :.rubocop.yml)
                                          :command :bundle
                                          :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
                formatting.stylua
                formatting.terraform_fmt
-               formatting.nixpkgs_fmt
-               formatting.rustfmt]
+               formatting.nixpkgs_fmt]
 
      :on_attach on-attach}))
 

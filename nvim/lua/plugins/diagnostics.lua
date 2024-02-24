@@ -43,7 +43,7 @@ end
 local function diagnostic_format(diagnostic)
   return (cfg.icons[diagnostic.severity] .. " [" .. get_source_name(diagnostic) .. "] " .. diagnostic.message)
 end
-vim.diagnostic.config({underline = true, virtual_text = true, severity_sort = true, float = {header = "", border = cfg.border, format = diagnostic_format}, signs = false, update_in_insert = false})
+vim.diagnostic.config({underline = true, virtual_text = true, severity_sort = true, float = {header = "", border = cfg.border, format = diagnostic_format}, update_in_insert = false, signs = false})
 vim.api.nvim_create_augroup("lsp-formatting", {clear = true})
 local function on_attach(client, bufnr)
   if client.supports_method("textDocument/formatting") then
@@ -69,11 +69,10 @@ local cspell_config = {on_add_to_json = on_add_to_json, on_add_to_dictionary = o
 local function config()
   local formatting = null_ls.builtins.formatting
   local diagnostics = null_ls.builtins.diagnostics
-  local code_actions = null_ls.builtins.code_actions
   local function _17_(_241)
     _241["severity"] = vim.diagnostic.severity.W
     return nil
   end
-  return null_ls.setup({sources = {diagnostics.shellcheck, diagnostics.rubocop.with({cwd = root_pattern(".rubocop.yml"), command = "bundle", args = core.concat({"exec", "rubocop"}, diagnostics.rubocop._opts.args)}), diagnostics.luacheck.with({cwd = root_pattern(".luacheckrc"), condition = with_root_file(".luacheckrc")}), diagnostics.selene.with({cwd = root_pattern("selene.toml"), condition = with_root_file("selene.toml")}), cspell.diagnostics.with({cwd = root_pattern("cspell.json"), prefer_local = "node_modules/.bin", filetypes = cspell_filetypes, diagnostics_postprocess = _17_, config = cspell_config}), code_actions.shellcheck, cspell.code_actions.with({cwd = root_pattern("cspell.json"), prefer_local = "node_modules/.bin", filetypes = cspell_filetypes, config = cspell_config}), formatting.gofmt, formatting.jq, formatting.rubocop.with({cwd = root_pattern(".rubocop.yml"), command = "bundle", args = core.concat({"exec", "rubocop"}, diagnostics.rubocop._opts.args)}), formatting.stylua, formatting.terraform_fmt, formatting.nixpkgs_fmt, formatting.rustfmt}, on_attach = on_attach})
+  return null_ls.setup({sources = {diagnostics.rubocop.with({cwd = root_pattern(".rubocop.yml", "command", "bundle", "args", core.concat({"exec", "rubocop"}, diagnostics.rubocop._opts.args))}), diagnostics.selene.with({cwd = root_pattern("selene.toml"), condition = with_root_file("selene.toml")}), cspell.diagnostics.with({cwd = root_pattern("cspell.json"), prefer_local = "node_modules/.bin", filetypes = cspell_filetypes, diagnostics_postprocess = _17_, config = cspell_config}), cspell.code_actions.with({cwd = root_pattern("cspell.json"), prefer_local = "node_modules/.bin", filetypes = cspell_filetypes, config = cspell_config}), formatting.gofmt, formatting.rubocop.with({cwd = root_pattern(".rubocop.yml"), command = "bundle", args = core.concat({"exec", "rubocop"}, diagnostics.rubocop._opts.args)}), formatting.stylua, formatting.terraform_fmt, formatting.nixpkgs_fmt}, on_attach = on_attach})
 end
-return {{"folke/trouble.nvim", dependencies = {"nvim-tree/nvim-web-devicons"}, opts = {icons = true, signs = {error = cfg.icons.ERROR, warning = cfg.icons.WARN, hint = cfg.icons.HINT, information = cfg.icons.INFO, other = "\239\171\160"}, padding = false, group = false}, config = true}, {"nvimtools/none-ls.nvim", dependencies = {"nvim-lua/plenary.nvim", "davidmh/cspell.nvim"}, config = config}}
+return {{"folke/trouble.nvim", dependencies = {"nvim-tree/nvim-web-devicons"}, opts = {icons = true, signs = {error = cfg.icons.ERROR, warning = cfg.icons.WARN, hint = cfg.icons.HINT, information = cfg.icons.INFO, other = "\239\171\160"}, group = false, padding = false}, config = true}, {"nvimtools/none-ls.nvim", dependencies = {"nvim-lua/plenary.nvim", "davidmh/cspell.nvim"}, config = config}}
