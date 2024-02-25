@@ -15,4 +15,5 @@
                                                           :<leader>v {:name :vim}
                                                           :<leader>f {:name :file-tree}
                                                           :<leader>/ {:name :find}
+                                                          :<localleader>g {:name :gemini}
                                                           :<localleader>t {:name :test}})})
