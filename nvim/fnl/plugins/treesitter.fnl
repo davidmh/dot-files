@@ -66,8 +66,7 @@
                   :ensure_installed ensure-installed
                   :table_of_contents {:enable true}}))
 
-[(use :fsouza/nvim-treesitter-textobjects {:name :nvim-treesitter-textobjects
-                                           :branch :fennel-fix})
+[(use :nvim-treesitter/nvim-treesitter-textobjects {:name :nvim-treesitter-textobjects})
  (use :nvim-treesitter/nvim-treesitter
       {:dependencies [:nvim-treesitter-textobjects
                       :JoosepAlviste/nvim-ts-context-commentstring
