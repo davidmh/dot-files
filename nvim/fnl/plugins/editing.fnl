@@ -48,7 +48,7 @@
  (use :AndrewRadev/switch.vim {:config config-switch
                                :event :VeryLazy})
 
- (use :tommcdo/vim-exchange {:keys [:cx :cX :c<Space> :X]})
+ (use :tommcdo/vim-exchange {:keys [:cx :cX (use :X {:mode :v})]})
 
  (use :junegunn/vim-easy-align {:config config-easy-align
                                 :keys [:ga]})
