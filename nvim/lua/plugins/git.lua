@@ -14,6 +14,7 @@ local putils = autoload("telescope.previewers.utils")
 local state = autoload("telescope.actions.state")
 local str = autoload("nfnl.string")
 local utils = autoload("telescope.utils")
+local neogit = autoload("neogit")
 vim.g.fugitive_legacy_commands = false
 local function cmd(expression)
   return ("<cmd>" .. expression .. "<cr>")
@@ -155,10 +156,13 @@ local function git_write()
     return nil
   end
 end
+local function git_switch()
+  return neogit.action("branch", "branch/revision")
+end
 local function config()
   gmap("g", cmd("Neogit"), "git status")
   gmap("c", cmd("Neogit commit"), "git commit")
-  gmap("s", cmd("Telescope git_branches"), "git switch")
+  gmap("s", git_switch, "git switch")
   gmap("w", git_write, "write into the git tree")
   gmap("r", cmd("Gread"), "read from the git tree")
   gmap("e", cmd("Gedit"), "edit from the git tree")

@@ -12,6 +12,7 @@
 (local state (autoload :telescope.actions.state))
 (local str (autoload :nfnl.string))
 (local utils (autoload :telescope.utils))
+(local neogit (autoload :neogit))
 
 (set vim.g.fugitive_legacy_commands false)
 
@@ -152,10 +153,13 @@
                        (if (= (vim.fn.filereadable lua-file) 1)
                            (vim.cmd (.. "Git add " lua-file)))))))
 
+(fn git-switch []
+  (neogit.action :branch :branch/revision))
+
 (fn config []
   (gmap :g (cmd "Neogit") "git status")
   (gmap :c (cmd "Neogit commit") "git commit")
-  (gmap :s (cmd "Telescope git_branches") "git switch")
+  (gmap :s git-switch "git switch")
   (gmap :w git-write "write into the git tree")
   (gmap :r (cmd "Gread") "read from the git tree")
   (gmap :e (cmd "Gedit") "edit from the git tree") ; open the latest committed version of the current file
