@@ -120,6 +120,7 @@
       init.defaultBranch = "main";
       rebase.autosquash = true;
       fetch.writeCommitGraph = true;
+      push.autoSetupRemote = true;
     };
 
     diff-so-fancy.enable = true;
