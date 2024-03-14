@@ -2,8 +2,7 @@
 
 (use :nvim-neorg/neorg {:build ":Neorg sync-parsers"
                         :dependencies [:nvim-lua/plenary.nvim
-                                       :nvim-treesitter/nvim-treesitter
-                                       (use :folke/zen-mode.nvim {:opts {:window {:width 100}}})]
+                                       :nvim-treesitter/nvim-treesitter]
                         :event :VeryLazy
                         :opts {:load {:core.defaults {}
                                       :core.concealer {}
