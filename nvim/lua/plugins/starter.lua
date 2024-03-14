@@ -9,7 +9,7 @@ local sanitize_path = _local_3_["sanitize-path"]
 local mini_starter = autoload("mini.starter")
 local projects = autoload("own.projects")
 math.randomseed(os.time())
-local quotes = {"Eat right, stay fit, and die anyway.", "Causes moderate eye irritation.", "May cause headaches.", "And now for something completely different.", "What are we breaking today?", "Oh good, it's almost bedtime."}
+local quotes = {"vim is only free if your time has no value.", "Eat right, stay fit, and die anyway.", "Causes moderate eye irritation.", "May cause headaches.", "And now for something completely different.", "What are we breaking today?", "Oh good, it's almost bedtime."}
 local function format_recent(_4_)
   local _arg_5_ = _4_
   local name = _arg_5_["name"]

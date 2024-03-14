@@ -1,7 +1,8 @@
 (import-macros {: use} :own.macros)
 
 (use :gera2ld/ai.nvim {:dependencies [:nvim-lua/plenary.nvim]
-                       :cmd [:GeminiDefineCword
+                       :cmd [:GeminiAsk
+                             :GeminiDefineCword
                              :GeminiDefine
                              :GeminiTranslate
                              :GeminiImprove]

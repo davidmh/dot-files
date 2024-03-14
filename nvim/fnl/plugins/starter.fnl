@@ -7,7 +7,8 @@
 
 (math.randomseed (os.time))
 
-(local quotes ["Eat right, stay fit, and die anyway."
+(local quotes ["vim is only free if your time has no value."
+               "Eat right, stay fit, and die anyway."
                "Causes moderate eye irritation."
                "May cause headaches."
                "And now for something completely different."

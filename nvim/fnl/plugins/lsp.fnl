@@ -35,7 +35,6 @@
 
 (fn lsp-config []
   (local git-root (util.root_pattern :.git))
-  (local ruby-root (util.root_pattern :Gemfile))
 
   (local client-capabilities (->> (vim.lsp.protocol.make_client_capabilities)
                                   ; :kevinhwang91/nvim-ufo
