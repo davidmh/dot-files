@@ -13,6 +13,8 @@
 (local navic (autoload :nvim-navic))
 (local projects (autoload :own.projects))
 
+(local error-filter {:severity vim.diagnostic.severity.ERROR})
+
 (local state {:tmux-term nil})
 
 ; helpers
@@ -75,7 +77,8 @@
 
 ;; toggles
 (nmap :<leader>tb toggle-blame-line (opts "toggle blame line"))
-(nmap :<leader>td (cmd "Trouble document_diagnostics") (opts "toggle diagnostics"))
+(nmap :<leader>td (cmd "Trouble document_diagnostics") (opts "toggle document diagnostics"))
+(nmap :<leader>tw (cmd "Trouble workspace_diagnostics") (opts "toggle worspace diagnostics"))
 
 ;; buffers
 (nmap :<leader>bb #(t.buffers) (opts "list buffers"))
@@ -83,8 +86,10 @@
 (nmap :<leader>bo (cmd :BufOnly!) (opts "kill other buffers"))
 
 ;; neog
-(nmap :<leader>ob #(telescope-file-browser "~/Documents/neorg/") (opts "org browse"))
-(nmap :<leader>oj (cmd "Neorg journal") (opts "org journal"))
+(nmap :<leader>ni (cmd "Neog index") (opts "neog index"))
+(nmap :<leader>nb #(telescope-file-browser "~/Documents/neorg/") (opts "neorg browse"))
+(nmap :<leader>nj (cmd "Neorg journal") (opts "neorg journal"))
+(nmap :<leader>nr (cmd "Neorg return") (opts "neorg return"))
 
 ;; toggle term
 (map [:n :t] :<C-t> #(term-split 100) (opts "split term"))
@@ -125,8 +130,8 @@
 (nmap :<M-s> (cmd "write silent!") (opts "write file"))
 (nmap :z= (cmd "Telescope spell_suggest theme=get_cursor") (opts "suggest spelling"))
 ;; diagnostics
-(nmap "[d" #(vim.diagnostic.goto_prev) (opts "next diagnostic"))
-(nmap "]d" #(vim.diagnostic.goto_next) (opts "previous diagnostic"))
+(nmap "[d" #(vim.diagnostic.goto_prev error-filter) (opts "next diagnostic"))
+(nmap "]d" #(vim.diagnostic.goto_next error-filter) (opts "previous diagnostic"))
 
 ; LSP mappings
 ; Set only to the buffer where the LSP client is attached
