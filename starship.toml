@@ -29,10 +29,10 @@ deleted = '[-$count]() '
 modified = '[±$count]() '
 staged = '[+$count]() '
 renamed = '[ $count]() '
-behind = '[ ]() '
-ahead = '[ ]() '
-diverged = '[נּ]($style)'
-format = "[ [($conflicted$untracked$modified$deleted$staged$renamed)](218) ($ahead_behind)]($style)"
+ahead = "⇡"
+behind = "⇣"
+diverged = "󰙁"
+format = "[ [($conflicted$untracked$modified$deleted$staged$renamed$ahead_behind)](218) ]($style)"
 
 [git_state]
 format = '\([$state( $progress_current/$progress_total)]($style)\) '
