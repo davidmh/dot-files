@@ -14,6 +14,7 @@
 (local projects (autoload :own.projects))
 
 (local error-filter {:severity vim.diagnostic.severity.ERROR})
+(local warning-filter {:severity vim.diagnostic.severity.WARNING})
 
 (local state {:tmux-term nil})
 
@@ -132,6 +133,8 @@
 ;; diagnostics
 (nmap "[d" #(vim.diagnostic.goto_prev error-filter) (opts "next diagnostic"))
 (nmap "]d" #(vim.diagnostic.goto_next error-filter) (opts "previous diagnostic"))
+(nmap "[w" #(vim.diagnostic.goto_prev warning-filter) (opts "next warning"))
+(nmap "]w" #(vim.diagnostic.goto_next warning-filter) (opts "previous warning"))
 
 ; LSP mappings
 ; Set only to the buffer where the LSP client is attached

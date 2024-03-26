@@ -8,6 +8,7 @@ local terminal = autoload("toggleterm.terminal")
 local navic = autoload("nvim-navic")
 local projects = autoload("own.projects")
 local error_filter = {severity = vim.diagnostic.severity.ERROR}
+local warning_filter = {severity = vim.diagnostic.severity.WARNING}
 local state = {["tmux-term"] = nil}
 local function cmd(expression)
   return ("<cmd>" .. expression .. "<cr>")
@@ -168,6 +169,14 @@ local function _26_()
   return vim.diagnostic.goto_next(error_filter)
 end
 vim.keymap.set("n", "]d", _26_, opts("previous diagnostic"))
+local function _27_()
+  return vim.diagnostic.goto_prev(warning_filter)
+end
+vim.keymap.set("n", "[w", _27_, opts("next warning"))
+local function _28_()
+  return vim.diagnostic.goto_next(warning_filter)
+end
+vim.keymap.set("n", "]w", _28_, opts("previous warning"))
 vim.api.nvim_create_augroup("eslint-autofix", {clear = true})
 local function set_eslint_autofix(bufnr)
   return vim.api.nvim_create_autocmd("BufWritePre", {command = "EslintFixAll", group = "eslint-autofix", buffer = bufnr})
@@ -189,10 +198,10 @@ local function on_attach(args)
   buf_map("<leader>la", vim.lsp.buf.code_action, "lsp: code actions")
   buf_map("<leader>lr", vim.lsp.buf.rename, "lsp: rename")
   buf_map("<leader>lR", "<cmd>LspRestart<CR>", "lsp: restart")
-  local function _27_()
+  local function _29_()
     return vim.lsp.buf.code_action()
   end
-  vim.keymap.set("v", "<leader>la", _27_, {buffer = true, desc = "lsp: code actions"})
+  vim.keymap.set("v", "<leader>la", _29_, {buffer = true, desc = "lsp: code actions"})
   if (client.name == "eslint") then
     set_eslint_autofix(bufnr)
   else
