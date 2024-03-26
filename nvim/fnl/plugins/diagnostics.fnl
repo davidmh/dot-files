@@ -25,7 +25,6 @@
                          :less
                          :lua
                          :markdown
-                         :nix
                          :python
                          :ruby
                          :typescript
@@ -47,7 +46,7 @@
 
 (vim.diagnostic.config {:underline true
                         :signs false
-                        :virtual_text true
+                        :virtual_text false
                         :update_in_insert false
                         :severity_sort true
                         :float {:header ""
@@ -101,6 +100,7 @@
                (formatting.rubocop.with {:cwd (root-pattern :.rubocop.yml)
                                          :command :bundle
                                          :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
+               (formatting.sqlfluff.with {:prefer_local :node_modules/.bin})
                formatting.stylua
                formatting.terraform_fmt
                formatting.nixpkgs_fmt]
