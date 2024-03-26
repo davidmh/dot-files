@@ -201,6 +201,8 @@
                                         :sindrets/diffview.nvim
                                         :nvim-telescope/telescope.nvim]
                          :opts {:disable_hint true
-                                :graph_style :unicode}
+                                :fetch_after_checkout true
+                                :graph_style :unicode
+                                :remember_settings false}
                          :config true
                          :event :VeryLazy})]
