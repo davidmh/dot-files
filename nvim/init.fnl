@@ -9,7 +9,8 @@
                             :fallback true}
                       :checker {:enabled true
                                 :notify false}
-                      :ui {:border border}})
+                      :ui {:border border
+                           :backdrop 100}})
 
 (vim.schedule #(do
                 (require :own.mappings)
