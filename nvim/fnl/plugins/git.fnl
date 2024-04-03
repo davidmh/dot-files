@@ -197,7 +197,8 @@
                       :event :VeryLazy
                       : config})
 
- (use :NeogitOrg/neogit {:dependencies [:nvim-lua/plenary.nvim
+ (use :NeogitOrg/neogit {:branch :nightly
+                         :dependencies [:nvim-lua/plenary.nvim
                                         :sindrets/diffview.nvim
                                         :nvim-telescope/telescope.nvim]
                          :opts {:disable_hint true
