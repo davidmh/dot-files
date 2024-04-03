@@ -21,6 +21,9 @@
                                       :telescope {:layout_config {:width #(math.min $2 80)
                                                                   :height #(math.min $2 15)}}}})
 
+ (use :nvim-zh/colorful-winsep.nvim {:config true
+                                     :event [:WinNew]})
+
  (use :rcarriga/nvim-notify {:dependencies [:nvim-telescope/telescope.nvim]
                              :event :VeryLazy
                              :config #(do (notify.setup {:timeout 2500
