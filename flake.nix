@@ -21,6 +21,23 @@
         inherit pkgs;
 
         modules = [
+          {
+            nixpkgs = {
+              config = {
+                allowUnfree = true;
+                allowUnfreePredicate = (pkgs: true);
+              };
+              overlays = [
+                (final: prev: {
+                  unstable = import inputs.unstable {
+                    system = final.system;
+                    config.allowUnfree = true;
+                  };
+                })
+                inputs.neovim-nightly-overlay.overlay
+              ];
+            };
+          }
           ./home.nix
           {
             home.username = username;
