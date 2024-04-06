@@ -81,8 +81,8 @@
 
   (null-ls.setup
     {:sources [(diagnostics.rubocop.with {:cwd (root-pattern :.rubocop.yml
-                                                                               :command :bundle
-                                                                               :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args))})
+                                                             :command :bundle
+                                                             :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args))})
                (diagnostics.selene.with {:cwd (root-pattern :selene.toml)
                                          :condition (with-root-file :selene.toml)})
                (cspell.diagnostics.with {:cwd (root-pattern :cspell.json)
@@ -97,9 +97,6 @@
                                           :config cspell-config})
 
                formatting.gofmt
-               (formatting.rubocop.with {:cwd (root-pattern :.rubocop.yml)
-                                         :command :bundle
-                                         :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
                (formatting.sqlfluff.with {:prefer_local :node_modules/.bin})
                formatting.stylua
                formatting.terraform_fmt
