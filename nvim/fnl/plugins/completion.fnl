@@ -52,6 +52,7 @@
 
   ;; snippets config
   (local js-log (ls.parser.parse_snippet :debug "console.log('DEBUG', { $0 });"))
+  (local co-authored-by (ls.parser.parse_snippet :cab "Co-authored-by: $0"))
 
   (ls.add_snippets :all [(ls.snippet :todo [(ls.text_node "TODO(dmejorado): ")
                                             (ls.insert_node 0)])
@@ -59,7 +60,8 @@
   (ls.add_snippets :javascript [js-log])
   (ls.add_snippets :typescript [js-log])
   (ls.add_snippets :typescriptreact [js-log])
-  (ls.add_snippets :gitcommit [(ls.parser.parse_snippet "cab" "Co-Authored-By: $0")])
+  (ls.add_snippets :gitcommit [co-authored-by])
+  (ls.add_snippets :NeogitCommitMessage [co-authored-by])
   (ls.add_snippets :org [(ls.parser.parse_snippet "<s" "#+BEGIN_SRC ${1}\n${0}\n#+END_SRC\n")]))
 
 [(use :petertriho/cmp-git {:dependencies [:nvim-lua/plenary.nvim]

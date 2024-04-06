@@ -38,6 +38,7 @@ local function config()
   end
   vim.keymap.set({"i"}, "<c-l>", _5_)
   local js_log = ls.parser.parse_snippet("debug", "console.log('DEBUG', { $0 });")
+  local co_authored_by = ls.parser.parse_snippet("cab", "Co-authored-by: $0")
   local function _7_()
     return os.date("%Y-%m-%d")
   end
@@ -45,7 +46,8 @@ local function config()
   ls.add_snippets("javascript", {js_log})
   ls.add_snippets("typescript", {js_log})
   ls.add_snippets("typescriptreact", {js_log})
-  ls.add_snippets("gitcommit", {ls.parser.parse_snippet("cab", "Co-Authored-By: $0")})
+  ls.add_snippets("gitcommit", {co_authored_by})
+  ls.add_snippets("NeogitCommitMessage", {co_authored_by})
   return ls.add_snippets("org", {ls.parser.parse_snippet("<s", "#+BEGIN_SRC ${1}\n${0}\n#+END_SRC\n")})
 end
 return {{"petertriho/cmp-git", dependencies = {"nvim-lua/plenary.nvim"}, config = true}, {"hrsh7th/nvim-cmp", dependencies = {"hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "PaterJason/cmp-conjure", "saadparwaiz1/cmp_luasnip", "L3MON4D3/LuaSnip", "davidmh/cmp-nerdfonts", "onsails/lspkind-nvim", "petertriho/cmp-git", "hrsh7th/cmp-emoji", "jalvesaq/cmp-nvim-r", "rafamadriz/friendly-snippets"}, config = config}}
