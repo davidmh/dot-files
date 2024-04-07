@@ -18,7 +18,7 @@ local function config()
   local function _2_(args)
     return ls.lsp_expand(args.body)
   end
-  cmp.setup({mapping = cmp.mapping.preset.insert(cmd_mappings), sources = cmp.config.sources({{name = "luasnip"}, {name = "nvim_lsp"}, {name = "cmp_nvim_r"}, {name = "orgmode"}, {name = "emoji"}, {name = "git"}, {name = "nerdfonts"}, {name = "conjure"}, {name = "buffer", keyword_length = 5}}), formatting = {fields = {"kind", "abbr", "menu"}, format = cmp_format}, snippet = {expand = _2_}, window = {completion = {winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None", col_offset = -3, side_padding = 0}}})
+  cmp.setup({mapping = cmp.mapping.preset.insert(cmd_mappings), sources = cmp.config.sources({{name = "luasnip"}, {name = "nvim_lsp"}, {name = "cmp_nvim_r"}, {name = "orgmode"}, {name = "emoji"}, {name = "nerdfonts"}, {name = "conjure"}, {name = "buffer", keyword_length = 5}}), formatting = {fields = {"kind", "abbr", "menu"}, format = cmp_format}, snippet = {expand = _2_}, window = {completion = {winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None", col_offset = -3, side_padding = 0}}})
   cmp.setup.cmdline({mapping = cmp.mapping.preset.cmdline(cmd_mappings)})
   ls.config.setup({history = true, update_events = "TextChanged,TextChangedI", enable_autosnippets = true})
   local function _3_()
@@ -31,22 +31,30 @@ local function config()
   vim.keymap.set({"i", "s"}, "<c-k>", _3_)
   local function _5_()
     if ls.choice_active() then
+      return ls.change_choice(-1)
+    else
+      return nil
+    end
+  end
+  vim.keymap.set({"i"}, "<c-h>", _5_)
+  local function _7_()
+    if ls.choice_active() then
       return ls.change_choice(1)
     else
       return nil
     end
   end
-  vim.keymap.set({"i"}, "<c-l>", _5_)
+  vim.keymap.set({"i"}, "<c-l>", _7_)
   local js_log = ls.parser.parse_snippet("debug", "console.log('DEBUG', { $0 });")
   local co_authored_by = ls.parser.parse_snippet("cab", "Co-authored-by: $0")
-  local function _7_()
+  local function _9_()
     return os.date("%Y-%m-%d")
   end
-  ls.add_snippets("all", {ls.snippet("todo", {ls.text_node("TODO(dmejorado): "), ls.insert_node(0)}), ls.snippet("today", ls.function_node(_7_))})
+  ls.add_snippets("all", {ls.snippet("todo", {ls.text_node("TODO(dmejorado): "), ls.insert_node(0)}), ls.snippet("today", ls.function_node(_9_))})
   ls.add_snippets("javascript", {js_log})
   ls.add_snippets("typescript", {js_log})
   ls.add_snippets("typescriptreact", {js_log})
   ls.add_snippets("gitcommit", {co_authored_by})
   return ls.add_snippets("org", {ls.parser.parse_snippet("<s", "#+BEGIN_SRC ${1}\n${0}\n#+END_SRC\n")})
 end
-return {{"petertriho/cmp-git", dependencies = {"nvim-lua/plenary.nvim"}, config = true}, {"hrsh7th/nvim-cmp", dependencies = {"hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "PaterJason/cmp-conjure", "saadparwaiz1/cmp_luasnip", "L3MON4D3/LuaSnip", "davidmh/cmp-nerdfonts", "onsails/lspkind-nvim", "petertriho/cmp-git", "hrsh7th/cmp-emoji", "jalvesaq/cmp-nvim-r", "rafamadriz/friendly-snippets"}, config = config}}
+return {"hrsh7th/nvim-cmp", dependencies = {"hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "PaterJason/cmp-conjure", "saadparwaiz1/cmp_luasnip", "L3MON4D3/LuaSnip", "davidmh/cmp-nerdfonts", "onsails/lspkind-nvim", "hrsh7th/cmp-emoji", "jalvesaq/cmp-nvim-r", "rafamadriz/friendly-snippets"}, config = config}

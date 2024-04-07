@@ -29,7 +29,6 @@
                                             {:name :cmp_nvim_r}
                                             {:name :orgmode}
                                             {:name :emoji}
-                                            {:name :git}
                                             {:name :nerdfonts}
                                             {:name :conjure}
                                             {:name :buffer :keyword_length 5}])
@@ -48,6 +47,7 @@
 
   (map [:i :s] :<c-k> #(if (ls.expand_or_jumpable) (ls.expand_or_jump)))
 
+  (map [:i] :<c-h> #(if (ls.choice_active) (ls.change_choice -1)))
   (map [:i] :<c-l> #(if (ls.choice_active) (ls.change_choice 1)))
 
   ;; snippets config
@@ -63,17 +63,14 @@
   (ls.add_snippets :gitcommit [co-authored-by])
   (ls.add_snippets :org [(ls.parser.parse_snippet "<s" "#+BEGIN_SRC ${1}\n${0}\n#+END_SRC\n")]))
 
-[(use :petertriho/cmp-git {:dependencies [:nvim-lua/plenary.nvim]
-                           :config true})
- (use :hrsh7th/nvim-cmp {:dependencies [:hrsh7th/cmp-nvim-lsp
-                                        :hrsh7th/cmp-buffer
-                                        :PaterJason/cmp-conjure
-                                        :saadparwaiz1/cmp_luasnip
-                                        :L3MON4D3/LuaSnip
-                                        :davidmh/cmp-nerdfonts
-                                        :onsails/lspkind-nvim
-                                        :petertriho/cmp-git
-                                        :hrsh7th/cmp-emoji
-                                        :jalvesaq/cmp-nvim-r
-                                        :rafamadriz/friendly-snippets]
-                         : config})]
+(use :hrsh7th/nvim-cmp {:dependencies [:hrsh7th/cmp-nvim-lsp
+                                       :hrsh7th/cmp-buffer
+                                       :PaterJason/cmp-conjure
+                                       :saadparwaiz1/cmp_luasnip
+                                       :L3MON4D3/LuaSnip
+                                       :davidmh/cmp-nerdfonts
+                                       :onsails/lspkind-nvim
+                                       :hrsh7th/cmp-emoji
+                                       :jalvesaq/cmp-nvim-r
+                                       :rafamadriz/friendly-snippets]
+                        : config})
