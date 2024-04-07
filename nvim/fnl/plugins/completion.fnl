@@ -61,7 +61,6 @@
   (ls.add_snippets :typescript [js-log])
   (ls.add_snippets :typescriptreact [js-log])
   (ls.add_snippets :gitcommit [co-authored-by])
-  (ls.add_snippets :NeogitCommitMessage [co-authored-by])
   (ls.add_snippets :org [(ls.parser.parse_snippet "<s" "#+BEGIN_SRC ${1}\n${0}\n#+END_SRC\n")]))
 
 [(use :petertriho/cmp-git {:dependencies [:nvim-lua/plenary.nvim]

@@ -47,7 +47,6 @@ local function config()
   ls.add_snippets("typescript", {js_log})
   ls.add_snippets("typescriptreact", {js_log})
   ls.add_snippets("gitcommit", {co_authored_by})
-  ls.add_snippets("NeogitCommitMessage", {co_authored_by})
   return ls.add_snippets("org", {ls.parser.parse_snippet("<s", "#+BEGIN_SRC ${1}\n${0}\n#+END_SRC\n")})
 end
 return {{"petertriho/cmp-git", dependencies = {"nvim-lua/plenary.nvim"}, config = true}, {"hrsh7th/nvim-cmp", dependencies = {"hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "PaterJason/cmp-conjure", "saadparwaiz1/cmp_luasnip", "L3MON4D3/LuaSnip", "davidmh/cmp-nerdfonts", "onsails/lspkind-nvim", "petertriho/cmp-git", "hrsh7th/cmp-emoji", "jalvesaq/cmp-nvim-r", "rafamadriz/friendly-snippets"}, config = config}}
