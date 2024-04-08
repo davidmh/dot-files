@@ -14,6 +14,11 @@
     (tset kind-item :kind (.. " " kind-item.kind " "))
     kind-item))
 
+(local co-author-domain-ranking (vim.tbl_add_reverse_lookup ["users.noreply.github.com"
+                                                             "ridewithvia.com"
+                                                             "remix.com"
+                                                             "gmail.com"]))
+
 (fn config []
   (from-vscode.lazy_load)
   (local cmd-mappings {:<C-d> (cmp.mapping.scroll_docs -4)
@@ -24,7 +29,10 @@
                                                     :select true})})
 
   (cmp.setup {:mapping (cmp.mapping.preset.insert cmd-mappings)
-              :sources (cmp.config.sources [{:name :luasnip}
+              :sources (cmp.config.sources [{:name :git-co-authors
+                                             :option {:domain_ranking co-author-domain-ranking
+                                                      :since_date "2 weeks"}}
+                                            {:name :luasnip}
                                             {:name :nvim_lsp}
                                             {:name :cmp_nvim_r}
                                             {:name :orgmode}
@@ -72,5 +80,6 @@
                                        :onsails/lspkind-nvim
                                        :hrsh7th/cmp-emoji
                                        :jalvesaq/cmp-nvim-r
-                                       :rafamadriz/friendly-snippets]
+                                       :rafamadriz/friendly-snippets
+                                       :davidmh/cmp-git-co-authors]
                         : config})
