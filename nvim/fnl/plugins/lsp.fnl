@@ -47,7 +47,7 @@
 
   (local server-configs {:jsonls {:settings {:json {:schemas (schema-store.json.schemas)
                                                     :validate {:enable true}}}}
-                         :lua_ls {:settings {:Lua {:completion :Replace
+                         :lua_ls {:settings {:Lua {:completion {:callSnippet :Replace}
                                                    :diagnostics {:globals [:vim
                                                                            :it
                                                                            :describe
