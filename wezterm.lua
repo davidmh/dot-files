@@ -1,34 +1,10 @@
 local wezterm = require('wezterm')
 
--- zen-mode.nvim
-wezterm.on('user-var-changed', function(window, pane, name, value)
-  local overrides = window:get_config_overrides() or {}
-  if name == 'ZEN_MODE' then
-    local incremental = value:find('+')
-    local number_value = tonumber(value)
-    if incremental ~= nil then
-      while number_value > 0 do
-        window:perform_action(wezterm.action.IncreaseFontSize, pane)
-        number_value = number_value - 1
-      end
-      overrides.enable_tab_bar = false
-    elseif number_value < 0 then
-      window:perform_action(wezterm.action.ResetFontSize, pane)
-      overrides.font_size = nil
-      overrides.enable_tab_bar = true
-    else
-      overrides.font_size = number_value
-      overrides.enable_tab_bar = false
-    end
-  end
-  window:set_config_overrides(overrides)
-end)
-
 return {
   font = wezterm.font('Hasklug Nerd Font', { weight = 'Medium' }),
   font_size = 14.0,
   front_end = 'Software',
-  color_scheme = 'Catppuccin Mocha',
+  color_scheme = 'Catppuccin Frappe',
   line_height = 1.3,
   underline_position = -7,
   use_fancy_tab_bar = false,
