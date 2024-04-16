@@ -1,7 +1,6 @@
 -- [nfnl] Compiled from fnl/own/options.fnl by https://github.com/Olical/nfnl, do not edit.
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
-vim.o.cmdheight = 1
 vim.o.cursorline = false
 vim.o.expandtab = true
 vim.o.foldlevel = 99
@@ -10,6 +9,7 @@ vim.o.guifont = "Hasklug Nerd Font:h14"
 vim.o.hidden = true
 vim.o.ignorecase = true
 vim.o.inccommand = "split"
+vim.o.number = true
 vim.o.laststatus = 3
 vim.o.list = true
 vim.o.listchars = "tab:\226\150\184 ,trail:\194\183"

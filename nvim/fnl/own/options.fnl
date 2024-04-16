@@ -1,7 +1,6 @@
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
 
-(set vim.o.cmdheight 1)
 (set vim.o.cursorline false)
 (set vim.o.expandtab true)
 (set vim.o.foldlevel 99)
@@ -10,6 +9,7 @@
 (set vim.o.hidden true)
 (set vim.o.ignorecase true)
 (set vim.o.inccommand :split)
+(set vim.o.number true)
 (set vim.o.laststatus 3)
 (set vim.o.list true)
 (set vim.o.listchars "tab:▸ ,trail:·")

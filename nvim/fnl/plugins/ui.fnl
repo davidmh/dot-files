@@ -28,21 +28,4 @@
                                                          :top_down false
                                                          :fps 60
                                                          :render :wrapped-compact})
-                                          (set vim.notify notify))})
-
- (use :folke/noice.nvim {:config true
-                         :event :VeryLazy
-                         :opts {:lsp {:override {:vim.lsp.util.convert_input_to_markdown_lines true
-                                                 :vim.lsp.util.stylize_markdown true
-                                                 :cmp.entry.get_documentation true}
-                                      :hover {:opts {:size {:max_height 10
-                                                            :max_width 80}}}}
-                                :cmdline {:format {:help {:icon :}
-                                                   :filter {:title "Shell command"
-                                                            :icon :}}}
-                                :messages {:enabled false
-                                           :view_search false}
-                                :views {:mini {:position {:row 2
-                                                          :col "100%"}}}}
-                         :dependencies [:MunifTanjim/nui.nvim
-                                        :rcarriga/nvim-notify]})]
+                                          (set vim.notify notify))})]
