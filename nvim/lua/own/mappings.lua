@@ -5,7 +5,6 @@ local t = autoload("telescope.builtin")
 local gitsigns = autoload("gitsigns")
 local toggle_term = autoload("toggleterm")
 local terminal = autoload("toggleterm.terminal")
-local navic = autoload("nvim-navic")
 local projects = autoload("own.projects")
 local error_filter = {severity = vim.diagnostic.severity.ERROR}
 local warning_filter = {severity = vim.diagnostic.severity.WARNING}
@@ -203,11 +202,7 @@ local function on_attach(args)
   end
   vim.keymap.set("v", "<leader>la", _29_, {buffer = true, desc = "lsp: code actions"})
   if (client.name == "eslint") then
-    set_eslint_autofix(bufnr)
-  else
-  end
-  if client.server_capabilities.documentSymbolProvider then
-    return navic.attach(client, bufnr)
+    return set_eslint_autofix(bufnr)
   else
     return nil
   end

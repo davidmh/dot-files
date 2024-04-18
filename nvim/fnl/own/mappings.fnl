@@ -10,7 +10,6 @@
 (local gitsigns (autoload :gitsigns))
 (local toggle-term (autoload :toggleterm))
 (local terminal (autoload :toggleterm.terminal))
-(local navic (autoload :nvim-navic))
 (local projects (autoload :own.projects))
 
 (local error-filter {:severity vim.diagnostic.severity.ERROR})
@@ -173,11 +172,7 @@
   (vmap :<leader>la #(vim.lsp.buf.code_action) {:buffer true
                                                 :desc "lsp: code actions"})
 
-  (when (= client.name :eslint) (set-eslint-autofix bufnr))
-
-  (when client.server_capabilities.documentSymbolProvider
-    (navic.attach client bufnr)))
-
+  (when (= client.name :eslint) (set-eslint-autofix bufnr)))
 
 (augroup :lsp-attach [:LspAttach {:callback on-attach}])
 

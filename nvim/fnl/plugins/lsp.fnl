@@ -70,10 +70,7 @@
           server-config (core.get server-configs server-name {})]
       (if (= server-name :gopls)
           (server-setup server-config)
-          (server-setup (core.merge base-settings server-config)))))
-
-  (lspconfig.solargraph.setup {:root_dir git-root
-                               :cmd [:bundle :exec :solargraph :stdio]}))
+          (server-setup (core.merge base-settings server-config))))))
 
 [(use :folke/neodev.nvim {:opts {:library {:types true}}
                           :config true})
@@ -88,34 +85,14 @@
                                                                     :lua_ls
                                                                     :eslint
                                                                     :rust_analyzer
+                                                                    :solargraph
                                                                     :fennel_language_server]}
                                           :config true})
-
- (use :SmiteshP/nvim-navic {:opts {:depth_limit 4
-                                   :depth_limit_indicator " [  ] "
-                                   :click true
-                                   :highlight true
-                                   :format_text (fn [text]
-                                                  (if (or (text:match "^it%(")
-                                                          (text:match "^describe%("))
-                                                    (-> text
-                                                      (: :gsub "^it%('" "it ")
-                                                      (: :gsub "^describe%('" "describe ")
-                                                      (: :gsub "'%) callback$" ""))
-                                                    (-> text
-                                                      (: :gsub " callback$" ""))))
-                                   :icons cfg.navic-icons
-                                   :safe_output false
-                                   :separator "  "}
-                            :config true
-                            :dependencies [:williamboman/mason.nvim
-                                           :williamboman/mason-lspconfig.nvim]})
 
  (use :neovim/nvim-lspconfig {:dependencies [:williamboman/mason.nvim
                                              :williamboman/mason-lspconfig.nvim
                                              :folke/neodev.nvim
                                              :hrsh7th/cmp-nvim-lsp
-                                             :SmiteshP/nvim-navic
                                              :b0o/SchemaStore.nvim]
                               :config lsp-config})
 

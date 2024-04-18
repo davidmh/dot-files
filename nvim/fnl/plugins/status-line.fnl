@@ -10,7 +10,6 @@
 (local conditions (autoload :heirline.conditions))
 (local core (autoload :nfnl.core))
 (local palettes (autoload :catppuccin.palettes))
-(local navic (autoload :nvim-navic))
 (local nvim-web-devicons (autoload :nvim-web-devicons))
 (local config (autoload :own.config))
 (local neorg-mode (autoload :neorg.modules.core.mode.module))
@@ -146,12 +145,6 @@
                                             (tset $1 :color :lavender)
                                             (tset $1 :content (.. " " (get-quickfix-title))))}))
 
-(local lsp-breadcrumb (use (container {:provider #(navic.get_location {:highlight true})})
-                           {:condition #(and (navic.is_available)
-                                             (> (length (navic.get_location)) 0))
-                            :update [:CursorMoved :ColorScheme]
-                            :hl {:fg :fg}}))
-
 (local dead-space {:provider "             "})
 (local push-right {:provider "%="})
 
@@ -230,7 +223,6 @@
                      line-number])
 
 (local winbar [term-title
-               lsp-breadcrumb
                quickfix-title
                push-right
                quickfix-history-status-component
