@@ -34,6 +34,14 @@
     100))
 
 (fn lsp-config []
+  (local win-opts {:border cfg.border
+                   :max_width 100
+                   :separator true})
+  (tset vim.lsp.handlers "textDocument/hover"
+        (vim.lsp.with vim.lsp.handlers.hover win-opts))
+  (tset vim.lsp.handlers "textDocument/signatureHelp"
+        (vim.lsp.with vim.lsp.handlers.signature_help win-opts))
+
   (local git-root (util.root_pattern :.git))
 
   (local client-capabilities (->> (vim.lsp.protocol.make_client_capabilities)

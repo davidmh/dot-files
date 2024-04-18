@@ -33,6 +33,9 @@ local function mason_config()
   return vim.defer_fn(_3_, 100)
 end
 local function lsp_config()
+  local win_opts = {border = cfg.border, max_width = 100, separator = true}
+  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, win_opts)
+  do end (vim.lsp.handlers)["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, win_opts)
   local git_root = util.root_pattern(".git")
   local client_capabilities = vim.tbl_deep_extend("keep", {textDocument = {foldingRange = {lineFoldingOnly = true, dynamicRegistration = false}}}, vim.lsp.protocol.make_client_capabilities())
   local base_settings = {capabilities = cmp_lsp.default_capabilities(client_capabilities), init_options = {preferences = {includeCompletionsWithSnippetText = true, includeCompletionsForImportStatements = true}}}
