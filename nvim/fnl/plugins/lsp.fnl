@@ -34,14 +34,6 @@
     100))
 
 (fn lsp-config []
-  (local win-opts {:border cfg.border
-                   :max_width 100
-                   :separator true})
-  (tset vim.lsp.handlers "textDocument/hover"
-        (vim.lsp.with vim.lsp.handlers.hover win-opts))
-  (tset vim.lsp.handlers "textDocument/signatureHelp"
-        (vim.lsp.with vim.lsp.handlers.signature_help win-opts))
-
   (local git-root (util.root_pattern :.git))
 
   (local client-capabilities (->> (vim.lsp.protocol.make_client_capabilities)
@@ -89,6 +81,7 @@
                                           :opts {:ensure_installed [:bashls
                                                                     :clojure_lsp
                                                                     :cssls
+                                                                    :jedi_language_server
                                                                     :jsonls
                                                                     :lua_ls
                                                                     :eslint
@@ -103,6 +96,18 @@
                                              :hrsh7th/cmp-nvim-lsp
                                              :b0o/SchemaStore.nvim]
                               :config lsp-config})
+
+ (use :j-hui/fidget.nvim {:dependencies [:neovim/nvim-lspconfig]
+                          :opts {:notification {:window {:align :top
+                                                         :y_padding 2}}}})
+
+ (use :nvimdev/lspsaga.nvim {:dependencies [:nvim-treesitter/nvim-treesitter
+                                            :neovim/nvim-lspconfig
+                                            :nvim-tree/nvim-web-devicons]
+                             :opts {:lightbulb {:enable false}
+                                    :symbol_in_winbar {:enable false
+                                                       :show_file false
+                                                       :folder_level 0}}})
 
  (use :pmizio/typescript-tools.nvim {:dependencies :neovim/nvim-lspconfig
                                      :config true})]

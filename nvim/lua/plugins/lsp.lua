@@ -33,9 +33,6 @@ local function mason_config()
   return vim.defer_fn(_3_, 100)
 end
 local function lsp_config()
-  local win_opts = {border = cfg.border, max_width = 100, separator = true}
-  vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, win_opts)
-  do end (vim.lsp.handlers)["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, win_opts)
   local git_root = util.root_pattern(".git")
   local client_capabilities = vim.tbl_deep_extend("keep", {textDocument = {foldingRange = {lineFoldingOnly = true, dynamicRegistration = false}}}, vim.lsp.protocol.make_client_capabilities())
   local base_settings = {capabilities = cmp_lsp.default_capabilities(client_capabilities), init_options = {preferences = {includeCompletionsWithSnippetText = true, includeCompletionsForImportStatements = true}}}
@@ -51,4 +48,4 @@ local function lsp_config()
   end
   return nil
 end
-return {{"folke/neodev.nvim", opts = {library = {types = true}}, config = true}, {"williamboman/mason.nvim", config = mason_config}, {"williamboman/mason-lspconfig.nvim", dependencies = {"williamboman/mason.nvim"}, opts = {ensure_installed = {"bashls", "clojure_lsp", "cssls", "jsonls", "lua_ls", "eslint", "rust_analyzer", "solargraph", "fennel_language_server"}}, config = true}, {"neovim/nvim-lspconfig", dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim", "folke/neodev.nvim", "hrsh7th/cmp-nvim-lsp", "b0o/SchemaStore.nvim"}, config = lsp_config}, {"pmizio/typescript-tools.nvim", dependencies = "neovim/nvim-lspconfig", config = true}}
+return {{"folke/neodev.nvim", opts = {library = {types = true}}, config = true}, {"williamboman/mason.nvim", config = mason_config}, {"williamboman/mason-lspconfig.nvim", dependencies = {"williamboman/mason.nvim"}, opts = {ensure_installed = {"bashls", "clojure_lsp", "cssls", "jedi_language_server", "jsonls", "lua_ls", "eslint", "rust_analyzer", "solargraph", "fennel_language_server"}}, config = true}, {"neovim/nvim-lspconfig", dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim", "folke/neodev.nvim", "hrsh7th/cmp-nvim-lsp", "b0o/SchemaStore.nvim"}, config = lsp_config}, {"j-hui/fidget.nvim", dependencies = {"neovim/nvim-lspconfig"}, opts = {notification = {window = {align = "top", y_padding = 2}}}}, {"nvimdev/lspsaga.nvim", dependencies = {"nvim-treesitter/nvim-treesitter", "neovim/nvim-lspconfig", "nvim-tree/nvim-web-devicons"}, opts = {lightbulb = {enable = false}, symbol_in_winbar = {folder_level = 0, enable = false, show_file = false}}}, {"pmizio/typescript-tools.nvim", dependencies = "neovim/nvim-lspconfig", config = true}}
