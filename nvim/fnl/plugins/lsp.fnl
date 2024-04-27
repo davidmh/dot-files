@@ -36,14 +36,12 @@
 (fn lsp-config []
   (local git-root (util.root_pattern :.git))
 
-  (local client-capabilities (->> (vim.lsp.protocol.make_client_capabilities)
-                                  ; :kevinhwang91/nvim-ufo
-                                  (vim.tbl_deep_extend :keep {:textDocument {:foldingRange {:dynamicRegistration false
-                                                                                            :lineFoldingOnly true}}})))
+  (local client-capabilities (vim.lsp.protocol.make_client_capabilities))
 
   (local base-settings {:capabilities (cmp-lsp.default_capabilities client-capabilities)
                         :init_options {:preferences {:includeCompletionsWithSnippetText true
                                                      :includeCompletionsForImportStatements true}}})
+
 
   (local server-configs {:jsonls {:settings {:json {:schemas (schema-store.json.schemas)
                                                     :validate {:enable true}}}}
@@ -87,7 +85,8 @@
                                                                     :eslint
                                                                     :rust_analyzer
                                                                     :solargraph
-                                                                    :fennel_language_server]}
+                                                                    :fennel_language_server
+                                                                    :vtsls]}
                                           :config true})
 
  (use :neovim/nvim-lspconfig {:dependencies [:williamboman/mason.nvim
@@ -101,13 +100,22 @@
                           :opts {:notification {:window {:align :top
                                                          :y_padding 2}}}})
 
- (use :nvimdev/lspsaga.nvim {:dependencies [:nvim-treesitter/nvim-treesitter
-                                            :neovim/nvim-lspconfig
-                                            :nvim-tree/nvim-web-devicons]
-                             :opts {:lightbulb {:enable false}
-                                    :symbol_in_winbar {:enable false
-                                                       :show_file false
-                                                       :folder_level 0}}})
-
- (use :pmizio/typescript-tools.nvim {:dependencies :neovim/nvim-lspconfig
-                                     :config true})]
+ (use :SmiteshP/nvim-navic {:opts {:depth_limit 4
+                                   :depth_limit_indicator " [  ] "
+                                   :click true
+                                   :highlight true
+                                   :format_text (fn [text]
+                                                  (if (or (text:match "^it%(")
+                                                          (text:match "^describe%("))
+                                                    (-> text
+                                                      (: :gsub "^it%('" "it ")
+                                                      (: :gsub "^describe%('" "describe ")
+                                                      (: :gsub "'%) callback$" ""))
+                                                    (-> text
+                                                      (: :gsub " callback$" ""))))
+                                   :icons cfg.navic-icons
+                                   :safe_output false
+                                   :separator "  "}
+                            :config true
+                            :dependencies [:williamboman/mason.nvim
+                                           :williamboman/mason-lspconfig.nvim]})]

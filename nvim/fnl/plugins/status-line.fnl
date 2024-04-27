@@ -13,28 +13,16 @@
 (local nvim-web-devicons (autoload :nvim-web-devicons))
 (local config (autoload :own.config))
 (local neorg-mode (autoload :neorg.modules.core.mode.module))
-
-(local chrome-accent :surface2)
-(local solid-background {:hl {:fg :fg :bg chrome-accent}})
+(local navic (autoload :nvim-navic))
 
 (local empty-space {:provider " "})
 
-(local pill [{:provider : :hl #(-> {:bg :none :fg :surface1})}
-             {:provider #(.. $1.icon " ") :hl #(-> {:fg $1.color
-                                                    :bg :surface1})}
-             {:provider #(-> $1.content)
-              :condition #(not (core.empty? (vim.trim $.content)))
-              :hl {:fg :fg :bg chrome-accent}}
-             {:provider :
-              :hl #(-> {:fg (or $1.content-bg-color chrome-accent) :bg :none})}])
-
-(fn container [components]
-  (let [solid-background {:hl {:fg :fg :bg chrome-accent}}]
-    [{:provider :
-      :hl {:fg chrome-accent :bg :none}}
-     (core.merge solid-background components)
-     {:provider :
-      :hl {:fg chrome-accent :bg :none}}]))
+(fn component [data]
+  (vim.validate {:init [data.init :function]})
+  (table.insert data {:provider #(-> $1.icon) :hl #(-> {:fg $1.color})})
+  (table.insert data {:provider #(-> $1.content) :hl {:fg :fg}})
+  (table.insert data {:hl {:bold true}})
+  data)
 
 (local mode-colors {:n    :fg
                     :i    :green
@@ -76,18 +64,15 @@
                           :bold true})
                 :update [:ModeChanged :ColorScheme]})
 
-(local macro-rec (use pill {:condition #(and (not= (vim.fn.reg_recording) "")
-                                             (= vim.o.cmdheight 0))
-                            :init #(do
-                                       (local macro-key (vim.fn.reg_recording))
-                                       (tset $1 :icon :macro)
-                                       (tset $1 :color :coral)
-                                       (tset $1 :content (.. " " macro-key)))
-                            :update [:RecordingEnter :RecordingLeave :ColorScheme]}))
+(local macro-rec {:condition #(and (not= (vim.fn.reg_recording) "")
+                                   (= vim.o.cmdheight 0))
+                  :provider #(.. " recording @" (vim.fn.reg_recording))
+                  :hl {:fg :coral}
+                  :update [:RecordingEnter :RecordingLeave :ColorScheme]})
 
 (local show-cmd {:condition #(= vim.o.cmdheight 0)
-                  :init #(set vim.opt.showcmdloc :statusline)
-                  :provider "%3.5(%S%)"})
+                 :init #(set vim.opt.showcmdloc :statusline)
+                 :provider "%3.5(%S%)"})
 
 (local show-search {:condition #(and (= vim.o.cmdheight 0)
                                      (not= vim.v.hlsearch 0)
@@ -100,11 +85,10 @@
                                      counter (.. "[" current :/ total "]")]
                                  (.. " " direction " " pattern " " counter))})
 
-(local neorg-mode (use pill {:condition #(and (= vim.bo.filetype :norg)
-                                             (not= (neorg-mode.public.get_mode) :norg))
-                             :init #(do (tset $1 :icon :)
-                                        (tset $1 :color :purple)
-                                        (tset $1 :content (.. " " (neorg-mode.public.get_mode))))}))
+(local neorg-mode (component {:init #(do (tset $1 :icon "  ")
+                                         (tset $1 :color :purple)
+                                         (tset $1 :content (.. (neorg-mode.public.get_mode) " ")))
+                              :condition #(= vim.o.filetype :norg)}))
 
 (fn file-name []
   (let [file-name (vim.fn.fnamemodify (vim.api.nvim_buf_get_name 0) ::.)]
@@ -123,27 +107,27 @@
                    :provider " "
                    :hl {:fg :orange}})
 
-(local file (use pill {:init #(let [name (file-name)
-                                    ext (vim.fn.fnamemodify name ::e)
-                                    (icon color) (nvim-web-devicons.get_icon_color name ext {:default true})]
-                                (tset $1 :icon icon)
-                                (tset $1 :color color)
-                                (tset $1 :content name))}))
+(local file (component {:init #(let [name (file-name)
+                                     ext (vim.fn.fnamemodify name ::e)
+                                     (icon color) (nvim-web-devicons.get_icon_color name ext {:default true})]
+                                 (tset $1 :icon icon)
+                                 (tset $1 :color color)
+                                 (tset $1 :content name))}))
 
 (local file-flags [modified? read-only?])
 
-(local file-name-block (use file
-                            file-flags
-                            {:condition #(and (~= vim.o.filetype :fugitiveblame)
-                                              (~= vim.o.filetype :qf)
-                                              (not-a-term))
-                             :init #(tset $1 :file-name (vim.api.nvim_buf_get_name 0))}))
+(local file-name-block [file
+                        file-flags
+                        {:condition #(and (~= vim.o.filetype :fugitiveblame)
+                                          (~= vim.o.filetype :qf)
+                                          (not-a-term))
+                         :init #(tset $1 :file-name (vim.api.nvim_buf_get_name 0))}])
 
-(local quickfix-title (use pill {:condition show-quickfix-title?
-                                 :hl {:fg :crust}
-                                 :init #(do (tset $1 :icon :)
-                                            (tset $1 :color :lavender)
-                                            (tset $1 :content (.. " " (get-quickfix-title))))}))
+(local quickfix-title (component {:condition show-quickfix-title?
+                                  :hl {:fg :crust}
+                                  :init #(do (tset $1 :icon :)
+                                             (tset $1 :color :lavender)
+                                             (tset $1 :content (.. " " (get-quickfix-title))))}))
 
 (local dead-space {:provider "             "})
 (local push-right {:provider "%="})
@@ -170,32 +154,26 @@
                                :update [:DiagnosticChanged :BufEnter :ColorScheme]}))
 
 (local git-block [empty-space
-                  (use pill {:condition #(conditions.is_git_repo)
-                             :init #(do (local {: head} vim.b.gitsigns_status_dict)
-                                        (local status (vim.trim (or vim.b.gitsigns_status "")))
-                                        (tset $1 :icon :)
-                                        (tset $1 :color :rosewater)
-                                        (tset $1 :content (.. " " head " " status)))
-                             :hl {:bg chrome-accent
-                                  :bold true}})])
+                  (component {:condition #(conditions.is_git_repo)
+                              :init #(do (local {: head} vim.b.gitsigns_status_dict)
+                                         (local status (vim.trim (or vim.b.gitsigns_status "")))
+                                         (tset $1 :icon :)
+                                         (tset $1 :color :rosewater)
+                                         (tset $1 :content (.. " " head " " status)))
+                              :hl {:bold true}})])
 
-(local git-blame (use pill {:init #(do (tset $1 :icon "")
-                                      (tset $1 :color :red)
-                                      (tset $1 :content "git blame"))
+(local git-blame (component {:init #(do (tset $1 :icon " ")
+                                       (tset $1 :color :red)
+                                       (tset $1 :content "git blame"))
 
-                            :condition #(= vim.o.filetype :fugitiveblame)
-                            :hl {:bold true}}))
+                             :condition #(= vim.o.filetype :fugitiveblame)
+                             :hl {:bold true}}))
 
-(local term-title (use (container [{:provider #(sanitize-path $1.path)}
-                                   {:provider "  "}
-                                   {:provider #(sanitize-path $1.command 3)}])
-                       {:condition #(not= nil vim.b.term_title)
-                        :init #(let [title (-> vim.b.term_title
-                                               (string.gsub "term://" "")
-                                               (string.gsub ";#toggleterm#%d*" ""))
-                                     parts (vim.split title "//%d*:")]
-                                 (tset $1 :path (core.first parts))
-                                 (tset $1 :command (core.last parts)))}))
+(local lsp-breadcrumb {:provider #(navic.get_location {:highlight true})
+                       :condition #(and (navic.is_available)
+                                        (> (length (navic.get_location)) 0))
+                       :hl {:bg :NONE :bold true}
+                       :update [:CursorMoved :ColorScheme]})
 
 (local line-number {:provider " %2{&nu ? (&rnu && v:relnum ? v:relnum : v:lnum) : ''} "
                     :condition #(-> vim.o.number)})
@@ -209,20 +187,20 @@
 ; TODO: split gitsigns, breakpoints and diagnostics into separate columns
 (local signs {:provider :%s})
 
-(local plugin-updates (use empty-space
-                           (use pill {:init #(let [[icon count] (-> (lazy-status.updates)
-                                                                    (vim.split " "))]
-                                               (tset $1 :icon icon)
-                                               (tset $1 :content (.. " " count))
-                                               (tset $1 :color :rosewater))})
-                           {:condition #(lazy-status.has_updates)}))
+(local plugin-updates [empty-space
+                       (component {:init #(let [[icon count] (-> (lazy-status.updates)
+                                                                 (vim.split " "))]
+                                            (tset $1 :icon icon)
+                                            (tset $1 :content (.. " " count))
+                                            (tset $1 :color :rosewater))
+                                   :condition #(lazy-status.has_updates)})])
 
 (local statuscolumn [fold
                      push-right
                      signs
                      line-number])
 
-(local winbar [term-title
+(local winbar [lsp-breadcrumb
                quickfix-title
                push-right
                quickfix-history-status-component
@@ -241,7 +219,7 @@
                        plugin-updates
                        {:hl {:bg :NONE}}))
 
-(local disabled-winbar {:buftype [:nofile :prompt]
+(local disabled-winbar {:buftype [:nofile :prompt :terminal]
                         :filetype [:^git.*]})
 
 (fn initialize-heirline []
@@ -254,6 +232,9 @@
                    : statuscolumn
                    : statusline
                    : opts}))
+
+(comment
+  (initialize-heirline))
 
 (augroup :update-heirline [:ColorScheme {:pattern :*
                                          :callback initialize-heirline}])

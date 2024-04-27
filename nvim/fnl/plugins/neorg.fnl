@@ -15,6 +15,4 @@
                                        :core.export.markdown {:config {:extension :.md}}
                                        :core.dirman {:config {:workspaces {:notes "~/Documents/neorg"}}}
                                        :core.mode {}
-                                       :core.ui.calendar {}
-                                       :core.ui.calendar.views.monthly {}
-                                       :core.tempus {}}}})]
+                                       :core.ui.calendar {}}}})]

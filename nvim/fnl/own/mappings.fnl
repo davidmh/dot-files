@@ -10,6 +10,7 @@
 (local gitsigns (autoload :gitsigns))
 (local toggle-term (autoload :toggleterm))
 (local terminal (autoload :toggleterm.terminal))
+(local navic (autoload :nvim-navic))
 (local projects (autoload :own.projects))
 
 (local error-filter {:severity vim.diagnostic.severity.ERROR})
@@ -157,22 +158,24 @@
   (vim.api.nvim_buf_set_option 0 :omnifunc :v:lua.vim.lsp.omnifunc)
 
   ;; Mappings
-  (buf-map :K vim.lsp.buf.hover "lsp: hover")
-  (buf-map :gd vim.lsp.buf.definition "lsp: go to definition")
+  (buf-map :K #(vim.lsp.buf.hover) "lsp: hover")
+  (buf-map :gd #(vim.lsp.buf.definition {:reuse_win true}) "lsp: go to definition")
 
-  (buf-map :<leader>ld vim.lsp.buf.declaration "lsp: go to declaration")
-  (buf-map :<leader>lf vim.lsp.buf.references "lsp: find references")
-  (buf-map :<leader>li vim.lsp.buf.implementation "lsp: go to implementation")
-  (buf-map :<leader>ls vim.lsp.buf.signature_help "lsp: signature")
-  (buf-map :<leader>lt vim.lsp.buf.type_definition "lsp: type definition")
-  (buf-map :<leader>la vim.lsp.buf.code_action "lsp: code actions")
-  (buf-map :<leader>lr vim.lsp.buf.rename "lsp: rename")
+  (buf-map :<leader>lf #(vim.lsp.buf.references) "lsp: find references")
+  (buf-map :<leader>li #(vim.lsp.buf.implementation) "lsp: implementation")
+  (buf-map :<leader>ls #(vim.lsp.buf.signature_help) "lsp: signature")
+  (buf-map :<leader>lt #(vim.lsp.buf.type_definition) "lsp: type definition")
+  (buf-map :<leader>la #(vim.lsp.buf.code_action) "lsp: code actions")
+  (buf-map :<leader>lr #(vim.lsp.buf.rename) "lsp: rename")
   (buf-map :<leader>lR :<cmd>LspRestart<CR> "lsp: restart")
 
   (vmap :<leader>la #(vim.lsp.buf.code_action) {:buffer true
                                                 :desc "lsp: code actions"})
 
-  (when (= client.name :eslint) (set-eslint-autofix bufnr)))
+  (when (= client.name :eslint) (set-eslint-autofix bufnr))
+
+  (when client.server_capabilities.documentSymbolProvider
+    (navic.attach client bufnr)))
 
 (augroup :lsp-attach [:LspAttach {:callback on-attach}])
 

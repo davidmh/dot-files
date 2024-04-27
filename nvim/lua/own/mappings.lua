@@ -5,6 +5,7 @@ local t = autoload("telescope.builtin")
 local gitsigns = autoload("gitsigns")
 local toggle_term = autoload("toggleterm")
 local terminal = autoload("toggleterm.terminal")
+local navic = autoload("nvim-navic")
 local projects = autoload("own.projects")
 local error_filter = {severity = vim.diagnostic.severity.ERROR}
 local warning_filter = {severity = vim.diagnostic.severity.WARNING}
@@ -187,22 +188,49 @@ local function on_attach(args)
   local bufnr = args.buf
   local client = vim.lsp.get_client_by_id(args.data.client_id)
   vim.api.nvim_buf_set_option(0, "omnifunc", "v:lua.vim.lsp.omnifunc")
-  buf_map("K", vim.lsp.buf.hover, "lsp: hover")
-  buf_map("gd", vim.lsp.buf.definition, "lsp: go to definition")
-  buf_map("<leader>ld", vim.lsp.buf.declaration, "lsp: go to declaration")
-  buf_map("<leader>lf", vim.lsp.buf.references, "lsp: find references")
-  buf_map("<leader>li", vim.lsp.buf.implementation, "lsp: go to implementation")
-  buf_map("<leader>ls", vim.lsp.buf.signature_help, "lsp: signature")
-  buf_map("<leader>lt", vim.lsp.buf.type_definition, "lsp: type definition")
-  buf_map("<leader>la", vim.lsp.buf.code_action, "lsp: code actions")
-  buf_map("<leader>lr", vim.lsp.buf.rename, "lsp: rename")
-  buf_map("<leader>lR", "<cmd>LspRestart<CR>", "lsp: restart")
   local function _29_()
+    return vim.lsp.buf.hover()
+  end
+  buf_map("K", _29_, "lsp: hover")
+  local function _30_()
+    return vim.lsp.buf.definition({reuse_win = true})
+  end
+  buf_map("gd", _30_, "lsp: go to definition")
+  local function _31_()
+    return vim.lsp.buf.references()
+  end
+  buf_map("<leader>lf", _31_, "lsp: find references")
+  local function _32_()
+    return vim.lsp.buf.implementation()
+  end
+  buf_map("<leader>li", _32_, "lsp: implementation")
+  local function _33_()
+    return vim.lsp.buf.signature_help()
+  end
+  buf_map("<leader>ls", _33_, "lsp: signature")
+  local function _34_()
+    return vim.lsp.buf.type_definition()
+  end
+  buf_map("<leader>lt", _34_, "lsp: type definition")
+  local function _35_()
     return vim.lsp.buf.code_action()
   end
-  vim.keymap.set("v", "<leader>la", _29_, {buffer = true, desc = "lsp: code actions"})
+  buf_map("<leader>la", _35_, "lsp: code actions")
+  local function _36_()
+    return vim.lsp.buf.rename()
+  end
+  buf_map("<leader>lr", _36_, "lsp: rename")
+  buf_map("<leader>lR", "<cmd>LspRestart<CR>", "lsp: restart")
+  local function _37_()
+    return vim.lsp.buf.code_action()
+  end
+  vim.keymap.set("v", "<leader>la", _37_, {buffer = true, desc = "lsp: code actions"})
   if (client.name == "eslint") then
-    return set_eslint_autofix(bufnr)
+    set_eslint_autofix(bufnr)
+  else
+  end
+  if client.server_capabilities.documentSymbolProvider then
+    return navic.attach(client, bufnr)
   else
     return nil
   end
