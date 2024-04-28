@@ -116,12 +116,13 @@
 
 (local file-flags [modified? read-only?])
 
-(local file-name-block [file
-                        file-flags
-                        {:condition #(and (~= vim.o.filetype :fugitiveblame)
-                                          (~= vim.o.filetype :qf)
-                                          (not-a-term))
-                         :init #(tset $1 :file-name (vim.api.nvim_buf_get_name 0))}])
+(local file-name-block (use file
+                            file-flags
+                            {:condition #(and (~= vim.o.filetype :fugitiveblame)
+                                              (~= vim.o.filetype :qf)
+                                              (not-a-term))
+                             :init #(tset $1 :file-name (vim.api.nvim_buf_get_name 0))
+                             :hl {:bold true}}))
 
 (local quickfix-title (component {:condition show-quickfix-title?
                                   :hl {:fg :crust}
@@ -153,13 +154,15 @@
                                        (tset self :HINT (diagnostic-count :HINT)))
                                :update [:DiagnosticChanged :BufEnter :ColorScheme]}))
 
-(local git-block [empty-space
-                  (component {:condition #(conditions.is_git_repo)
-                              :init #(do (local {: head} vim.b.gitsigns_status_dict)
+(local git-block [(component {:condition #(conditions.is_git_repo)
+                              :init #(do (local {: head : root} vim.b.gitsigns_status_dict)
+                                         (local cwd-relative-path (-> (vim.fn.getcwd)
+                                                                      (string.gsub (vim.fn.fnamemodify root ":h") "")
+                                                                      (string.gsub "^/" "")))
                                          (local status (vim.trim (or vim.b.gitsigns_status "")))
                                          (tset $1 :icon :)
                                          (tset $1 :color :rosewater)
-                                         (tset $1 :content (.. " " head " " status)))
+                                         (tset $1 :content (table.concat [(.. " [" cwd-relative-path "]") head status] " ")))
                               :hl {:bold true}})])
 
 (local git-blame (component {:init #(do (tset $1 :icon " ")

@@ -7,6 +7,7 @@ local toggle_term = autoload("toggleterm")
 local terminal = autoload("toggleterm.terminal")
 local navic = autoload("nvim-navic")
 local projects = autoload("own.projects")
+local core = autoload("nfnl.core")
 local error_filter = {severity = vim.diagnostic.severity.ERROR}
 local warning_filter = {severity = vim.diagnostic.severity.WARNING}
 local state = {["tmux-term"] = nil}
@@ -60,17 +61,20 @@ end
 local function opts(desc)
   return {silent = true, desc = desc}
 end
-local function _5_()
-  return projects["find-files"]()
+local function get_git_root()
+  return core["get-in"](vim, {"b", "gitsigns_status_dict", "root"})
 end
-vim.keymap.set("n", "<leader><leader>", _5_, opts("find files"))
+local function _5_()
+  return projects["find-files"](get_git_root(), opts("find files"))
+end
+vim.keymap.set("n", "<leader><leader>", _5_)
 vim.keymap.set("n", "<leader>/b", grep_buffer_content, opts("find in open buffers"))
 local function _6_()
-  return t.live_grep()
+  return t.live_grep({cwd = get_git_root()})
 end
 vim.keymap.set("n", "<leader>/p", _6_, opts("find in project"))
 local function _7_()
-  return t.grep_string()
+  return t.grep_string({cwd = get_git_root()})
 end
 vim.keymap.set("n", "<leader>/w", _7_, opts("find word under cursor"))
 vim.keymap.set("n", "<leader>s", ":botright split /tmp/scratch.fnl<cr>", opts("open scratch buffer"))

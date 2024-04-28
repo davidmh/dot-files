@@ -160,7 +160,7 @@ local function _33_(_241)
   _241["file-name"] = vim.api.nvim_buf_get_name(0)
   return nil
 end
-file_name_block = {file, file_flags, {condition = _32_, init = _33_}}
+file_name_block = {file, file_flags, condition = _32_, init = _33_, hl = {bold = true}}
 local quickfix_title
 local function _34_(_241)
   _241["icon"] = "\239\145\145"
@@ -202,13 +202,15 @@ end
 local function _40_(_241)
   local _local_41_ = vim.b.gitsigns_status_dict
   local head = _local_41_["head"]
+  local root = _local_41_["root"]
+  local cwd_relative_path = string.gsub(string.gsub(vim.fn.getcwd(), vim.fn.fnamemodify(root, ":h"), ""), "^/", "")
   local status = vim.trim((vim.b.gitsigns_status or ""))
   do end (_241)["icon"] = "\239\144\152"
   _241["color"] = "rosewater"
-  _241["content"] = (" " .. head .. " " .. status)
+  _241["content"] = table.concat({(" [" .. cwd_relative_path .. "]"), head, status}, " ")
   return nil
 end
-git_block = {empty_space, component({condition = _39_, init = _40_, hl = {bold = true}})}
+git_block = {component({condition = _39_, init = _40_, hl = {bold = true}})}
 local git_blame
 local function _42_(_241)
   _241["icon"] = "\238\156\130 "
