@@ -121,6 +121,8 @@
 (fn files-in-commit [ref]
   (let [output (vim.fn.systemlist [:git :show :--name-only :--oneline ref])
         title (core.first output)
+        git-root (or vim.b.gitsigns_status_dict.root
+                     (vim.trim (vim.fn.system "git rev-parse --show-toplevel")))
         files (->> output
                   (core.rest)
                   (vim.tbl_filter #(not (core.empty? $1))))
@@ -135,7 +137,7 @@
                                             (if (= $1 nil) (lua :return))
                                             (if (= $1 next-commit)
                                               (files-in-commit next-ref)
-                                              (vim.cmd (.. "edit " $1)))))))
+                                              (vim.cmd (.. "edit " git-root "/" $1)))))))
 
 (fn gmap [keymap callback desc]
   (nmap (.. :<leader>g keymap) callback {:desc desc
