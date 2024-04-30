@@ -249,21 +249,25 @@ local function _47_()
   end
 end
 fold = {provider = _47_}
-local signs = {provider = "%s"}
+local signs
+local function _50_()
+  return (vim.o.filetype ~= "NeogitStatus")
+end
+signs = {provider = "%s", condition = _50_}
 local plugin_updates
-local function _50_(_241)
-  local _let_51_ = vim.split(lazy_status.updates(), " ")
-  local icon = _let_51_[1]
-  local count = _let_51_[2]
+local function _51_(_241)
+  local _let_52_ = vim.split(lazy_status.updates(), " ")
+  local icon = _let_52_[1]
+  local count = _let_52_[2]
   _241["icon"] = icon
   _241["content"] = (" " .. count)
   do end (_241)["color"] = "rosewater"
   return nil
 end
-local function _52_()
+local function _53_()
   return lazy_status.has_updates()
 end
-plugin_updates = {empty_space, component({init = _50_, condition = _52_})}
+plugin_updates = {empty_space, component({init = _51_, condition = _53_})}
 local statuscolumn = {fold, push_right, signs, line_number}
 local winbar = {lsp_breadcrumb, quickfix_title, push_right, quickfix_history_status_component, git_blame, file_name_block}
 local statusline = {vi_mode, macro_rec, dead_space, push_right, show_cmd, diagnostics_block, show_search, neorg_mode0, git_block, plugin_updates, hl = {bg = "NONE"}}
@@ -271,10 +275,10 @@ local disabled_winbar = {buftype = {"nofile", "prompt", "terminal"}, filetype = 
 local function initialize_heirline()
   vim.o.showmode = false
   local opts
-  local function _53_(_241)
+  local function _54_(_241)
     return conditions.buffer_matches(disabled_winbar, _241.buf)
   end
-  opts = {colors = palettes.get_palette(), disable_winbar_cb = _53_}
+  opts = {colors = palettes.get_palette(), disable_winbar_cb = _54_}
   return heirline.setup({winbar = winbar, statuscolumn = statuscolumn, statusline = statusline, opts = opts})
 end
 --[[ (initialize-heirline) ]]

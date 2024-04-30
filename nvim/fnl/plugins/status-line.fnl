@@ -188,7 +188,8 @@
                               " " " ")))})
 
 ; TODO: split gitsigns, breakpoints and diagnostics into separate columns
-(local signs {:provider :%s})
+(local signs {:provider :%s
+              :condition #(not= vim.o.filetype :NeogitStatus)})
 
 (local plugin-updates [empty-space
                        (component {:init #(let [[icon count] (-> (lazy-status.updates)
