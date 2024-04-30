@@ -1,13 +1,8 @@
-(import-macros {: autocmd : use} :own.macros)
+(import-macros {: use} :own.macros)
 (local {: autoload} (require :nfnl.module))
 (local notify (autoload :notify))
 
-(fn config-beacon []
-  (autocmd :FocusGained {:pattern :* :command :Beacon}))
-
-[(use :danilamihailov/beacon.nvim {:config config-beacon})
-
- (use :nvim-tree/nvim-web-devicons {:opts {:override {:scm {:color :#A6E3A1
+[(use :nvim-tree/nvim-web-devicons {:opts {:override {:scm {:color :#A6E3A1
                                                             :name :query
                                                             :icon :󰘧}
                                                       :fnl {:color :teal

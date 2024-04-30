@@ -25,4 +25,4 @@ end
 local function _1_(_241)
   return vim.tbl_contains((_241 or {}), "-d")
 end
-return {"junegunn/vim-slash", "mg979/vim-visual-multi", {"chrishrb/gx.nvim", keys = {"gx"}, config = true}, {"willothy/flatten.nvim", opts = {window = {open = "smart"}, callbacks = {should_block = _1_}, nest_if_no_args = true}, config = true}, {"AndrewRadev/switch.vim", config = config_switch, event = "VeryLazy"}, {"tommcdo/vim-exchange", keys = {"cx", "cX", {"X", mode = "v"}}}, {"junegunn/vim-easy-align", config = config_easy_align, keys = {"ga"}}, {"simnalamburt/vim-mundo", config = config_mundo, event = "VeryLazy"}, {"dhruvasagar/vim-table-mode", ft = "markdown"}}
+return {"junegunn/vim-slash", "mg979/vim-visual-multi", {"willothy/flatten.nvim", opts = {window = {open = "smart"}, callbacks = {should_block = _1_}, nest_if_no_args = true}, config = true}, {"AndrewRadev/switch.vim", config = config_switch, event = "VeryLazy"}, {"tommcdo/vim-exchange", keys = {"cx", "cX", {"X", mode = "v"}}}, {"junegunn/vim-easy-align", config = config_easy_align, keys = {"ga"}}, {"simnalamburt/vim-mundo", config = config_mundo, event = "VeryLazy"}, {"dhruvasagar/vim-table-mode", ft = "markdown"}}

@@ -36,9 +36,6 @@
 [:junegunn/vim-slash
  :mg979/vim-visual-multi
 
- (use :chrishrb/gx.nvim {:keys [:gx]
-                         :config true})
-
  ;; open files from a terminal buffer in the current instance
  (use :willothy/flatten.nvim {:opts {:window {:open :smart}
                                      :callbacks {:should_block #(vim.tbl_contains (or $1 []) :-d)}
