@@ -105,7 +105,7 @@
                           :git_command command})))
 
 (fn git-buffer-log []
-  (git-log {:path (vim.fn.expand :%)}))
+  (git-log {:path (vim.fn.expand :%:p)}))
 
 (fn git-blame-line []
   (git-signs.blame_line true))
@@ -167,9 +167,11 @@
   (gmap :e (cmd "Gedit") "edit from the git tree") ; open the latest committed version of the current file
   (gmap :b (cmd "Git blame") "git blame")
   (gmap :d toggle-diff-view "toggle git diff")
-  (gmap :l git-log "git log")
+  (gmap :l (cmd "Neogit log") "git log")
   (gmap :L git-buffer-log "current buffer's git log")
   (gmap :<space> #(files-in-commit :HEAD) "files in git HEAD")
+  (gmap :f (cmd "Neogit fetch" "git fetch"))
+  (gmap :p (cmd "Neogit pull" "git pull"))
   (gmap "hs" (cmd "Gitsigns stage_hunk") "stage git hunk")
   (gmap "hu" (cmd "Gitsigns undo_stage_hunk") "unstage git hunk")
   (gmap "hr" (cmd "Gitsigns reset_hunk") "reset git hunk")
@@ -208,4 +210,4 @@
                                 :graph_style :unicode
                                 :remember_settings false}
                          :config true
-                         :event :VeryLazy})]
+                         :cmd [:Neogit]})]
