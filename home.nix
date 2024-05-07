@@ -9,6 +9,8 @@
   };
 
   home.packages = with pkgs; [
+    asciinema
+    asciinema-agg
     bat
     cargo
     clojure
