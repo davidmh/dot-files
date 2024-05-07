@@ -28,6 +28,9 @@
 (fn vmap [from to opts]
   `(vim.keymap.set :v ,from ,to ,opts))
 
+(fn imap [from to opts]
+  `(vim.keymap.set :i ,from ,to ,opts))
+
 (fn tmap [from to opts]
   `(vim.keymap.set :t ,from ,to ,opts))
 
@@ -59,5 +62,6 @@
  : map
  : nmap
  : vmap
+ : imap
  : tmap
  : use}

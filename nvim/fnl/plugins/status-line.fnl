@@ -85,6 +85,12 @@
                                      counter (.. "[" current :/ total "]")]
                                  (.. " " direction " " pattern " " counter))})
 
+(local codeium {:provider " {…} codeium"
+                :hl {:fg :green}
+                :condition #(-> (vim.fn.codeium#GetStatusString)
+                                (vim.trim)
+                                (= :ON))})
+
 (local neorg-mode (component {:init #(do (tset $1 :icon "  ")
                                          (tset $1 :color :purple)
                                          (tset $1 :content (.. (neorg-mode.public.get_mode) " ")))
@@ -221,6 +227,7 @@
                        neorg-mode
                        git-block
                        plugin-updates
+                       codeium
                        {:hl {:bg :NONE}}))
 
 (local disabled-winbar {:buftype [:nofile :prompt :terminal]
@@ -237,8 +244,7 @@
                    : statusline
                    : opts}))
 
-(comment
-  (initialize-heirline))
+(comment (initialize-heirline))
 
 (augroup :update-heirline [:ColorScheme {:pattern :*
                                          :callback initialize-heirline}])
