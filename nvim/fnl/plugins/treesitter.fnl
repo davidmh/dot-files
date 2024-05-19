@@ -1,16 +1,8 @@
 (import-macros {: use} :own.macros)
 (local {: autoload} (require :nfnl.module))
 (local configs (autoload :nvim-treesitter.configs))
-(local Comment (autoload :Comment))
-(local hook (autoload :ts_context_commentstring.integrations.comment_nvim))
-(local commentstring (autoload :ts_context_commentstring))
 
 (fn config []
-  (set vim.g.skip_ts_context_commentstring_module true)
-
-  (commentstring.setup {:highlight true})
-  (Comment.setup {:pre_hook (hook.create_pre_hook)})
-
   (local additional-vim-regex-highlighting [])
   (local ensure-installed [:bash
                            :clojure
@@ -68,9 +60,7 @@
 
 [(use :nvim-treesitter/nvim-treesitter-textobjects {:name :nvim-treesitter-textobjects})
  (use :nvim-treesitter/nvim-treesitter
-      {:dependencies [:nvim-treesitter-textobjects
-                      :JoosepAlviste/nvim-ts-context-commentstring
-                      :numToStr/Comment.nvim]
+      {:dependencies [:nvim-treesitter-textobjects]
        :build ::TSUpdate
        :config config})
 
