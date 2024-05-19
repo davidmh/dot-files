@@ -85,8 +85,7 @@
                                                                     :eslint
                                                                     :rust_analyzer
                                                                     :solargraph
-                                                                    :fennel_language_server
-                                                                    :vtsls]}
+                                                                    :fennel_language_server]}
                                           :config true})
 
  (use :neovim/nvim-lspconfig {:dependencies [:williamboman/mason.nvim
@@ -95,6 +94,10 @@
                                              :hrsh7th/cmp-nvim-lsp
                                              :b0o/SchemaStore.nvim]
                               :config lsp-config})
+
+ (use :pmizio/typescript-tools.nvim {:dependencies [:neovim/nvim-lspconfig
+                                                    :nvim-lua/plenary.nvim]
+                                     :opts {}})
 
  (use :j-hui/fidget.nvim {:dependencies [:neovim/nvim-lspconfig]
                           :opts {:notification {:window {:align :top
