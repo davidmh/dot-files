@@ -29,11 +29,9 @@
 
   (ai.handle :freeStyle prompt))
 
-
 (fn config []
   (ai.setup {:gemini {:api_key vim.env.GEMINI_API_KEY}
-             :result_popup_gets_focus true
-             :locale :en})
+             :result_popup_gets_focus true})
 
   (vim.api.nvim_create_user_command :ExplainDiagnostic
                                     explain-diagnostic
@@ -46,11 +44,11 @@
                                      :desc "Explain code under the cursor/selection"}))
 
 (use :gera2ld/ai.nvim {:dependencies [:nvim-lua/plenary.nvim]
-                       :cmd [:GeminiAsk
-                             :GeminiDefineCword
-                             :GeminiDefine
-                             :GeminiTranslate
-                             :GeminiImprove
+                       :cmd [:AIAsk
+                             :AIDefineCword
+                             :AIDefine
+                             :AITranslate
+                             :AIImprove
                              :ExplainCode
                              :ExplainDiagnostic]
                        : config})

@@ -5,7 +5,7 @@
   "LuaSnip": { "branch": "master", "commit": "de1a287c9cb525ae52bc846e8f6207e5ef1da5ac" },
   "Nvim-R": { "branch": "master", "commit": "a780503c2478e6655f7820a5e1926cf058ca2e2b" },
   "SchemaStore.nvim": { "branch": "main", "commit": "953dc9a37f646a7f0420c41394f716f0dddf5687" },
-  "ai.nvim": { "branch": "main", "commit": "acb589014f4d26b12f8fb95b748b3c398d8c5b27" },
+  "ai.nvim": { "branch": "main", "commit": "e849ab167ce880767790a4d28ddbc8cbbe89ab7c" },
   "catppuccin": { "branch": "main", "commit": "d97387aea8264f484bb5d5e74f2182a06c83e0d8" },
   "cmp-buffer": { "branch": "main", "commit": "3022dbc9166796b644a841a02de8dd1cc1d311fa" },
   "cmp-conjure": { "branch": "master", "commit": "8c9a88efedc0e5bf3165baa6af8a407afe29daf6" },

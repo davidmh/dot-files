@@ -20,8 +20,8 @@ local function explain_code(opts)
   return ai.handle("freeStyle", prompt)
 end
 local function config()
-  ai.setup({gemini = {api_key = vim.env.GEMINI_API_KEY}, result_popup_gets_focus = true, locale = "en"})
+  ai.setup({gemini = {api_key = vim.env.GEMINI_API_KEY}, result_popup_gets_focus = true})
   vim.api.nvim_create_user_command("ExplainDiagnostic", explain_diagnostic, {range = 2, desc = "Explain diagnostic under the cursor/selection"})
   return vim.api.nvim_create_user_command("ExplainCode", explain_code, {range = 2, desc = "Explain code under the cursor/selection"})
 end
-return {"gera2ld/ai.nvim", dependencies = {"nvim-lua/plenary.nvim"}, cmd = {"GeminiAsk", "GeminiDefineCword", "GeminiDefine", "GeminiTranslate", "GeminiImprove", "ExplainCode", "ExplainDiagnostic"}, config = config}
+return {"gera2ld/ai.nvim", dependencies = {"nvim-lua/plenary.nvim"}, cmd = {"AIAsk", "AIDefineCword", "AIDefine", "AITranslate", "AIImprove", "ExplainCode", "ExplainDiagnostic"}, config = config}
