@@ -25,4 +25,3 @@
 (set vim.wo.wrap false)
 (set vim.o.splitright true)
 (set vim.g.GuiWindowFrameless true)
-(set vim.g.ruby_host_prog (vim.fn.exepath :neovim-ruby-host))

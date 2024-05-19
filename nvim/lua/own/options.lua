@@ -25,5 +25,4 @@ vim.o.updatetime = 100
 vim.wo.wrap = false
 vim.o.splitright = true
 vim.g.GuiWindowFrameless = true
-vim.g.ruby_host_prog = vim.fn.exepath("neovim-ruby-host")
 return nil
