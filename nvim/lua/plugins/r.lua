@@ -3,4 +3,4 @@ local function _1_()
   vim.g.R_assign = 0
   return nil
 end
-return {"jalvesaq/Nvim-R", dependencies = {"hrsh7th/nvim-cmp"}, config = _1_}
+return {"jalvesaq/Nvim-R", dependencies = {"hrsh7th/nvim-cmp"}, ft = "r", config = _1_}
