@@ -80,11 +80,17 @@
   (local diagnostics null-ls.builtins.diagnostics)
 
   (null-ls.setup
-    {:sources [(diagnostics.rubocop.with {:cwd (root-pattern :.rubocop.yml
-                                                             :command :bundle
-                                                             :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args))})
+    {:sources [(diagnostics.rubocop.with {:cwd (root-pattern :.rubocop.yml)
+                                          :command :bundle
+                                          :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
                (diagnostics.selene.with {:cwd (root-pattern :selene.toml)
                                          :condition (with-root-file :selene.toml)})
+
+               (diagnostics.pylint.with {:cwd (root-pattern :requirements-dev.txt)
+                                         :condition (with-root-file :venv/bin/pylint)
+                                         :prefer_local :venv/bin
+                                         :args [:--from-stdin :$FILENAME :-f :json :-d "line-too-long,missing-function-docstring"]})
+
                (cspell.diagnostics.with {:cwd (root-pattern :cspell.json)
                                          :prefer_local :node_modules/.bin
                                          :filetypes cspell-filetypes
