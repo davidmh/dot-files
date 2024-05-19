@@ -68,7 +68,7 @@
    :CmpItemKindOperator {:fg color.crust :bg color.blue}
    :CmpItemKindTypeParameter {:fg color.crust :bg color.blue}
 
-   :CmpItemKindCopilot {:fg color.crust :bg color.mauve}
+   :CmpItemKindCodeium {:fg :white :bg :#09B6A2}
 
    :MiniStarterItemBullet {:fg :NONE :bg :NONE}
    :MiniStarterItemPrefix {:fg color.blue :bg :NONE}

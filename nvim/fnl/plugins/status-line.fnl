@@ -53,10 +53,6 @@
                    :t    :TERMINAL
                    :nt   :T-NORMAL})
 
-(local not-a-term #(and
-                    (not= vim.o.buftype :terminal)
-                    (not= vim.o.filetype :toggleterm)))
-
 (local vi-mode {:init #(tset $1 :mode (vim.fn.mode 1))
                 :condition #(not= vim.o.filetype :starter)
                 :provider #(.. (core.get mode-label $1.mode $1.mode) " ")
@@ -84,12 +80,6 @@
                                      pattern (vim.fn.getreg "/")
                                      counter (.. "[" current :/ total "]")]
                                  (.. " " direction " " pattern " " counter))})
-
-(local codeium {:provider " {…} codeium"
-                :hl {:fg :green}
-                :condition #(-> (vim.fn.codeium#GetStatusString)
-                                (vim.trim)
-                                (= :ON))})
 
 (local neorg-mode (component {:init #(do (tset $1 :icon "  ")
                                          (tset $1 :color :purple)
@@ -124,9 +114,13 @@
 
 (local file-name-block (use file
                             file-flags
-                            {:condition #(and (~= vim.o.filetype :fugitiveblame)
-                                              (~= vim.o.filetype :qf)
-                                              (not-a-term))
+                            {:condition #(match [vim.o.filetype vim.o.buftype]
+                                           [:fugitiveblame] false
+                                           [:fugitive] false
+                                           [:qf] false
+                                           [:toggleterm] false
+                                           [_ :terminal] false
+                                           (_) true)
                              :init #(tset $1 :file-name (vim.api.nvim_buf_get_name 0))
                              :hl {:bold true}}))
 
@@ -160,16 +154,16 @@
                                        (tset self :HINT (diagnostic-count :HINT)))
                                :update [:DiagnosticChanged :BufEnter :ColorScheme]}))
 
-(local git-block [(component {:condition #(conditions.is_git_repo)
-                              :init #(do (local {: head : root} vim.b.gitsigns_status_dict)
-                                         (local cwd-relative-path (-> (vim.fn.getcwd)
-                                                                      (string.gsub (vim.fn.fnamemodify root ":h") "")
-                                                                      (string.gsub "^/" "")))
-                                         (local status (vim.trim (or vim.b.gitsigns_status "")))
-                                         (tset $1 :icon :)
-                                         (tset $1 :color :rosewater)
-                                         (tset $1 :content (table.concat [(.. " [" cwd-relative-path "]") head status] " ")))
-                              :hl {:bold true}})])
+(local git-block (component {:condition #(conditions.is_git_repo)
+                             :init #(do (local {: head : root} vim.b.gitsigns_status_dict)
+                                        (local cwd-relative-path (-> (vim.fn.getcwd)
+                                                                     (string.gsub (vim.fn.fnamemodify root ":h") "")
+                                                                     (string.gsub "^/" "")))
+                                        (local status (vim.trim (or vim.b.gitsigns_status "")))
+                                        (tset $1 :icon :)
+                                        (tset $1 :color :rosewater)
+                                        (tset $1 :content (table.concat [(.. " [" cwd-relative-path "]") head status] " ")))
+                             :hl {:bold true}}))
 
 (local git-blame (component {:init #(do (tset $1 :icon " ")
                                        (tset $1 :color :red)
@@ -197,10 +191,9 @@
 (local signs {:provider :%s
               :condition #(not= vim.o.filetype :NeogitStatus)})
 
-(local plugin-updates [empty-space
-                       (component {:init #(let [[icon count] (-> (lazy-status.updates)
+(local plugin-updates [(component {:init #(let [[icon count] (-> (lazy-status.updates)
                                                                  (vim.split " "))]
-                                            (tset $1 :icon icon)
+                                            (tset $1 :icon (.. " " icon))
                                             (tset $1 :content (.. " " count))
                                             (tset $1 :color :rosewater))
                                    :condition #(lazy-status.has_updates)})])
@@ -227,7 +220,6 @@
                        neorg-mode
                        git-block
                        plugin-updates
-                       codeium
                        {:hl {:bg :NONE}}))
 
 (local disabled-winbar {:buftype [:nofile :prompt :terminal]

@@ -3,13 +3,13 @@
 (local cmp (autoload :cmp))
 (local ls (autoload :luasnip))
 (local lspkind (autoload :lspkind))
-(local from-vscode (autoload :luasnip.loaders.from_vscode))
 
-(set vim.o.completeopt "menuone,noselect,preview")
+(set vim.opt.completeopt [:menuone :menuone :noselect :popup])
 
 (fn cmp-format [entry vim-item]
   (let [kind-fmt (lspkind.cmp_format {:mode :symbol
-                                      :maxwidth 30})
+                                      :maxwidth 30
+                                      :symbol_map {:Codeium ""}})
         kind-item (kind-fmt entry vim-item)]
     (tset kind-item :kind (.. " " kind-item.kind " "))
     kind-item))
@@ -20,7 +20,6 @@
                                                              "gmail.com"]))
 
 (fn config []
-  (from-vscode.lazy_load)
   (local cmd-mappings {:<C-d> (cmp.mapping.scroll_docs -4)
                        :<C-f> (cmp.mapping.scroll_docs 4)
                        :<C-Space> (cmp.mapping.complete)
@@ -32,8 +31,9 @@
               :sources (cmp.config.sources [{:name :git-co-authors
                                              :option {:domain_ranking co-author-domain-ranking
                                                       :since_date "2 weeks"}}
-                                            {:name :luasnip}
+                                            {:name :codeium}
                                             {:name :nvim_lsp}
+                                            {:name :luasnip}
                                             {:name :cmp_nvim_r}
                                             {:name :orgmode}
                                             {:name :emoji}
@@ -71,15 +71,19 @@
   (ls.add_snippets :gitcommit [co-authored-by])
   (ls.add_snippets :org [(ls.parser.parse_snippet "<s" "#+BEGIN_SRC ${1}\n${0}\n#+END_SRC\n")]))
 
-(use :hrsh7th/nvim-cmp {:dependencies [:hrsh7th/cmp-nvim-lsp
-                                       :hrsh7th/cmp-buffer
-                                       :PaterJason/cmp-conjure
-                                       :saadparwaiz1/cmp_luasnip
-                                       :L3MON4D3/LuaSnip
-                                       :davidmh/cmp-nerdfonts
-                                       :onsails/lspkind-nvim
-                                       :hrsh7th/cmp-emoji
-                                       :jalvesaq/cmp-nvim-r
-                                       :rafamadriz/friendly-snippets
-                                       :davidmh/cmp-git-co-authors]
-                        : config})
+[(use :hrsh7th/nvim-cmp {:dependencies [:hrsh7th/cmp-nvim-lsp
+                                        :hrsh7th/cmp-buffer
+                                        :PaterJason/cmp-conjure
+                                        :saadparwaiz1/cmp_luasnip
+                                        :L3MON4D3/LuaSnip
+                                        :davidmh/cmp-nerdfonts
+                                        :onsails/lspkind-nvim
+                                        :hrsh7th/cmp-emoji
+                                        :jalvesaq/cmp-nvim-r
+                                        :davidmh/cmp-git-co-authors]
+                         : config})
+
+ (use :Exafunction/codeium.nvim {:dependencies [:nvim-lua/plenary.nvim
+                                                :hrsh7th/nvim-cmp]
+                                 :opts {}
+                                 :config true})]

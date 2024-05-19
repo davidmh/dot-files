@@ -35,64 +35,59 @@ local function component(data)
 end
 local mode_colors = {n = "fg", i = "green", v = "blue", V = "cyan", ["\22"] = "cyan", c = "orange", s = "purple", S = "purple", ["\19"] = "purple", R = "orange", r = "orange", ["!"] = "red", t = "green"}
 local mode_label = {n = "NORMAL", i = "INSERT", v = "VISUAL", V = "V-LINE", ["\22"] = "V-BLOCK", c = "COMMAND", s = "SELECT", S = "S-LINE", ["\19"] = "S-BLOCK", R = "REPLACE", r = "REPLACE", ["!"] = "SHELL", t = "TERMINAL", nt = "T-NORMAL"}
-local not_a_term
-local function _7_()
-  return ((vim.o.buftype ~= "terminal") and (vim.o.filetype ~= "toggleterm"))
-end
-not_a_term = _7_
 local vi_mode
-local function _8_(_241)
+local function _7_(_241)
   _241["mode"] = vim.fn.mode(1)
   return nil
 end
-local function _9_()
+local function _8_()
   return (vim.o.filetype ~= "starter")
 end
-local function _10_(_241)
+local function _9_(_241)
   return (core.get(mode_label, _241.mode, _241.mode) .. " ")
 end
-local function _11_(_241)
+local function _10_(_241)
   return {fg = mode_colors[_241.mode], bold = true}
 end
-vi_mode = {init = _8_, condition = _9_, provider = _10_, hl = _11_, update = {"ModeChanged", "ColorScheme"}}
+vi_mode = {init = _7_, condition = _8_, provider = _9_, hl = _10_, update = {"ModeChanged", "ColorScheme"}}
 local macro_rec
-local function _12_()
+local function _11_()
   return ((vim.fn.reg_recording() ~= "") and (vim.o.cmdheight == 0))
 end
-local function _13_()
+local function _12_()
   return (" recording @" .. vim.fn.reg_recording())
 end
-macro_rec = {condition = _12_, provider = _13_, hl = {fg = "coral"}, update = {"RecordingEnter", "RecordingLeave", "ColorScheme"}}
+macro_rec = {condition = _11_, provider = _12_, hl = {fg = "coral"}, update = {"RecordingEnter", "RecordingLeave", "ColorScheme"}}
 local show_cmd
-local function _14_()
+local function _13_()
   return (vim.o.cmdheight == 0)
 end
-local function _15_()
+local function _14_()
   vim.opt.showcmdloc = "statusline"
   return nil
 end
-show_cmd = {condition = _14_, init = _15_, provider = "%3.5(%S%)"}
+show_cmd = {condition = _13_, init = _14_, provider = "%3.5(%S%)"}
 local show_search
-local function _16_()
-  local function _17_()
-    local _18_ = vim.fn.searchcount()
-    if (nil ~= _18_) then
-      local _19_ = (_18_).total
-      if (nil ~= _19_) then
-        return (_19_ > 0)
+local function _15_()
+  local function _16_()
+    local _17_ = vim.fn.searchcount()
+    if (nil ~= _17_) then
+      local _18_ = (_17_).total
+      if (nil ~= _18_) then
+        return (_18_ > 0)
       else
-        return _19_
+        return _18_
       end
     else
-      return _18_
+      return _17_
     end
   end
-  return ((vim.o.cmdheight == 0) and (vim.v.hlsearch ~= 0) and _17_())
+  return ((vim.o.cmdheight == 0) and (vim.v.hlsearch ~= 0) and _16_())
 end
-local function _22_()
-  local _let_23_ = vim.fn.searchcount()
-  local current = _let_23_["current"]
-  local total = _let_23_["total"]
+local function _21_()
+  local _let_22_ = vim.fn.searchcount()
+  local current = _let_22_["current"]
+  local total = _let_22_["total"]
   local direction
   if (vim.v.searchforward == 1) then
     direction = "\239\144\179"
@@ -103,26 +98,21 @@ local function _22_()
   local counter = ("[" .. current .. "/" .. total .. "]")
   return (" " .. direction .. " " .. pattern .. " " .. counter)
 end
-show_search = {condition = _16_, provider = _22_}
-local codeium
-local function _25_()
-  return (vim.trim(vim.fn["codeium#GetStatusString"]()) == "ON")
-end
-codeium = {provider = " {\226\128\166} codeium", hl = {fg = "green"}, condition = _25_}
+show_search = {condition = _15_, provider = _21_}
 local neorg_mode0
-local function _26_(_241)
+local function _24_(_241)
   _241["icon"] = " \238\152\179 "
   _241["color"] = "purple"
   _241["content"] = (neorg_mode.public.get_mode() .. " ")
   return nil
 end
-local function _27_()
+local function _25_()
   return (vim.o.filetype == "norg")
 end
-neorg_mode0 = component({init = _26_, condition = _27_})
+neorg_mode0 = component({init = _24_, condition = _25_})
 local function file_name()
   local file_name0 = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":.")
-  local function _29_()
+  local function _27_()
     if (file_name0 == "") then
       return "[no name]"
     else
@@ -133,20 +123,20 @@ local function file_name()
       end
     end
   end
-  return (" " .. _29_())
+  return (" " .. _27_())
 end
 local modified_3f
-local function _30_()
+local function _28_()
   return vim.bo.modified
 end
-modified_3f = {condition = _30_, provider = " [+]", hl = {fg = "green"}}
+modified_3f = {condition = _28_, provider = " [+]", hl = {fg = "green"}}
 local read_only_3f
-local function _31_()
+local function _29_()
   return (not vim.bo.modifiable or vim.bo.readonly)
 end
-read_only_3f = {condition = _31_, provider = " \239\128\163", hl = {fg = "orange"}}
+read_only_3f = {condition = _29_, provider = " \239\128\163", hl = {fg = "orange"}}
 local file
-local function _32_(_241)
+local function _30_(_241)
   local name = file_name()
   local ext = vim.fn.fnamemodify(name, ":e")
   local icon, color = nvim_web_devicons.get_icon_color(name, ext, {default = true})
@@ -155,17 +145,34 @@ local function _32_(_241)
   _241["content"] = name
   return nil
 end
-file = component({init = _32_})
+file = component({init = _30_})
 local file_flags = {modified_3f, read_only_3f}
 local file_name_block
-local function _33_()
-  return ((vim.o.filetype ~= "fugitiveblame") and (vim.o.filetype ~= "qf") and not_a_term())
+local function _31_()
+  local _32_ = {vim.o.filetype, vim.o.buftype}
+  if ((_G.type(_32_) == "table") and ((_32_)[1] == "fugitiveblame")) then
+    return false
+  elseif ((_G.type(_32_) == "table") and ((_32_)[1] == "fugitive")) then
+    return false
+  elseif ((_G.type(_32_) == "table") and ((_32_)[1] == "qf")) then
+    return false
+  elseif ((_G.type(_32_) == "table") and ((_32_)[1] == "toggleterm")) then
+    return false
+  elseif ((_G.type(_32_) == "table") and true and ((_32_)[2] == "terminal")) then
+    local _ = (_32_)[1]
+    return false
+  elseif true then
+    local _ = _32_
+    return true
+  else
+    return nil
+  end
 end
 local function _34_(_241)
   _241["file-name"] = vim.api.nvim_buf_get_name(0)
   return nil
 end
-file_name_block = {file, file_flags, condition = _33_, init = _34_, hl = {bold = true}}
+file_name_block = {file, file_flags, condition = _31_, init = _34_, hl = {bold = true}}
 local quickfix_title
 local function _35_(_241)
   _241["icon"] = "\239\145\145"
@@ -215,7 +222,7 @@ local function _41_(_241)
   _241["content"] = table.concat({(" [" .. cwd_relative_path .. "]"), head, status}, " ")
   return nil
 end
-git_block = {component({condition = _40_, init = _41_, hl = {bold = true}})}
+git_block = component({condition = _40_, init = _41_, hl = {bold = true}})
 local git_blame
 local function _43_(_241)
   _241["icon"] = "\238\156\130 "
@@ -264,18 +271,18 @@ local function _52_(_241)
   local _let_53_ = vim.split(lazy_status.updates(), " ")
   local icon = _let_53_[1]
   local count = _let_53_[2]
-  _241["icon"] = icon
-  _241["content"] = (" " .. count)
+  _241["icon"] = (" " .. icon)
+  do end (_241)["content"] = (" " .. count)
   do end (_241)["color"] = "rosewater"
   return nil
 end
 local function _54_()
   return lazy_status.has_updates()
 end
-plugin_updates = {empty_space, component({init = _52_, condition = _54_})}
+plugin_updates = {component({init = _52_, condition = _54_})}
 local statuscolumn = {fold, push_right, signs, line_number}
 local winbar = {lsp_breadcrumb, quickfix_title, push_right, quickfix_history_status_component, git_blame, file_name_block}
-local statusline = {vi_mode, macro_rec, dead_space, push_right, show_cmd, diagnostics_block, show_search, neorg_mode0, git_block, plugin_updates, codeium, hl = {bg = "NONE"}}
+local statusline = {vi_mode, macro_rec, dead_space, push_right, show_cmd, diagnostics_block, show_search, neorg_mode0, git_block, plugin_updates, hl = {bg = "NONE"}}
 local disabled_winbar = {buftype = {"nofile", "prompt", "terminal"}, filetype = {"^git.*"}}
 local function initialize_heirline()
   vim.o.showmode = false
