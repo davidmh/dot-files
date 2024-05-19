@@ -14,7 +14,6 @@
     bat
     cargo
     clojure
-    evcxr
     fd
     fx
     go
@@ -26,7 +25,6 @@
     leiningen
     lsd
     lua51Packages.luarocks
-    # moreutils
     nodejs_18
     yarn
     pass
@@ -34,21 +32,14 @@
     ripgrep
     tig
     ueberzug
-    # unstable.cbc
-    unstable.fortune-kind
     unstable.gh
     unstable.git-absorb
+    unstable.neovim
     unstable.wezterm
     (unstable.nerdfonts.override { fonts = [ "Hasklig" ]; })
   ];
 
   programs.home-manager.enable = true;
-
-  programs.neovim = {
-    enable = true;
-    package = pkgs.neovim-nightly;
-    extraLuaPackages = ps: [ ps.magick ];
-  };
 
   programs.direnv.enable = true;
 
