@@ -141,8 +141,7 @@
 
 (fn gmap [keymap callback desc]
   (nmap (.. :<leader>g keymap) callback {:desc desc
-                                         :nowait true
-                                         :silent true}))
+                                         :nowait true}))
 
 (fn git-write []
   ; Write the current buffer and stage it
@@ -201,8 +200,7 @@
                       :event :VeryLazy
                       : config})
 
- (use :NeogitOrg/neogit {:branch :nightly
-                         :dependencies [:nvim-lua/plenary.nvim
+ (use :NeogitOrg/neogit {:dependencies [:nvim-lua/plenary.nvim
                                         :sindrets/diffview.nvim
                                         :nvim-telescope/telescope.nvim]
                          :opts {:disable_hint true
