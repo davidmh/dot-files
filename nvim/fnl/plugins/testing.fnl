@@ -7,12 +7,14 @@
 (local neotest-playwright (autoload :neotest-playwright))
 (local neotest-rspec (autoload :neotest-rspec))
 (local neotest-playwright-consumers (autoload :neotest-playwright.consumers))
+(local neotest-rust (autoload :neotest-rust))
 
 (fn config []
   (set neotest-lib.notify #(-> :noop))
   (neotest.setup {:adapters [neotest-go
                              neotest-python
                              neotest-rspec
+                             neotest-rust
                              (neotest-playwright.adapter {:options {:preset :headed
                                                                     :persist_project_selection true}})]
                   :consumers {:playwright neotest-playwright-consumers.consumers}
@@ -29,7 +31,8 @@
                                            :nvim-neotest/neotest-go
                                            :nvim-neotest/neotest-python
                                            :thenbe/neotest-playwright
-                                           :olimorris/neotest-rspec]
+                                           :olimorris/neotest-rspec
+                                           :rouge8/neotest-rust]
                             :keys [(use :<localleader>ta "<cmd>Neotest attach<cr>" {:desc :attach})
                                    (use :<localleader>trf "<cmd>Neotest run file<cr>" {:desc "run file"})
                                    (use :<localleader>trl "<cmd>Neotest run<cr>" {:desc "run current line"})
