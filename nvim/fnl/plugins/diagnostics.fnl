@@ -75,12 +75,20 @@
                       : on_add_to_json
                       : on_add_to_dictionary})
 
+(fn remix-root-ruby-env [{: cwd}]
+  (if (vim.startswith cwd vim.env.REMIX_HOME)
+    {:BUNDLE_PATH (.. vim.env.REMIX_HOME "/.devenv/state/.bundle")
+     :GEM_HOME (.. vim.env.REMIX_HOME "/.devenv/state/.bundle/ruby/3.1.0")
+     :GEM_PATH (.. vim.env.REMIX_HOME "/.devenv/state/.bundle/ruby/3.1.0/gems")}
+    {}))
+
 (fn config []
   (local formatting null-ls.builtins.formatting)
   (local diagnostics null-ls.builtins.diagnostics)
 
   (null-ls.setup
     {:sources [(diagnostics.rubocop.with {:cwd (root-pattern :.rubocop.yml)
+                                          :env remix-root-ruby-env
                                           :command :bundle
                                           :args (core.concat [:exec :rubocop] diagnostics.rubocop._opts.args)})
                (diagnostics.selene.with {:cwd (root-pattern :selene.toml)
@@ -105,6 +113,10 @@
                formatting.gofmt
                (formatting.sqlfluff.with {:prefer_local :node_modules/.bin})
                formatting.stylua
+               (formatting.rubocop.with {:cwd (root-pattern :.rubocop.yml)
+                                         :env remix-root-ruby-env
+                                         :command :bundle
+                                         :args (core.concat [:exec :rubocop] formatting.rubocop._opts.args)})
                formatting.terraform_fmt
                formatting.nixpkgs_fmt]
 
