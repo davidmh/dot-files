@@ -70,8 +70,10 @@
           (server-setup server-config)
           (server-setup (core.merge base-settings server-config))))))
 
-[(use :folke/neodev.nvim {:opts {:library {:types true}}
-                          :config true})
+[(use :folke/lazydev.nvim {:ft :lua
+                           :opts {:library [(.. vim.env.LAZY "/luvit-meta/library")]}
+                           :config true})
+ (use :Bilal2453/luvit-meta {:lazy true})
 
  (use :williamboman/mason.nvim {:config mason-config})
 
@@ -90,7 +92,6 @@
 
  (use :neovim/nvim-lspconfig {:dependencies [:williamboman/mason.nvim
                                              :williamboman/mason-lspconfig.nvim
-                                             :folke/neodev.nvim
                                              :hrsh7th/cmp-nvim-lsp
                                              :b0o/SchemaStore.nvim]
                               :config lsp-config})
@@ -100,6 +101,7 @@
                                      :opts {}})
 
  (use :j-hui/fidget.nvim {:dependencies [:neovim/nvim-lspconfig]
+                          :event :LspAttach
                           :opts {:notification {:window {:align :top
                                                          :y_padding 2}}}})
 
