@@ -7,9 +7,11 @@ local function _2_()
 end
 local function _3_()
   vim.g["conjure#log#hud#border"] = border
+  vim.g["conjure#filetypes"] = {"fennel", "clojure"}
   vim.g["conjure#filetype#sql"] = nil
   vim.g["conjure#filetype#rust"] = nil
   vim.g["conjure#filetype#python"] = nil
+  vim.g["conjure#filetype#lua"] = nil
   return nil
 end
 return {{"Olical/nfnl", ft = "fennel"}, {"clojure-vim/vim-jack-in", ft = {"clojure"}}, {"gpanders/nvim-parinfer", ft = {"clojure", "fennel", "query"}, config = _2_}, {"Olical/conjure", config = _3_}}

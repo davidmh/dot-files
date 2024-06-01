@@ -15,6 +15,8 @@
  (use :Olical/conjure ; repl, but better
       {:config #(do
                   (set vim.g.conjure#log#hud#border border)
+                  (set vim.g.conjure#filetypes [:fennel :clojure])
                   (set vim.g.conjure#filetype#sql nil)
                   (set vim.g.conjure#filetype#rust nil)
-                  (set vim.g.conjure#filetype#python nil))})]
+                  (set vim.g.conjure#filetype#python nil)
+                  (set vim.g.conjure#filetype#lua nil))})]
