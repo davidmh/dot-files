@@ -14,15 +14,9 @@ local function config_switch()
   vim.api.nvim_create_autocmd("FileType", {pattern = "css,less", callback = css_rules, group = group})
   return nil
 end
-local function config_easy_align()
-  return vim.keymap.set({"x", "n"}, "ga", "<Plug>(EasyAlign)")
-end
 local function config_mundo()
   vim.o.undofile = true
   vim.o.undodir = (vim.fn.stdpath("data") .. "/undo")
   return nil
 end
-local function _1_(_241)
-  return vim.tbl_contains((_241 or {}), "-d")
-end
-return {"junegunn/vim-slash", "mg979/vim-visual-multi", {"willothy/flatten.nvim", opts = {window = {open = "smart"}, callbacks = {should_block = _1_}, nest_if_no_args = true}, config = true}, {"AndrewRadev/switch.vim", config = config_switch, event = "VeryLazy"}, {"tommcdo/vim-exchange", keys = {"cx", "cX", {"X", mode = "v"}}}, {"junegunn/vim-easy-align", config = config_easy_align, keys = {"ga"}}, {"simnalamburt/vim-mundo", config = config_mundo, event = "VeryLazy"}, {"dhruvasagar/vim-table-mode", ft = "markdown"}}
+return {"junegunn/vim-slash", {"mg979/vim-visual-multi", keys = {{"<c-n>", mode = {"n", "v"}}, {"\\\\A", mode = {"n", "v"}}}}, {"willothy/flatten.nvim", opts = {}}, {"AndrewRadev/switch.vim", config = config_switch, event = "VeryLazy"}, {"tommcdo/vim-exchange", keys = {"cx", "cX", {"X", mode = "v"}}}, {"junegunn/vim-easy-align", keys = {{"ga", "<Plug>(EasyAlign)", mode = {"x", "n"}}}}, {"simnalamburt/vim-mundo", config = config_mundo, event = "VeryLazy"}, {"dhruvasagar/vim-table-mode", ft = "markdown"}, {"wakatime/vim-wakatime", lazy = false}}

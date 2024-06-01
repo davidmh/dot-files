@@ -1,5 +1,4 @@
 (import-macros {: augroup
-                : map
                 : nmap
                 : use} :own.macros)
 
@@ -26,31 +25,28 @@
            [:FileType {:pattern :fennel :callback fennel-rules}]
            [:FileType {:pattern "css,less" :callback css-rules}]))
 
-(fn config-easy-align []
-  (map [:x :n] :ga "<Plug>(EasyAlign)"))
-
 (fn config-mundo []
   (set vim.o.undofile true)
   (set vim.o.undodir (.. (vim.fn.stdpath "data") "/undo")))
 
 [:junegunn/vim-slash
- :mg979/vim-visual-multi
+
+ (use :mg979/vim-visual-multi {:keys [(use :<c-n> {:mode [:n :v]})
+                                      (use "\\\\A" {:mode [:n :v]})]})
 
  ;; open files from a terminal buffer in the current instance
- (use :willothy/flatten.nvim {:opts {:window {:open :smart}
-                                     :callbacks {:should_block #(vim.tbl_contains (or $1 []) :-d)}
-                                     :nest_if_no_args true}
-                              :config true})
+ (use :willothy/flatten.nvim {:opts {}})
 
  (use :AndrewRadev/switch.vim {:config config-switch
                                :event :VeryLazy})
 
  (use :tommcdo/vim-exchange {:keys [:cx :cX (use :X {:mode :v})]})
 
- (use :junegunn/vim-easy-align {:config config-easy-align
-                                :keys [:ga]})
+ (use :junegunn/vim-easy-align {:keys [(use :ga "<Plug>(EasyAlign)" {:mode [:x :n]})]})
 
  (use :simnalamburt/vim-mundo {:config config-mundo
                                :event :VeryLazy})
 
- (use :dhruvasagar/vim-table-mode {:ft :markdown})]
+ (use :dhruvasagar/vim-table-mode {:ft :markdown})
+
+ (use :wakatime/vim-wakatime {:lazy false})]

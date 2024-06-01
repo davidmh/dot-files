@@ -243,4 +243,5 @@
 
 (use :rebelot/heirline.nvim {:dependencies [:nvim-tree/nvim-web-devicons
                                             :catppuccin]
+                             :event :VeryLazy
                              :config initialize-heirline})

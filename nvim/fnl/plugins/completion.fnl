@@ -81,9 +81,11 @@
                                         :hrsh7th/cmp-emoji
                                         :jalvesaq/cmp-nvim-r
                                         :davidmh/cmp-git-co-authors]
+                         :event :InsertEnter
                          : config})
 
  (use :Exafunction/codeium.nvim {:dependencies [:nvim-lua/plenary.nvim
                                                 :hrsh7th/nvim-cmp]
+                                 :event :InsertEnter
                                  :opts {}
                                  :config true})]
