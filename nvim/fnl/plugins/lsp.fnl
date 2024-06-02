@@ -71,7 +71,7 @@
           (server-setup (core.merge base-settings server-config))))))
 
 [(use :folke/lazydev.nvim {:ft :lua
-                           :opts {:library [(.. vim.env.LAZY "/luvit-meta/library")]}
+                           :opts {:library [:luvit-meta/library]}
                            :config true})
  (use :Bilal2453/luvit-meta {:lazy true})
 
