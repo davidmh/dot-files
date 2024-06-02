@@ -206,6 +206,7 @@
                          :opts {:disable_hint true
                                 :fetch_after_checkout true
                                 :graph_style :unicode
-                                :remember_settings false}
+                                :remember_settings false
+                                :notification_icon :}
                          :config true
                          :cmd [:Neogit]})]
