@@ -16,7 +16,7 @@ local function on_linter_install(pkg)
   end
   return vim.defer_fn(_2_, 100)
 end
-local ensure_linters = {"cspell", "luacheck", "selene", "stylua"}
+local ensure_linters = {"cspell", "luacheck", "stylua"}
 local function mason_config()
   mason.setup({ui = {border = cfg.border}})
   mason_registry:on("package:install:success", on_linter_install)
