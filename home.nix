@@ -82,7 +82,7 @@
   programs.git = {
     enable = true;
     userName = "David Mejorado";
-    userEmail = "david.mejorado@gmail.com";
+    userEmail = "594302+davidmh@users.noreply.github.com";
 
     aliases = {
       current-branch = "rev-parse --abbrev-ref HEAD";
