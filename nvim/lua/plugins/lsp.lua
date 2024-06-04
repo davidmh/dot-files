@@ -32,6 +32,14 @@ local function mason_config()
   end
   return vim.defer_fn(_3_, 100)
 end
+local function ruby_lsps()
+  lspconfig.rubocop.setup({root_dir = util.root_pattern(".rubocop.yml"), cmd = {"bundle", "exec", "rubocop", "--lsp"}})
+  lspconfig.solargraph.setup({root_dir = util.root_pattern(".rubocop.yml"), cmd = {"bundle", "exec", "solargraph", "stdio"}})
+  local function _5_()
+    return vim.lsp.buf.format()
+  end
+  return vim.api.nvim_create_autocmd("BufWritePre", {pattern = "*.rb", callback = _5_})
+end
 local function lsp_config()
   local git_root = util.root_pattern(".git")
   local client_capabilities = vim.lsp.protocol.make_client_capabilities()
@@ -46,13 +54,13 @@ local function lsp_config()
       server_setup(core.merge(base_settings, server_config))
     end
   end
-  return nil
+  return ruby_lsps()
 end
-local function _6_(text)
+local function _7_(text)
   if (text:match("^it%(") or text:match("^describe%(")) then
     return text:gsub("^it%('", "it "):gsub("^describe%('", "describe "):gsub("'%) callback$", "")
   else
     return text:gsub(" callback$", "")
   end
 end
-return {{"folke/lazydev.nvim", ft = "lua", opts = {library = {"luvit-meta/library"}}, config = true}, {"Bilal2453/luvit-meta", lazy = true}, {"williamboman/mason.nvim", config = mason_config}, {"williamboman/mason-lspconfig.nvim", dependencies = {"williamboman/mason.nvim"}, opts = {ensure_installed = {"bashls", "clojure_lsp", "cssls", "jedi_language_server", "jsonls", "lua_ls", "eslint", "rust_analyzer", "solargraph", "fennel_language_server"}}, config = true}, {"neovim/nvim-lspconfig", dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim", "hrsh7th/cmp-nvim-lsp", "b0o/SchemaStore.nvim"}, config = lsp_config}, {"pmizio/typescript-tools.nvim", dependencies = {"neovim/nvim-lspconfig", "nvim-lua/plenary.nvim"}, opts = {}}, {"j-hui/fidget.nvim", dependencies = {"neovim/nvim-lspconfig"}, event = "LspAttach", opts = {notification = {window = {align = "top", y_padding = 2}}}}, {"SmiteshP/nvim-navic", opts = {depth_limit = 4, depth_limit_indicator = " [ \238\169\188 ] ", click = true, highlight = true, format_text = _6_, icons = cfg["navic-icons"], separator = " \238\170\182 ", safe_output = false}, config = true, dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim"}}}
+return {{"folke/lazydev.nvim", ft = "lua", opts = {library = {"luvit-meta/library"}}, config = true}, {"Bilal2453/luvit-meta", lazy = true}, {"williamboman/mason.nvim", config = mason_config}, {"williamboman/mason-lspconfig.nvim", dependencies = {"williamboman/mason.nvim"}, opts = {ensure_installed = {"bashls", "clojure_lsp", "cssls", "jedi_language_server", "jsonls", "lua_ls", "eslint", "rust_analyzer", "fennel_language_server"}}, config = true}, {"neovim/nvim-lspconfig", dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim", "hrsh7th/cmp-nvim-lsp", "b0o/SchemaStore.nvim"}, config = lsp_config}, {"pmizio/typescript-tools.nvim", dependencies = {"neovim/nvim-lspconfig", "nvim-lua/plenary.nvim"}, opts = {}}, {"j-hui/fidget.nvim", dependencies = {"neovim/nvim-lspconfig"}, event = "LspAttach", opts = {notification = {window = {align = "top", y_padding = 2}}}}, {"SmiteshP/nvim-navic", opts = {depth_limit = 4, depth_limit_indicator = " [ \238\169\188 ] ", click = true, highlight = true, format_text = _7_, icons = cfg["navic-icons"], separator = " \238\170\182 ", safe_output = false}, config = true, dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim"}}}

@@ -1,4 +1,4 @@
-(import-macros {: use} :own.macros)
+(import-macros {: use : autocmd} :own.macros)
 (local {: autoload} (require :nfnl.module))
 (local core (autoload :nfnl.core))
 (local cfg (autoload :own.config))
@@ -32,6 +32,18 @@
          (when (not (pkg:is_installed))
            (pkg:install))))
     100))
+
+(fn ruby-lsps []
+  (lspconfig.rubocop.setup {:root_dir (util.root_pattern :.rubocop.yml)
+                            :cmd [:bundle :exec :rubocop :--lsp]})
+
+  ; technically not the right pattern, but matches the most common use case
+  (lspconfig.solargraph.setup {:root_dir (util.root_pattern :.rubocop.yml)
+                               :cmd [:bundle :exec :solargraph :stdio]})
+
+  ; format on save through the rubocop LSP
+  (autocmd :BufWritePre {:pattern :*.rb
+                         :callback #(vim.lsp.buf.format)}))
 
 (fn lsp-config []
   (local git-root (util.root_pattern :.git))
@@ -68,7 +80,9 @@
           server-config (core.get server-configs server-name {})]
       (if (= server-name :gopls)
           (server-setup server-config)
-          (server-setup (core.merge base-settings server-config))))))
+          (server-setup (core.merge base-settings server-config)))))
+
+  (ruby-lsps))
 
 [(use :folke/lazydev.nvim {:ft :lua
                            :opts {:library [:luvit-meta/library]}
@@ -86,7 +100,6 @@
                                                                     :lua_ls
                                                                     :eslint
                                                                     :rust_analyzer
-                                                                    :solargraph
                                                                     :fennel_language_server]}
                                           :config true})
 

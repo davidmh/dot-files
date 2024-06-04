@@ -1,7 +1,6 @@
 -- [nfnl] Compiled from fnl/plugins/diagnostics.fnl by https://github.com/Olical/nfnl, do not edit.
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
-local core = autoload("nfnl.core")
 local null_ls = autoload("null-ls")
 local u = autoload("null-ls.utils")
 local cspell = autoload("cspell")
@@ -43,7 +42,7 @@ end
 local function diagnostic_format(diagnostic)
   return (cfg.icons[diagnostic.severity] .. " [" .. get_source_name(diagnostic) .. "] " .. diagnostic.message)
 end
-vim.diagnostic.config({underline = true, severity_sort = true, float = {header = "", border = cfg.border, format = diagnostic_format}, update_in_insert = false, signs = false, virtual_text = false})
+vim.diagnostic.config({underline = true, severity_sort = true, float = {header = "", border = cfg.border, format = diagnostic_format}, virtual_text = false, update_in_insert = false, signs = false})
 vim.api.nvim_create_augroup("lsp-formatting", {clear = true})
 local function on_attach(client, bufnr)
   if client.supports_method("textDocument/formatting") then
@@ -66,22 +65,13 @@ local function on_add_to_dictionary(_15_)
   return os.execute(str.format("sort ${path} -o ${path}", {path = dictionary_path}))
 end
 local cspell_config = {on_add_to_json = on_add_to_json, on_add_to_dictionary = on_add_to_dictionary, read_config_synchronously = false}
-local function remix_root_ruby_env(_17_)
-  local _arg_18_ = _17_
-  local cwd = _arg_18_["cwd"]
-  if vim.startswith(cwd, vim.env.REMIX_HOME) then
-    return {BUNDLE_PATH = (vim.env.REMIX_HOME .. "/.devenv/state/.bundle"), GEM_HOME = (vim.env.REMIX_HOME .. "/.devenv/state/.bundle/ruby/3.1.0"), GEM_PATH = (vim.env.REMIX_HOME .. "/.devenv/state/.bundle/ruby/3.1.0/gems")}
-  else
-    return {}
-  end
-end
 local function config()
   local formatting = null_ls.builtins.formatting
   local diagnostics = null_ls.builtins.diagnostics
-  local function _20_(_241)
+  local function _17_(_241)
     _241["severity"] = vim.diagnostic.severity.W
     return nil
   end
-  return null_ls.setup({sources = {diagnostics.rubocop.with({cwd = root_pattern(".rubocop.yml"), env = remix_root_ruby_env, command = "bundle", args = core.concat({"exec", "rubocop"}, diagnostics.rubocop._opts.args)}), diagnostics.selene.with({cwd = root_pattern("selene.toml"), condition = with_root_file("selene.toml")}), diagnostics.pylint.with({cwd = root_pattern("requirements-dev.txt"), condition = with_root_file("venv/bin/pylint"), prefer_local = "venv/bin", args = {"--from-stdin", "$FILENAME", "-f", "json", "-d", "line-too-long,missing-function-docstring"}}), cspell.diagnostics.with({cwd = root_pattern("cspell.json"), prefer_local = "node_modules/.bin", filetypes = cspell_filetypes, diagnostics_postprocess = _20_, config = cspell_config}), cspell.code_actions.with({cwd = root_pattern("cspell.json"), prefer_local = "node_modules/.bin", filetypes = cspell_filetypes, config = cspell_config}), formatting.gofmt, formatting.sqlfluff.with({prefer_local = "node_modules/.bin"}), formatting.stylua, formatting.rubocop.with({cwd = root_pattern(".rubocop.yml"), env = remix_root_ruby_env, command = "bundle", args = core.concat({"exec", "rubocop"}, formatting.rubocop._opts.args)}), formatting.terraform_fmt, formatting.nixpkgs_fmt}, on_attach = on_attach})
+  return null_ls.setup({sources = {diagnostics.selene.with({cwd = root_pattern("selene.toml"), condition = with_root_file("selene.toml")}), diagnostics.pylint.with({cwd = root_pattern("requirements-dev.txt"), condition = with_root_file("venv/bin/pylint"), prefer_local = "venv/bin", args = {"--from-stdin", "$FILENAME", "-f", "json", "-d", "line-too-long,missing-function-docstring"}}), cspell.diagnostics.with({cwd = root_pattern("cspell.json"), prefer_local = "node_modules/.bin", filetypes = cspell_filetypes, diagnostics_postprocess = _17_, config = cspell_config}), cspell.code_actions.with({cwd = root_pattern("cspell.json"), prefer_local = "node_modules/.bin", filetypes = cspell_filetypes, config = cspell_config}), formatting.gofmt, formatting.sqlfluff.with({prefer_local = "node_modules/.bin"}), formatting.stylua, formatting.terraform_fmt, formatting.nixpkgs_fmt}, on_attach = on_attach})
 end
-return {{"folke/trouble.nvim", dependencies = {"nvim-tree/nvim-web-devicons"}, opts = {icons = true, signs = {error = cfg.icons.ERROR, warning = cfg.icons.WARN, hint = cfg.icons.HINT, information = cfg.icons.INFO, other = "\239\171\160"}, group = false, padding = false}, config = true}, {"nvimtools/none-ls.nvim", dependencies = {"nvim-lua/plenary.nvim", "davidmh/cspell.nvim"}, config = config}}
+return {{"folke/trouble.nvim", dependencies = {"nvim-tree/nvim-web-devicons"}, opts = {signs = {error = cfg.icons.ERROR}, warning = cfg.icons.WARN, hint = cfg.icons.HINT, information = cfg.icons.INFO, other = "\239\171\160", group = false, padding = false}, config = true}, {"nvimtools/none-ls.nvim", dependencies = {"nvim-lua/plenary.nvim", "davidmh/cspell.nvim"}, config = config}}
