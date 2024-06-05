@@ -33,7 +33,6 @@ local function mason_config()
   return vim.defer_fn(_3_, 100)
 end
 local function ruby_lsps()
-  lspconfig.rubocop.setup({root_dir = util.root_pattern(".rubocop.yml"), cmd = {"bundle", "exec", "rubocop", "--lsp"}})
   lspconfig.solargraph.setup({root_dir = util.root_pattern(".rubocop.yml"), cmd = {"bundle", "exec", "solargraph", "stdio"}})
   local function _5_()
     return vim.lsp.buf.format()

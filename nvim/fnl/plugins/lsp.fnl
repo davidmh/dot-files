@@ -34,14 +34,10 @@
     100))
 
 (fn ruby-lsps []
-  (lspconfig.rubocop.setup {:root_dir (util.root_pattern :.rubocop.yml)
-                            :cmd [:bundle :exec :rubocop :--lsp]})
-
-  ; technically not the right pattern, but matches the most common use case
   (lspconfig.solargraph.setup {:root_dir (util.root_pattern :.rubocop.yml)
                                :cmd [:bundle :exec :solargraph :stdio]})
 
-  ; format on save through the rubocop LSP
+  ; format on save with rubocop through solargraph
   (autocmd :BufWritePre {:pattern :*.rb
                          :callback #(vim.lsp.buf.format)}))
 
