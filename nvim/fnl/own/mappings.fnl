@@ -82,8 +82,7 @@
 
 ;; toggles
 (nmap :<leader>tb toggle-blame-line (opts "toggle blame line"))
-(nmap :<leader>td (cmd "Trouble document_diagnostics") (opts "toggle document diagnostics"))
-(nmap :<leader>tw (cmd "Trouble workspace_diagnostics") (opts "toggle worspace diagnostics"))
+(nmap :<leader>td (cmd "Trouble diagnostics") (opts "toggle diagnostics"))
 
 ;; buffers
 (nmap :<leader>bb #(t.buffers) (opts "list buffers"))

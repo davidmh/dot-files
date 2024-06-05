@@ -81,8 +81,7 @@ vim.keymap.set("n", "<leader>s", ":botright split /tmp/scratch.fnl<cr>", opts("o
 vim.keymap.set("n", "<leader>vp", browse_plugins, opts("vim plugins"))
 vim.keymap.set("n", "<leader>vr", browse_runtime, opts("vim runtime"))
 vim.keymap.set("n", "<leader>tb", toggle_blame_line, opts("toggle blame line"))
-vim.keymap.set("n", "<leader>td", cmd("Trouble document_diagnostics"), opts("toggle document diagnostics"))
-vim.keymap.set("n", "<leader>tw", cmd("Trouble workspace_diagnostics"), opts("toggle worspace diagnostics"))
+vim.keymap.set("n", "<leader>td", cmd("Trouble diagnostics"), opts("toggle diagnostics"))
 local function _8_()
   return t.buffers()
 end
