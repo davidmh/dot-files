@@ -81,7 +81,8 @@ vim.keymap.set("n", "<leader>s", ":botright split /tmp/scratch.fnl<cr>", opts("o
 vim.keymap.set("n", "<leader>vp", browse_plugins, opts("vim plugins"))
 vim.keymap.set("n", "<leader>vr", browse_runtime, opts("vim runtime"))
 vim.keymap.set("n", "<leader>tb", toggle_blame_line, opts("toggle blame line"))
-vim.keymap.set("n", "<leader>td", cmd("Trouble diagnostics"), opts("toggle diagnostics"))
+vim.keymap.set("n", "<leader>td", cmd("Trouble diagnostics toggle"), opts("toggle diagnostics"))
+vim.keymap.set("n", "<leader>ts", cmd("Trouble lsp_document_symbols toggle"), opts("toggle lsp document symbols"))
 local function _8_()
   return t.buffers()
 end
@@ -162,7 +163,7 @@ end
 vim.keymap.set("n", "<localleader>p", _24_, opts("switch projects"))
 vim.keymap.set("n", "L", cmd("LToggle"), opts("list toggle"))
 vim.keymap.set("n", "Q", cmd("QToggle"), opts("quickfix toggle"))
-vim.keymap.set("n", "<M-s>", cmd("write silent!"), opts("write file"))
+vim.keymap.set("n", "<M-s>", cmd("silent! write"), opts("write file"))
 vim.keymap.set("n", "z=", cmd("Telescope spell_suggest theme=get_cursor"), opts("suggest spelling"))
 local function _25_()
   return vim.diagnostic.goto_prev(error_filter)

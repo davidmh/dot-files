@@ -1,3 +1,0 @@
-nvim/init.lua
-nvim/lua/**/*.lua
-nvim/after/**/*.lua

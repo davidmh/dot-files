@@ -1,4 +1,4 @@
-{ pkgs, inputs, ... }:
+{ pkgs, config, inputs, ... }:
 
 {
   home.sessionVariables = {
@@ -24,9 +24,9 @@
     lazygit
     leiningen
     lsd
-    lua51Packages.luarocks
-    nodejs_18
-    yarn
+    lua51Packages.luarocks-nix
+    nodejs_22
+    (yarn.override { nodejs = nodejs_22; })
     pass
     silver-searcher
     ripgrep
@@ -53,6 +53,7 @@
         compinit
       done
       compinit -C
+      compdef fuck='pkill'
 
       autoload -U select-word-style
       select-word-style bash
@@ -122,5 +123,12 @@
         '';
       }
     ];
+  };
+
+  programs.zellij = {
+    enable = true;
+    settings = {
+      theme = "catppuccin-frappe";
+    };
   };
 }

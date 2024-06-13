@@ -82,7 +82,8 @@
 
 ;; toggles
 (nmap :<leader>tb toggle-blame-line (opts "toggle blame line"))
-(nmap :<leader>td (cmd "Trouble diagnostics") (opts "toggle diagnostics"))
+(nmap :<leader>td (cmd "Trouble diagnostics toggle") (opts "toggle diagnostics"))
+(nmap :<leader>ts (cmd "Trouble lsp_document_symbols toggle") (opts "toggle lsp document symbols"))
 
 ;; buffers
 (nmap :<leader>bb #(t.buffers) (opts "list buffers"))
@@ -131,7 +132,7 @@
 ;; single key mappings
 (nmap :L (cmd :LToggle) (opts "list toggle"))
 (nmap :Q (cmd :QToggle) (opts "quickfix toggle"))
-(nmap :<M-s> (cmd "write silent!") (opts "write file"))
+(nmap :<M-s> (cmd "silent! write") (opts "write file"))
 (nmap :z= (cmd "Telescope spell_suggest theme=get_cursor") (opts "suggest spelling"))
 ;; diagnostics
 (nmap "[d" #(vim.diagnostic.goto_prev error-filter) (opts "next diagnostic"))

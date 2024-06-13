@@ -6,7 +6,7 @@ local function get_code(opts)
   return table.concat(vim.api.nvim_buf_get_lines(0, (opts.line1 - 1), opts.line2, false), "\n")
 end
 local function explain_diagnostic(opts)
-  local diagnostic = vim.diagnostic.get_next()
+  local diagnostic = vim.diagnostic.get_next({severity = vim.diagnostic.severity.ERROR})
   if not diagnostic then
     vim.notify("Nothing to explain under the cursor")
     return

@@ -8,8 +8,7 @@
 
 (fn cmp-format [entry vim-item]
   (let [kind-fmt (lspkind.cmp_format {:mode :symbol
-                                      :maxwidth 30
-                                      :symbol_map {:Codeium ""}})
+                                      :maxwidth 30})
         kind-item (kind-fmt entry vim-item)]
     (tset kind-item :kind (.. " " kind-item.kind " "))
     kind-item))
@@ -31,7 +30,6 @@
               :sources (cmp.config.sources [{:name :git-co-authors
                                              :option {:domain_ranking co-author-domain-ranking
                                                       :since_date "2 weeks"}}
-                                            {:name :codeium}
                                             {:name :nvim_lsp}
                                             {:name :luasnip}
                                             {:name :cmp_nvim_r}
@@ -62,9 +60,8 @@
   (local js-log (ls.parser.parse_snippet :debug "console.log('DEBUG', { $0 });"))
   (local co-authored-by (ls.parser.parse_snippet :cab "Co-authored-by: $0"))
 
-  (ls.add_snippets :all [(ls.snippet :todo [(ls.text_node "TODO(dmejorado): ")
-                                            (ls.insert_node 0)])
-                         (ls.snippet :today (ls.function_node (fn [] (os.date "%Y-%m-%d"))))])
+  (ls.add_snippets :all [(ls.parser.parse_snippet :todo "TODO: $0")
+                         (ls.snippet :date (ls.function_node #(os.date "%Y-%m-%d")))])
   (ls.add_snippets :javascript [js-log])
   (ls.add_snippets :typescript [js-log])
   (ls.add_snippets :typescriptreact [js-log])
@@ -82,10 +79,4 @@
                                         :jalvesaq/cmp-nvim-r
                                         :davidmh/cmp-git-co-authors]
                          :event :InsertEnter
-                         : config})
-
- (use :Exafunction/codeium.nvim {:dependencies [:nvim-lua/plenary.nvim
-                                                :hrsh7th/nvim-cmp]
-                                 :event :InsertEnter
-                                 :opts {}
-                                 :config true})]
+                         : config})]

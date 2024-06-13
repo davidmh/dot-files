@@ -95,7 +95,6 @@
                                                                     :jsonls
                                                                     :lua_ls
                                                                     :eslint
-                                                                    :rust_analyzer
                                                                     :fennel_language_server]}
                                           :config true})
 

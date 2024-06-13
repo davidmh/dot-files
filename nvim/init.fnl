@@ -10,7 +10,8 @@
                       :checker {:enabled true
                                 :notify false}
                       :ui {:border border
-                           :backdrop 100}})
+                           :backdrop 100}
+                      :rocks {:hererocks true}})
 
 (vim.schedule #(do
                 (require :own.mappings)

@@ -9,7 +9,7 @@
 
 (fn explain-diagnostic [opts]
   ; get the diagnostic under the cursor
-  (local diagnostic (vim.diagnostic.get_next))
+  (local diagnostic (vim.diagnostic.get_next {:severity vim.diagnostic.severity.ERROR}))
 
   (when (not diagnostic)
     (vim.notify "Nothing to explain under the cursor")
