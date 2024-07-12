@@ -28,6 +28,7 @@
     nodejs_22
     (yarn.override { nodejs = nodejs_22; })
     pass
+    selene
     silver-searcher
     ripgrep
     tig
