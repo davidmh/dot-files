@@ -14,7 +14,6 @@ local core = autoload("nfnl.core")
 local palettes = autoload("catppuccin.palettes")
 local nvim_web_devicons = autoload("nvim-web-devicons")
 local config = autoload("own.config")
-local neorg_mode = autoload("neorg.modules.core.mode.module")
 local navic = autoload("nvim-navic")
 local empty_space = {provider = " "}
 local function component(data)
@@ -99,20 +98,9 @@ local function _21_()
   return (" " .. direction .. " " .. pattern .. " " .. counter)
 end
 show_search = {condition = _15_, provider = _21_}
-local neorg_mode0
-local function _24_(_241)
-  _241["icon"] = " \238\152\179 "
-  _241["color"] = "purple"
-  _241["content"] = (neorg_mode.public.get_mode() .. " ")
-  return nil
-end
-local function _25_()
-  return (vim.o.filetype == "norg")
-end
-neorg_mode0 = component({init = _24_, condition = _25_})
 local function file_name()
   local file_name0 = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(0), ":.")
-  local function _27_()
+  local function _25_()
     if (file_name0 == "") then
       return "[no name]"
     else
@@ -123,20 +111,20 @@ local function file_name()
       end
     end
   end
-  return (" " .. _27_())
+  return (" " .. _25_())
 end
 local modified_3f
-local function _28_()
+local function _26_()
   return vim.bo.modified
 end
-modified_3f = {condition = _28_, provider = " [+]", hl = {fg = "green"}}
+modified_3f = {condition = _26_, provider = " [+]", hl = {fg = "green"}}
 local read_only_3f
-local function _29_()
+local function _27_()
   return (not vim.bo.modifiable or vim.bo.readonly)
 end
-read_only_3f = {condition = _29_, provider = " \239\128\163", hl = {fg = "orange"}}
+read_only_3f = {condition = _27_, provider = " \239\128\163", hl = {fg = "orange"}}
 local file
-local function _30_(_241)
+local function _28_(_241)
   local name = file_name()
   local ext = vim.fn.fnamemodify(name, ":e")
   local icon, color = nvim_web_devicons.get_icon_color(name, ext, {default = true})
@@ -145,76 +133,76 @@ local function _30_(_241)
   _241["content"] = name
   return nil
 end
-file = component({init = _30_})
+file = component({init = _28_})
 local file_flags = {modified_3f, read_only_3f}
 local file_name_block
-local function _31_()
-  local _32_ = {vim.o.filetype, vim.o.buftype}
-  if ((_G.type(_32_) == "table") and ((_32_)[1] == "fugitiveblame")) then
+local function _29_()
+  local _30_ = {vim.o.filetype, vim.o.buftype}
+  if ((_G.type(_30_) == "table") and ((_30_)[1] == "fugitiveblame")) then
     return false
-  elseif ((_G.type(_32_) == "table") and ((_32_)[1] == "fugitive")) then
+  elseif ((_G.type(_30_) == "table") and ((_30_)[1] == "fugitive")) then
     return false
-  elseif ((_G.type(_32_) == "table") and ((_32_)[1] == "qf")) then
+  elseif ((_G.type(_30_) == "table") and ((_30_)[1] == "qf")) then
     return false
-  elseif ((_G.type(_32_) == "table") and ((_32_)[1] == "toggleterm")) then
+  elseif ((_G.type(_30_) == "table") and ((_30_)[1] == "toggleterm")) then
     return false
-  elseif ((_G.type(_32_) == "table") and true and ((_32_)[2] == "terminal")) then
-    local _ = (_32_)[1]
+  elseif ((_G.type(_30_) == "table") and true and ((_30_)[2] == "terminal")) then
+    local _ = (_30_)[1]
     return false
   elseif true then
-    local _ = _32_
+    local _ = _30_
     return true
   else
     return nil
   end
 end
-local function _34_(_241)
+local function _32_(_241)
   _241["file-name"] = vim.api.nvim_buf_get_name(0)
   return nil
 end
-file_name_block = {file, file_flags, condition = _31_, init = _34_, hl = {bold = true}}
+file_name_block = {file, file_flags, condition = _29_, init = _32_, hl = {bold = true}}
 local quickfix_title
-local function _35_(_241)
+local function _33_(_241)
   _241["icon"] = "\239\145\145"
   _241["color"] = "lavender"
   _241["content"] = (" " .. get_quickfix_title())
   return nil
 end
-quickfix_title = component({condition = show_quickfix_title_3f, hl = {fg = "crust"}, init = _35_})
+quickfix_title = component({condition = show_quickfix_title_3f, hl = {fg = "crust"}, init = _33_})
 local dead_space = {provider = "             "}
 local push_right = {provider = "%="}
 local function diagnostic(severity_code, color)
-  local function _36_(_241)
+  local function _34_(_241)
     return (" " .. config.icons[severity_code] .. " " .. (_241)[severity_code])
   end
-  local function _37_(_241)
+  local function _35_(_241)
     return ((_241)[severity_code] > 0)
   end
-  return {provider = _36_, condition = _37_, hl = {fg = color}}
+  return {provider = _34_, condition = _35_, hl = {fg = color}}
 end
 local function diagnostic_count(severity_code)
   return #vim.diagnostic.get(0, {severity = vim.diagnostic.severity[severity_code]})
 end
 local diagnostics_block
-local function _38_()
+local function _36_()
   return conditions.has_diagnostics()
 end
-local function _39_(self)
+local function _37_(self)
   self["ERROR"] = diagnostic_count("ERROR")
   do end (self)["WARN"] = diagnostic_count("WARN")
   do end (self)["INFO"] = diagnostic_count("INFO")
   do end (self)["HINT"] = diagnostic_count("HINT")
   return nil
 end
-diagnostics_block = {diagnostic("ERROR", "red"), diagnostic("WARN", "yellow"), diagnostic("INFO", "fg"), diagnostic("HINT", "green"), empty_space, conditon = _38_, init = _39_, update = {"DiagnosticChanged", "BufEnter", "ColorScheme"}}
+diagnostics_block = {diagnostic("ERROR", "red"), diagnostic("WARN", "yellow"), diagnostic("INFO", "fg"), diagnostic("HINT", "green"), empty_space, conditon = _36_, init = _37_, update = {"DiagnosticChanged", "BufEnter", "ColorScheme"}}
 local git_block
-local function _40_()
+local function _38_()
   return conditions.is_git_repo()
 end
-local function _41_(_241)
-  local _local_42_ = vim.b.gitsigns_status_dict
-  local head = _local_42_["head"]
-  local root = _local_42_["root"]
+local function _39_(_241)
+  local _local_40_ = vim.b.gitsigns_status_dict
+  local head = _local_40_["head"]
+  local root = _local_40_["root"]
   local cwd_relative_path = string.gsub(string.gsub(vim.fn.getcwd(), vim.fn.fnamemodify(root, ":h"), ""), "^/", "")
   local status = vim.trim((vim.b.gitsigns_status or ""))
   do end (_241)["icon"] = "\239\144\152"
@@ -222,33 +210,33 @@ local function _41_(_241)
   _241["content"] = table.concat({(" [" .. cwd_relative_path .. "]"), head, status}, " ")
   return nil
 end
-git_block = component({condition = _40_, init = _41_, hl = {bold = true}})
+git_block = component({condition = _38_, init = _39_, hl = {bold = true}})
 local git_blame
-local function _43_(_241)
+local function _41_(_241)
   _241["icon"] = "\238\156\130 "
   _241["color"] = "red"
   _241["content"] = "git blame"
   return nil
 end
-local function _44_()
+local function _42_()
   return (vim.o.filetype == "fugitiveblame")
 end
-git_blame = component({init = _43_, condition = _44_, hl = {bold = true}})
+git_blame = component({init = _41_, condition = _42_, hl = {bold = true}})
 local lsp_breadcrumb
-local function _45_()
+local function _43_()
   return navic.get_location({highlight = true})
 end
-local function _46_()
+local function _44_()
   return (navic.is_available() and (#navic.get_location() > 0))
 end
-lsp_breadcrumb = {provider = _45_, condition = _46_, hl = {bg = "NONE", bold = true}, update = {"CursorMoved", "ColorScheme"}}
+lsp_breadcrumb = {provider = _43_, condition = _44_, hl = {bg = "NONE", bold = true}, update = {"CursorMoved", "ColorScheme"}}
 local line_number
-local function _47_()
+local function _45_()
   return vim.o.number
 end
-line_number = {provider = " %2{&nu ? (&rnu && v:relnum ? v:relnum : v:lnum) : ''} ", condition = _47_}
+line_number = {provider = " %2{&nu ? (&rnu && v:relnum ? v:relnum : v:lnum) : ''} ", condition = _45_}
 local fold
-local function _48_()
+local function _46_()
   local line_num = vim.v.lnum
   if (vim.fn.foldlevel(line_num) > vim.fn.foldlevel((line_num - 1))) then
     if (vim.fn.foldclosed(line_num) == -1) then
@@ -260,37 +248,37 @@ local function _48_()
     return nil
   end
 end
-fold = {provider = _48_}
+fold = {provider = _46_}
 local signs
-local function _51_()
+local function _49_()
   return (vim.o.filetype ~= "NeogitStatus")
 end
-signs = {provider = "%s", condition = _51_}
+signs = {provider = "%s", condition = _49_}
 local plugin_updates
-local function _52_(_241)
-  local _let_53_ = vim.split(lazy_status.updates(), " ")
-  local icon = _let_53_[1]
-  local count = _let_53_[2]
+local function _50_(_241)
+  local _let_51_ = vim.split(lazy_status.updates(), " ")
+  local icon = _let_51_[1]
+  local count = _let_51_[2]
   _241["icon"] = (" " .. icon)
   do end (_241)["content"] = (" " .. count)
   do end (_241)["color"] = "rosewater"
   return nil
 end
-local function _54_()
+local function _52_()
   return lazy_status.has_updates()
 end
-plugin_updates = {component({init = _52_, condition = _54_})}
+plugin_updates = {component({init = _50_, condition = _52_})}
 local statuscolumn = {fold, push_right, signs, line_number}
 local winbar = {lsp_breadcrumb, quickfix_title, push_right, quickfix_history_status_component, git_blame, file_name_block}
-local statusline = {vi_mode, macro_rec, dead_space, push_right, show_cmd, diagnostics_block, show_search, neorg_mode0, git_block, plugin_updates, hl = {bg = "NONE"}}
+local statusline = {vi_mode, macro_rec, dead_space, push_right, show_cmd, diagnostics_block, show_search, git_block, plugin_updates, hl = {bg = "NONE"}}
 local disabled_winbar = {buftype = {"nofile", "prompt", "terminal"}, filetype = {"^git.*"}}
 local function initialize_heirline()
   vim.o.showmode = false
   local opts
-  local function _55_(_241)
+  local function _53_(_241)
     return conditions.buffer_matches(disabled_winbar, _241.buf)
   end
-  opts = {colors = palettes.get_palette(), disable_winbar_cb = _55_}
+  opts = {colors = palettes.get_palette(), disable_winbar_cb = _53_}
   return heirline.setup({winbar = winbar, statuscolumn = statuscolumn, statusline = statusline, opts = opts})
 end
 --[[ (initialize-heirline) ]]

@@ -12,7 +12,6 @@
 (local palettes (autoload :catppuccin.palettes))
 (local nvim-web-devicons (autoload :nvim-web-devicons))
 (local config (autoload :own.config))
-(local neorg-mode (autoload :neorg.modules.core.mode.module))
 (local navic (autoload :nvim-navic))
 
 (local empty-space {:provider " "})
@@ -80,11 +79,6 @@
                                      pattern (vim.fn.getreg "/")
                                      counter (.. "[" current :/ total "]")]
                                  (.. " " direction " " pattern " " counter))})
-
-(local neorg-mode (component {:init #(do (tset $1 :icon "  ")
-                                         (tset $1 :color :purple)
-                                         (tset $1 :content (.. (neorg-mode.public.get_mode) " ")))
-                              :condition #(= vim.o.filetype :norg)}))
 
 (fn file-name []
   (let [file-name (vim.fn.fnamemodify (vim.api.nvim_buf_get_name 0) ::.)]
@@ -217,7 +211,6 @@
                        show-cmd
                        diagnostics-block
                        show-search
-                       neorg-mode
                        git-block
                        plugin-updates
                        {:hl {:bg :NONE}}))

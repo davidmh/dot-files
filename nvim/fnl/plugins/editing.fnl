@@ -25,10 +25,6 @@
            [:FileType {:pattern :fennel :callback fennel-rules}]
            [:FileType {:pattern "css,less" :callback css-rules}]))
 
-(fn config-mundo []
-  (set vim.o.undofile true)
-  (set vim.o.undodir (.. (vim.fn.stdpath "data") "/undo")))
-
 [:junegunn/vim-slash
 
  (use :mg979/vim-visual-multi {:keys [(use :<c-n> {:mode [:n :v]})
@@ -43,10 +39,5 @@
  (use :tommcdo/vim-exchange {:keys [:cx :cX (use :X {:mode :v})]})
 
  (use :junegunn/vim-easy-align {:keys [(use :ga "<Plug>(EasyAlign)" {:mode [:x :n]})]})
-
- (use :simnalamburt/vim-mundo {:config config-mundo
-                               :event :VeryLazy})
-
- (use :dhruvasagar/vim-table-mode {:ft :markdown})
 
  (use :wakatime/vim-wakatime {:lazy false})]

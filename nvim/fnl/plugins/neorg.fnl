@@ -12,5 +12,4 @@
                                       :core.export.markdown {:config {:extension :.md}}
                                       :core.dirman {:config {:workspaces {:notes "~/Documents/neorg"
                                                                           :remix "~/Documents/neorg/remix"}}}
-                                      :core.mode {}
                                       :core.ui.calendar {}}}})

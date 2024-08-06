@@ -4,16 +4,15 @@
 
 (use :folke/which-key.nvim {:dependencies [:nvim-lua/plenary.nvim]
                             :event :VeryLazy
-                            :config #(which-key.register {:mode [:n]
-                                                          :<leader>a {:name :alternate}
-                                                          :<leader>g {:name :git
-                                                                      :h {:name :hunk}}
-                                                          :<leader>l {:name :lsp}
-                                                          :<leader>o {:name :org}
-                                                          :<leader>b {:name :buffer}
-                                                          :<leader>t {:name :toggle}
-                                                          :<leader>v {:name :vim}
-                                                          :<leader>f {:name :file-tree}
-                                                          :<leader>/ {:name :find}
-                                                          :<localleader>g {:name :gemini}
-                                                          :<localleader>t {:name :test}})})
+                            :config #(which-key.add [(use :<leader>a {:group :alternate})
+                                                     (use :<leader>g {:group :git})
+                                                     (use :<leader>gh {:group :hunk})
+                                                     (use :<leader>l {:group :lsp})
+                                                     (use :<leader>o {:group :org})
+                                                     (use :<leader>b {:group :buffer})
+                                                     (use :<leader>t {:group :toggle})
+                                                     (use :<leader>v {:group :vim})
+                                                     (use :<leader>f {:group :file-tree})
+                                                     (use :<leader>/ {:group :find})
+                                                     (use :<localleader>g {:group :gemini})
+                                                     (use :<localleader>t {:group :test})])})

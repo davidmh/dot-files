@@ -1,6 +1,6 @@
 -- [nfnl] Compiled from fnl/plugins/misc.fnl by https://github.com/Olical/nfnl, do not edit.
 local function _1_()
-  vim.g.rooter_patterns = {"lazy-lock.json", "Gemfile", "package.json", "venv", ".git", "Cargo.toml"}
+  vim.g.rooter_patterns = {"lazy-lock.json", ".git"}
   vim.g.rooter_silent_chdir = true
   return nil
 end

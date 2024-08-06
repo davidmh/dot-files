@@ -28,14 +28,13 @@ local function browse_runtime()
 end
 local function toggle_blame_line()
   local enabled_3f = gitsigns.toggle_current_line_blame()
-  local function _2_()
-    if enabled_3f then
-      return "on"
-    else
-      return "off"
-    end
+  local _2_
+  if enabled_3f then
+    _2_ = "on"
+  else
+    _2_ = "off"
   end
-  return vim.notify(("Git blame line " .. _2_()), vim.log.levels.INFO, {title = "toggle", timeout = 1000})
+  return vim.notify(("Git blame line " .. _2_), vim.log.levels.INFO, {title = "toggle", timeout = 1000})
 end
 local function term_tab(id)
   return toggle_term.toggle_command("direction=tab dir=. size=0", id)
@@ -49,14 +48,14 @@ end
 local function toggle_tmux()
   local term = terminal.Terminal
   if (state["tmux-term"] == nil) then
-    local function _3_()
+    local function _4_()
       state["tmux-term"] = nil
       return nil
     end
-    state["tmux-term"] = term:new({id = 200, cmd = "tmux -2 attach 2>/dev/null || tmux -2", direction = "tab", close_on_exit = true, on_exit = _3_})
+    state["tmux-term"] = term:new({id = 200, cmd = "tmux -2 attach 2>/dev/null || tmux -2", direction = "tab", close_on_exit = true, on_exit = _4_})
   else
   end
-  return (state["tmux-term"]):toggle()
+  return state["tmux-term"]:toggle()
 end
 local function opts(desc)
   return {silent = true, desc = desc}
@@ -64,19 +63,21 @@ end
 local function get_git_root()
   return core["get-in"](vim, {"b", "gitsigns_status_dict", "root"})
 end
-local function _5_()
+local function search_cword()
+  vim.cmd("normal! yiw")
+  vim.cmd("GrugFar")
+  local function _6_()
+    return vim.cmd("normal! p$")
+  end
+  return vim.schedule(_6_)
+end
+local function _7_()
   return projects["find-files"](get_git_root(), opts("find files"))
 end
-vim.keymap.set("n", "<leader><leader>", _5_)
+vim.keymap.set("n", "<leader><leader>", _7_)
 vim.keymap.set("n", "<leader>/b", grep_buffer_content, opts("find in open buffers"))
-local function _6_()
-  return t.live_grep({cwd = get_git_root()})
-end
-vim.keymap.set("n", "<leader>/p", _6_, opts("find in project"))
-local function _7_()
-  return t.grep_string({cwd = get_git_root()})
-end
-vim.keymap.set("n", "<leader>/w", _7_, opts("find word under cursor"))
+vim.keymap.set("n", "<leader>/p", cmd("GrugFar"), opts("find in project"))
+vim.keymap.set("n", "<leader>/w", search_cword, opts("find current word"))
 vim.keymap.set("n", "<leader>s", ":botright split /tmp/scratch.fnl<cr>", opts("open scratch buffer"))
 vim.keymap.set("n", "<leader>vp", browse_plugins, opts("vim plugins"))
 vim.keymap.set("n", "<leader>vr", browse_runtime, opts("vim runtime"))

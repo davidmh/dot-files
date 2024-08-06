@@ -69,11 +69,15 @@
 (fn get-git-root []
   (core.get-in vim [:b :gitsigns_status_dict :root]))
 
-; normal mode mappings
+(fn search-cword []
+  (vim.cmd "normal! yiw")
+  (vim.cmd "GrugFar")
+  (vim.schedule #(vim.cmd "normal! p$")))
+
 (nmap :<leader><leader> #(projects.find-files (get-git-root) (opts "find files")))
 (nmap :<leader>/b grep-buffer-content (opts "find in open buffers"))
-(nmap :<leader>/p #(t.live_grep {:cwd (get-git-root)}) (opts "find in project"))
-(nmap :<leader>/w #(t.grep_string {:cwd (get-git-root)}) (opts "find word under cursor"))
+(nmap :<leader>/p (cmd :GrugFar) (opts "find in project"))
+(nmap :<leader>/w search-cword (opts "find current word"))
 
 (nmap :<leader>s ":botright split /tmp/scratch.fnl<cr>" (opts "open scratch buffer"))
 
