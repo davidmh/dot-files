@@ -10,7 +10,7 @@
 
   outputs = { nixpkgs, unstable, home-manager, ... }@inputs:
     let
-      system = "aarch64-darwin";
+      system = "x86_64-darwin";
       pkgs = nixpkgs.legacyPackages.${system};
       username = "david.mejorado";
       homeDirectory = "/Users/david.mejorado";
