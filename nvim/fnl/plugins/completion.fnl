@@ -30,8 +30,8 @@
               :sources (cmp.config.sources [{:name :git-co-authors
                                              :option {:domain_ranking co-author-domain-ranking
                                                       :since_date "2 weeks"}}
-                                            {:name :nvim_lsp}
                                             {:name :luasnip}
+                                            {:name :nvim_lsp}
                                             {:name :cmp_nvim_r}
                                             {:name :orgmode}
                                             {:name :emoji}

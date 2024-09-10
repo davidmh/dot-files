@@ -33,6 +33,7 @@
     ripgrep
     tig
     ueberzug
+    unstable.ast-grep
     unstable.gh
     unstable.git-absorb
     unstable.neovim

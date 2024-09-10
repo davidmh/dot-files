@@ -7,71 +7,69 @@ local cspell = autoload("cspell")
 local cfg = autoload("own.config")
 local str = autoload("own.string")
 local function root_pattern(pattern)
-  local function _4_(_2_)
-    local _arg_3_ = _2_
-    local bufname = _arg_3_["bufname"]
+  local function _3_(_2_)
+    local bufname = _2_["bufname"]
     local root_fn = u.root_pattern(pattern)
     return root_fn(vim.fn.expand(bufname))
   end
-  return _4_
+  return _3_
 end
 local function with_root_file(...)
   local files = {...}
-  local function _5_(utils)
+  local function _4_(utils)
     return utils.root_has_file(files)
   end
-  return _5_
+  return _4_
 end
 local cspell_filetypes = {"css", "gitcommit", "clojure", "html", "javascript", "json", "less", "lua", "markdown", "python", "ruby", "typescript", "typescriptreact", "yaml"}
 local function get_source_name(diagnostic)
-  local function _6_()
-    local _7_ = diagnostic.namespace
-    if (nil ~= _7_) then
-      local _8_ = vim.diagnostic.get_namespace(_7_)
-      if (nil ~= _8_) then
-        return (_8_).name
+  local or_5_ = diagnostic.source
+  if not or_5_ then
+    local tmp_3_auto = diagnostic.namespace
+    if (nil ~= tmp_3_auto) then
+      local tmp_3_auto0 = vim.diagnostic.get_namespace(tmp_3_auto)
+      if (nil ~= tmp_3_auto0) then
+        or_5_ = tmp_3_auto0.name
       else
-        return _8_
+        or_5_ = nil
       end
     else
-      return _7_
+      or_5_ = nil
     end
   end
-  return (diagnostic.source or _6_() or ("ns:" .. tostring(diagnostic.namespace)))
+  return (or_5_ or ("ns:" .. tostring(diagnostic.namespace)))
 end
 local function diagnostic_format(diagnostic)
   return (cfg.icons[diagnostic.severity] .. " [" .. get_source_name(diagnostic) .. "] " .. diagnostic.message)
 end
-vim.diagnostic.config({underline = true, severity_sort = true, float = {header = "", border = cfg.border, format = diagnostic_format}, signs = false, virtual_text = false, update_in_insert = false})
+vim.diagnostic.config({underline = true, virtual_text = true, severity_sort = true, float = {header = "", border = cfg.border, format = diagnostic_format}, signs = false, update_in_insert = false})
 vim.api.nvim_create_augroup("lsp-formatting", {clear = true})
 local function on_attach(client, bufnr)
   if client.supports_method("textDocument/formatting") then
-    local function _11_()
+    local function _10_()
       return vim.lsp.buf.format({bufnr = bufnr})
     end
-    return vim.api.nvim_create_autocmd("BufWritePre", {buffer = bufnr, callback = _11_, group = "lsp-formatting"})
+    return vim.api.nvim_create_autocmd("BufWritePre", {buffer = bufnr, callback = _10_, group = "lsp-formatting"})
   else
     return nil
   end
 end
-local function on_add_to_json(_13_)
-  local _arg_14_ = _13_
-  local cspell_config_path = _arg_14_["cspell_config_path"]
+local function on_add_to_json(_12_)
+  local cspell_config_path = _12_["cspell_config_path"]
   return os.execute(str.format("jq -S '.words |= sort' ${path} > ${path}.tmp && mv ${path}.tmp ${path}", {path = cspell_config_path}))
 end
-local function on_add_to_dictionary(_15_)
-  local _arg_16_ = _15_
-  local dictionary_path = _arg_16_["dictionary_path"]
+local function on_add_to_dictionary(_13_)
+  local dictionary_path = _13_["dictionary_path"]
   return os.execute(str.format("sort ${path} -o ${path}", {path = dictionary_path}))
 end
 local cspell_config = {on_add_to_json = on_add_to_json, on_add_to_dictionary = on_add_to_dictionary, read_config_synchronously = false}
 local function config()
   local formatting = null_ls.builtins.formatting
   local diagnostics = null_ls.builtins.diagnostics
-  local function _17_(_241)
+  local function _14_(_241)
     _241["severity"] = vim.diagnostic.severity.W
     return nil
   end
-  return null_ls.setup({sources = {diagnostics.selene.with({cwd = root_pattern("selene.toml"), condition = with_root_file("selene.toml")}), diagnostics.pylint.with({cwd = root_pattern("requirements-dev.txt"), condition = with_root_file("venv/bin/pylint"), prefer_local = "venv/bin", args = {"--from-stdin", "$FILENAME", "-f", "json", "-d", "line-too-long,missing-function-docstring"}}), cspell.diagnostics.with({cwd = root_pattern("cspell.json"), prefer_local = "node_modules/.bin", filetypes = cspell_filetypes, diagnostics_postprocess = _17_, config = cspell_config}), cspell.code_actions.with({cwd = root_pattern("cspell.json"), prefer_local = "node_modules/.bin", filetypes = cspell_filetypes, config = cspell_config}), formatting.gofmt, formatting.sqlfluff.with({prefer_local = "node_modules/.bin"}), formatting.stylua, formatting.terraform_fmt, formatting.nixpkgs_fmt}, on_attach = on_attach})
+  return null_ls.setup({sources = {diagnostics.selene.with({cwd = root_pattern("selene.toml"), condition = with_root_file("selene.toml")}), diagnostics.pylint.with({cwd = root_pattern("requirements-dev.txt"), condition = with_root_file("venv/bin/pylint"), prefer_local = "venv/bin", args = {"--from-stdin", "$FILENAME", "-f", "json", "-d", "line-too-long,missing-function-docstring"}}), cspell.diagnostics.with({cwd = root_pattern("cspell.json"), prefer_local = "node_modules/.bin", filetypes = cspell_filetypes, diagnostics_postprocess = _14_, config = cspell_config}), cspell.code_actions.with({cwd = root_pattern("cspell.json"), prefer_local = "node_modules/.bin", filetypes = cspell_filetypes, config = cspell_config}), formatting.gofmt, formatting.sqlfluff.with({prefer_local = "node_modules/.bin"}), formatting.stylua, formatting.terraform_fmt, formatting.nixpkgs_fmt}, on_attach = on_attach})
 end
 return {{"folke/trouble.nvim", dependencies = {"nvim-tree/nvim-web-devicons"}, opts = {signs = {error = cfg.icons.ERROR, warning = cfg.icons.WARN, hint = cfg.icons.HINT, information = cfg.icons.INFO, other = "\239\171\160"}, focus = true, group = false, padding = false}, config = true}, {"nvimtools/none-ls.nvim", dependencies = {"nvim-lua/plenary.nvim", "davidmh/cspell.nvim"}, config = config}}

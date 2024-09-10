@@ -4,7 +4,7 @@ return {
   font = wezterm.font('Hasklug Nerd Font', { weight = 'Medium' }),
   font_size = 14.0,
   front_end = 'Software',
-  color_scheme = 'Catppuccin Frappe',
+  color_scheme = 'Catppuccin Macchiato',
   line_height = 1.3,
   underline_position = -7,
   use_fancy_tab_bar = false,

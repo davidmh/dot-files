@@ -33,7 +33,7 @@ local function mason_config()
   return vim.defer_fn(_3_, 100)
 end
 local function ruby_lsps()
-  lspconfig.solargraph.setup({root_dir = util.root_pattern(".rubocop.yml"), cmd = {"bundle", "exec", "solargraph", "stdio"}})
+  lspconfig.solargraph.setup({root_dir = util.root_pattern(".git"), cmd = {"bundle", "exec", "solargraph", "stdio"}})
   local function _5_()
     return vim.lsp.buf.format()
   end
@@ -43,7 +43,7 @@ local function lsp_config()
   local git_root = util.root_pattern(".git")
   local client_capabilities = vim.lsp.protocol.make_client_capabilities()
   local base_settings = {capabilities = cmp_lsp.default_capabilities(client_capabilities), init_options = {preferences = {includeCompletionsWithSnippetText = true, includeCompletionsForImportStatements = true}}}
-  local server_configs = {jsonls = {settings = {json = {schemas = schema_store.json.schemas(), validate = {enable = true}}}}, lua_ls = {settings = {Lua = {completion = {callSnippet = "Replace"}, diagnostics = {globals = {"vim", "it", "describe", "before_each", "after_each", "pending"}}, format = {enable = false}, workspace = {checkThirdParty = false}}}}, eslint = {root_dir = git_root}, grammarly = {filetypes = {"markdown", "norg", "txt", "gitcommit"}}, fennel_language_server = {single_file_support = true, root_dir = lspconfig.util.root_pattern("fnl"), settings = {fennel = {diagnostics = {globals = {"vim", "jit", "comment"}}, workspace = {library = vim.api.nvim_list_runtime_paths()}}}}, cssls = {root_dir = git_root}, shellcheck = {root_dir = git_root}}
+  local server_configs = {jsonls = {settings = {json = {schemas = schema_store.json.schemas(), validate = {enable = true}}}}, lua_ls = {settings = {Lua = {completion = {callSnippet = "Replace"}, diagnostics = {globals = {"vim", "it", "describe", "before_each", "after_each", "pending"}}, format = {enable = false}, workspace = {checkThirdParty = false}}}}, eslint = {root_dir = git_root}, fennel_language_server = {single_file_support = true, root_dir = lspconfig.util.root_pattern("fnl"), settings = {fennel = {diagnostics = {globals = {"vim", "jit", "comment"}}, workspace = {library = vim.api.nvim_list_runtime_paths()}}}}, cssls = {root_dir = git_root}, shellcheck = {root_dir = git_root}}
   for _, server_name in ipairs(mason_lspconfig.get_installed_servers()) do
     local server_setup = core["get-in"](lspconfig, {server_name, "setup"})
     local server_config = core.get(server_configs, server_name, {})

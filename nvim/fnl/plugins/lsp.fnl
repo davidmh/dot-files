@@ -34,7 +34,7 @@
     100))
 
 (fn ruby-lsps []
-  (lspconfig.solargraph.setup {:root_dir (util.root_pattern :.rubocop.yml)
+  (lspconfig.solargraph.setup {:root_dir (util.root_pattern :.git)
                                :cmd [:bundle :exec :solargraph :stdio]})
 
   ; format on save with rubocop through solargraph
@@ -63,7 +63,7 @@
                                                    :format {:enable false}
                                                    :workspace {:checkThirdParty false}}}}
                          :eslint {:root_dir git-root}
-                         :grammarly {:filetypes [:markdown :norg :txt :gitcommit]}
+                         ;:grammarly {:filetypes [:markdown :norg :txt :gitcommit]}
                          :fennel_language_server {:single_file_support true
                                                   :root_dir (lspconfig.util.root_pattern :fnl)
                                                   :settings {:fennel {:diagnostics {:globals [:vim :jit :comment]}

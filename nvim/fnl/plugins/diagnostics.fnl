@@ -45,7 +45,7 @@
 
 (vim.diagnostic.config {:underline true
                         :signs false
-                        :virtual_text false
+                        :virtual_text true
                         :update_in_insert false
                         :severity_sort true
                         :float {:header ""

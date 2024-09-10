@@ -8,7 +8,7 @@ vim.opt.completeopt = {"menuone", "menuone", "noselect", "popup"}
 local function cmp_format(entry, vim_item)
   local kind_fmt = lspkind.cmp_format({mode = "symbol", maxwidth = 30})
   local kind_item = kind_fmt(entry, vim_item)
-  do end (kind_item)["kind"] = (" " .. kind_item.kind .. " ")
+  kind_item["kind"] = (" " .. kind_item.kind .. " ")
   return kind_item
 end
 local co_author_domain_ranking = vim.tbl_add_reverse_lookup({"users.noreply.github.com", "ridewithvia.com", "remix.com", "gmail.com"})
@@ -17,7 +17,7 @@ local function config()
   local function _2_(args)
     return ls.lsp_expand(args.body)
   end
-  cmp.setup({mapping = cmp.mapping.preset.insert(cmd_mappings), sources = cmp.config.sources({{name = "git-co-authors", option = {domain_ranking = co_author_domain_ranking, since_date = "2 weeks"}}, {name = "nvim_lsp"}, {name = "luasnip"}, {name = "cmp_nvim_r"}, {name = "orgmode"}, {name = "emoji"}, {name = "nerdfonts"}, {name = "conjure"}, {name = "buffer", keyword_length = 5}}), formatting = {fields = {"kind", "abbr", "menu"}, format = cmp_format}, snippet = {expand = _2_}, window = {completion = {winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None", col_offset = -3, side_padding = 0}}})
+  cmp.setup({mapping = cmp.mapping.preset.insert(cmd_mappings), sources = cmp.config.sources({{name = "git-co-authors", option = {domain_ranking = co_author_domain_ranking, since_date = "2 weeks"}}, {name = "luasnip"}, {name = "nvim_lsp"}, {name = "cmp_nvim_r"}, {name = "orgmode"}, {name = "emoji"}, {name = "nerdfonts"}, {name = "conjure"}, {name = "buffer", keyword_length = 5}}), formatting = {fields = {"kind", "abbr", "menu"}, format = cmp_format}, snippet = {expand = _2_}, window = {completion = {winhighlight = "Normal:Pmenu,FloatBorder:Pmenu,Search:None", col_offset = -3, side_padding = 0}}})
   cmp.setup.cmdline({mapping = cmp.mapping.preset.cmdline(cmd_mappings)})
   ls.config.setup({history = true, update_events = "TextChanged,TextChangedI", enable_autosnippets = true})
   local function _3_()

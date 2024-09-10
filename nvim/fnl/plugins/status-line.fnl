@@ -130,7 +130,8 @@
 (fn diagnostic [severity-code color]
   {:provider #(.. " " (. config.icons severity-code) " " (. $1 severity-code))
    :condition #(> (. $1 severity-code) 0)
-   :hl {:fg color}})
+   :hl {:fg color}
+   :event :DiagnosticChanged})
 
 (fn diagnostic-count [severity-code]
   (length (vim.diagnostic.get 0 {:severity (. vim.diagnostic.severity severity-code)})))
