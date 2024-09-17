@@ -37,6 +37,7 @@
     unstable.gh
     unstable.git-absorb
     unstable.neovim
+    unstable.nixpkgs-fmt
     unstable.wezterm
     (unstable.nerdfonts.override { fonts = [ "Hasklig" ]; })
   ];
@@ -85,7 +86,7 @@
   programs.git = {
     enable = true;
     userName = "David Mejorado";
-    userEmail = "594302+davidmh@users.noreply.github.com";
+    userEmail = "david.mejorado@gmail.com";
 
     aliases = {
       current-branch = "rev-parse --abbrev-ref HEAD";
@@ -101,6 +102,8 @@
       rebase.autosquash = true;
       fetch.writeCommitGraph = true;
       push.autoSetupRemote = true;
+      commit.gpgsign = true;
+      user.signingkey = "86C60D761EB5F758";
     };
 
     diff-so-fancy.enable = true;
