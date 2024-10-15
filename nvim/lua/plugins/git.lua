@@ -78,7 +78,7 @@ local function copy_remote_url(opts)
 end
 vim.api.nvim_create_user_command("GCopy", copy_remote_url, {range = true, nargs = 0})
 local function git_log_mappings(_, map)
-  do end (actions.select_default):replace(view_commit("Gtabedit"))
+  actions.select_default:replace(view_commit("Gtabedit"))
   map("i", "<C-x>", view_commit("Gsplit"))
   map("n", "<C-x>", view_commit("Gsplit"))
   map("i", "<C-v>", view_commit("Gvsplit"))
@@ -185,4 +185,4 @@ local function config()
   vim.keymap.set("n", "[h", cmd("Gitsigns prev_hunk"), {desc = "previous git hunk", nowait = true, silent = true})
   return vim.keymap.set("n", "]h", cmd("Gitsigns next_hunk"), {desc = "next git hunk", nowait = true, silent = true})
 end
-return {{"lewis6991/gitsigns.nvim", opts = {current_line_blame = true}, config = true}, {"sindrets/diffview.nvim", opts = {key_bindings = {disable_defaults = false}}, config = true}, {"tpope/vim-git", dependencies = {"tpope/vim-fugitive", "tpope/vim-rhubarb", "nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "lewis6991/gitsigns.nvim", "norcalli/nvim-terminal.lua"}, event = "VeryLazy", config = config}, {"NeogitOrg/neogit", dependencies = {"nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "nvim-telescope/telescope.nvim"}, opts = {disable_hint = true, fetch_after_checkout = true, graph_style = "unicode", notification_icon = "\238\156\130", remember_settings = false}, config = true, cmd = {"Neogit"}}}
+return {{"lewis6991/gitsigns.nvim", opts = {current_line_blame = true}, config = true}, {"sindrets/diffview.nvim", opts = {key_bindings = {disable_defaults = false}}, config = true}, {"tpope/vim-git", dependencies = {"tpope/vim-fugitive", "tpope/vim-rhubarb", "nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "lewis6991/gitsigns.nvim", "norcalli/nvim-terminal.lua"}, event = "VeryLazy", config = config}, {"NeogitOrg/neogit", dependencies = {"nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "nvim-telescope/telescope.nvim"}, opts = {disable_hint = true, fetch_after_checkout = true, graph_style = "unicode", notification_icon = "\238\156\130", recent_commit_count = 15, remember_settings = false}, config = true, cmd = {"Neogit"}}}

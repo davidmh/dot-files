@@ -11,6 +11,9 @@
                                                       :norg {:icon :}}}
                                     :config true})
 
+ (use :nvim-zh/colorful-winsep.nvim {:config true
+                                     :event [:WinLeave]})
+
  (use :stevearc/dressing.nvim {:event :VeryLazy
                                :opts {:select {:backend :telescope}
                                       :telescope {:layout_config {:width #(math.min $2 80)

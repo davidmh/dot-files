@@ -38,8 +38,8 @@
     unstable.git-absorb
     unstable.neovim
     unstable.nixpkgs-fmt
-    unstable.wezterm
     (unstable.nerdfonts.override { fonts = [ "Hasklig" ]; })
+    wezterm
   ];
 
   programs.home-manager.enable = true;
@@ -104,9 +104,11 @@
       push.autoSetupRemote = true;
       commit.gpgsign = true;
       user.signingkey = "86C60D761EB5F758";
+      delta.side-by-side = true;
+      delta.line-numbers = false;
     };
 
-    diff-so-fancy.enable = true;
+    delta.enable = true;
     lfs.enable = true;
   };
 

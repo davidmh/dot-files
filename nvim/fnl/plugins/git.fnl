@@ -207,6 +207,7 @@
                                 :fetch_after_checkout true
                                 :graph_style :unicode
                                 :remember_settings false
-                                :notification_icon :}
+                                :notification_icon :
+                                :recent_commit_count 15}
                          :config true
                          :cmd [:Neogit]})]
