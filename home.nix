@@ -36,6 +36,7 @@
     unstable.ast-grep
     unstable.gh
     unstable.git-absorb
+    unstable.gnupg
     unstable.neovim
     unstable.nixpkgs-fmt
     (unstable.nerdfonts.override { fonts = [ "Hasklig" ]; })
@@ -141,7 +142,8 @@
 
   services.gpg-agent = {
     enable = true;
-    defaultCacheTtl = 1800;
+    defaultCacheTtl = 28800;
     enableSshSupport = true;
+    pinentryPackage = pkgs.pinentry_mac;
   };
 }
