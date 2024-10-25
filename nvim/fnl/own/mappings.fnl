@@ -86,8 +86,6 @@
 
 ;; toggles
 (nmap :<leader>tb toggle-blame-line (opts "toggle blame line"))
-(nmap :<leader>td (cmd "Trouble diagnostics toggle") (opts "toggle diagnostics"))
-(nmap :<leader>ts (cmd "Trouble lsp_document_symbols toggle") (opts "toggle lsp document symbols"))
 
 ;; buffers
 (nmap :<leader>bb #(t.buffers) (opts "list buffers"))

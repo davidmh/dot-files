@@ -1,8 +1,4 @@
 (import-macros {: use : augroup : nmap} :own.macros)
-(local {: autoload} (require :nfnl.module))
-(local grug-far (autoload :grug-far))
-
-;(vim.api.nvim_create_user_command :GrugFar #(grug-far.open) {})
 
 (fn open-result-and-close-search []
   (nmap :<C-enter> :<localleader>o<localleader>c {:buffer true :remap true}))

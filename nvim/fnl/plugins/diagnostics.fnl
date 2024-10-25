@@ -106,17 +106,6 @@
 
      :on_attach on-attach}))
 
-[(use :folke/trouble.nvim {:dependencies [:nvim-tree/nvim-web-devicons]
-                           :opts {:signs {:error cfg.icons.ERROR
-                                          :warning cfg.icons.WARN
-                                          :hint cfg.icons.HINT
-                                          :information cfg.icons.INFO
-                                          :other "﫠"}
-                                  :padding false
-                                  :group false
-                                  :focus true}
-                           :config true})
-
- (use :nvimtools/none-ls.nvim {:dependencies [:nvim-lua/plenary.nvim
-                                              :davidmh/cspell.nvim]
-                               : config})]
+(use :nvimtools/none-ls.nvim {:dependencies [:nvim-lua/plenary.nvim
+                                             :davidmh/cspell.nvim]
+                              : config})
