@@ -13,7 +13,7 @@ ln -s ~/.config/home-manager/wezterm.lua ~/.config/wezterm/wezterm.lua 2> /dev/n
 ln -s ~/.config/home-manager/starship.toml ~/.config/starship.toml 2> /dev/null
 
 if ! command -v home-manager &> /dev/null; then
-  nix run home-manager/release-23.05 -- init --switch
+  nix run home-manager -- init --switch
 else
   home-manager switch
 fi

@@ -51,30 +51,20 @@
 
   programs.zsh = {
     enable = true;
-    completionInit = ''
-      autoload -Uz compinit
-      for dump in ~/.zcompdump(N.mh+24); do
-        compinit
-      done
-      compinit -C
-      compdef fuck='pkill'
-
-      autoload -U select-word-style
-      select-word-style bash
-    '';
     autocd = true;
     history.ignoreSpace = true;
-    zplug = {
+    antidote = {
       enable = true;
       plugins = [
-        { name = "plugins/git"; tags = [ "from:oh-my-zsh" ]; }
-        { name = "plugins/dirhistory"; tags = [ "from:oh-my-zsh" ]; }
-        { name = "plugins/chruby"; tags = [ "from:oh-my-zsh" ]; }
-        # { name = "mattberther/zsh-pyenv"; }
-        { name = "zsh-users/zsh-syntax-highlighting"; }
-        { name = "zsh-users/zsh-autosuggestions"; }
-        { name = "zsh-users/zsh-completions"; }
-        { name = "jeffreytse/zsh-vi-mode"; }
+        "zsh-users/zsh-completions kind:fpath"
+        "zsh-users/zsh-autosuggestions kind:defer"
+        "zdharma-continuum/fast-syntax-highlighting kind:defer"
+
+        # OMZ
+        "getantidote/use-omz" # handle OMZ dependencies
+        "ohmyzsh/ohmyzsh path:lib" # load OMZ's library
+        "ohmyzsh/ohmyzsh path:plugins/git"
+        "ohmyzsh/ohmyzsh path:plugins/dirhistory"
       ];
     };
     shellAliases = {

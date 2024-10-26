@@ -65,4 +65,5 @@
        :config config})
 
  (use :davidmh/mdx.nvim {:dependencies [:nvim-treesitter/nvim-treesitter]
+                         :event "BufRead *.mdx"
                          :config true})]
