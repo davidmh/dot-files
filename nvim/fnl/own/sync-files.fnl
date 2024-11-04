@@ -58,7 +58,8 @@
       (update-file-content nvim-colorscheme-path
                            (symbolize nvim-flavor)
                            (symbolize new-flavor))
-      (recompile-colorscheme))))
+      (recompile-colorscheme)))
+  nil)
 
 (augroup :sync-colorscheme [:ColorScheme {:pattern :*
                                           :desc "Sync colorscheme between wezterm and nvim"

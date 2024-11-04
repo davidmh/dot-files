@@ -34,19 +34,21 @@ local function update_file_content(path, from, to)
   return core.spit(path, updated_content)
 end
 local function on_update_from_command()
-  local new_flavor = catppuccin.flavour
-  local wezterm_flavor = get_wezterm_catppuccin_flavor()
-  local nvim_flavor = get_nvim_catppuccin_flavor()
-  if (new_flavor ~= wezterm_flavor) then
-    update_file_content(wezterm_config_path, capitalize(wezterm_flavor), capitalize(new_flavor))
-  else
+  do
+    local new_flavor = catppuccin.flavour
+    local wezterm_flavor = get_wezterm_catppuccin_flavor()
+    local nvim_flavor = get_nvim_catppuccin_flavor()
+    if (new_flavor ~= wezterm_flavor) then
+      update_file_content(wezterm_config_path, capitalize(wezterm_flavor), capitalize(new_flavor))
+    else
+    end
+    if (new_flavor ~= nvim_flavor) then
+      update_file_content(nvim_colorscheme_path, symbolize(nvim_flavor), symbolize(new_flavor))
+      recompile_colorscheme()
+    else
+    end
   end
-  if (new_flavor ~= nvim_flavor) then
-    update_file_content(nvim_colorscheme_path, symbolize(nvim_flavor), symbolize(new_flavor))
-    return recompile_colorscheme()
-  else
-    return nil
-  end
+  return nil
 end
 local group = vim.api.nvim_create_augroup("sync-colorscheme", {clear = true})
 vim.api.nvim_create_autocmd("ColorScheme", {pattern = "*", desc = "Sync colorscheme between wezterm and nvim", callback = on_update_from_command, group = group})
