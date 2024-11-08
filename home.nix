@@ -11,6 +11,7 @@
   home.packages = with pkgs; [
     asciinema
     asciinema-agg
+    android-tools
     bat
     cargo
     clojure
@@ -28,6 +29,7 @@
     nodejs_22
     (yarn.override { nodejs = nodejs_22; })
     pass
+    postgresql_16
     selene
     silver-searcher
     ripgrep
