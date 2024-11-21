@@ -62,7 +62,7 @@ local function on_add_to_dictionary(_13_)
   local dictionary_path = _13_["dictionary_path"]
   return os.execute(str.format("sort ${path} -o ${path}", {path = dictionary_path}))
 end
-local cspell_config = {on_add_to_json = on_add_to_json, on_add_to_dictionary = on_add_to_dictionary, read_config_synchronously = false}
+local cspell_config = {on_add_to_json = on_add_to_json, on_add_to_dictionary = on_add_to_dictionary, cspell_config_dirs = {"~/.config/cspell"}}
 local function config()
   local formatting = null_ls.builtins.formatting
   local diagnostics = null_ls.builtins.diagnostics

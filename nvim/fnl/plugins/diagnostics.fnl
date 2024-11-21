@@ -70,9 +70,9 @@
       (str.format {:path dictionary_path})
       (os.execute)))
 
-(local cspell-config {:read_config_synchronously false
-                      : on_add_to_json
-                      : on_add_to_dictionary})
+(local cspell-config {: on_add_to_json
+                      : on_add_to_dictionary
+                      :cspell_config_dirs ["~/.config/cspell"]})
 
 (fn config []
   (local formatting null-ls.builtins.formatting)
