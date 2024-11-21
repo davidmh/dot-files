@@ -1,8 +1,7 @@
 (import-macros {: use} :own.macros)
 
-(use :nvim-neorg/neorg {:ft :norg
-                        :cmd :Neorg
-                        :version :*
+(use :nvim-neorg/neorg {:version :*
+                        :lazy false
                         :opts {:load {:core.defaults {}
                                       :core.concealer {}
                                       :core.integrations.treesitter {:config {:configure_parsers true

@@ -17,6 +17,7 @@
     clojure
     fd
     fx
+    gcc
     go
     htop
     imagemagick
