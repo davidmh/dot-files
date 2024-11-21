@@ -5,7 +5,7 @@ return {
   font_size = 14.0,
   front_end = 'Software',
   color_scheme = 'Catppuccin Macchiato',
-  line_height = 1.3,
+  line_height = 1.2,
   underline_position = -7,
   use_fancy_tab_bar = false,
   hide_tab_bar_if_only_one_tab = true,
