@@ -31,7 +31,7 @@
                                       (use "\\\\A" {:mode [:n :v]})]})
 
  ;; open files from a terminal buffer in the current instance
- (use :willothy/flatten.nvim {:opts {}})
+ (use :willothy/flatten.nvim {:opts {:window {:open :smart}}})
 
  (use :AndrewRadev/switch.vim {:config config-switch
                                :event :VeryLazy})
