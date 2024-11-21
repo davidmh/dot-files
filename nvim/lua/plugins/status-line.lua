@@ -138,15 +138,15 @@ local file_flags = {modified_3f, read_only_3f}
 local file_name_block
 local function _30_()
   local _31_ = {vim.o.filetype, vim.o.buftype}
-  if ((_G.type(_31_) == "table") and (_31_[1] == "fugitiveblame")) then
+  if (_31_[1] == "fugitiveblame") then
     return false
-  elseif ((_G.type(_31_) == "table") and (_31_[1] == "fugitive")) then
+  elseif (_31_[1] == "fugitive") then
     return false
-  elseif ((_G.type(_31_) == "table") and (_31_[1] == "qf")) then
+  elseif (_31_[1] == "qf") then
     return false
-  elseif ((_G.type(_31_) == "table") and (_31_[1] == "toggleterm")) then
+  elseif (_31_[1] == "toggleterm") then
     return false
-  elseif ((_G.type(_31_) == "table") and true and (_31_[2] == "terminal")) then
+  elseif (true and (_31_[2] == "terminal")) then
     local _ = _31_[1]
     return false
   elseif true then

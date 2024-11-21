@@ -11,10 +11,9 @@ local projects = autoload("own.projects")
 math.randomseed(os.time())
 local quotes = {"vim is only free if your time has no value.", "Eat right, stay fit, and die anyway.", "Causes moderate eye irritation.", "May cause headaches.", "And now for something completely different.", "What are we breaking today?", "Oh good, it's almost bedtime."}
 local function format_recent(_4_)
-  local _arg_5_ = _4_
-  local name = _arg_5_["name"]
-  local action = _arg_5_["action"]
-  local section = _arg_5_["section"]
+  local name = _4_["name"]
+  local action = _4_["action"]
+  local section = _4_["section"]
   local path = string.gsub(action, "edit ", "")
   return {name = (first(vim.split(name, " ")) .. " -> " .. sanitize_path(path, 3)), action = action, section = section}
 end

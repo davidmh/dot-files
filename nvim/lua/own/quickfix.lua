@@ -18,10 +18,10 @@ end
 local qf_older_key = "<"
 local qf_newer_key = ">"
 local function get_quickfix_history_size()
-  return (vim.fn.getqflist({nr = "$"})).nr
+  return vim.fn.getqflist({nr = "$"}).nr
 end
 local function get_quickfix_current_index()
-  return (vim.fn.getqflist({nr = 0})).nr
+  return vim.fn.getqflist({nr = 0}).nr
 end
 local function has_older_qf_stack_entry_3f()
   return (get_quickfix_current_index() > 1)
@@ -51,7 +51,7 @@ local function set_quickfix_mappings()
   return vim.keymap.set("n", qf_newer_key, qf_newer_fn, opts)
 end
 local function get_quickfix_title()
-  return (vim.fn.getqflist({title = 1})).title
+  return vim.fn.getqflist({title = 1}).title
 end
 local function show_quickfix_title_3f()
   return ((vim.o.filetype == "qf") and ("" ~= get_quickfix_title()))

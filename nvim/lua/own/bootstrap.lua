@@ -7,7 +7,7 @@ local function ensure(user, repo, alias)
     vim.fn.system({"git", "clone", "--filter=blob:none", "--single-branch", repo_url, install_path})
   else
   end
-  return (vim.opt.runtimepath):prepend(install_path)
+  return vim.opt.runtimepath:prepend(install_path)
 end
 ensure("folke", "lazy.nvim")
 return ensure("Olical", "nfnl")

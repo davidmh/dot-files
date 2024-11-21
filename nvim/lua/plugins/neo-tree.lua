@@ -5,7 +5,7 @@ local _local_2_ = require("nfnl.module")
 local autoload = _local_2_["autoload"]
 local commands = autoload("neo-tree.sources.common.commands")
 local function git_2fstage_unstage(state)
-  local path = get((state.tree):get_node(), "path")
+  local path = get(state.tree:get_node(), "path")
   local status = get(state.git_status_lookup, path)
   if (string.match(status, "?") or (status == " M")) then
     commands.git_add_file(state)

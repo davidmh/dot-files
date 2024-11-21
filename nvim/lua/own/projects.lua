@@ -45,30 +45,27 @@ local function format_project(path, name)
   return {name = (name .. " -> " .. sanitize_path(path, 3)), action = _8_, section = "Recent Projects"}
 end
 local function sort_projects(projects)
-  local function _13_(_9_, _11_)
-    local _arg_10_ = _9_
-    local _ = _arg_10_[1]
-    local a = _arg_10_[2]
-    local _arg_12_ = _11_
-    local _0 = _arg_12_[1]
-    local b = _arg_12_[2]
+  local function _11_(_9_, _10_)
+    local _ = _9_[1]
+    local a = _9_[2]
+    local _0 = _10_[1]
+    local b = _10_[2]
     return (a.timestamp > b.timestamp)
   end
-  table.sort(projects, _13_)
+  table.sort(projects, _11_)
   return projects
 end
 local function recent_projects(limit)
-  local function _16_(acc, _14_)
-    local _arg_15_ = _14_
-    local path = _arg_15_[1]
-    local project = _arg_15_[2]
+  local function _13_(acc, _12_)
+    local path = _12_[1]
+    local project = _12_[2]
     if project.visible then
       return concat(acc, {format_project(path, project.name)})
     else
       return acc
     end
   end
-  return reduce(_16_, {}, take((limit or 30), sort_projects(kv_pairs(get_projects()))))
+  return reduce(_13_, {}, take((limit or 30), sort_projects(kv_pairs(get_projects()))))
 end
 local function pick_project(choice)
   if choice then
@@ -78,15 +75,14 @@ local function pick_project(choice)
   end
 end
 local function select_project()
-  local function _21_(_19_)
-    local _arg_20_ = _19_
-    local name = _arg_20_["name"]
+  local function _17_(_16_)
+    local name = _16_["name"]
     return name
   end
-  return vim.ui.select(recent_projects(), {prompt = "switch to a project", format_item = _21_}, pick_project)
+  return vim.ui.select(recent_projects(), {prompt = "switch to a project", format_item = _17_}, pick_project)
 end
-local function _22_()
+local function _18_()
   return add_project(vim.fn.getcwd())
 end
-vim.api.nvim_create_autocmd("User", {pattern = "RooterChDir", callback = _22_})
+vim.api.nvim_create_autocmd("User", {pattern = "RooterChDir", callback = _18_})
 return {["find-files"] = find_files, ["recent-projects"] = recent_projects, ["select-project"] = select_project}
