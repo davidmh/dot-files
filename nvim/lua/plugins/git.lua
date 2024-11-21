@@ -115,7 +115,7 @@ end
 local function files_in_commit(ref)
   local output = vim.fn.systemlist({"git", "show", "--name-only", "--oneline", ref})
   local title = core.first(output)
-  local git_root = (vim.b.gitsigns_status_dict.root or vim.trim(vim.fn.system("git rev-parse --show-toplevel")))
+  local git_root = (core["get-in"](vim.b, {"gitsigns_status_dict", "root"}) or vim.trim(vim.fn.system("git rev-parse --show-toplevel")))
   local files
   local function _12_(_241)
     return not core["empty?"](_241)

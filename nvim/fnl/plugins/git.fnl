@@ -121,7 +121,7 @@
 (fn files-in-commit [ref]
   (let [output (vim.fn.systemlist [:git :show :--name-only :--oneline ref])
         title (core.first output)
-        git-root (or vim.b.gitsigns_status_dict.root
+        git-root (or (core.get-in vim.b [:gitsigns_status_dict :root])
                      (vim.trim (vim.fn.system "git rev-parse --show-toplevel")))
         files (->> output
                   (core.rest)
