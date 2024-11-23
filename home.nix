@@ -37,6 +37,7 @@
     tig
     ueberzug
     unstable.ast-grep
+    unstable.deno
     unstable.gh
     unstable.git-absorb
     unstable.gnupg

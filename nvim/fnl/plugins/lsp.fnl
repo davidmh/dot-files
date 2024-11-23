@@ -43,6 +43,9 @@
 
 (fn lsp-config []
   (local git-root (util.root_pattern :.git))
+  (local deno-root (util.root_pattern :deno.json :deno.jsonc))
+  (local ts-root (util.root_pattern :tsconfig.json))
+  (local tailwind-root (util.root_pattern :tailwind.config.ts))
 
   (local client-capabilities (vim.lsp.protocol.make_client_capabilities))
 
@@ -69,16 +72,19 @@
                                                   :settings {:fennel {:diagnostics {:globals [:vim :jit :comment]}
                                                                       :workspace {:library (vim.api.nvim_list_runtime_paths)}}}}
                          :cssls {:root_dir git-root}
-                         :shellcheck {:root_dir git-root}})
+                         :shellcheck {:root_dir git-root}
+                         :tailwindcss {:root_dir tailwind-root}})
 
   (each [_ server-name (ipairs (mason-lspconfig.get_installed_servers))]
     (let [server-setup (core.get-in lspconfig [server-name :setup])
           server-config (core.get server-configs server-name {})]
       (if (= server-name :gopls)
-          (server-setup server-config)
-          (server-setup (core.merge base-settings server-config)))))
+          (server-setup server-config
+            (server-setup (core.merge base-settings server-config))))))
 
-  (ruby-lsps))
+  (ruby-lsps)
+  (lspconfig.denols.setup {:root_dir deno-root})
+  nil)
 
 [(use :folke/lazydev.nvim {:ft :lua
                            :opts {:library [:luvit-meta/library]}
@@ -96,6 +102,7 @@
                                                                     :lua_ls
                                                                     :eslint
                                                                     :fennel_language_server]}
+                                                                    ;:tailwindcss]}
                                           :config true})
 
  (use :neovim/nvim-lspconfig {:dependencies [:williamboman/mason.nvim
@@ -106,7 +113,12 @@
 
  (use :pmizio/typescript-tools.nvim {:dependencies [:neovim/nvim-lspconfig
                                                     :nvim-lua/plenary.nvim]
-                                     :opts {:settings {:expose_as_code_action [:add_missing_imports]}}})
+                                     :opts {:settings {:expose_as_code_action [:add_missing_imports]}
+                                            :root_dir (fn [file-name]
+                                                        (local deno-root (util.root_pattern :deno.json :deno.jsonc))
+                                                        (local ts-root (util.root_pattern :tsconfig.json))
+                                                        (and (= (deno-root file-name) nil)
+                                                             (ts-root file-name)))}})
 
  (use :j-hui/fidget.nvim {:dependencies [:neovim/nvim-lspconfig]
                           :event :LspAttach
