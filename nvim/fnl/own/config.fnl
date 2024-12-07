@@ -1,9 +1,9 @@
 (local severity vim.diagnostic.severity)
 
-(local icons {:ERROR :
-              :WARN  :
-              :INFO  :
-              :HINT  :})
+(local icons {:ERROR :
+              :WARN  :
+              :INFO  :
+              :HINT  :})
 
 (tset icons severity.ERROR icons.ERROR)
 (tset icons severity.WARN icons.WARN)

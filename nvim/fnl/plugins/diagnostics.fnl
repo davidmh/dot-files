@@ -44,8 +44,8 @@
     diagnostic.message))
 
 (vim.diagnostic.config {:underline true
-                        :signs false
-                        :virtual_text true
+                        :signs {:text cfg.icons}
+                        :virtual_text false
                         :update_in_insert false
                         :severity_sort true
                         :float {:header ""
@@ -99,7 +99,8 @@
                                           :config cspell-config})
 
                formatting.gofmt
-               (formatting.sqlfluff.with {:prefer_local :node_modules/.bin})
+               diagnostics.sqlfluff
+               formatting.sqlfluff
                formatting.stylua
                formatting.terraform_fmt
                formatting.nixpkgs_fmt]

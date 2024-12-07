@@ -42,7 +42,7 @@ end
 local function diagnostic_format(diagnostic)
   return (cfg.icons[diagnostic.severity] .. " [" .. get_source_name(diagnostic) .. "] " .. diagnostic.message)
 end
-vim.diagnostic.config({underline = true, virtual_text = true, severity_sort = true, float = {header = "", border = cfg.border, format = diagnostic_format}, signs = false, update_in_insert = false})
+vim.diagnostic.config({underline = true, signs = {text = cfg.icons}, severity_sort = true, float = {header = "", border = cfg.border, format = diagnostic_format}, update_in_insert = false, virtual_text = false})
 vim.api.nvim_create_augroup("lsp-formatting", {clear = true})
 local function on_attach(client, bufnr)
   if client.supports_method("textDocument/formatting") then
@@ -70,6 +70,6 @@ local function config()
     _241["severity"] = vim.diagnostic.severity.W
     return nil
   end
-  return null_ls.setup({sources = {diagnostics.selene.with({cwd = root_pattern("selene.toml"), condition = with_root_file("selene.toml")}), diagnostics.pylint.with({cwd = root_pattern("requirements-dev.txt"), condition = with_root_file("venv/bin/pylint"), prefer_local = "venv/bin", args = {"--from-stdin", "$FILENAME", "-f", "json", "-d", "line-too-long,missing-function-docstring"}}), cspell.diagnostics.with({cwd = root_pattern("cspell.json"), prefer_local = "node_modules/.bin", filetypes = cspell_filetypes, diagnostics_postprocess = _14_, config = cspell_config}), cspell.code_actions.with({cwd = root_pattern("cspell.json"), prefer_local = "node_modules/.bin", filetypes = cspell_filetypes, config = cspell_config}), formatting.gofmt, formatting.sqlfluff.with({prefer_local = "node_modules/.bin"}), formatting.stylua, formatting.terraform_fmt, formatting.nixpkgs_fmt}, on_attach = on_attach})
+  return null_ls.setup({sources = {diagnostics.selene.with({cwd = root_pattern("selene.toml"), condition = with_root_file("selene.toml")}), diagnostics.pylint.with({cwd = root_pattern("requirements-dev.txt"), condition = with_root_file("venv/bin/pylint"), prefer_local = "venv/bin", args = {"--from-stdin", "$FILENAME", "-f", "json", "-d", "line-too-long,missing-function-docstring"}}), cspell.diagnostics.with({cwd = root_pattern("cspell.json"), prefer_local = "node_modules/.bin", filetypes = cspell_filetypes, diagnostics_postprocess = _14_, config = cspell_config}), cspell.code_actions.with({cwd = root_pattern("cspell.json"), prefer_local = "node_modules/.bin", filetypes = cspell_filetypes, config = cspell_config}), formatting.gofmt, diagnostics.sqlfluff, formatting.sqlfluff, formatting.stylua, formatting.terraform_fmt, formatting.nixpkgs_fmt}, on_attach = on_attach})
 end
 return {"nvimtools/none-ls.nvim", dependencies = {"nvim-lua/plenary.nvim", "davidmh/cspell.nvim"}, config = config}

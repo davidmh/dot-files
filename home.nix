@@ -47,6 +47,7 @@
     unstable.neovim
     unstable.nixpkgs-fmt
     unstable.nerd-fonts.hasklug
+    unstable.sqlfluff
     wezterm
   ];
 
