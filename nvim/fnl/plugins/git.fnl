@@ -3,93 +3,57 @@
 (local {: ends-with} (require :own.string))
 (local fs (autoload :nfnl.fs))
 (local core (autoload :nfnl.core))
-(local actions (autoload :telescope.actions))
 (local diff-view (autoload :diffview))
 (local git-signs (autoload :gitsigns))
-(local previewers (autoload :telescope.previewers))
-(local putils (autoload :telescope.previewers.utils))
-(local state (autoload :telescope.actions.state))
 (local str (autoload :nfnl.string))
-(local utils (autoload :telescope.utils))
 (local neogit (autoload :neogit))
 
 (set vim.g.fugitive_legacy_commands false)
 
+(fn git-error [result]
+  (vim.notify result.stderr
+              vim.log.levels.ERROR
+              {:icon :󰊢 :title "git error"}))
+
+(fn git [...]
+  (local process (vim.system [:git ...] {:text true}))
+  (local result (process:wait))
+  (if (= result.stderr "")
+    (str.trim result.stdout)
+    (git-error result)))
+
+; Open the current file's remote URL
+(fn git-url []
+  (let [repo-root (git :rev-parse :--show-toplevel)
+        absolute-path (vim.fn.expand :%:p)
+        relative-path (string.sub absolute-path (+ 2 (length repo-root)))
+        commit (git :rev-parse :HEAD)
+        remote (git :remote :get-url :origin)
+        base-url (match (str.split remote ::)
+                  ["git@github.com" path] (.. "https://github.com/" path)
+                  ["https"] remote)]
+      (.. (string.gsub base-url ".git$" "") "/blob/" commit "/" relative-path)))
+
+(fn git-url-with-range [opts]
+  (if (= opts.range 2)
+    (.. (git-url) "#L" opts.line1 "-L" opts.line2)
+    (git-url)))
+
 (fn cmd [expression]
   (.. :<cmd> expression :<cr>))
 
-(fn git-fixup [prompt-bufnr]
-  "Creates a fixup using the selected commit. Assumes there are staged files to
-  be committed."
-  (let [current-picker (state.get_current_picker prompt-bufnr)
-        selection (state.get_selected_entry)
-        confirmation (vim.fn.input (.. "Fixup staged files into " selection.value "? [Y/n]"))]
-    (if (= (string.lower confirmation) :y)
-      (do
-        (actions.close prompt-bufnr)
-        (let [cmd [:git :commit :--fixup selection.value]
-              (output ret) (utils.get_os_command_output cmd current-picker.cwd)
-              results (if (= ret 0) output ["Nothing to fixup, have you staged your changes?"])]
-          (vim.schedule
-            #(vim.notify (table.concat results "\n") vim.log.levels.INFO {:title "git fixup" :icon :})))))))
-
-(fn view-commit [target]
-  "Open the selected commit using a fugitive command"
-  (fn [prompt-bufnr]
-    (let [selection (state.get_selected_entry)]
-      (actions.close prompt-bufnr)
-      (vim.cmd (.. target " " selection.value)))))
-
-(fn yank-commit [propmt-bufnr]
-  "Yank the selected commit into the default registry"
-  (let [selection (state.get_selected_entry)]
-    (actions.close propmt-bufnr)
-    (vim.cmd (string.format "let @@='%s'" selection.value))))
-
-(fn git-browse []
-  "Open the selected commit in the platform hosting the remote. Depends on
-  vim-fugitive's :GBrowse"
-  (vim.cmd (.. "GBrowse " (. (state.get_selected_entry) :value))))
-
-(fn git-commit-preview-fn [opts]
-  (previewers.new_buffer_previewer
-    {:get_buffer_by_name (fn [_ entry] entry.value)
-     :define_preview (fn [self entry]
-                       (putils.job_maker
-                         [:git :--no-pager :show (.. entry.value "^!")]
-                         self.state.bufnr
-                         {:value entry.value
-                          :bufname self.state.bufname
-                          :cwd opts.cwd})
-                       (putils.regex_highlighter self.state.bufnr :git))}))
 (fn copy-remote-url [opts]
-  (-> (if (= opts.range 2)
-        (.. opts.line1 "," opts.line2 :GBrowse!)
-        :GBrowse!)
-      (vim.api.nvim_exec2 {:output true})
-      (core.get :output)
-      (vim.notify vim.log.levels.INFO {:title "Copied to clipboard"
-                                       :icon :})))
+  (local url (git-url-with-range opts))
+  (vim.fn.setreg :+ url)
+  (vim.notify url vim.log.levels.INFO {:title "Copied to clipboard"
+                                       :icon :}))
 
-;; Same as :GBrowse! but redirects the message to the notify API
+(fn open-git-url [opts]
+  (vim.ui.open (git-url-with-range opts)))
+
+;; Copy the file or range remote URL to the system clipboard
 (vim.api.nvim_create_user_command :GCopy copy-remote-url {:range true :nargs 0})
-
-(fn git-log-mappings [_ map]
-  (actions.select_default:replace (view-commit :Gtabedit))
-  (map :i :<C-x> (view-commit :Gsplit))
-  (map :n :<C-x> (view-commit :Gsplit))
-  (map :i :<C-v> (view-commit :Gvsplit))
-  (map :n :<C-v> (view-commit :Gvsplit))
-
-  (map :i :<C-y> yank-commit)
-  (map :n :<C-y> yank-commit)
-
-  (map :i :<C-b> git-browse)
-  (map :n :<C-b> git-browse)
-
-  (map :i :<C-f> git-fixup)
-  (map :n :<C-f> git-fixup)
-  true)
+(vim.api.nvim_create_user_command :GBrowse open-git-url {:range true :nargs 0})
 
 (fn git-blame-line []
   (git-signs.blame_line true))
@@ -128,15 +92,25 @@
                                          :nowait true}))
 
 (fn git-write []
+  (local current-file (vim.fn.expand :%:p))
+
   ; Write the current buffer and stage it
-  (vim.cmd :Gwrite)
+  (vim.cmd :write)
+  (git :add :-- current-file)
 
   ; If this is a fennel file, also stage the corresponding lua file
-  (local current-file (vim.fn.expand :%:p))
   (if (ends-with current-file ".fnl")
       (vim.schedule #(let [lua-file (fs.fnl-path->lua-path current-file)]
                        (if (= (vim.fn.filereadable lua-file) 1)
-                           (vim.cmd (.. "Git add " lua-file)))))))
+                           (git :add :-- lua-file))))))
+
+(fn git-read []
+  ;; A naive port of vim-fugitive's :Gread
+  ;; Reads the content of the current file from the git HEAD and updates the
+  ;; buffer without saving it to disk.
+  (let [current-file (vim.fn.expand :%)
+        content (git :show (.. :HEAD:./ current-file))]
+    (vim.api.nvim_buf_set_lines 0 0 -1 true (str.split content "\n"))))
 
 (fn git-switch []
   (neogit.action :branch :branch/revision))
@@ -146,9 +120,8 @@
   (gmap :c (cmd "Neogit commit") "git commit")
   (gmap :s git-switch "git switch")
   (gmap :w git-write "write into the git tree")
-  (gmap :r (cmd "Gread") "read from the git tree")
-  (gmap :e (cmd "Gedit") "edit from the git tree") ; open the latest committed version of the current file
-  (gmap :b (cmd "Git blame") "git blame")
+  (gmap :r git-read "read from the git tree")
+  (gmap :b (cmd "Gitsigns blame") "git blame")
   (gmap :d toggle-diff-view "toggle git diff")
   (gmap :l (cmd "Neogit log") "git log")
   (gmap :L (cmd "NeogitLogCurrent") "current buffer's git log")
@@ -179,12 +152,9 @@
  (use :sindrets/diffview.nvim {:opts {:key_bindings {:disable_defaults false}}
                                :config true})
 
- (use :tpope/vim-git {:dependencies [:tpope/vim-fugitive
-                                     :tpope/vim-rhubarb
-                                     :nvim-lua/plenary.nvim
+ (use :tpope/vim-git {:dependencies [:nvim-lua/plenary.nvim
                                      :sindrets/diffview.nvim
-                                     :lewis6991/gitsigns.nvim
-                                     :norcalli/nvim-terminal.lua]
+                                     :lewis6991/gitsigns.nvim]
                       :event :VeryLazy
                       : config})
 
@@ -198,3 +168,4 @@
                                 :notification_icon :
                                 :recent_commit_count 15}
                          :cmd [:Neogit :NeogitLogCurrent]})]
+
