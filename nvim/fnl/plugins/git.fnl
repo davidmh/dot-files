@@ -1,10 +1,9 @@
-(import-macros {: nmap : use} :own.macros)
+(import-macros {: nmap : vmap : use} :own.macros)
 (local {: autoload} (require :nfnl.module))
 (local {: ends-with} (require :own.string))
 (local fs (autoload :nfnl.fs))
 (local core (autoload :nfnl.core))
 (local actions (autoload :telescope.actions))
-(local builtin (autoload :telescope.builtin))
 (local diff-view (autoload :diffview))
 (local git-signs (autoload :gitsigns))
 (local previewers (autoload :telescope.previewers))
@@ -92,21 +91,6 @@
   (map :n :<C-f> git-fixup)
   true)
 
-(fn git-log [opts]
-  (local git-commit-preview (utils.make_default_callable git-commit-preview-fn {}))
-  (let [opts (or opts {})
-        limit (or opts.limit 3000)
-        command [:git :log
-                 :--oneline :--decorate :-n limit
-                 :--follow
-                 :-- (or opts.path :.)]]
-    (builtin.git_commits {:attach_mappings git-log-mappings
-                          :previewer (git-commit-preview.new opts)
-                          :git_command command})))
-
-(fn git-buffer-log []
-  (git-log {:path (vim.fn.expand :%:p)}))
-
 (fn git-blame-line []
   (git-signs.blame_line true))
 
@@ -167,7 +151,7 @@
   (gmap :b (cmd "Git blame") "git blame")
   (gmap :d toggle-diff-view "toggle git diff")
   (gmap :l (cmd "Neogit log") "git log")
-  (gmap :L git-buffer-log "current buffer's git log")
+  (gmap :L (cmd "NeogitLogCurrent") "current buffer's git log")
   (gmap :<space> #(files-in-commit :HEAD) "files in git HEAD")
   (gmap :f (cmd "Neogit fetch" "git fetch"))
   (gmap :p (cmd "Neogit pull" "git pull"))
@@ -176,6 +160,10 @@
   (gmap "hr" (cmd "Gitsigns reset_hunk") "reset git hunk")
   (gmap "hp" (cmd "Gitsigns preview_hunk") "preview git hunk")
   (gmap "hb" git-blame-line "blame current git hunk")
+
+  (vmap :<leader>gl (cmd "'<,'>NeogitLogCurrent") {:desc "current's selection git log"
+                                                   :nowait true
+                                                   :silent true})
 
   (nmap "[h" (cmd "Gitsigns prev_hunk") {:desc "previous git hunk"
                                          :nowait true
@@ -209,5 +197,4 @@
                                 :remember_settings false
                                 :notification_icon :
                                 :recent_commit_count 15}
-                         :config true
-                         :cmd [:Neogit]})]
+                         :cmd [:Neogit :NeogitLogCurrent]})]
