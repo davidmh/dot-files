@@ -5,6 +5,7 @@ $directory\
 $git_branch\
 $git_state\
 $git_status\
+$python\
 $cmd_duration\
 $line_break\
 $character"""
@@ -45,13 +46,5 @@ format = "[$duration]($style) "
 style = "yellow"
 
 [python]
-format = "[$virtualenv]($style) "
-style = "bright-black"
-
-[nix_shell]
-format = "[$symbol]($style) "
-heuristic = true
-symbol = " "
-
-[ruby]
-disabled = true
+format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+symbol = ' '
