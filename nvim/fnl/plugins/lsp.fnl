@@ -44,7 +44,6 @@
 (fn lsp-config []
   (local git-root (util.root_pattern :.git))
   (local deno-root (util.root_pattern :deno.json :deno.jsonc))
-  (local ts-root (util.root_pattern :tsconfig.json))
   (local tailwind-root (util.root_pattern :tailwind.config.ts))
 
   (local client-capabilities (vim.lsp.protocol.make_client_capabilities))
@@ -66,7 +65,6 @@
                                                    :format {:enable false}
                                                    :workspace {:checkThirdParty false}}}}
                          :eslint {:root_dir git-root}
-                         ;:grammarly {:filetypes [:markdown :norg :txt :gitcommit]}
                          :fennel_language_server {:single_file_support true
                                                   :root_dir (lspconfig.util.root_pattern :fnl)
                                                   :settings {:fennel {:diagnostics {:globals [:vim :jit :comment]}
@@ -79,8 +77,8 @@
     (let [server-setup (core.get-in lspconfig [server-name :setup])
           server-config (core.get server-configs server-name {})]
       (if (= server-name :gopls)
-          (server-setup server-config
-            (server-setup (core.merge base-settings server-config))))))
+          (server-setup server-config)
+          (server-setup (core.merge base-settings server-config)))))
 
   (ruby-lsps)
   (lspconfig.denols.setup {:root_dir deno-root})
@@ -101,8 +99,8 @@
                                                                     :jsonls
                                                                     :lua_ls
                                                                     :eslint
-                                                                    :fennel_language_server]}
-                                                                    ;:tailwindcss]}
+                                                                    :fennel_language_server
+                                                                    :tailwindcss]}
                                           :config true})
 
  (use :neovim/nvim-lspconfig {:dependencies [:williamboman/mason.nvim
