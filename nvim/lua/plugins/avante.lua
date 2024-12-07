@@ -1,0 +1,2 @@
+-- [nfnl] Compiled from fnl/plugins/avante.fnl by https://github.com/Olical/nfnl, do not edit.
+return {"yetone/avante.nvim", event = "VeryLazy", opts = {provider = "gemini"}, build = "make", dependencies = {"stevearc/dressing.nvim", "nvim-lua/plenary.nvim", "MunifTanjim/nui.nvim", {"HakonHarnes/img-clip.nvim", event = "VeryLazy", opts = {default = {drag_and_drop = {insert_mode = true}, embed_image_as_base64 = false, prompt_for_file_name = false}}}}, lazy = false, version = false}
