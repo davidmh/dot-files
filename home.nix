@@ -31,19 +31,22 @@
     (yarn.override { nodejs = nodejs_22; })
     pass
     postgresql_16
+    pnpm
     selene
     silver-searcher
     ripgrep
     tig
     ueberzug
     unstable.ast-grep
+    unstable.bun
     unstable.deno
     unstable.gh
     unstable.git-absorb
+    unstable.git-spice
     unstable.gnupg
     unstable.neovim
     unstable.nixpkgs-fmt
-    (unstable.nerdfonts.override { fonts = [ "Hasklig" ]; })
+    unstable.nerd-fonts.hasklug
     wezterm
   ];
 
