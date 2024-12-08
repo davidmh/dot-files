@@ -50,9 +50,6 @@
 (fn term-split [id]
   (toggle-term.toggle_command "direction=horizontal dir=. size=0" id))
 
-(fn term-vsplit [id]
-  (toggle-term.toggle_command (.. "direction=vertical dir=. size=" (/ vim.o.columns 2)) id))
-
 (fn toggle-tmux []
   (local term terminal.Terminal)
 
@@ -63,6 +60,24 @@
                                        :close_on_exit true
                                        :on_exit #(tset state :tmux-term nil)})))
   (state.tmux-term:toggle))
+
+(fn toggle-zellij []
+  (local term terminal.Terminal)
+
+  (if (= state.tmux-zellij nil)
+      (tset state :tmux-zellij (term:new {:id 200
+                                          :cmd "zellij attach || zellij"
+                                          :direction :tab
+                                          :close_on_exit true
+                                          :on_exit #(tset state :tmux-zellij nil)}))
+      (state.tmux-zellij:toggle)))
+
+; Zellij uses ctrl-t to enter the tab mode
+; This function makes sure we fire the righ command depending on the context
+(fn ctrl-t [id]
+  (if (string.find (vim.fn.expand "%") "zellij")
+    (vim.system [:zellij :action :switch-mode :tab])
+    (term-split id)))
 
 (fn opts [desc] {:silent true : desc})
 
@@ -99,19 +114,19 @@
 (nmap :<leader>nr (cmd "Neorg return") (opts "neorg return"))
 
 ;; toggle term
-(map [:n :t] :<C-t> #(term-split 100) (opts "split term"))
+(map [:n :t] :<C-t> #(ctrl-t 100) (opts "split term"))
 (map [:n :t] :<C-1> #(term-split 1) (opts "split term 1"))
 (map [:n :t] :<C-2> #(term-split 2) (opts "split term 2"))
 (map [:n :t] :<C-3> #(term-split 3) (opts "split term 3"))
 (map [:n :t] :<C-4> #(term-split 4) (opts "split term 4"))
 (map [:n :t] :<C-5> #(term-split 5) (opts "split term 5"))
-(map [:n :t] :<M-\> #(term-vsplit 100) (opts "vertical split term"))
 (map [:n :t] :<M-1> #(term-tab 1) (opts "tab term 1"))
 (map [:n :t] :<M-2> #(term-tab 2) (opts "tab term 2"))
 (map [:n :t] :<M-3> #(term-tab 3) (opts "tab term 3"))
 (map [:n :t] :<M-4> #(term-tab 4) (opts "tab term 4"))
 (map [:n :t] :<M-5> #(term-tab 5) (opts "tab term 5"))
 (map [:n :t] :<M-t> toggle-tmux (opts "tmux"))
+(map [:n :t] :<M-z> toggle-zellij (opts "zellij"))
 
 ;; less used commands, grouped by feature
 
