@@ -22,17 +22,34 @@
     (str.trim result.stdout)
     (git-error result)))
 
+(fn git-remote-base-url []
+  (let [remote (git :remote :get-url :origin)
+        base-url (match (str.split remote ::)
+                  ["git@github.com" path] (.. "https://github.com/" path)
+                  ["https"] remote)]
+      (.. (string.gsub base-url ".git$" ""))))
+
 ; Open the current file's remote URL
 (fn git-url []
   (let [repo-root (git :rev-parse :--show-toplevel)
         absolute-path (vim.fn.expand :%:p)
         relative-path (string.sub absolute-path (+ 2 (length repo-root)))
-        commit (git :rev-parse :HEAD)
-        remote (git :remote :get-url :origin)
-        base-url (match (str.split remote ::)
-                  ["git@github.com" path] (.. "https://github.com/" path)
-                  ["https"] remote)]
-      (.. (string.gsub base-url ".git$" "") "/blob/" commit "/" relative-path)))
+        commit (git :rev-parse :HEAD)]
+      (.. (git-remote-base-url) "/blob/" commit "/" relative-path)))
+
+(fn gitsigns-commit-url [path]
+  (local remote-url (git-remote-base-url))
+  (local parts (str.split path :/))
+  (local commit (core.last parts))
+  (.. remote-url "/commit/" commit))
+
+(fn neogit-commit-url []
+  ; The first line containst the commit sha in the format:
+  ; Commit <sha>
+  (let [commit (-> (vim.fn.getline 1)
+                   (str.split " ")
+                   (core.second))]
+    (.. (git-remote-base-url) "/commit/" commit)))
 
 (fn git-url-with-range [opts]
   (if (= opts.range 2)
@@ -49,7 +66,11 @@
                                        :icon :}))
 
 (fn open-git-url [opts]
-  (vim.ui.open (git-url-with-range opts)))
+  (local path (vim.fn.expand :%:p))
+  (vim.ui.open (match [vim.bo.ft]
+                  [:git] (gitsigns-commit-url path)
+                  [:NeogitCommitView] (neogit-commit-url)
+                  [] (git-url-with-range opts))))
 
 ;; Copy the file or range remote URL to the system clipboard
 (vim.api.nvim_create_user_command :GCopy copy-remote-url {:range true :nargs 0})
@@ -128,12 +149,16 @@
   (gmap :<space> #(files-in-commit :HEAD) "files in git HEAD")
   (gmap :f (cmd "Neogit fetch" "git fetch"))
   (gmap :p (cmd "Neogit pull" "git pull"))
+  (gmap :B (cmd "GBrowse") "browse")
   (gmap "hs" (cmd "Gitsigns stage_hunk") "stage git hunk")
   (gmap "hu" (cmd "Gitsigns undo_stage_hunk") "unstage git hunk")
   (gmap "hr" (cmd "Gitsigns reset_hunk") "reset git hunk")
   (gmap "hp" (cmd "Gitsigns preview_hunk") "preview git hunk")
   (gmap "hb" git-blame-line "blame current git hunk")
 
+  (vmap :<leader>gl (cmd "'<,'>GBrowse") {:desc "open selection in the remote service"
+                                          :nowait true
+                                          :silent true})
   (vmap :<leader>gl (cmd "'<,'>NeogitLogCurrent") {:desc "current's selection git log"
                                                    :nowait true
                                                    :silent true})

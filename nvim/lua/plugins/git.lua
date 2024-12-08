@@ -22,11 +22,7 @@ local function git(...)
     return git_error(result)
   end
 end
-local function git_url()
-  local repo_root = git("rev-parse", "--show-toplevel")
-  local absolute_path = vim.fn.expand("%:p")
-  local relative_path = string.sub(absolute_path, (2 + #repo_root))
-  local commit = git("rev-parse", "HEAD")
+local function git_remote_base_url()
   local remote = git("remote", "get-url", "origin")
   local base_url
   do
@@ -40,7 +36,24 @@ local function git_url()
       base_url = nil
     end
   end
-  return (string.gsub(base_url, ".git$", "") .. "/blob/" .. commit .. "/" .. relative_path)
+  return string.gsub(base_url, ".git$", "")
+end
+local function git_url()
+  local repo_root = git("rev-parse", "--show-toplevel")
+  local absolute_path = vim.fn.expand("%:p")
+  local relative_path = string.sub(absolute_path, (2 + #repo_root))
+  local commit = git("rev-parse", "HEAD")
+  return (git_remote_base_url() .. "/blob/" .. commit .. "/" .. relative_path)
+end
+local function gitsigns_commit_url(path)
+  local remote_url = git_remote_base_url()
+  local parts = str.split(path, "/")
+  local commit = core.last(parts)
+  return (remote_url .. "/commit/" .. commit)
+end
+local function neogit_commit_url()
+  local commit = core.second(str.split(vim.fn.getline(1), " "))
+  return (git_remote_base_url() .. "/commit/" .. commit)
 end
 local function git_url_with_range(opts)
   if (opts.range == 2) then
@@ -58,7 +71,20 @@ local function copy_remote_url(opts)
   return vim.notify(url, vim.log.levels.INFO, {title = "Copied to clipboard", icon = "\239\131\170"})
 end
 local function open_git_url(opts)
-  return vim.ui.open(git_url_with_range(opts))
+  local path = vim.fn.expand("%:p")
+  local function _8_()
+    local _7_ = {vim.bo.ft}
+    if (_7_[1] == "git") then
+      return gitsigns_commit_url(path)
+    elseif (_7_[1] == "NeogitCommitView") then
+      return neogit_commit_url()
+    elseif true then
+      return git_url_with_range(opts)
+    else
+      return nil
+    end
+  end
+  return vim.ui.open(_8_())
 end
 vim.api.nvim_create_user_command("GCopy", copy_remote_url, {range = true, nargs = 0})
 vim.api.nvim_create_user_command("GBrowse", open_git_url, {range = true, nargs = 0})
@@ -78,14 +104,14 @@ local function files_in_commit(ref)
   local title = core.first(output)
   local git_root = (core["get-in"](vim.b, {"gitsigns_status_dict", "root"}) or vim.trim(vim.fn.system("git rev-parse --show-toplevel")))
   local files
-  local function _8_(_241)
+  local function _11_(_241)
     return not core["empty?"](_241)
   end
-  files = vim.tbl_filter(_8_, core.rest(output))
+  files = vim.tbl_filter(_11_, core.rest(output))
   local next_commit = ("next: " .. core.first(vim.fn.systemlist({"git", "log", "-n", 1, "--oneline", (ref .. "^")})))
   local next_ref = core.second(str.split(next_commit, " "))
   table.insert(files, next_commit)
-  local function _9_(_241)
+  local function _12_(_241)
     if (_241 == nil) then
       return
     else
@@ -96,7 +122,7 @@ local function files_in_commit(ref)
       return vim.cmd(("edit " .. git_root .. "/" .. _241))
     end
   end
-  return vim.ui.select(files, {prompt = title}, _9_)
+  return vim.ui.select(files, {prompt = title}, _12_)
 end
 local function gmap(keymap, callback, desc)
   return vim.keymap.set("n", ("<leader>g" .. keymap), callback, {desc = desc, nowait = true})
@@ -106,7 +132,7 @@ local function git_write()
   vim.cmd("write")
   git("add", "--", current_file)
   if ends_with(current_file, ".fnl") then
-    local function _12_()
+    local function _15_()
       local lua_file = fs["fnl-path->lua-path"](current_file)
       if (vim.fn.filereadable(lua_file) == 1) then
         return git("add", "--", lua_file)
@@ -114,7 +140,7 @@ local function git_write()
         return nil
       end
     end
-    return vim.schedule(_12_)
+    return vim.schedule(_15_)
   else
     return nil
   end
@@ -137,17 +163,19 @@ local function config()
   gmap("d", toggle_diff_view, "toggle git diff")
   gmap("l", cmd("Neogit log"), "git log")
   gmap("L", cmd("NeogitLogCurrent"), "current buffer's git log")
-  local function _15_()
+  local function _18_()
     return files_in_commit("HEAD")
   end
-  gmap("<space>", _15_, "files in git HEAD")
+  gmap("<space>", _18_, "files in git HEAD")
   gmap("f", cmd("Neogit fetch", "git fetch"))
   gmap("p", cmd("Neogit pull", "git pull"))
+  gmap("B", cmd("GBrowse"), "browse")
   gmap("hs", cmd("Gitsigns stage_hunk"), "stage git hunk")
   gmap("hu", cmd("Gitsigns undo_stage_hunk"), "unstage git hunk")
   gmap("hr", cmd("Gitsigns reset_hunk"), "reset git hunk")
   gmap("hp", cmd("Gitsigns preview_hunk"), "preview git hunk")
   gmap("hb", git_blame_line, "blame current git hunk")
+  vim.keymap.set("v", "<leader>gl", cmd("'<,'>GBrowse"), {desc = "open selection in the remote service", nowait = true, silent = true})
   vim.keymap.set("v", "<leader>gl", cmd("'<,'>NeogitLogCurrent"), {desc = "current's selection git log", nowait = true, silent = true})
   vim.keymap.set("n", "[h", cmd("Gitsigns prev_hunk"), {desc = "previous git hunk", nowait = true, silent = true})
   return vim.keymap.set("n", "]h", cmd("Gitsigns next_hunk"), {desc = "next git hunk", nowait = true, silent = true})
