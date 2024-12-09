@@ -32,7 +32,6 @@
                                                       :since_date "2 weeks"}}
                                             {:name :luasnip}
                                             {:name :nvim_lsp}
-                                            {:name :cmp_nvim_r}
                                             {:name :orgmode}
                                             {:name :emoji}
                                             {:name :nerdfonts}
@@ -76,7 +75,6 @@
                                         :davidmh/cmp-nerdfonts
                                         :onsails/lspkind-nvim
                                         :hrsh7th/cmp-emoji
-                                        :jalvesaq/cmp-nvim-r
                                         :davidmh/cmp-git-co-authors]
                          :event :InsertEnter
                          : config})]
