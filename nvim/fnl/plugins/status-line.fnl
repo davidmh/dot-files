@@ -1,18 +1,12 @@
 (import-macros {: augroup : use} :own.macros)
 (local lazy-status (require :lazy.status))
 (local {: autoload} (require :nfnl.module))
-(local {: sanitize-path} (require :own.helpers))
-(local {: show-quickfix-title?
-        : get-quickfix-title
-        : quickfix-history-status-component} (require :own.quickfix))
 
 (local heirline (autoload :heirline))
 (local conditions (autoload :heirline.conditions))
 (local core (autoload :nfnl.core))
 (local palettes (autoload :catppuccin.palettes))
-(local nvim-web-devicons (autoload :nvim-web-devicons))
 (local config (autoload :own.config))
-(local navic (autoload :nvim-navic))
 
 (local empty-space {:provider " "})
 
@@ -80,50 +74,6 @@
                                      counter (.. "[" current :/ total "]")]
                                  (.. " " direction " " pattern " " counter))})
 
-(fn file-name []
-  (let [file-name (vim.fn.fnamemodify (vim.api.nvim_buf_get_name 0) ::.)]
-    (.. " "
-        (if (= file-name "")
-          "[no name]"
-          (if (conditions.width_percent_below (length file-name) 0.25)
-            file-name
-            (sanitize-path file-name))))))
-
-(local modified? {:condition #(-> vim.bo.modified)
-                  :provider " [+]"
-                  :hl {:fg :green}})
-
-(local read-only? {:condition #(or (not vim.bo.modifiable) vim.bo.readonly)
-                   :provider " "
-                   :hl {:fg :orange}})
-
-(local file (component {:init #(let [name (file-name)
-                                     ext (vim.fn.fnamemodify name ::e)
-                                     (icon color) (nvim-web-devicons.get_icon_color name ext {:default true})]
-                                 (tset $1 :icon icon)
-                                 (tset $1 :color color)
-                                 (tset $1 :content name))}))
-
-(local file-flags [modified? read-only?])
-
-(local file-name-block (use file
-                            file-flags
-                            {:condition #(match [vim.o.filetype vim.o.buftype]
-                                           [:fugitiveblame] false
-                                           [:fugitive] false
-                                           [:qf] false
-                                           [:toggleterm] false
-                                           [_ :terminal] false
-                                           (_) true)
-                             :init #(tset $1 :file-name (vim.api.nvim_buf_get_name 0))
-                             :hl {:bold true}}))
-
-(local quickfix-title (component {:condition show-quickfix-title?
-                                  :hl {:fg :crust}
-                                  :init #(do (tset $1 :icon :)
-                                             (tset $1 :color :lavender)
-                                             (tset $1 :content (.. " " (get-quickfix-title))))}))
-
 (local dead-space {:provider "             "})
 (local push-right {:provider "%="})
 
@@ -160,50 +110,12 @@
                                         (tset $1 :content (table.concat [(.. " [" cwd-relative-path "]") head status] " ")))
                              :hl {:bold true}}))
 
-(local git-blame (component {:init #(do (tset $1 :icon " ")
-                                       (tset $1 :color :red)
-                                       (tset $1 :content "git blame"))
-
-                             :condition #(= vim.o.filetype :fugitiveblame)
-                             :hl {:bold true}}))
-
-(local lsp-breadcrumb {:provider #(navic.get_location {:highlight true})
-                       :condition #(and (navic.is_available)
-                                        (> (length (navic.get_location)) 0))
-                       :hl {:bg :NONE :bold true}
-                       :update [:CursorMoved :ColorScheme]})
-
-(local line-number {:provider " %2{&nu ? (&rnu && v:relnum ? v:relnum : v:lnum) : ''} "
-                    :condition #(-> vim.o.number)})
-
-(local fold {:provider #(let [line-num vim.v.lnum]
-                         (if (> (vim.fn.foldlevel line-num)
-                                (vim.fn.foldlevel (- line-num 1)))
-                            (if (= (vim.fn.foldclosed line-num) -1)
-                              " " " ")))})
-
-; TODO: split gitsigns, breakpoints and diagnostics into separate columns
-(local signs {:provider :%s
-              :condition #(not= vim.o.filetype :NeogitStatus)})
-
 (local plugin-updates [(component {:init #(let [[icon count] (-> (lazy-status.updates)
                                                                  (vim.split " "))]
                                             (tset $1 :icon (.. " " icon))
                                             (tset $1 :content (.. " " count))
                                             (tset $1 :color :rosewater))
                                    :condition #(lazy-status.has_updates)})])
-
-(local statuscolumn [fold
-                     push-right
-                     signs
-                     line-number])
-
-(local winbar [lsp-breadcrumb
-               quickfix-title
-               push-right
-               quickfix-history-status-component
-               git-blame
-               file-name-block])
 
 (local statusline (use vi-mode
                        macro-rec
@@ -216,18 +128,12 @@
                        plugin-updates
                        {:hl {:bg :NONE}}))
 
-(local disabled-winbar {:buftype [:nofile :prompt :terminal]
-                        :filetype [:^git.*]})
-
 (fn initialize-heirline []
   (set vim.o.showmode false)
 
-  (local opts {:colors (palettes.get_palette)
-               :disable_winbar_cb #(conditions.buffer_matches disabled-winbar $1.buf)})
+  (local opts {:colors (palettes.get_palette)})
 
-  (heirline.setup {: winbar
-                   : statuscolumn
-                   : statusline
+  (heirline.setup {: statusline
                    : opts}))
 
 (comment (initialize-heirline))

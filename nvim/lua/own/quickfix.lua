@@ -3,6 +3,7 @@ local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
 local _local_2_ = autoload("own.helpers")
 local get_largest_window_id = _local_2_["get-largest-window-id"]
+local palette = autoload("catppuccin.palettes")
 local function on_alternative_open(direction)
   local function _3_()
     local _let_4_ = vim.fn.getqflist()[vim.fn.line(".")]
@@ -51,35 +52,37 @@ local function set_quickfix_mappings()
   return vim.keymap.set("n", qf_newer_key, qf_newer_fn, opts)
 end
 local function get_quickfix_title()
-  return vim.fn.getqflist({title = 1}).title
-end
-local function show_quickfix_title_3f()
-  return ((vim.o.filetype == "qf") and ("" ~= get_quickfix_title()))
-end
-local quickfix_history_status_component
-local function _7_()
-  local _8_
-  if has_older_qf_stack_entry_3f() then
-    _8_ = "lavender"
+  local title = vim.fn.getqflist({title = 1}).title
+  if (title == "") then
+    return "quickfix list"
   else
-    _8_ = "surface1"
+    return title
   end
-  return {fg = _8_}
 end
-local function _10_()
-  return (get_quickfix_current_index() .. "/" .. get_quickfix_history_size())
+local function quickfix_title(colors)
+  return {{" \239\145\145 ", guibg = colors.lavender, guifg = "black"}, (" " .. get_quickfix_title() .. " ")}
 end
-local function _11_()
-  local _12_
-  if has_newer_qf_stack_entry_3f() then
-    _12_ = "lavender"
+local function quickfix_history_nav(colors)
+  if (get_quickfix_history_size() > 1) then
+    local _8_
+    if has_older_qf_stack_entry_3f() then
+      _8_ = colors.lavender
+    else
+      _8_ = colors.surface1
+    end
+    local _10_
+    if has_newer_qf_stack_entry_3f() then
+      _10_ = colors.lavender
+    else
+      _10_ = colors.surface1
+    end
+    return {{(" " .. qf_older_key .. " "), guifg = _8_}, {(get_quickfix_current_index() .. "/" .. get_quickfix_history_size()), guifg = "lavender"}, {(" " .. qf_newer_key .. " "), guifg = _10_}}
   else
-    _12_ = "surface1"
+    return ""
   end
-  return {fg = _12_}
 end
-local function _14_()
-  return (show_quickfix_title_3f() and (get_quickfix_history_size() > 1))
+local function quickfix_winbar_component()
+  local colors = palette.get_palette()
+  return {quickfix_title(colors), quickfix_history_nav(colors)}
 end
-quickfix_history_status_component = {{provider = (" " .. qf_older_key .. " "), hl = _7_}, {provider = _10_, hl = {fg = "lavender"}}, {provider = (" " .. qf_newer_key .. " "), hl = _11_}, condition = _14_}
-return {["set-quickfix-mappings"] = set_quickfix_mappings, ["get-quickfix-title"] = get_quickfix_title, ["show-quickfix-title?"] = show_quickfix_title_3f, ["quickfix-history-status-component"] = quickfix_history_status_component}
+return {["set-quickfix-mappings"] = set_quickfix_mappings, ["quickfix-winbar-component"] = quickfix_winbar_component}

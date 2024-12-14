@@ -1,6 +1,7 @@
 (import-macros {: use : nmap} :own.macros)
 (local {: autoload} (require :nfnl.module))
 (local {: get-largest-window-id} (autoload :own.helpers))
+(local palette (autoload :catppuccin.palettes))
 
 (fn on-alternative-open [direction]
   #(let [{: bufnr
@@ -53,28 +54,34 @@
   (nmap qf-newer-key qf-newer-fn opts))
 
 (fn get-quickfix-title []
-  (-> (vim.fn.getqflist {:title 1}) (. :title)))
+  (local title (-> (vim.fn.getqflist {:title 1}) (. :title)))
+  (if (= title "")
+    "quickfix list"
+    title)
+  )
 
-(fn show-quickfix-title? []
-  (and
-    (= vim.o.filetype :qf)
-    (~= "" (get-quickfix-title))))
+(fn quickfix-title [colors]
+  [(use "  " {:guibg colors.lavender :guifg :black})
+   (.. " " (get-quickfix-title) " ")])
 
-(local quickfix-history-status-component
-       (use {:provider (.. " " qf-older-key " ")
-             :hl #(-> {:fg (if (has-older-qf-stack-entry?)
-                               :lavender
-                               :surface1)})}
-            {:provider #(.. (get-quickfix-current-index) "/" (get-quickfix-history-size))
-             :hl {:fg :lavender}}
-            {:provider (.. " " qf-newer-key " ")
-             :hl #(-> {:fg (if (has-newer-qf-stack-entry?)
-                             :lavender
-                             :surface1)})}
-            {:condition #(and (show-quickfix-title?)
-                              (> (get-quickfix-history-size) 1))}))
+(fn quickfix-history-nav [colors]
+  (if (> (get-quickfix-history-size) 1)
+     [(use (.. " " qf-older-key " ")
+           {:guifg (if (has-older-qf-stack-entry?)
+                       colors.lavender
+                       colors.surface1)})
+      (use (.. (get-quickfix-current-index) "/" (get-quickfix-history-size))
+           {:guifg :lavender})
+      (use (.. " " qf-newer-key " ")
+           {:guifg (if (has-newer-qf-stack-entry?)
+                       colors.lavender
+                       colors.surface1)})]
+     ""))
+
+(fn quickfix-winbar-component []
+  (local colors (palette.get_palette))
+  [(quickfix-title colors)
+   (quickfix-history-nav colors)])
 
 {: set-quickfix-mappings
- : get-quickfix-title
- : show-quickfix-title?
- : quickfix-history-status-component}
+ : quickfix-winbar-component}
