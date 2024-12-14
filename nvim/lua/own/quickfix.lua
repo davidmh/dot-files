@@ -3,7 +3,6 @@ local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
 local _local_2_ = autoload("own.helpers")
 local get_largest_window_id = _local_2_["get-largest-window-id"]
-local palette = autoload("catppuccin.palettes")
 local function on_alternative_open(direction)
   local function _3_()
     local _let_4_ = vim.fn.getqflist()[vim.fn.line(".")]
@@ -76,13 +75,12 @@ local function quickfix_history_nav(colors)
     else
       _10_ = colors.surface1
     end
-    return {{(" " .. qf_older_key .. " "), guifg = _8_}, {(get_quickfix_current_index() .. "/" .. get_quickfix_history_size()), guifg = "lavender"}, {(" " .. qf_newer_key .. " "), guifg = _10_}}
+    return {{(" " .. qf_older_key .. " "), guifg = _8_}, {(get_quickfix_current_index() .. "/" .. get_quickfix_history_size()), guifg = colors.lavender}, {(" " .. qf_newer_key .. " "), guifg = _10_}}
   else
     return ""
   end
 end
-local function quickfix_winbar_component()
-  local colors = palette.get_palette()
+local function quickfix_winbar_component(colors)
   return {quickfix_title(colors), quickfix_history_nav(colors)}
 end
 return {["set-quickfix-mappings"] = set_quickfix_mappings, ["quickfix-winbar-component"] = quickfix_winbar_component}

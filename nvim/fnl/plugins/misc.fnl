@@ -1,10 +1,8 @@
 (import-macros {: use} :own.macros)
 
-[:vim-scripts/BufOnly.vim
-
- (use :airblade/vim-rooter {:config #(do
-                                      (set vim.g.rooter_patterns [:lazy-lock.json :.git])
-                                      (set vim.g.rooter_silent_chdir true))})
+[(use :airblade/vim-rooter {:config #(do
+                                       (set vim.g.rooter_patterns [:lazy-lock.json :.git :.obsidian])
+                                       (set vim.g.rooter_silent_chdir true))})
 
  (use :Valloric/ListToggle {:event :VeryLazy
                             :config #(do

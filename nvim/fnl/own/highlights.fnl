@@ -26,21 +26,29 @@
    :TelescopeResultsDiffChange {:fg color.yellow}
    :TelescopeResultsDiffDelete {:fg color.red}
 
-   :NotifyINFOIcon  {:fg color.mauve}
-   :NotifyINFOTitle  {:fg color.mauve}
-   :NotifyINFOBorder  {:fg color.mauve}
+   :SnacksNotifierIconInfo  {:fg color.mauve :bg color.mantle}
+   :SnacksNotifierIconError {:fg color.red :bg color.mantle}
+   :SnacksNotifierIconWarn  {:fg color.yellow :bg color.mantle}
+   :SnacksNotifierIconDebug {:fg color.peach :bg color.mantle}
+   :SnacksNotifierIconTrace {:fg color.flamingo :bg color.mantle}
 
-   :NotifyINFOBody {:bg color.mantle}
-   :NotifyWARNBody {:bg color.mantle}
-   :NotifyERRORBody {:bg color.mantle}
-   :NotifyDEBUGBody {:bg color.mantle}
-   :NotifyTRACEBody {:bg color.mantle}
- 
-   :NotifyINFOBorder  {:fg color.mantle :bg color.mantle}
-   :NotifyWARNBorder  {:fg color.mantle :bg color.mantle}
-   :NotifyERRORBorder {:fg color.mantle :bg color.mantle}
-   :NotifyDEBUGBorder {:fg color.mantle :bg color.mantle}
-   :NotifyTRACEBorder {:fg color.mantle :bg color.mantle}
+   :SnacksNotifierTitleInfo  {:fg color.mauve :bg color.mantle}
+   :SnacksNotifierTitleError {:fg color.red :bg color.mantle}
+   :SnacksNotifierTitleWarn  {:fg color.yellow :bg color.mantle}
+   :SnacksNotifierTitleDebug {:fg color.peach :bg color.mantle}
+   :SnacksNotifierTitleTrace {:fg color.flamingo :bg color.mantle}
+
+   :SnacksNotifierInfo {:bg color.mantle}
+   :SnacksNotifierWarn {:bg color.mantle}
+   :SnacksNotifierError {:bg color.mantle}
+   :SnacksNotifierDebug {:bg color.mantle}
+   :SnacksNotifierTrace {:bg color.mantle}
+
+   :SnacksNotifierBorderInfo  {:fg color.mantle :bg color.mantle}
+   :SnacksNotifierBorderWarn  {:fg color.mantle :bg color.mantle}
+   :SnacksNotifierBorderError {:fg color.mantle :bg color.mantle}
+   :SnacksNotifierBorderDebug {:fg color.mantle :bg color.mantle}
+   :SnacksNotifierBorderTrace {:fg color.mantle :bg color.mantle}
 
    :CmpItemKindSnippet {:fg color.crust :bg color.mauve}
    :CmpItemKindKeyword {:fg color.crust :bg color.red}

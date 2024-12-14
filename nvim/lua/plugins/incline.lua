@@ -9,6 +9,7 @@ local core = autoload("nfnl.core")
 local helpers = autoload("incline.helpers")
 local navic = autoload("nvim-navic")
 local nvim_web_devicons = autoload("nvim-web-devicons")
+local palette = autoload("catppuccin.palettes")
 local function file_name(bufnr)
   local file_name0 = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":.")
   local _4_
@@ -33,10 +34,18 @@ local function read_only_3f(bufnr)
     return ""
   end
 end
+local function terminal_component(colors)
+  return {{" \238\158\149 ", guibg = colors.lavender, guifg = colors.surface1}, {" terminal ", guifg = colors.white}}
+end
 local function render(props)
+  local colors = palette.get_palette()
   local _8_ = {core["get-in"](vim, {"bo", props.buf, "ft"})}
   if (_8_[1] == "qf") then
-    return quickfix_winbar_component()
+    return quickfix_winbar_component(colors)
+  elseif (_8_[1] == "toggleterm") then
+    return terminal_component(colors)
+  elseif (_8_[1] == "terminal") then
+    return terminal_component(colors)
   elseif true then
     local name = file_name(props.buf)
     local ext = vim.fn.fnamemodify(name, ":e")
@@ -67,4 +76,4 @@ local function render(props)
     return nil
   end
 end
-return {"b0o/incline.nvim", event = "VeryLazy", opts = {window = {padding = 0, margin = {horizontal = 0, vertical = 0}}, ignore = {buftypes = {"prompt", "nofile"}, wintypes = {"unknown", "popup", "autocmd"}}, render = render}}
+return {"b0o/incline.nvim", event = "VeryLazy", opts = {window = {padding = 0, margin = {horizontal = 0, vertical = 0}}, ignore = {buftypes = {"prompt", "nofile"}, wintypes = {"unknown", "popup", "autocmd"}, unlisted_buffers = false}, render = render}}

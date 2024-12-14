@@ -1,7 +1,6 @@
 (import-macros {: use : nmap} :own.macros)
 (local {: autoload} (require :nfnl.module))
 (local {: get-largest-window-id} (autoload :own.helpers))
-(local palette (autoload :catppuccin.palettes))
 
 (fn on-alternative-open [direction]
   #(let [{: bufnr
@@ -71,15 +70,14 @@
                        colors.lavender
                        colors.surface1)})
       (use (.. (get-quickfix-current-index) "/" (get-quickfix-history-size))
-           {:guifg :lavender})
+           {:guifg colors.lavender})
       (use (.. " " qf-newer-key " ")
            {:guifg (if (has-newer-qf-stack-entry?)
                        colors.lavender
                        colors.surface1)})]
      ""))
 
-(fn quickfix-winbar-component []
-  (local colors (palette.get_palette))
+(fn quickfix-winbar-component [colors]
   [(quickfix-title colors)
    (quickfix-history-nav colors)])
 

@@ -6,6 +6,7 @@
 (local helpers (autoload :incline.helpers))
 (local navic (autoload :nvim-navic))
 (local nvim-web-devicons (autoload :nvim-web-devicons))
+(local palette (autoload :catppuccin.palettes))
 
 (fn file-name [bufnr]
   (let [file-name (vim.fn.fnamemodify (vim.api.nvim_buf_get_name bufnr) ::.)]
@@ -23,9 +24,16 @@
           (core.get-in vim [:bo bufnr :readonly]))
      " " ""))
 
+(fn terminal-component [colors]
+  [(use "  " {:guibg colors.lavender :guifg colors.surface1})
+   (use " terminal " {:guifg colors.white})])
+
 (fn render [props]
+  (local colors (palette.get_palette))
   (match [(core.get-in vim [:bo props.buf :ft])]
-    [:qf] (quickfix-winbar-component)
+    [:qf] (quickfix-winbar-component colors)
+    [:toggleterm] (terminal-component colors)
+    [:terminal] (terminal-component colors)
     [] (let [name (file-name props.buf)
              ext (vim.fn.fnamemodify name ::e)
              (icon color) (nvim-web-devicons.get_icon_color name ext {:default true})
@@ -49,6 +57,7 @@
                         :opts {:window {:padding 0
                                         :margin {:horizontal 0
                                                  :vertical 0}}
-                               :ignore {:buftypes [:prompt :nofile]
+                               :ignore {:unlisted_buffers false
+                                        :buftypes [:prompt :nofile]
                                         :wintypes [:unknown :popup :autocmd]}
                                : render}})

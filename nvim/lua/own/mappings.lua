@@ -8,6 +8,7 @@ local terminal = autoload("toggleterm.terminal")
 local navic = autoload("nvim-navic")
 local projects = autoload("own.projects")
 local core = autoload("nfnl.core")
+local snacks = autoload("snacks")
 local error_filter = {severity = vim.diagnostic.severity.ERROR}
 local warning_filter = {severity = vim.diagnostic.severity.WARNING}
 local state = {["tmux-term"] = nil}
@@ -102,9 +103,15 @@ vim.keymap.set("n", "<leader>tb", toggle_blame_line, opts("toggle blame line"))
 local function _11_()
   return t.buffers()
 end
-vim.keymap.set("n", "<leader>bb", _11_, opts("list buffers"))
-vim.keymap.set("n", "<leader>bk", cmd("bprevious <bar> bdelete! #"), opts("kill buffer"))
-vim.keymap.set("n", "<leader>bo", cmd("BufOnly!"), opts("kill other buffers"))
+vim.keymap.set("n", "<leader>bb", _22_, opts("list buffers"))
+local function _23_()
+  return snacks.bufdelete.delete()
+end
+vim.keymap.set("n", "<leader>bk", _23_, opts("kill buffer"))
+local function _24_()
+  return snacks.bufdelete.other()
+end
+vim.keymap.set("n", "<leader>bo", _24_, opts("kill other buffers"))
 vim.keymap.set("n", "<leader>ni", cmd("Neog index"), opts("neog index"))
 local function _12_()
   return telescope_file_browser("~/Documents/neorg/")

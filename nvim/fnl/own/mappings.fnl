@@ -13,6 +13,7 @@
 (local navic (autoload :nvim-navic))
 (local projects (autoload :own.projects))
 (local core (autoload :nfnl.core))
+(local snacks (autoload :snacks))
 
 (local error-filter {:severity vim.diagnostic.severity.ERROR})
 (local warning-filter {:severity vim.diagnostic.severity.WARNING})
@@ -104,8 +105,8 @@
 
 ;; buffers
 (nmap :<leader>bb #(t.buffers) (opts "list buffers"))
-(nmap :<leader>bk (cmd "bprevious <bar> bdelete! #") (opts "kill buffer"))
-(nmap :<leader>bo (cmd :BufOnly!) (opts "kill other buffers"))
+(nmap :<leader>bk #(snacks.bufdelete.delete) (opts "kill buffer"))
+(nmap :<leader>bo #(snacks.bufdelete.other) (opts "kill other buffers"))
 
 ;; neog
 (nmap :<leader>ni (cmd "Neog index") (opts "neog index"))
