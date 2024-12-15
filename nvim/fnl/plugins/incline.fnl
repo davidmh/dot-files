@@ -28,13 +28,13 @@
   [(use "  " {:guibg colors.lavender :guifg colors.surface1})
    (use " terminal " {:guifg colors.white})])
 
-(fn render [props]
-  (local colors (palette.get_palette))
-  (match [(core.get-in vim [:bo props.buf :ft])]
-    [:qf] (quickfix-winbar-component colors)
-    [:toggleterm] (terminal-component colors)
-    [:terminal] (terminal-component colors)
-    [] (let [name (file-name props.buf)
+(fn help-component [colors props]
+  (let [name (vim.fn.fnamemodify (vim.api.nvim_buf_get_name props.buf) ::t)]
+    [(use "  " {:guibg colors.lavender :guifg colors.surface1})
+     (use (.. " " name " ") {:guifg colors.white})]))
+
+(fn file-component [props]
+  (let [name (file-name props.buf)
              ext (vim.fn.fnamemodify name ::e)
              (icon color) (nvim-web-devicons.get_icon_color name ext {:default true})
              res [(if icon
@@ -45,13 +45,22 @@
                                       :bold)})
                   (modified? props.buf)
                   (read-only? props.buf)]]
-         (if props.focused
-             (each [_ item (ipairs (or (navic.get_data props.buf) []))]
-               (table.insert res [(use "  " {:group :NavicSeparator})
-                                  (use item.icon {:group (.. :NavicIcons item.type)})
-                                  (use item.name {:group :NavicText})])))
-         (table.insert res " ")
-         res)))
+    (if props.focused
+        (each [_ item (ipairs (or (navic.get_data props.buf) []))]
+          (table.insert res [(use "  " {:group :NavicSeparator})
+                             (use item.icon {:group (.. :NavicIcons item.type)})
+                             (use item.name {:group :NavicText})])))
+    (table.insert res " ")
+    res))
+
+(fn render [props]
+  (local colors (palette.get_palette))
+  (match [(core.get-in vim [:bo props.buf :ft])]
+    [:qf] (quickfix-winbar-component colors)
+    [:toggleterm] (terminal-component colors)
+    [:terminal] (terminal-component colors)
+    [:help] (help-component colors props)
+    [] (file-component props)))
 
 (use :b0o/incline.nvim {:event :VeryLazy
                         :opts {:window {:padding 0

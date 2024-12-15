@@ -37,41 +37,50 @@ end
 local function terminal_component(colors)
   return {{" \238\158\149 ", guibg = colors.lavender, guifg = colors.surface1}, {" terminal ", guifg = colors.white}}
 end
+local function help_component(colors, props)
+  local name = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
+  return {{" \239\131\189 ", guibg = colors.lavender, guifg = colors.surface1}, {(" " .. name .. " "), guifg = colors.white}}
+end
+local function file_component(props)
+  local name = file_name(props.buf)
+  local ext = vim.fn.fnamemodify(name, ":e")
+  local icon, color = nvim_web_devicons.get_icon_color(name, ext, {default = true})
+  local res
+  local _8_
+  if icon then
+    _8_ = {" ", icon, " ", guibg = color, guifg = helpers.contrast_color(color)}
+  else
+    _8_ = ""
+  end
+  local _10_
+  if core["get-in"](vim, {"bo", props.buf, "modified"}) then
+    _10_ = "bold,italic"
+  else
+    _10_ = "bold"
+  end
+  res = {_8_, {name, gui = _10_}, modified_3f(props.buf), read_only_3f(props.buf)}
+  if props.focused then
+    for _, item in ipairs((navic.get_data(props.buf) or {})) do
+      table.insert(res, {{" \239\132\133 ", group = "NavicSeparator"}, {item.icon, group = ("NavicIcons" .. item.type)}, {item.name, group = "NavicText"}})
+    end
+  else
+  end
+  table.insert(res, " ")
+  return res
+end
 local function render(props)
   local colors = palette.get_palette()
-  local _8_ = {core["get-in"](vim, {"bo", props.buf, "ft"})}
-  if (_8_[1] == "qf") then
+  local _13_ = {core["get-in"](vim, {"bo", props.buf, "ft"})}
+  if (_13_[1] == "qf") then
     return quickfix_winbar_component(colors)
-  elseif (_8_[1] == "toggleterm") then
+  elseif (_13_[1] == "toggleterm") then
     return terminal_component(colors)
-  elseif (_8_[1] == "terminal") then
+  elseif (_13_[1] == "terminal") then
     return terminal_component(colors)
+  elseif (_13_[1] == "help") then
+    return help_component(colors, props)
   elseif true then
-    local name = file_name(props.buf)
-    local ext = vim.fn.fnamemodify(name, ":e")
-    local icon, color = nvim_web_devicons.get_icon_color(name, ext, {default = true})
-    local res
-    local _9_
-    if icon then
-      _9_ = {" ", icon, " ", guibg = color, guifg = helpers.contrast_color(color)}
-    else
-      _9_ = ""
-    end
-    local _11_
-    if core["get-in"](vim, {"bo", props.buf, "modified"}) then
-      _11_ = "bold,italic"
-    else
-      _11_ = "bold"
-    end
-    res = {_9_, {name, gui = _11_}, modified_3f(props.buf), read_only_3f(props.buf)}
-    if props.focused then
-      for _, item in ipairs((navic.get_data(props.buf) or {})) do
-        table.insert(res, {{" \239\132\133 ", group = "NavicSeparator"}, {item.icon, group = ("NavicIcons" .. item.type)}, {item.name, group = "NavicText"}})
-      end
-    else
-    end
-    table.insert(res, " ")
-    return res
+    return file_component(props)
   else
     return nil
   end
