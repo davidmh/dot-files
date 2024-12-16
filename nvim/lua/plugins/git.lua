@@ -8,7 +8,6 @@ local core = autoload("nfnl.core")
 local diff_view = autoload("diffview")
 local git_signs = autoload("gitsigns")
 local str = autoload("nfnl.string")
-local neogit = autoload("neogit")
 vim.g.fugitive_legacy_commands = false
 local function git_error(result)
   return vim.notify(result.stderr, vim.log.levels.ERROR, {icon = "\243\176\138\162", title = "git error"})
@@ -150,16 +149,13 @@ local function git_read()
   local content = git("show", ("HEAD:./" .. current_file))
   return vim.api.nvim_buf_set_lines(0, 0, -1, true, str.split(content, "\n"))
 end
-local function git_switch()
-  return neogit.action("branch", "branch/revision")
-end
 local function config()
   gmap("g", cmd("Neogit"), "git status")
   gmap("c", cmd("Neogit commit"), "git commit")
-  gmap("s", git_switch, "git switch")
   gmap("w", git_write, "write into the git tree")
   gmap("r", git_read, "read from the git tree")
   gmap("b", cmd("Gitsigns blame"), "git blame")
+  gmap("-", cmd("Neogit branch"), "git branch")
   gmap("d", toggle_diff_view, "toggle git diff")
   gmap("l", cmd("Neogit log"), "git log")
   gmap("L", cmd("NeogitLogCurrent"), "current buffer's git log")
@@ -180,4 +176,4 @@ local function config()
   vim.keymap.set("n", "[h", cmd("Gitsigns prev_hunk"), {desc = "previous git hunk", nowait = true, silent = true})
   return vim.keymap.set("n", "]h", cmd("Gitsigns next_hunk"), {desc = "next git hunk", nowait = true, silent = true})
 end
-return {{"lewis6991/gitsigns.nvim", opts = {current_line_blame = true}, config = true}, {"sindrets/diffview.nvim", opts = {key_bindings = {disable_defaults = false}}, config = true}, {"tpope/vim-git", dependencies = {"nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "lewis6991/gitsigns.nvim"}, event = "VeryLazy", config = config}, {"NeogitOrg/neogit", dependencies = {"nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "nvim-telescope/telescope.nvim"}, opts = {disable_hint = true, fetch_after_checkout = true, graph_style = "unicode", notification_icon = "\238\156\130", recent_commit_count = 15, remember_settings = false}, cmd = {"Neogit", "NeogitLogCurrent"}}}
+return {{"lewis6991/gitsigns.nvim", opts = {current_line_blame = true, signcolumn = true}, config = true}, {"sindrets/diffview.nvim", opts = {key_bindings = {disable_defaults = false}}, config = true}, {"tpope/vim-git", dependencies = {"nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "lewis6991/gitsigns.nvim"}, event = "VeryLazy", config = config}, {"NeogitOrg/neogit", dependencies = {"nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "nvim-telescope/telescope.nvim"}, opts = {disable_hint = true, fetch_after_checkout = true, graph_style = "unicode", notification_icon = "\238\156\130", recent_commit_count = 15, remember_settings = false}, cmd = {"Neogit", "NeogitLogCurrent"}}}

@@ -6,7 +6,6 @@
 (local diff-view (autoload :diffview))
 (local git-signs (autoload :gitsigns))
 (local str (autoload :nfnl.string))
-(local neogit (autoload :neogit))
 
 (set vim.g.fugitive_legacy_commands false)
 
@@ -133,16 +132,13 @@
         content (git :show (.. :HEAD:./ current-file))]
     (vim.api.nvim_buf_set_lines 0 0 -1 true (str.split content "\n"))))
 
-(fn git-switch []
-  (neogit.action :branch :branch/revision))
-
 (fn config []
   (gmap :g (cmd "Neogit") "git status")
   (gmap :c (cmd "Neogit commit") "git commit")
-  (gmap :s git-switch "git switch")
   (gmap :w git-write "write into the git tree")
   (gmap :r git-read "read from the git tree")
   (gmap :b (cmd "Gitsigns blame") "git blame")
+  (gmap :- (cmd "Neogit branch") "git branch")
   (gmap :d toggle-diff-view "toggle git diff")
   (gmap :l (cmd "Neogit log") "git log")
   (gmap :L (cmd "NeogitLogCurrent") "current buffer's git log")
@@ -171,7 +167,8 @@
                                          :silent true}))
 
 
-[(use :lewis6991/gitsigns.nvim {:opts {:current_line_blame true}
+[(use :lewis6991/gitsigns.nvim {:opts {:current_line_blame true
+                                       :signcolumn true}
                                 :config true})
 
  (use :sindrets/diffview.nvim {:opts {:key_bindings {:disable_defaults false}}
@@ -193,4 +190,3 @@
                                 :notification_icon :
                                 :recent_commit_count 15}
                          :cmd [:Neogit :NeogitLogCurrent]})]
-
