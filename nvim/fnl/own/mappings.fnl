@@ -7,6 +7,7 @@
 (local {: autoload} (require :nfnl.module))
 
 (local t (autoload :telescope.builtin))
+(local themes (autoload :telescope.themes))
 (local gitsigns (autoload :gitsigns))
 (local toggle-term (autoload :toggleterm))
 (local terminal (autoload :toggleterm.terminal))
@@ -108,12 +109,6 @@
 (nmap :<leader>bk #(snacks.bufdelete.delete) (opts "kill buffer"))
 (nmap :<leader>bo #(snacks.bufdelete.other) (opts "kill other buffers"))
 
-;; neog
-(nmap :<leader>ni (cmd "Neog index") (opts "neog index"))
-(nmap :<leader>nb #(telescope-file-browser "~/Documents/neorg/") (opts "neorg browse"))
-(nmap :<leader>nj (cmd "Neorg journal") (opts "neorg journal"))
-(nmap :<leader>nr (cmd "Neorg return") (opts "neorg return"))
-
 ;; toggle term
 (map [:n :t] :<C-t> #(ctrl-t 100) (opts "split term"))
 (map [:n :t] :<C-1> #(term-split 1) (opts "split term 1"))
@@ -141,7 +136,7 @@
 (nmap :<localleader>m (cmd :Mason) (opts :mason))
 
 ;; notifications
-(nmap :<localleader>no (cmd "Telescope notify") (opts "open notifications"))
+(nmap :<localleader>no #(snacks.notifier.show_history) (opts "open notifications"))
 (nmap :<localleader>nd #(vim.notify.dismiss) (opts "dismiss notifications"))
 
 ;; projects
@@ -202,10 +197,10 @@
 (augroup :lsp-attach [:LspAttach {:callback on-attach}])
 
 ; Telescope
-(nmap :<localleader>x ::Telescope<CR> {:nowait true :silent true})
-(nmap :<localleader>h ":Telescope help_tags<CR>" {:nowait true :silent true})
-(nmap :<localleader>k ":Telescope keymaps<CR>" {:nowait true :silent true})
-(nmap :<localleader>o ":Telescope oldfiles<CR>" {:nowait true :silent true})
+(nmap :<M-x> #(t.commands (themes.get_dropdown)) {:nowait true :silent true})
+(nmap :<M-h> #(t.help_tags (themes.get_dropdown)) {:nowait true :silent true})
+(nmap :<M-k> #(t.keymaps (themes.get_dropdown)) {:nowait true :silent true})
+(nmap :<M-o> ":Telescope oldfiles<CR>" {:nowait true :silent true})
 
 ; Windows
 ;

@@ -1,6 +1,7 @@
 -- [nfnl] Compiled from fnl/own/options.fnl by https://github.com/Olical/nfnl, do not edit.
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
+vim.o.conceallevel = 2
 vim.o.cursorline = false
 vim.o.expandtab = true
 vim.o.foldlevel = 99
