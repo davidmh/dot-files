@@ -107,7 +107,7 @@
       delta.line-numbers = false;
     };
 
-    delta.enable = true;
+    diff-so-fancy.enable = true;
     lfs.enable = true;
   };
 
