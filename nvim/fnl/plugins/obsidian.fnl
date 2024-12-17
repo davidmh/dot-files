@@ -21,7 +21,6 @@
                                     (keymap {:key :l  :cmd :ObsidianLinks          :desc :Links})
                                     (keymap {:key :e  :cmd :ObsidianExtractNote    :desc "Extract Note"})
                                     (keymap {:key :w  :cmd :ObsidianWorkspace      :desc :Workspace})
-                                    (keymap {:key :p  :cmd :ObsidianPasteImg       :desc "Paste Img"})
                                     (keymap {:key :r  :cmd :ObsidianRename         :desc "Rename"})]
                              :opts {:workspaces [{:name :default
                                                   :path "~/Documents/Obsidian Vault/"}]
