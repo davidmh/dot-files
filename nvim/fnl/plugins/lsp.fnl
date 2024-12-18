@@ -3,7 +3,7 @@
 (local core (autoload :nfnl.core))
 (local cfg (autoload :own.config))
 (local util (autoload :lspconfig.util))
-(local cmp-lsp (autoload :cmp_nvim_lsp))
+(local cmp (autoload :blink.cmp))
 (local schema-store (autoload :schemastore))
 (local lspconfig (autoload :lspconfig))
 (local mason (autoload :mason))
@@ -46,9 +46,7 @@
   (local deno-root (util.root_pattern :deno.json :deno.jsonc))
   (local tailwind-root (util.root_pattern :tailwind.config.ts))
 
-  (local client-capabilities (vim.lsp.protocol.make_client_capabilities))
-
-  (local base-settings {:capabilities (cmp-lsp.default_capabilities client-capabilities)
+  (local base-settings {:capabilities (cmp.get_lsp_capabilities)
                         :init_options {:preferences {:includeCompletionsWithSnippetText true
                                                      :includeCompletionsForImportStatements true}}})
 
@@ -95,6 +93,7 @@
                                           :opts {:ensure_installed [:bashls
                                                                     :clojure_lsp
                                                                     :cssls
+                                                                    :jdtls
                                                                     :jedi_language_server
                                                                     :jsonls
                                                                     :lua_ls
@@ -105,7 +104,7 @@
 
  (use :neovim/nvim-lspconfig {:dependencies [:williamboman/mason.nvim
                                              :williamboman/mason-lspconfig.nvim
-                                             :hrsh7th/cmp-nvim-lsp
+                                             :Saghen/blink.cmp
                                              :b0o/SchemaStore.nvim]
                               :config lsp-config})
 

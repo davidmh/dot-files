@@ -1,7 +1,7 @@
 local wezterm = require('wezterm')
 
 return {
-  font = wezterm.font('Hasklug Nerd Font', { weight = 'Medium' }),
+  font = wezterm.font('Hasklug Nerd Font Mono', { weight = 'Medium' }),
   font_size = 14.0,
   front_end = 'Software',
   color_scheme = 'Catppuccin Macchiato',
