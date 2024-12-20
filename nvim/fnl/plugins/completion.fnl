@@ -8,6 +8,9 @@
                                :completion {:menu {:draw {:components {:kind_icon {:text (fn [ctx] (.. " " ctx.kind_icon " "))}
                                                                        :label {:text (fn [ctx] (.. ctx.label " "))}}
                                                           :padding 0}}}
-                               :sources {:completion {:enabled_providers [:lsp :path :snippets :buffer :dadbod]}
+                               :sources {:default [:lazydev :lsp :path :snippets :buffer :dadbod]
                                          :providers {:dadbod {:name :Dadbod
-                                                              :module :vim_dadbod_completion.blink}}}}})
+                                                              :module :vim_dadbod_completion.blink}
+                                                     :lazydev {:name :LazyDev
+                                                               :module :lazydev.integrations.blink
+                                                               :score_offset 100}}}}})
