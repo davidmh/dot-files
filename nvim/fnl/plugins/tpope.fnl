@@ -1,9 +1,6 @@
 (import-macros {: use} :own.macros)
 
-[(use :tpope/vim-projectionist {:keys [(use :<leader>aa :<cmd>A<cr> {:desc "in current buffer"})
-                                       (use :<leader>av :<cmd>AV<cr> {:desc "in vertical split"})
-                                       (use :<leader>as :<cmd>AS<cr> {:desc "in horizontal split"})]
-                                :event :VeryLazy})
+[(use :tpope/vim-projectionist {:event :VeryLazy})
  :tpope/vim-dispatch
  :radenling/vim-dispatch-neovim
  :tpope/vim-eunuch
