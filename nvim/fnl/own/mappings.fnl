@@ -224,10 +224,10 @@
 (tmap :<M--> :<C-\><C-n><C-W>5-)
 (tmap :<M-=> :<C-\><C-n><C-W>5+)
 ; move faster
-(tmap :<M-k> :<C-\><C-n><C-W>k)
-(tmap :<M-j> :<C-\><C-n><C-W>j)
-(tmap :<M-h> :<C-\><C-n><C-W>h)
-(tmap :<M-l> :<C-\><C-n><C-W>l)
+(tmap :<C-k> :<C-\><C-n><C-W>k)
+(tmap :<C-j> :<C-\><C-n><C-W>j)
+(tmap :<C-h> :<C-\><C-n><C-W>h)
+(tmap :<C-l> :<C-\><C-n><C-W>l)
 
 (augroup :auto-resize-windows [:VimResized {:pattern :* :command "wincmd ="}])
 

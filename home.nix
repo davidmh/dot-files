@@ -37,6 +37,7 @@
     ripgrep
     tig
     ueberzug
+    unstable.aerospace
     unstable.ast-grep
     unstable.bun
     unstable.deno
@@ -44,6 +45,7 @@
     unstable.git-absorb
     unstable.git-spice
     unstable.gnupg
+    unstable.jankyborders
     unstable.neovim
     unstable.nixpkgs-fmt
     unstable.nerd-fonts.hasklug
