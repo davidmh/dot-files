@@ -213,39 +213,23 @@ local function on_attach(args)
     return vim.lsp.buf.hover()
   end
   buf_map("K", _33_, "lsp: hover")
+  buf_map("gd", cmd("Glance definitions"), "lsp: go to definition")
+  buf_map("<leader>lf", cmd("Glance references"), "lsp: find references")
+  buf_map("<leader>li", cmd("Glance implementations"), "lsp: implementation")
+  buf_map("<leader>lt", cmd("Glance type_definitions"), "lsp: type definition")
   local function _34_()
-    return vim.lsp.buf.definition({reuse_win = true})
-  end
-  buf_map("gd", _34_, "lsp: go to definition")
-  local function _35_()
-    return vim.lsp.buf.references()
-  end
-  buf_map("<leader>lf", _35_, "lsp: find references")
-  local function _36_()
-    return vim.lsp.buf.implementation()
-  end
-  buf_map("<leader>li", _36_, "lsp: implementation")
-  local function _37_()
-    return vim.lsp.buf.signature_help()
-  end
-  buf_map("<leader>ls", _37_, "lsp: signature")
-  local function _38_()
-    return vim.lsp.buf.type_definition()
-  end
-  buf_map("<leader>lt", _38_, "lsp: type definition")
-  local function _39_()
     return vim.lsp.buf.code_action()
   end
-  buf_map("<leader>la", _39_, "lsp: code actions")
-  local function _40_()
+  buf_map("<leader>la", _34_, "lsp: code actions")
+  local function _35_()
     return vim.lsp.buf.rename()
   end
-  buf_map("<leader>lr", _40_, "lsp: rename")
+  buf_map("<leader>lr", _35_, "lsp: rename")
   buf_map("<leader>lR", "<cmd>LspRestart<CR>", "lsp: restart")
-  local function _41_()
+  local function _36_()
     return vim.lsp.buf.code_action()
   end
-  vim.keymap.set("v", "<leader>la", _41_, {buffer = true, desc = "lsp: code actions"})
+  vim.keymap.set("v", "<leader>la", _36_, {buffer = true, desc = "lsp: code actions"})
   if (client.name == "eslint") then
     set_eslint_autofix(bufnr)
   else
@@ -260,18 +244,18 @@ do
   local group = vim.api.nvim_create_augroup("lsp-attach", {clear = true})
   vim.api.nvim_create_autocmd("LspAttach", {callback = on_attach, group = group})
 end
-local function _44_()
+local function _39_()
   return t.commands(themes.get_dropdown())
 end
-vim.keymap.set("n", "<M-x>", _44_, {nowait = true, silent = true})
-local function _45_()
+vim.keymap.set("n", "<M-x>", _39_, {nowait = true, silent = true})
+local function _40_()
   return t.help_tags(themes.get_dropdown())
 end
-vim.keymap.set("n", "<M-h>", _45_, {nowait = true, silent = true})
-local function _46_()
+vim.keymap.set("n", "<M-h>", _40_, {nowait = true, silent = true})
+local function _41_()
   return t.keymaps(themes.get_dropdown())
 end
-vim.keymap.set("n", "<M-k>", _46_, {nowait = true, silent = true})
+vim.keymap.set("n", "<M-k>", _41_, {nowait = true, silent = true})
 vim.keymap.set("n", "<M-o>", ":Telescope oldfiles<CR>", {nowait = true, silent = true})
 vim.keymap.set("n", "<M-,>", "<C-W>5<")
 vim.keymap.set("n", "<M-.>", "<C-W>5>")

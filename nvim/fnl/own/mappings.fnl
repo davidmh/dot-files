@@ -176,12 +176,10 @@
 
   ;; Mappings
   (buf-map :K #(vim.lsp.buf.hover) "lsp: hover")
-  (buf-map :gd #(vim.lsp.buf.definition {:reuse_win true}) "lsp: go to definition")
-
-  (buf-map :<leader>lf #(vim.lsp.buf.references) "lsp: find references")
-  (buf-map :<leader>li #(vim.lsp.buf.implementation) "lsp: implementation")
-  (buf-map :<leader>ls #(vim.lsp.buf.signature_help) "lsp: signature")
-  (buf-map :<leader>lt #(vim.lsp.buf.type_definition) "lsp: type definition")
+  (buf-map :gd (cmd "Glance definitions") "lsp: go to definition")
+  (buf-map :<leader>lf (cmd "Glance references") "lsp: find references")
+  (buf-map :<leader>li (cmd "Glance implementations") "lsp: implementation")
+  (buf-map :<leader>lt (cmd "Glance type_definitions") "lsp: type definition")
   (buf-map :<leader>la #(vim.lsp.buf.code_action) "lsp: code actions")
   (buf-map :<leader>lr #(vim.lsp.buf.rename) "lsp: rename")
   (buf-map :<leader>lR :<cmd>LspRestart<CR> "lsp: restart")

@@ -9,6 +9,7 @@
 (local mason (autoload :mason))
 (local mason-registry (autoload :mason-registry))
 (local mason-lspconfig (autoload :mason-lspconfig))
+(local glance (autoload :glance))
 
 ;; mason
 (fn on-linter-install [pkg]
@@ -65,8 +66,11 @@
                          :eslint {:root_dir git-root}
                          :fennel_language_server {:single_file_support true
                                                   :root_dir (lspconfig.util.root_pattern :fnl)
-                                                  :settings {:fennel {:diagnostics {:globals [:vim :jit :comment]}
-                                                                      :workspace {:library (vim.api.nvim_list_runtime_paths)}}}}
+                                                  :settings {:fennel {:diagnostics {:globals [:vim :jit :comment :love]}
+                                                                      :workspace {:library (vim.api.nvim_list_runtime_paths)
+                                                                                  :checkThirdParty false}}}}
+                         :harper_ls {:settings {:harper-ls {:codeActions {:forceStable true}}}
+                                     :filetypes [:markdown :gitcommit :text]}
                          :cssls {:root_dir git-root}
                          :shellcheck {:root_dir git-root}
                          :tailwindcss {:root_dir tailwind-root}})
@@ -81,6 +85,34 @@
   (ruby-lsps)
   (lspconfig.denols.setup {:root_dir deno-root})
   nil)
+
+(fn glance-config []
+  (local enter-quickfix #(glance.actions.quickfix))
+  (local enter-preview #(glance.actions.enter_win :preview))
+  (local enter-list #(glance.actions.enter_win :list))
+  (local next-result #(glance.actions.next_location))
+  (local previous-result #(glance.actions.previous_location))
+  (local vertical-split #(glance.actions.jump_vsplit))
+  (local horizontal-split #(glance.actions.jump_split))
+
+  (glance.setup {:mappings {:list {:<m-p> enter-preview
+                                   :<c-q> enter-quickfix
+                                   :<c-n> next-result
+                                   :<c-p> previous-result
+                                   :<c-v> vertical-split
+                                   :<c-x> horizontal-split}
+                            :preview {:<m-l> enter-list
+                                      :<c-q> enter-quickfix
+                                      :<c-n> next-result
+                                      :<c-p> previous-result
+                                      :<c-v> vertical-split
+                                      :<c-x> horizontal-split}}
+                   :hooks {:before_open (fn [results open-preview jump-to-result]
+                                          (if (= (length results) 1)
+                                              (do
+                                                (jump-to-result (core.first results))
+                                                (vim.cmd "normal zz"))
+                                              (open-preview results)))}}))
 
 [(use :folke/lazydev.nvim {:ft :lua
                            :opts {:library [:luvit-meta/library]}
@@ -99,6 +131,7 @@
                                                                     :lua_ls
                                                                     :eslint
                                                                     :fennel_language_server
+                                                                    :harper_ls
                                                                     :tailwindcss]}
                                           :config true})
 
@@ -140,4 +173,7 @@
                                    :separator "  "}
                             :config true
                             :dependencies [:williamboman/mason.nvim
-                                           :williamboman/mason-lspconfig.nvim]})]
+                                           :williamboman/mason-lspconfig.nvim]})
+ (use :dnlhc/glance.nvim {:cmd :Glance
+                          :config glance-config})]
+
