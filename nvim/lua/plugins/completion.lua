@@ -6,4 +6,4 @@ end
 local function _2_(ctx)
   return (ctx.label .. " ")
 end
-return {"Saghen/blink.cmp", dependencies = {"kristijanhusak/vim-dadbod-completion"}, version = "v0.*", opts = {appearance = {nerd_font_variant = "mono"}, completion = {menu = {draw = {components = {kind_icon = {text = _1_}, label = {text = _2_}}, padding = 0}}}, sources = {default = {"lazydev", "lsp", "path", "snippets", "buffer", "dadbod"}, providers = {dadbod = {name = "Dadbod", module = "vim_dadbod_completion.blink"}, lazydev = {name = "LazyDev", module = "lazydev.integrations.blink", score_offset = 100}}}}}
+return {"Saghen/blink.cmp", dependencies = {"kristijanhusak/vim-dadbod-completion"}, version = "v0.*", opts = {appearance = {nerd_font_variant = "normal"}, completion = {menu = {draw = {components = {kind_icon = {text = _1_}, label = {text = _2_}}, padding = 0}}}, sources = {default = {"lazydev", "lsp", "path", "snippets", "buffer", "dadbod"}, cmdline = {}, providers = {dadbod = {name = "Dadbod", module = "vim_dadbod_completion.blink"}, lazydev = {name = "LazyDev", module = "lazydev.integrations.blink", score_offset = 100}}}}}
