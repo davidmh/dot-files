@@ -21,7 +21,7 @@ local function with_root_file(...)
   end
   return _4_
 end
-local cspell_filetypes = {"css", "gitcommit", "clojure", "html", "javascript", "json", "less", "lua", "markdown", "python", "ruby", "typescript", "typescriptreact", "yaml"}
+local cspell_filetypes = {"css", "clojure", "html", "javascript", "json", "less", "lua", "python", "ruby", "typescript", "typescriptreact", "yaml"}
 local function get_source_name(diagnostic)
   local or_5_ = diagnostic.source
   if not or_5_ then

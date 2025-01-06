@@ -16,14 +16,12 @@
     (utils.root_has_file files)))
 
 (local cspell-filetypes [:css
-                         :gitcommit
                          :clojure
                          :html
                          :javascript
                          :json
                          :less
                          :lua
-                         :markdown
                          :python
                          :ruby
                          :typescript
