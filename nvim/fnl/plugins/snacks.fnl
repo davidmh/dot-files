@@ -20,6 +20,7 @@
                                 :notifier {:enabled true
                                            :top_down false
                                            :margin {:bottom 1 :right 0}}
+                                :statuscolumn {:enabled true}
                                 :dashboard {:enabled true
                                             :preset {:header (->> quotes
                                                                   (length)
