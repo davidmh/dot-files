@@ -1,7 +1,7 @@
 (import-macros {: use} :own.macros)
 
-(use :yetone/avante.nvim {:event :VeryLazy
-                          :lazy false
+(use :yetone/avante.nvim {:cmd [:AvanteAsk :AvanteFocus]
+                          :keys [:<leader>aa :<leader>ae]
                           :version false
                           :opts {:provider :gemini}
                           :build :make
