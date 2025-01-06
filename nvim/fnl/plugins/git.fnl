@@ -1,6 +1,5 @@
 (import-macros {: nmap : vmap : use} :own.macros)
 (local {: autoload} (require :nfnl.module))
-(local {: ends-with} (require :own.string))
 (local fs (autoload :nfnl.fs))
 (local core (autoload :nfnl.core))
 (local diff-view (autoload :diffview))
@@ -73,7 +72,6 @@
 
 ;; Copy the file or range remote URL to the system clipboard
 (vim.api.nvim_create_user_command :GCopy copy-remote-url {:range true :nargs 0})
-(vim.api.nvim_create_user_command :GBrowse open-git-url {:range true :nargs 0})
 
 (fn git-blame-line []
   (git-signs.blame_line true))
@@ -119,7 +117,7 @@
   (git :add :-- current-file)
 
   ; If this is a fennel file, also stage the corresponding lua file
-  (if (ends-with current-file ".fnl")
+  (if (vim.endswith current-file ".fnl")
       (vim.schedule #(let [lua-file (fs.fnl-path->lua-path current-file)]
                        (if (= (vim.fn.filereadable lua-file) 1)
                            (git :add :-- lua-file))))))
@@ -137,7 +135,7 @@
   (gmap :c (cmd "Neogit commit") "git commit")
   (gmap :w git-write "write into the git tree")
   (gmap :r git-read "read from the git tree")
-  (gmap :b (cmd "Gitsigns blame") "git blame")
+  (gmap :b (cmd "Git blame") "git blame")
   (gmap :- (cmd "Neogit branch") "git branch")
   (gmap :d toggle-diff-view "toggle git diff")
   (gmap :l (cmd "Neogit log") "git log")
@@ -179,6 +177,8 @@
                                      :lewis6991/gitsigns.nvim]
                       :event :VeryLazy
                       : config})
+
+ (use :tpope/vim-fugitive {:dependencies [:tpope/vim-rhubarb]})
 
  (use :NeogitOrg/neogit {:dependencies [:nvim-lua/plenary.nvim
                                         :sindrets/diffview.nvim

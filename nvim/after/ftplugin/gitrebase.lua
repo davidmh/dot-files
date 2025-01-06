@@ -1,16 +1,14 @@
 -- [nfnl] Compiled from after/ftplugin/gitrebase.fnl by https://github.com/Olical/nfnl, do not edit.
-local _local_1_ = require("own.string")
-local starts_with = _local_1_["starts-with"]
-local _local_2_ = require("own.lists")
-local find_index = _local_2_["find-index"]
+local _local_1_ = require("own.lists")
+local find_index = _local_1_["find-index"]
 local actions = {"pick", "reword", "edit", "squash", "fixup", "break", "drop"}
 local function cycle()
   local current_line = vim.api.nvim_get_current_line()
   local current_index
-  local function _3_(_241)
-    return starts_with(current_line, _241)
+  local function _2_(_241)
+    return vim.startswith(current_line, _241)
   end
-  current_index = find_index(_3_, actions)
+  current_index = find_index(_2_, actions)
   if current_index then
     local current_action = ("^" .. actions[current_index])
     local next_action = (actions[(current_index + 1)] or actions[1])

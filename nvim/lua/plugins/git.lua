@@ -1,8 +1,6 @@
 -- [nfnl] Compiled from fnl/plugins/git.fnl by https://github.com/Olical/nfnl, do not edit.
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
-local _local_2_ = require("own.string")
-local ends_with = _local_2_["ends-with"]
 local fs = autoload("nfnl.fs")
 local core = autoload("nfnl.core")
 local diff_view = autoload("diffview")
@@ -25,11 +23,11 @@ local function git_remote_base_url()
   local remote = git("remote", "get-url", "origin")
   local base_url
   do
-    local _4_ = str.split(remote, ":")
-    if ((_G.type(_4_) == "table") and (_4_[1] == "git@github.com") and (nil ~= _4_[2])) then
-      local path = _4_[2]
+    local _3_ = str.split(remote, ":")
+    if ((_G.type(_3_) == "table") and (_3_[1] == "git@github.com") and (nil ~= _3_[2])) then
+      local path = _3_[2]
       base_url = ("https://github.com/" .. path)
-    elseif ((_G.type(_4_) == "table") and (_4_[1] == "https")) then
+    elseif ((_G.type(_3_) == "table") and (_3_[1] == "https")) then
       base_url = remote
     else
       base_url = nil
@@ -71,11 +69,11 @@ local function copy_remote_url(opts)
 end
 local function open_git_url(opts)
   local path = vim.fn.expand("%:p")
-  local function _8_()
-    local _7_ = {vim.bo.ft}
-    if (_7_[1] == "git") then
+  local function _7_()
+    local _6_ = {vim.bo.ft}
+    if (_6_[1] == "git") then
       return gitsigns_commit_url(path)
-    elseif (_7_[1] == "NeogitCommitView") then
+    elseif (_6_[1] == "NeogitCommitView") then
       return neogit_commit_url()
     elseif true then
       return git_url_with_range(opts)
@@ -83,10 +81,9 @@ local function open_git_url(opts)
       return nil
     end
   end
-  return vim.ui.open(_8_())
+  return vim.ui.open(_7_())
 end
 vim.api.nvim_create_user_command("GCopy", copy_remote_url, {range = true, nargs = 0})
-vim.api.nvim_create_user_command("GBrowse", open_git_url, {range = true, nargs = 0})
 local function git_blame_line()
   return git_signs.blame_line(true)
 end
@@ -103,14 +100,14 @@ local function files_in_commit(ref)
   local title = core.first(output)
   local git_root = (core["get-in"](vim.b, {"gitsigns_status_dict", "root"}) or vim.trim(vim.fn.system("git rev-parse --show-toplevel")))
   local files
-  local function _11_(_241)
+  local function _10_(_241)
     return not core["empty?"](_241)
   end
-  files = vim.tbl_filter(_11_, core.rest(output))
+  files = vim.tbl_filter(_10_, core.rest(output))
   local next_commit = ("next: " .. core.first(vim.fn.systemlist({"git", "log", "-n", 1, "--oneline", (ref .. "^")})))
   local next_ref = core.second(str.split(next_commit, " "))
   table.insert(files, next_commit)
-  local function _12_(_241)
+  local function _11_(_241)
     if (_241 == nil) then
       return
     else
@@ -121,7 +118,7 @@ local function files_in_commit(ref)
       return vim.cmd(("edit " .. git_root .. "/" .. _241))
     end
   end
-  return vim.ui.select(files, {prompt = title}, _12_)
+  return vim.ui.select(files, {prompt = title}, _11_)
 end
 local function gmap(keymap, callback, desc)
   return vim.keymap.set("n", ("<leader>g" .. keymap), callback, {desc = desc, nowait = true})
@@ -130,8 +127,8 @@ local function git_write()
   local current_file = vim.fn.expand("%:p")
   vim.cmd("write")
   git("add", "--", current_file)
-  if ends_with(current_file, ".fnl") then
-    local function _15_()
+  if vim.endswith(current_file, ".fnl") then
+    local function _14_()
       local lua_file = fs["fnl-path->lua-path"](current_file)
       if (vim.fn.filereadable(lua_file) == 1) then
         return git("add", "--", lua_file)
@@ -139,7 +136,7 @@ local function git_write()
         return nil
       end
     end
-    return vim.schedule(_15_)
+    return vim.schedule(_14_)
   else
     return nil
   end
@@ -154,15 +151,15 @@ local function config()
   gmap("c", cmd("Neogit commit"), "git commit")
   gmap("w", git_write, "write into the git tree")
   gmap("r", git_read, "read from the git tree")
-  gmap("b", cmd("Gitsigns blame"), "git blame")
+  gmap("b", cmd("Git blame"), "git blame")
   gmap("-", cmd("Neogit branch"), "git branch")
   gmap("d", toggle_diff_view, "toggle git diff")
   gmap("l", cmd("Neogit log"), "git log")
   gmap("L", cmd("NeogitLogCurrent"), "current buffer's git log")
-  local function _18_()
+  local function _17_()
     return files_in_commit("HEAD")
   end
-  gmap("<space>", _18_, "files in git HEAD")
+  gmap("<space>", _17_, "files in git HEAD")
   gmap("f", cmd("Neogit fetch", "git fetch"))
   gmap("p", cmd("Neogit pull", "git pull"))
   gmap("B", cmd("GBrowse"), "browse")
@@ -176,4 +173,4 @@ local function config()
   vim.keymap.set("n", "[h", cmd("Gitsigns prev_hunk"), {desc = "previous git hunk", nowait = true, silent = true})
   return vim.keymap.set("n", "]h", cmd("Gitsigns next_hunk"), {desc = "next git hunk", nowait = true, silent = true})
 end
-return {{"lewis6991/gitsigns.nvim", opts = {current_line_blame = true, signcolumn = true}, config = true}, {"sindrets/diffview.nvim", opts = {key_bindings = {disable_defaults = false}}, config = true}, {"tpope/vim-git", dependencies = {"nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "lewis6991/gitsigns.nvim"}, event = "VeryLazy", config = config}, {"NeogitOrg/neogit", dependencies = {"nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "nvim-telescope/telescope.nvim"}, opts = {disable_hint = true, fetch_after_checkout = true, graph_style = "unicode", notification_icon = "\238\156\130", recent_commit_count = 15, remember_settings = false}, cmd = {"Neogit", "NeogitLogCurrent"}}}
+return {{"lewis6991/gitsigns.nvim", opts = {current_line_blame = true, signcolumn = true}, config = true}, {"sindrets/diffview.nvim", opts = {key_bindings = {disable_defaults = false}}, config = true}, {"tpope/vim-git", dependencies = {"nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "lewis6991/gitsigns.nvim"}, event = "VeryLazy", config = config}, {"tpope/vim-fugitive", dependencies = {"tpope/vim-rhubarb"}}, {"NeogitOrg/neogit", dependencies = {"nvim-lua/plenary.nvim", "sindrets/diffview.nvim", "nvim-telescope/telescope.nvim"}, opts = {disable_hint = true, fetch_after_checkout = true, graph_style = "unicode", notification_icon = "\238\156\130", recent_commit_count = 15, remember_settings = false}, cmd = {"Neogit", "NeogitLogCurrent"}}}
