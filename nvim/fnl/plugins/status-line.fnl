@@ -53,28 +53,6 @@
                           :bold true})
                 :update [:ModeChanged :ColorScheme]})
 
-(local macro-rec {:condition #(and (not= (vim.fn.reg_recording) "")
-                                   (= vim.o.cmdheight 0))
-                  :provider #(.. " recording @" (vim.fn.reg_recording))
-                  :hl {:fg :coral}
-                  :update [:RecordingEnter :RecordingLeave :ColorScheme]})
-
-(local show-cmd {:condition #(= vim.o.cmdheight 0)
-                 :init #(set vim.opt.showcmdloc :statusline)
-                 :provider "%3.5(%S%)"})
-
-(local show-search {:condition #(and (= vim.o.cmdheight 0)
-                                     (not= vim.v.hlsearch 0)
-                                     (-?> (vim.fn.searchcount)
-                                          (. :total)
-                                          (> 0)))
-                    :provider #(let [{: current : total} (vim.fn.searchcount)
-                                     direction (if (= vim.v.searchforward 1) : :)
-                                     pattern (vim.fn.getreg "/")
-                                     counter (.. "[" current :/ total "]")]
-                                 (.. " " direction " " pattern " " counter))})
-
-(local dead-space {:provider "             "})
 (local push-right {:provider "%="})
 
 (fn diagnostic [severity-code color]
@@ -118,12 +96,8 @@
                                    :condition #(lazy-status.has_updates)})])
 
 (local statusline (use vi-mode
-                       macro-rec
-                       dead-space
                        push-right
-                       show-cmd
                        diagnostics-block
-                       show-search
                        git-block
                        plugin-updates
                        {:hl {:bg :NONE}}))
