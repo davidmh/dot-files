@@ -1,4 +1,6 @@
 (import-macros {: use : imap} :own.macros)
+(local {: autoload} (require :nfnl.module))
+(local parpar (autoload :parpar))
 
 (set vim.g.codeium_filetypes {:zsh false
                               :TelescopePropmt false})
@@ -9,6 +11,7 @@
 (local silent true)
 
 (fn codeium-accept []
+  (vim.schedule parpar.pause)
   (vim.fn.codeium#Accept))
 
 (fn codeium-next []
@@ -20,12 +23,11 @@
 (fn codeium-dismiss []
   (vim.fn.codeium#Clear))
 
-(fn config []
-  (imap :<M-y> codeium-accept {: expr : silent})
-  (imap :<M-n> codeium-next {: expr : silent})
-  (imap :<M-p> codeium-prev {: expr : silent})
-  (imap :<M-c> codeium-dismiss {: expr : silent}))
-
-(use :Exafunction/codeium.vim {:event :BufEnter
+(use :Exafunction/codeium.vim {:event :InsertEnter
                                :dependencies [:nvim-lua/plenary.nvim]
-                               : config})
+                               :init #(set vim.g.codeium_disable_bindings true)
+                               :config (fn []
+                                          (imap :<M-y> codeium-accept {: expr : silent})
+                                          (imap :<M-n> codeium-next {: expr : silent})
+                                          (imap :<M-p> codeium-prev {: expr : silent})
+                                          (imap :<M-c> codeium-dismiss {: expr : silent}))})
