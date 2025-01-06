@@ -17,7 +17,7 @@
 
 (fn modified? [bufnr]
   (if (core.get-in vim [:bo bufnr :modified])
-    " [+]" ""))
+    " " ""))
 
 (fn read-only? [bufnr]
   (if (or (not (core.get-in vim [:bo bufnr :modifiable]))
@@ -60,12 +60,13 @@
     [:toggleterm] (terminal-component colors)
     [:terminal] (terminal-component colors)
     [:help] (help-component colors props)
+    [:fugitiveblame] []
     [] (file-component props)))
 
-(use :b0o/incline.nvim {:event :VeryLazy
-                        :opts {:window {:padding 0
+(use :b0o/incline.nvim {:opts {:window {:padding 0
                                         :margin {:horizontal 0
                                                  :vertical 0}}
+                               :hide {:cursorline true}
                                :ignore {:unlisted_buffers false
                                         :buftypes [:prompt :nofile]
                                         :wintypes [:unknown :popup :autocmd]}

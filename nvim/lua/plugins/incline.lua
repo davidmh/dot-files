@@ -22,7 +22,7 @@ local function file_name(bufnr)
 end
 local function modified_3f(bufnr)
   if core["get-in"](vim, {"bo", bufnr, "modified"}) then
-    return " [+]"
+    return " \239\145\153"
   else
     return ""
   end
@@ -79,10 +79,12 @@ local function render(props)
     return terminal_component(colors)
   elseif (_13_[1] == "help") then
     return help_component(colors, props)
+  elseif (_13_[1] == "fugitiveblame") then
+    return {}
   elseif true then
     return file_component(props)
   else
     return nil
   end
 end
-return {"b0o/incline.nvim", event = "VeryLazy", opts = {window = {padding = 0, margin = {horizontal = 0, vertical = 0}}, ignore = {buftypes = {"prompt", "nofile"}, wintypes = {"unknown", "popup", "autocmd"}, unlisted_buffers = false}, render = render}}
+return {"b0o/incline.nvim", opts = {window = {padding = 0, margin = {horizontal = 0, vertical = 0}}, hide = {cursorline = true}, ignore = {buftypes = {"prompt", "nofile"}, wintypes = {"unknown", "popup", "autocmd"}, unlisted_buffers = false}, render = render}}
