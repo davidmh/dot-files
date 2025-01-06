@@ -10,7 +10,12 @@
     [{; string -> symbol
       "\"\\(\\k\\+\\)\"" ":\\1"
       ; symbol -> string
-      ":\\(\\k\\+\\)" "\"\\1\"\\2"}]))
+      ":\\(\\k\\+\\)" "\"\\1\"\\2"
+
+      ; fn -> lambda
+      :fn :λ
+      ; lambda -> fn
+      :λ :fn}]))
 
 (fn css-rules []
   "Fix rules pasted from javascript notation"
