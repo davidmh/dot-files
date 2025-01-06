@@ -5,6 +5,7 @@ set -eo pipefail
 rm -rf ~/.config/nvim 2> /dev/null
 rm -rf ~/.config/wezterm 2> /dev/null
 rm -rf ~/.config/starship.toml 2> /dev/null
+rm -rf ~/.config/aerospace 2> /dev/null
 
 mkdir -p ~/.config/wezterm
 mkdir -p ~/.config/aerospace

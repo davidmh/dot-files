@@ -96,10 +96,10 @@ alt-shift-slash = 'layout tiles horizontal vertical'
 alt-shift-comma = 'layout accordion horizontal vertical'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#focus
-alt-h = 'focus left'
-alt-j = 'focus down'
-alt-k = 'focus up'
-alt-l = 'focus right'
+alt-cmd-h = 'focus left'
+alt-cmd-j = 'focus down'
+alt-cmd-k = 'focus up'
+alt-cmd-l = 'focus right'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move
 alt-shift-h = 'move left'
