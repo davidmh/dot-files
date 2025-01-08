@@ -14,6 +14,15 @@
       (string.gsub vim.env.REMIX_HOME "remix")
       (vim.fn.pathshorten (or size 2))))
 
+(fn find-root [pattern]
+  (local Path (require :plenary.path))
+  (fn finder [staring-path]
+    (each [dir (vim.fs.parents staring-path)]
+      (local path (Path:new (.. dir :/ pattern)))
+      (when (path:exists)
+        (lua "return dir")))))
+
 {: window-size
  : get-largest-window-id
- : sanitize-path}
+ : sanitize-path
+ : find-root}

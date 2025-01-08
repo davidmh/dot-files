@@ -12,4 +12,18 @@ end
 local function sanitize_path(path, size)
   return vim.fn.pathshorten(string.gsub(string.gsub(path, vim.env.HOME, "~"), vim.env.REMIX_HOME, "remix"), (size or 2))
 end
-return {["window-size"] = window_size, ["get-largest-window-id"] = get_largest_window_id, ["sanitize-path"] = sanitize_path}
+local function find_root(pattern)
+  local Path = require("plenary.path")
+  local function finder(staring_path)
+    for dir in vim.fs.parents(staring_path) do
+      local path = Path:new((dir .. "/" .. pattern))
+      if path:exists() then
+        return dir
+      else
+      end
+    end
+    return nil
+  end
+  return finder
+end
+return {["window-size"] = window_size, ["get-largest-window-id"] = get_largest_window_id, ["sanitize-path"] = sanitize_path, ["find-root"] = find_root}
