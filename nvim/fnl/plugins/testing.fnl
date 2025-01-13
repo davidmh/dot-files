@@ -32,6 +32,6 @@
                                            :olimorris/neotest-rspec]
                             :config config
                             :keys [(use :<localleader>trn "<cmd>Neotest run<cr>" {:desc "run nearest test"})
-                                   (use :<localleader>trf "<cmd>Neotest run file<cr>" {:desc "run test file"})
+                                   (use :<localleader>trf #(neotest.run.run (vim.fn.expand :%)) {:desc "run test file"})
                                    (use :<localleader>ts "<cmd>Neotest summary<cr>" {:desc "open test summary"})
                                    (use :<localleader>to "<cmd>Neotest output-panel<cr>" {:desc "open test output"})]})
