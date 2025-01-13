@@ -157,5 +157,13 @@ run = ['move-node-to-workspace ●○○']
 if.app-id = 'ru.keepcoder.Telegram'
 run = ['move-node-to-workspace ○●○']
 
+[[on-window-detected]]
+if.app-id = 'us.zoom.xos'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'com.apple.ScreenSharing'
+run = ['layout floating']
+
 [exec.env-vars]
 PATH = '${PATH}:~/.nix-profile/bin'
