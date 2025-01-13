@@ -1,7 +1,7 @@
 (import-macros {: use} :own.macros)
 (local {: border} (require :own.config))
 (local {: get} (require :nfnl.core))
-(local {: find-files} (require :own.projects))
+(local {: find-files : project-list} (require :own.projects))
 
 (math.randomseed (os.time))
 
@@ -31,12 +31,15 @@
                                                         :title "Recent files"
                                                         :section :recent_files
                                                         :indent 2
-                                                        :padding 1}
+                                                        :padding 1
+                                                        :limit 10}
                                                        {:icon :
                                                         :title :Projects
                                                         :section :projects
                                                         :indent 2
                                                         :action find-files
+                                                        :dirs project-list
+                                                        :limit 10
                                                         :padding 1}
                                                        {:section :startup}]}
                                 :styles {:notification {: border}

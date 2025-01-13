@@ -2,6 +2,8 @@
 local _local_1_ = require("nfnl.core")
 local concat = _local_1_["concat"]
 local kv_pairs = _local_1_["kv-pairs"]
+local first = _local_1_["first"]
+local map = _local_1_["map"]
 local merge = _local_1_["merge"]
 local reduce = _local_1_["reduce"]
 local spit = _local_1_["spit"]
@@ -81,8 +83,11 @@ local function select_project()
   end
   return vim.ui.select(recent_projects(), {prompt = "switch to a project", format_item = _17_}, pick_project)
 end
+local function project_list()
+  return map(first, sort_projects(kv_pairs(get_projects())))
+end
 local function _18_()
   return add_project(vim.fn.getcwd())
 end
 vim.api.nvim_create_autocmd("User", {pattern = "RooterChDir", callback = _18_})
-return {["find-files"] = find_files, ["recent-projects"] = recent_projects, ["select-project"] = select_project}
+return {["find-files"] = find_files, ["recent-projects"] = recent_projects, ["select-project"] = select_project, ["project-list"] = project_list}

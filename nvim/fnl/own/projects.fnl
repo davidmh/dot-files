@@ -1,6 +1,8 @@
 (import-macros {: autocmd} :own.macros)
 (local {: concat
         : kv-pairs
+        : first
+        : map
         : merge
         : reduce
         : spit
@@ -68,9 +70,16 @@
                   :format_item (fn [{: name}] name)}
                  pick-project))
 
+(fn project-list []
+  (->> (get-projects)
+       (kv-pairs)
+       (sort-projects)
+       (map first)))
+
 (autocmd :User {:pattern :RooterChDir
                 :callback #(add-project (vim.fn.getcwd))})
 
 {: find-files
  : recent-projects
- : select-project}
+ : select-project
+ : project-list}
