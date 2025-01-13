@@ -111,7 +111,9 @@
                                           (if (= (length results) 1)
                                               (do
                                                 (jump-to-result (core.first results))
-                                                (vim.cmd "normal zz"))
+                                                (vim.cmd {:cmd :normal
+                                                          :args [:zz]
+                                                          :bang true}))
                                               (open-preview results)))}}))
 
 [(use :folke/lazydev.nvim {:ft :lua

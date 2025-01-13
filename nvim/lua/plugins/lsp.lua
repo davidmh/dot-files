@@ -98,7 +98,7 @@ local function glance_config()
   local function _14_(results, open_preview, jump_to_result)
     if (#results == 1) then
       jump_to_result(core.first(results))
-      return vim.cmd("normal zz")
+      return vim.cmd({cmd = "normal", args = {"zz"}, bang = true})
     else
       return open_preview(results)
     end
