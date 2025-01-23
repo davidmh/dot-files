@@ -147,15 +147,15 @@ alt-shift-l = ['join-with right', 'mode main']
 
 [[on-window-detected]]
 if.app-id = 'com.tinyspeck.slackmacgap'
-run = ['move-node-to-workspace ●○○']
+run = ['move-node-to-workspace ○●○']
 
 [[on-window-detected]]
-if.app-id = 'com.tinyspeck.slackmacgap'
-run = ['move-node-to-workspace ●○○']
+if.app-id = 'com.cron.electron' # Notion Calendar
+run = ['move-node-to-workspace ○●○']
 
 [[on-window-detected]]
 if.app-id = 'ru.keepcoder.Telegram'
-run = ['move-node-to-workspace ○●○']
+run = ['move-node-to-workspace ○○●']
 
 [[on-window-detected]]
 if.app-id = 'us.zoom.xos'
