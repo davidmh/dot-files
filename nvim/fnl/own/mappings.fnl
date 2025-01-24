@@ -136,7 +136,7 @@
 (nmap :<localleader>m (cmd :Mason) (opts :mason))
 
 ;; notifications
-(nmap :<localleader>no #(snacks.notifier.show_history) (opts "open notifications"))
+(nmap :<localleader>no (cmd "Telescope notify") (opts "open notifications"))
 (nmap :<localleader>nd #(vim.notify.dismiss) (opts "dismiss notifications"))
 
 ;; projects

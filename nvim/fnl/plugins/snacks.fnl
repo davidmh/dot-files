@@ -1,5 +1,4 @@
 (import-macros {: use} :own.macros)
-(local {: border} (require :own.config))
 (local {: get} (require :nfnl.core))
 (local {: find-files : project-list} (require :own.projects))
 
@@ -16,11 +15,6 @@
 (use :folke/snacks.nvim {:lazy false
                          :priority 1000
                          :opts {:bigfile {:enabled true}
-                                :words {:enabled true}
-                                :notifier {:enabled true
-                                           :top_down false
-                                           :margin {:bottom 1 :right 0}}
-                                :statuscolumn {:enabled true}
                                 :dashboard {:enabled true
                                             :preset {:header (->> quotes
                                                                   (length)
@@ -41,6 +35,4 @@
                                                         :dirs project-list
                                                         :limit 10
                                                         :padding 1}
-                                                       {:section :startup}]}
-                                :styles {:notification {: border}
-                                         :notification_history {: border}}}})
+                                                       {:section :startup}]}}})
