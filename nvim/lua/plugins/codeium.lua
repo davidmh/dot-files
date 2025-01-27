@@ -2,32 +2,12 @@
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
 local parpar = autoload("parpar")
-vim.g.codeium_filetypes = {TelescopePropmt = false, zsh = false}
-vim.g.codeium_enabled = true
-vim.g.codeium_no_map_tab = true
-local expr = true
-local silent = true
-local function codeium_accept()
-  vim.schedule(parpar.pause)
-  return vim.fn["codeium#Accept"]()
-end
-local function codeium_next()
-  return vim.fn["codeium#CycleCompletions"](1)
-end
-local function codeium_prev()
-  return vim.fn["codeium#CycleCompletions"](-1)
-end
-local function codeium_dismiss()
-  return vim.fn["codeium#Clear"]()
+local codeium_virtual_text = autoload("codeium.virtual_text")
+local function codeium_2faccept()
+  vim.schedule(parpar.pause())
+  return codeium_virtual_text.accept()
 end
 local function _2_()
-  vim.g.codeium_disable_bindings = true
-  return nil
+  return vim.keymap.set("i", "<M-y>", codeium_2faccept, {expr = true, silent = true})
 end
-local function _3_()
-  vim.keymap.set("i", "<M-y>", codeium_accept, {expr = expr, silent = silent})
-  vim.keymap.set("i", "<M-n>", codeium_next, {expr = expr, silent = silent})
-  vim.keymap.set("i", "<M-p>", codeium_prev, {expr = expr, silent = silent})
-  return vim.keymap.set("i", "<M-c>", codeium_dismiss, {expr = expr, silent = silent})
-end
-return {"Exafunction/codeium.vim", event = "InsertEnter", dependencies = {"nvim-lua/plenary.nvim"}, init = _2_, config = _3_}
+return {"Exafunction/codeium.nvim", event = "InsertEnter", dependencies = {"nvim-lua/plenary.nvim"}, init = _2_, opts = {virtual_text = {enabled = true, filetypes = {TelescopePrompt = false, zsh = false}, default_filetype_enabled = true, key_bindings = {clear = "<M-c>", next = "<M-n>", prev = "<M-p>", accept = false}}, enable_cmp_source = false}}
