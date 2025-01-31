@@ -18,6 +18,20 @@
                              {:title :mason.nvim})
                 100))
 
+(fn executable? [path]
+  (if (= (vim.fn.executable path) 1)
+    path
+    nil))
+
+(fn get-python-path [workspace]
+  (or
+    (executable? (.. workspace :/.venv/bin/python))
+    (executable? (.. workspace :/venv/bin/python))
+    (vim.fn.exepath :python3)
+    (vim.fn.exepath :python)
+    :python))
+
+
 ;; The mason-lspconfig plugin allows you to define a list of LSP servers
 ;; to install automatically, this is meant to replicate that functionality
 ;; for linters and formatters.
@@ -69,8 +83,11 @@
                                                   :settings {:fennel {:diagnostics {:globals [:vim :jit :comment :love]}
                                                                       :workspace {:library (vim.api.nvim_list_runtime_paths)
                                                                                   :checkThirdParty false}}}}
-                         :harper_ls {:settings {:harper-ls {:codeActions {:forceStable true}}}
-                                     :filetypes [:markdown :gitcommit :text]}
+                         :jedi_language_server {:on_new_config (fn [config root]
+                                                                 (local python-path (get-python-path root))
+                                                                 (tset config :settings {:workspace {:environmentPath python-path}}))}
+                         :harper_ls {:settings {:harper-ls {:codeActions {:forceStable true}}}}
+                                     ;:filetypes [:markdown :gitcommit :text]}
                          :cssls {:root_dir git-root}
                          :shellcheck {:root_dir git-root}
                          :tailwindcss {:root_dir tailwind-root}})
@@ -117,9 +134,7 @@
                                               (open-preview results)))}}))
 
 [(use :folke/lazydev.nvim {:ft :lua
-                           :opts {:library [:luvit-meta/library]}
-                           :config true})
- (use :Bilal2453/luvit-meta {:lazy true})
+                           :opts {:library [{:path "${3rd}/luv/library" :words [:vim%.uv]}]}})
 
  (use :williamboman/mason.nvim {:config mason-config})
 
