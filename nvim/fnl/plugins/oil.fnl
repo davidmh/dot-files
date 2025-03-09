@@ -1,5 +1,14 @@
 (import-macros {: use} :own.macros)
 (local {: border} (require :own.config))
+(local {: autoload} (require :nfnl.module))
+(local snacks (autoload :snacks))
+
+(vim.api.nvim_create_autocmd :User {:pattern :OilActionsPost
+                                    :callback (fn [event]
+                                                (when (= event.data.actions.type :move)
+                                                  (print (vim.inspect event.data))
+                                                  (snacks.rename.on_rename_file event.data.actions.src_url
+                                                                                event.data.actions.dest_url)))})
 
 (use :stevearc/oil.nvim {:dependencies [:nvim-tree/nvim-web-devicons]
                          :keys [(use :<leader>fs :<c-w>s<cmd>Oil<cr> {:desc "file explorer in split"})
