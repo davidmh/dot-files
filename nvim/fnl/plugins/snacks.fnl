@@ -15,6 +15,7 @@
 (use :folke/snacks.nvim {:lazy false
                          :priority 1000
                          :opts {:bigfile {:enabled true}
+                                :statuscolumn {:enabled true}
                                 :dashboard {:enabled true
                                             :preset {:header (->> quotes
                                                                   (length)
