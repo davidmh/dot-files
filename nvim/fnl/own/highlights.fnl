@@ -30,6 +30,7 @@
    :NotifyINFOTitle  {:fg color.mauve}
    :NotifyINFOBorder  {:fg color.mauve}
 
+   :NotifyBackground {:bg color.mantle}
    :NotifyINFOBody {:bg color.mantle}
    :NotifyWARNBody {:bg color.mantle}
    :NotifyERRORBody {:bg color.mantle}
@@ -42,31 +43,31 @@
    :NotifyDEBUGBorder {:fg color.mantle :bg color.mantle}
    :NotifyTRACEBorder {:fg color.mantle :bg color.mantle}
 
-   :BlinkCmpKindSnippet {:fg color.crust :bg color.mauve}
-   :BlinkCmpKindKeyword {:fg color.crust :bg color.red}
-   :BlinkCmpKindText {:fg color.crust :bg color.teal}
-   :BlinkCmpKindMethod {:fg color.crust :bg color.blue}
-   :BlinkCmpKindConstructor {:fg color.crust :bg color.blue}
-   :BlinkCmpKindFunction {:fg color.crust :bg color.blue}
-   :BlinkCmpKindFolder {:fg color.crust :bg color.blue}
-   :BlinkCmpKindModule {:fg color.crust :bg color.blue}
-   :BlinkCmpKindConstant {:fg color.crust :bg color.peach}
-   :BlinkCmpKindField {:fg color.crust :bg color.green}
-   :BlinkCmpKindProperty {:fg color.crust :bg color.green}
-   :BlinkCmpKindEnum {:fg color.crust :bg color.green}
-   :BlinkCmpKindUnit {:fg color.crust :bg color.green}
-   :BlinkCmpKindClass {:fg color.crust :bg color.yellow}
-   :BlinkCmpKindVariable {:fg color.crust :bg color.flamingo}
-   :BlinkCmpKindFile {:fg color.crust :bg color.blue}
-   :BlinkCmpKindInterface {:fg color.crust :bg color.yellow}
-   :BlinkCmpKindColor {:fg color.crust :bg color.red}
-   :BlinkCmpKindReference {:fg color.crust :bg color.red}
-   :BlinkCmpKindEnumMember {:fg color.crust :bg color.red}
-   :BlinkCmpKindStruct {:fg color.crust :bg color.blue}
-   :BlinkCmpKindValue {:fg color.crust :bg color.peach}
-   :BlinkCmpKindEvent {:fg color.crust :bg color.blue}
-   :BlinkCmpKindOperator {:fg color.crust :bg color.blue}
-   :BlinkCmpKindTypeParameter {:fg color.crust :bg color.blue}
+   :CmpItemKindSnippet {:fg color.crust :bg color.mauve}
+   :CmpItemKindKeyword {:fg color.crust :bg color.red}
+   :CmpItemKindText {:fg color.crust :bg color.teal}
+   :CmpItemKindMethod {:fg color.crust :bg color.blue}
+   :CmpItemKindConstructor {:fg color.crust :bg color.blue}
+   :CmpItemKindFunction {:fg color.crust :bg color.blue}
+   :CmpItemKindFolder {:fg color.crust :bg color.blue}
+   :CmpItemKindModule {:fg color.crust :bg color.blue}
+   :CmpItemKindConstant {:fg color.crust :bg color.peach}
+   :CmpItemKindField {:fg color.crust :bg color.green}
+   :CmpItemKindProperty {:fg color.crust :bg color.green}
+   :CmpItemKindEnum {:fg color.crust :bg color.green}
+   :CmpItemKindUnit {:fg color.crust :bg color.green}
+   :CmpItemKindClass {:fg color.crust :bg color.yellow}
+   :CmpItemKindVariable {:fg color.crust :bg color.flamingo}
+   :CmpItemKindFile {:fg color.crust :bg color.blue}
+   :CmpItemKindInterface {:fg color.crust :bg color.yellow}
+   :CmpItemKindColor {:fg color.crust :bg color.red}
+   :CmpItemKindReference {:fg color.crust :bg color.red}
+   :CmpItemKindEnumMember {:fg color.crust :bg color.red}
+   :CmpItemKindStruct {:fg color.crust :bg color.blue}
+   :CmpItemKindValue {:fg color.crust :bg color.peach}
+   :CmpItemKindEvent {:fg color.crust :bg color.blue}
+   :CmpItemKindOperator {:fg color.crust :bg color.blue}
+   :CmpItemKindTypeParameter {:fg color.crust :bg color.blue}
 
    :MiniStarterItemBullet {:fg :NONE :bg :NONE}
    :MiniStarterItemPrefix {:fg color.blue :bg :NONE}

@@ -3,7 +3,7 @@
 (local core (autoload :nfnl.core))
 (local cfg (autoload :own.config))
 (local util (autoload :lspconfig.util))
-(local cmp (autoload :blink.cmp))
+(local cmp-lsp (autoload :cmp_nvim_lsp))
 (local schema-store (autoload :schemastore))
 (local lspconfig (autoload :lspconfig))
 (local mason (autoload :mason))
@@ -60,8 +60,9 @@
   (local git-root (util.root_pattern :.git))
   (local deno-root (util.root_pattern :deno.json :deno.jsonc))
   (local tailwind-root (util.root_pattern :tailwind.config.ts))
-
-  (local base-settings {:capabilities (cmp.get_lsp_capabilities)
+  (local python-root (util.root_pattern :uv.lock :venv/bin/python))
+  (local client-capabilities (vim.lsp.protocol.make_client_capabilities))
+  (local base-settings {:capabilities (cmp-lsp.default_capabilities client-capabilities)
                         :init_options {:preferences {:includeCompletionsWithSnippetText true
                                                      :includeCompletionsForImportStatements true}}})
 
@@ -85,7 +86,10 @@
                                                                                   :checkThirdParty false}}}}
                          :jedi_language_server {:on_new_config (fn [config root]
                                                                  (local python-path (get-python-path root))
-                                                                 (tset config :settings {:workspace {:environmentPath python-path}}))}
+                                                                 (tset config :settings {:workspace {:environmentPath python-path}}))
+                                                :root_dir python-root}
+                         :ruff {:init_options {:settings {:lint {:enable true
+                                                                 :preview true}}}}
                          :harper_ls {:settings {:harper-ls {:codeActions {:forceStable true}}}}
                                      ;:filetypes [:markdown :gitcommit :text]}
                          :cssls {:root_dir git-root}
@@ -101,6 +105,7 @@
 
   (ruby-lsps)
   (lspconfig.denols.setup {:root_dir deno-root})
+  (lspconfig.sourcekit.setup {})
   nil)
 
 (fn glance-config []
@@ -143,7 +148,9 @@
                                                                     :clojure_lsp
                                                                     :cssls
                                                                     :jdtls
-                                                                    :jedi_language_server
+                                                                    ;:jedi_language_server
+                                                                    :pylsp
+                                                                    :ruff
                                                                     :jsonls
                                                                     :lua_ls
                                                                     :eslint
@@ -154,7 +161,7 @@
 
  (use :neovim/nvim-lspconfig {:dependencies [:williamboman/mason.nvim
                                              :williamboman/mason-lspconfig.nvim
-                                             :Saghen/blink.cmp
+                                             :hrsh7th/cmp-nvim-lsp
                                              :b0o/SchemaStore.nvim]
                               :config lsp-config})
 
