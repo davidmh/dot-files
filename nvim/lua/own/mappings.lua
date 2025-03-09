@@ -215,18 +215,22 @@ local function on_attach(args)
   buf_map("<leader>li", cmd("Glance implementations"), "lsp: implementation")
   buf_map("<leader>lt", cmd("Glance type_definitions"), "lsp: type definition")
   local function _33_()
+    return vim.diagnostic.setqflist(error_filter)
+  end
+  buf_map("<leader>le", _33_)
+  local function _34_()
     return vim.lsp.buf.code_action()
   end
-  buf_map("<leader>la", _33_, "lsp: code actions")
-  local function _34_()
+  buf_map("<leader>la", _34_, "lsp: code actions")
+  local function _35_()
     return vim.lsp.buf.rename()
   end
-  buf_map("<leader>lr", _34_, "lsp: rename")
+  buf_map("<leader>lr", _35_, "lsp: rename")
   buf_map("<leader>lR", "<cmd>LspRestart<CR>", "lsp: restart")
-  local function _35_()
+  local function _36_()
     return vim.lsp.buf.code_action()
   end
-  vim.keymap.set("v", "<leader>la", _35_, {buffer = true, desc = "lsp: code actions"})
+  vim.keymap.set("v", "<leader>la", _36_, {buffer = true, desc = "lsp: code actions"})
   if (client.name == "eslint") then
     set_eslint_autofix(bufnr)
   else
@@ -241,18 +245,18 @@ do
   local group = vim.api.nvim_create_augroup("lsp-attach", {clear = true})
   vim.api.nvim_create_autocmd("LspAttach", {callback = on_attach, group = group})
 end
-local function _38_()
+local function _39_()
   return t.commands(themes.get_dropdown())
 end
-vim.keymap.set("n", "<M-x>", _38_, {nowait = true, silent = true})
-local function _39_()
+vim.keymap.set("n", "<M-x>", _39_, {nowait = true, silent = true})
+local function _40_()
   return t.help_tags(themes.get_dropdown())
 end
-vim.keymap.set("n", "<M-h>", _39_, {nowait = true, silent = true})
-local function _40_()
+vim.keymap.set("n", "<M-h>", _40_, {nowait = true, silent = true})
+local function _41_()
   return t.keymaps(themes.get_dropdown())
 end
-vim.keymap.set("n", "<M-k>", _40_, {nowait = true, silent = true})
+vim.keymap.set("n", "<M-k>", _41_, {nowait = true, silent = true})
 vim.keymap.set("n", "<M-o>", ":Telescope oldfiles<CR>", {nowait = true, silent = true})
 vim.keymap.set("n", "<M-,>", "<C-W>5<")
 vim.keymap.set("n", "<M-.>", "<C-W>5>")
@@ -269,7 +273,6 @@ vim.keymap.set("t", "<M-=>", "<C-\\><C-n><C-W>5+")
 vim.keymap.set("t", "<C-k>", "<C-\\><C-n><C-W>k")
 vim.keymap.set("t", "<C-j>", "<C-\\><C-n><C-W>j")
 vim.keymap.set("t", "<C-h>", "<C-\\><C-n><C-W>h")
-vim.keymap.set("t", "<C-l>", "<C-\\><C-n><C-W>l")
 do
   local group = vim.api.nvim_create_augroup("auto-resize-windows", {clear = true})
   vim.api.nvim_create_autocmd("VimResized", {pattern = "*", command = "wincmd =", group = group})

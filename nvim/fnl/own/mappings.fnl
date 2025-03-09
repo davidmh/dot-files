@@ -180,6 +180,7 @@
   (buf-map :<leader>lf (cmd "Glance references") "lsp: find references")
   (buf-map :<leader>li (cmd "Glance implementations") "lsp: implementation")
   (buf-map :<leader>lt (cmd "Glance type_definitions") "lsp: type definition")
+  (buf-map :<leader>le #(vim.diagnostic.setqflist error-filter)) "lsp: errors"
   (buf-map :<leader>la #(vim.lsp.buf.code_action) "lsp: code actions")
   (buf-map :<leader>lr #(vim.lsp.buf.rename) "lsp: rename")
   (buf-map :<leader>lR :<cmd>LspRestart<CR> "lsp: restart")
@@ -225,7 +226,7 @@
 (tmap :<C-k> :<C-\><C-n><C-W>k)
 (tmap :<C-j> :<C-\><C-n><C-W>j)
 (tmap :<C-h> :<C-\><C-n><C-W>h)
-(tmap :<C-l> :<C-\><C-n><C-W>l)
+;(tmap :<C-l> :<C-\><C-n><C-W>l)
 
 (augroup :auto-resize-windows [:VimResized {:pattern :* :command "wincmd ="}])
 
