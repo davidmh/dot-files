@@ -30,6 +30,7 @@
                            :ruby
                            :rust
                            :sql
+                           :swift
                            :terraform
                            :tsx
                            :typescript
