@@ -35,20 +35,6 @@
         commit (git :rev-parse :HEAD)]
       (.. (git-remote-base-url) "/blob/" commit "/" relative-path)))
 
-(fn gitsigns-commit-url [path]
-  (local remote-url (git-remote-base-url))
-  (local parts (str.split path :/))
-  (local commit (core.last parts))
-  (.. remote-url "/commit/" commit))
-
-(fn neogit-commit-url []
-  ; The first line containst the commit sha in the format:
-  ; Commit <sha>
-  (let [commit (-> (vim.fn.getline 1)
-                   (str.split " ")
-                   (core.second))]
-    (.. (git-remote-base-url) "/commit/" commit)))
-
 (fn git-url-with-range [opts]
   (if (= opts.range 2)
     (.. (git-url) "#L" opts.line1 "-L" opts.line2)
@@ -62,13 +48,6 @@
   (vim.fn.setreg :+ url)
   (vim.notify url vim.log.levels.INFO {:title "Copied to clipboard"
                                        :icon :}))
-
-(fn open-git-url [opts]
-  (local path (vim.fn.expand :%:p))
-  (vim.ui.open (match [vim.bo.ft]
-                  [:git] (gitsigns-commit-url path)
-                  [:NeogitCommitView] (neogit-commit-url)
-                  [] (git-url-with-range opts))))
 
 ;; Copy the file or range remote URL to the system clipboard
 (vim.api.nvim_create_user_command :GCopy copy-remote-url {:range true :nargs 0})
@@ -85,7 +64,7 @@
       (diff-view.open))))
 
 (fn files-in-commit [ref]
-  (let [output (vim.fn.systemlist [:git :show :--name-only :--oneline ref])
+  (let [output (vim.fn.systemlist [:git :show :--name-only :--diff-filter :d :--oneline ref])
         title (core.first output)
         git-root (or (core.get-in vim.b [:gitsigns_status_dict :root])
                      (vim.trim (vim.fn.system "git rev-parse --show-toplevel")))
@@ -122,19 +101,11 @@
                        (if (= (vim.fn.filereadable lua-file) 1)
                            (git :add :-- lua-file))))))
 
-(fn git-read []
-  ;; A naive port of vim-fugitive's :Gread
-  ;; Reads the content of the current file from the git HEAD and updates the
-  ;; buffer without saving it to disk.
-  (let [current-file (vim.fn.expand :%)
-        content (git :show (.. :HEAD:./ current-file))]
-    (vim.api.nvim_buf_set_lines 0 0 -1 true (str.split content "\n"))))
-
 (fn config []
   (gmap :g (cmd "Neogit") "git status")
   (gmap :c (cmd "Neogit commit") "git commit")
   (gmap :w git-write "write into the git tree")
-  (gmap :r git-read "read from the git tree")
+  (gmap :r (cmd "Gread") "read from the git tree")
   (gmap :b (cmd "Git blame") "git blame")
   (gmap :- (cmd "Neogit branch") "git branch")
   (gmap :d toggle-diff-view "toggle git diff")
@@ -184,6 +155,7 @@
                                         :sindrets/diffview.nvim
                                         :nvim-telescope/telescope.nvim]
                          :opts {:disable_hint true
+                                :auto_close_console false
                                 :fetch_after_checkout true
                                 :graph_style :unicode
                                 :remember_settings false
