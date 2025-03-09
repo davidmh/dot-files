@@ -13,7 +13,7 @@
 (set vim.o.number false)
 (set vim.o.laststatus 3)
 (set vim.o.list true)
-(set vim.o.listchars "tab:▸ ,trail:·")
+(set vim.o.listchars "tab:➤ ,trail:·")
 (set vim.o.mouse :a)
 (set vim.o.scrolloff 0)
 (set vim.o.shiftwidth 2)
