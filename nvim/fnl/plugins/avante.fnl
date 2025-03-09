@@ -3,7 +3,7 @@
 (use :yetone/avante.nvim {:cmd [:AvanteAsk :AvanteFocus]
                           :keys [:<leader>aa :<leader>ae]
                           :version false
-                          :opts {:provider :gemini}
+                          :opts {}
                           :build :make
                           :dependencies [:stevearc/dressing.nvim
                                          :nvim-lua/plenary.nvim
