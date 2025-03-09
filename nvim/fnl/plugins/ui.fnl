@@ -4,9 +4,6 @@
 
 [(use :nvim-tree/nvim-web-devicons {:config true})
 
- (use :nvim-zh/colorful-winsep.nvim {:config true
-                                     :event :VeryLazy})
-
  (use :rcarriga/nvim-notify {:dependencies [:nvim-telescope/telescope.nvim]
                              :event :VeryLazy
                              :config #(do (notify.setup {:timeout 2500

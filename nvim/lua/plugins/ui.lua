@@ -13,4 +13,4 @@ end
 local function _4_(_241, _242)
   return math.min(_242, 15)
 end
-return {{"nvim-tree/nvim-web-devicons", config = true}, {"nvim-zh/colorful-winsep.nvim", config = true, event = "VeryLazy"}, {"rcarriga/nvim-notify", dependencies = {"nvim-telescope/telescope.nvim"}, event = "VeryLazy", config = _2_}, {"stevearc/dressing.nvim", event = "VeryLazy", opts = {select = {backend = "telescope"}, telescope = {layout_config = {width = _3_, height = _4_}}}}}
+return {{"nvim-tree/nvim-web-devicons", config = true}, {"rcarriga/nvim-notify", dependencies = {"nvim-telescope/telescope.nvim"}, event = "VeryLazy", config = _2_}, {"stevearc/dressing.nvim", event = "VeryLazy", opts = {select = {backend = "telescope"}, telescope = {layout_config = {width = _3_, height = _4_}}}}}
