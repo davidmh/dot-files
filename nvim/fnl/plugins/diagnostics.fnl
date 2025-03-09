@@ -1,4 +1,5 @@
 (import-macros {: use} :own.macros)
+(local core (require :nfnl.core))
 (local {: autoload} (require :nfnl.module))
 (local null-ls (autoload :null-ls))
 (local u (autoload :null-ls.utils))
@@ -96,9 +97,13 @@
                                           :filetypes cspell-filetypes
                                           :config cspell-config})
 
+               (diagnostics.mypy.with {:command :uv
+                                       :args (fn [params]
+                                               (core.concat [:run :mypy] (diagnostics.mypy._opts.args params)))})
+
                formatting.gofmt
-               diagnostics.sqlfluff
-               formatting.sqlfluff
+               (diagnostics.sqlfluff.with {:extra_args [:--dialect :postgres]})
+               (formatting.sqlfluff.with {:extra_args [:--dialect :postgres]})
                formatting.stylua
                formatting.terraform_fmt
                formatting.nixpkgs_fmt]
