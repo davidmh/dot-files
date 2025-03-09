@@ -13,7 +13,7 @@
     asciinema-agg
     android-tools
     bat
-    cargo
+    coreutils
     clojure
     fd
     fx
@@ -26,11 +26,9 @@
     lazygit
     leiningen
     lsd
-    lua51Packages.luarocks-nix
     nodejs_22
     (yarn.override { nodejs = nodejs_22; })
     pass
-    postgresql_16
     pnpm
     selene
     silver-searcher
@@ -41,16 +39,27 @@
     unstable.ast-grep
     unstable.bun
     unstable.deno
+    unstable.devenv
+    unstable.cargo
     unstable.gh
     unstable.git-absorb
-    unstable.git-spice
     unstable.gnupg
     unstable.jankyborders
+    unstable.lua
+    unstable.lua51Packages.luarocks-nix
     unstable.neovim
     unstable.nixpkgs-fmt
     unstable.nerd-fonts.hasklug
     unstable.sqlfluff
+    unstable.tree-sitter
     wezterm
+
+    # Remix
+    colima
+    docker
+    docker-compose
+    postgresql_16
+    redis
   ];
 
   programs.home-manager.enable = true;
