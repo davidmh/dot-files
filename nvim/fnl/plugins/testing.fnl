@@ -20,6 +20,7 @@
   (neotest.setup {:log_level vim.log.levels.DEBUG
                   :adapters [(neotest-rspec-adapter)
                              (require :neotest-rust)
+                             (require :neotest-go)
                              (neotest-playwright.adapter {})]
                   :quickfix {:enabled true
                              :open false}
@@ -35,7 +36,8 @@
                                            :nvim-treesitter/nvim-treesitter
                                            :thenbe/neotest-playwright
                                            :rouge8/neotest-rust
-                                           :olimorris/neotest-rspec]
+                                           :olimorris/neotest-rspec
+                                           :nvim-neotest/neotest-go]
                             :config config
                             :keys [(use :<localleader>trn "<cmd>Neotest run<cr>" {:desc "run nearest test"})
                                    (use :<localleader>trf #(neotest.run.run (vim.fn.expand :%))
