@@ -163,7 +163,6 @@ local function _25_()
   return telescope_file_browser("~/.config/home-manager")
 end
 vim.keymap.set("n", "<localleader>c", _25_, opts("home manager config"))
-vim.keymap.set("n", "<localleader>d", cmd("DBUIToggle"), opts("dadbod ui"))
 vim.keymap.set("n", "<localleader>l", cmd("Lazy show"), opts("lazy ui"))
 vim.keymap.set("n", "<localleader>m", cmd("Mason"), opts("mason"))
 vim.keymap.set("n", "<localleader>no", cmd("Telescope notify"), opts("open notifications"))

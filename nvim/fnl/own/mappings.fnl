@@ -127,7 +127,6 @@
 ;; less used commands, grouped by feature
 
 (nmap :<localleader>c #(telescope-file-browser "~/.config/home-manager") (opts "home manager config"))
-(nmap :<localleader>d (cmd :DBUIToggle) (opts "dadbod ui"))
 
 ;; lazy ui
 (nmap :<localleader>l (cmd "Lazy show") (opts "lazy ui"))

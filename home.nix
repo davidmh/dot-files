@@ -45,6 +45,7 @@
     unstable.git-absorb
     unstable.gnupg
     unstable.jankyborders
+    unstable.lldb_19
     unstable.lua
     unstable.lua51Packages.luarocks-nix
     unstable.neovim
