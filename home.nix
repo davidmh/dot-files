@@ -71,6 +71,11 @@
   programs.zsh = {
     enable = true;
     autocd = true;
+    initExtraBeforeCompInit = ''
+      if [ -f ~/.config/extra.zsh ]; then
+        source ~/.config/extra.zsh
+      fi
+    '';
     history.ignoreSpace = true;
     antidote = {
       enable = true;
