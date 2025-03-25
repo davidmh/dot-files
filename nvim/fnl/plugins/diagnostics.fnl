@@ -83,7 +83,7 @@
 
                (diagnostics.pylint.with {:cwd (root-pattern :requirements-dev.txt)
                                          :condition (with-root-file :venv/bin/pylint)
-                                         :prefer_local :venv/bin
+                                         :prefer_local :.venv/bin
                                          :args [:--from-stdin :$FILENAME :-f :json :-d "line-too-long,missing-function-docstring"]})
 
                (cspell.diagnostics.with {:cwd (root-pattern :cspell.json)
@@ -99,11 +99,14 @@
 
                (diagnostics.mypy.with {:command :uv
                                        :args (fn [params]
-                                               (core.concat [:run :mypy] (diagnostics.mypy._opts.args params)))})
+                                               (core.concat [:run :mypy] (diagnostics.mypy._opts.args params)))
+                                       :prefer_local :.venv/bin})
 
                formatting.gofmt
-               (diagnostics.sqlfluff.with {:extra_args [:--dialect :postgres]})
-               (formatting.sqlfluff.with {:extra_args [:--dialect :postgres]})
+               (diagnostics.sqlfluff.with {:extra_args [:--dialect :postgres]
+                                           :prefer_local :.venv/bin})
+               (formatting.sqlfluff.with {:extra_args [:--dialect :postgres]
+                                          :prefer_local :.venv/bin})
                formatting.stylua
                formatting.terraform_fmt
                formatting.nixpkgs_fmt]
