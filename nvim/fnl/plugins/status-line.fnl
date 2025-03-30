@@ -48,7 +48,7 @@
 
 (local vi-mode {:init #(tset $1 :mode (vim.fn.mode 1))
                 :condition #(not= vim.o.filetype :starter)
-                :provider #(.. (core.get mode-label $1.mode $1.mode) " ")
+                :provider #(.. " " (core.get mode-label $1.mode $1.mode) " ")
                 :hl #(-> {:fg (. mode-colors $1.mode)
                           :bold true})
                 :update [:ModeChanged :ColorScheme]})
@@ -100,6 +100,7 @@
                        diagnostics-block
                        git-block
                        plugin-updates
+                       empty-space
                        {:hl {:bg :NONE}}))
 
 (fn initialize-heirline []

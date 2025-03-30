@@ -130,16 +130,18 @@
                                       :<c-v> vertical-split
                                       :<c-x> horizontal-split}}
                    :hooks {:before_open (fn [results open-preview jump-to-result]
-                                          (if (= (length results) 1)
-                                              (do
+                                          (match (length results)
+                                            0 (vim.notify "No results found")
+                                            1 (do
                                                 (jump-to-result (core.first results))
-                                                (vim.cmd {:cmd :normal
-                                                          :args [:zz]
-                                                          :bang true}))
-                                              (open-preview results)))}}))
+                                                (vim.cmd {:cmd :normal}
+                                                         :args [:zz]
+                                                         :bang true))
+                                            _ (open-preview results)))}}))
 
 [(use :folke/lazydev.nvim {:ft :lua
-                           :opts {:library [{:path "${3rd}/luv/library" :words [:vim%.uv]}]}})
+                           :opts {:library [{:path "${3rd}/luv/library" :words [:vim%.uv]}
+                                            :nvim-dap-ui]}})
 
  (use :williamboman/mason.nvim {:config mason-config})
 
@@ -148,8 +150,8 @@
                                                                     :clojure_lsp
                                                                     :cssls
                                                                     :jdtls
-                                                                    ;:jedi_language_server
-                                                                    :pylsp
+                                                                    :jedi_language_server
+                                                                    ;:pylsp
                                                                     :ruff
                                                                     :jsonls
                                                                     :lua_ls
@@ -161,8 +163,8 @@
 
  (use :neovim/nvim-lspconfig {:dependencies [:williamboman/mason.nvim
                                              :williamboman/mason-lspconfig.nvim
-                                             :hrsh7th/cmp-nvim-lsp
-                                             :b0o/SchemaStore.nvim]
+                                             :b0o/SchemaStore.nvim
+                                             :folke/lazydev.nvim]
                               :config lsp-config})
 
  (use :pmizio/typescript-tools.nvim {:dependencies [:neovim/nvim-lspconfig
@@ -177,7 +179,8 @@
  (use :j-hui/fidget.nvim {:dependencies [:neovim/nvim-lspconfig]
                           :event :LspAttach
                           :opts {:notification {:window {:align :top
-                                                         :y_padding 2}}}})
+                                                         :y_padding 2
+                                                         :winblend 0}}}})
 
  (use :SmiteshP/nvim-navic {:opts {:depth_limit 4
                                    :depth_limit_indicator " [  ] "

@@ -35,7 +35,7 @@ local function _6_()
   return (vim.o.filetype ~= "starter")
 end
 local function _7_(_241)
-  return (core.get(mode_label, _241.mode, _241.mode) .. " ")
+  return (" " .. core.get(mode_label, _241.mode, _241.mode) .. " ")
 end
 local function _8_(_241)
   return {fg = mode_colors[_241.mode], bold = true}
@@ -95,7 +95,7 @@ local function _17_()
   return lazy_status.has_updates()
 end
 plugin_updates = {component({init = _15_, condition = _17_})}
-local statusline = {vi_mode, push_right, diagnostics_block, git_block, plugin_updates, hl = {bg = "NONE"}}
+local statusline = {vi_mode, push_right, diagnostics_block, git_block, plugin_updates, empty_space, hl = {bg = "NONE"}}
 local function initialize_heirline()
   vim.o.showmode = false
   local opts = {colors = palettes.get_palette()}

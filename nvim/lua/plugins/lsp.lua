@@ -115,25 +115,29 @@ local function glance_config()
   end
   horizontal_split = _15_
   local function _16_(results, open_preview, jump_to_result)
-    if (#results == 1) then
+    local _17_ = #results
+    if (_17_ == 0) then
+      return vim.notify("No results found")
+    elseif (_17_ == 1) then
       jump_to_result(core.first(results))
-      return vim.cmd({cmd = "normal", args = {"zz"}, bang = true})
+      return vim.cmd({cmd = "normal"}, "args", {"zz"}, "bang", true)
     else
+      local _ = _17_
       return open_preview(results)
     end
   end
   return glance.setup({mappings = {list = {["<m-p>"] = enter_preview, ["<c-q>"] = enter_quickfix, ["<c-n>"] = next_result, ["<c-p>"] = previous_result, ["<c-v>"] = vertical_split, ["<c-x>"] = horizontal_split}, preview = {["<m-l>"] = enter_list, ["<c-q>"] = enter_quickfix, ["<c-n>"] = next_result, ["<c-p>"] = previous_result, ["<c-v>"] = vertical_split, ["<c-x>"] = horizontal_split}}, hooks = {before_open = _16_}})
 end
-local function _18_(file_name)
+local function _19_(file_name)
   local deno_root = util.root_pattern("deno.json", "deno.jsonc")
   local ts_root = util.root_pattern("tsconfig.json")
   return ((deno_root(file_name) == nil) and ts_root(file_name))
 end
-local function _19_(text)
+local function _20_(text)
   if (text:match("^it%(") or text:match("^describe%(")) then
     return text:gsub("^it%('", "it "):gsub("^describe%('", "describe "):gsub("'%) callback$", "")
   else
     return text:gsub(" callback$", "")
   end
 end
-return {{"folke/lazydev.nvim", ft = "lua", opts = {library = {{path = "${3rd}/luv/library", words = {"vim%.uv"}}}}}, {"williamboman/mason.nvim", config = mason_config}, {"williamboman/mason-lspconfig.nvim", dependencies = {"williamboman/mason.nvim"}, opts = {ensure_installed = {"bashls", "clojure_lsp", "cssls", "jdtls", "pylsp", "ruff", "jsonls", "lua_ls", "eslint", "fennel_language_server", "harper_ls", "tailwindcss"}}, config = true}, {"neovim/nvim-lspconfig", dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim", "hrsh7th/cmp-nvim-lsp", "b0o/SchemaStore.nvim"}, config = lsp_config}, {"pmizio/typescript-tools.nvim", dependencies = {"neovim/nvim-lspconfig", "nvim-lua/plenary.nvim"}, opts = {settings = {expose_as_code_action = {"add_missing_imports"}}, root_dir = _18_}}, {"j-hui/fidget.nvim", dependencies = {"neovim/nvim-lspconfig"}, event = "LspAttach", opts = {notification = {window = {align = "top", y_padding = 2}}}}, {"SmiteshP/nvim-navic", opts = {depth_limit = 4, depth_limit_indicator = " [ \238\169\188 ] ", click = true, highlight = true, format_text = _19_, icons = cfg["navic-icons"], separator = " \238\170\182 ", safe_output = false}, config = true, dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim"}}, {"dnlhc/glance.nvim", cmd = "Glance", config = glance_config}}
+return {{"folke/lazydev.nvim", ft = "lua", opts = {library = {{path = "${3rd}/luv/library", words = {"vim%.uv"}}, "nvim-dap-ui"}}}, {"williamboman/mason.nvim", config = mason_config}, {"williamboman/mason-lspconfig.nvim", dependencies = {"williamboman/mason.nvim"}, opts = {ensure_installed = {"bashls", "clojure_lsp", "cssls", "jdtls", "jedi_language_server", "ruff", "jsonls", "lua_ls", "eslint", "fennel_language_server", "harper_ls", "tailwindcss"}}, config = true}, {"neovim/nvim-lspconfig", dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim", "b0o/SchemaStore.nvim", "folke/lazydev.nvim"}, config = lsp_config}, {"pmizio/typescript-tools.nvim", dependencies = {"neovim/nvim-lspconfig", "nvim-lua/plenary.nvim"}, opts = {settings = {expose_as_code_action = {"add_missing_imports"}}, root_dir = _19_}}, {"j-hui/fidget.nvim", dependencies = {"neovim/nvim-lspconfig"}, event = "LspAttach", opts = {notification = {window = {align = "top", y_padding = 2, winblend = 0}}}}, {"SmiteshP/nvim-navic", opts = {depth_limit = 4, depth_limit_indicator = " [ \238\169\188 ] ", click = true, highlight = true, format_text = _20_, icons = cfg["navic-icons"], separator = " \238\170\182 ", safe_output = false}, config = true, dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim"}}, {"dnlhc/glance.nvim", cmd = "Glance", config = glance_config}}

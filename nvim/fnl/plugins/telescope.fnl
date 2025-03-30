@@ -16,5 +16,6 @@
                         :prompt_prefix "   "
                         :selection_caret " "
                         :set_env {:COLORTERM true}
-                        :results_title false}
+                        :results_title false
+                        :prompt_title false}
              :pickers {:buffers {:sort_mru true}}}})

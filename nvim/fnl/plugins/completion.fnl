@@ -4,7 +4,7 @@
 (local ls (autoload :luasnip))
 (local lspkind (autoload :lspkind))
 
-(set vim.opt.completeopt [:menuone :menuone :noselect :popup])
+(set vim.opt.completeopt [:menuone :menuone :noselect :popup :fuzzy])
 
 (fn cmp-format [entry vim-item]
   (let [kind-fmt (lspkind.cmp_format {:mode :symbol
@@ -12,11 +12,6 @@
         kind-item (kind-fmt entry vim-item)]
     (tset kind-item :kind (.. " " kind-item.kind " "))
     kind-item))
-
-(local co-author-domain-ranking (vim.tbl_add_reverse_lookup ["users.noreply.github.com"
-                                                             "ridewithvia.com"
-                                                             "remix.com"
-                                                             "gmail.com"]))
 
 (fn config []
   (local cmd-mappings {:<C-d> (cmp.mapping.scroll_docs -4)
@@ -27,10 +22,7 @@
                                                     :select true})})
 
   (cmp.setup {:mapping (cmp.mapping.preset.insert cmd-mappings)
-              :sources (cmp.config.sources [{:name :git-co-authors
-                                             :option {:domain_ranking co-author-domain-ranking
-                                                      :since_date "2 weeks"}}
-                                            {:name :luasnip}
+              :sources (cmp.config.sources [{:name :luasnip}
                                             {:name :nvim_lsp}
                                             {:name :orgmode}
                                             {:name :emoji}
@@ -74,7 +66,6 @@
                                         :L3MON4D3/LuaSnip
                                         :davidmh/cmp-nerdfonts
                                         :onsails/lspkind-nvim
-                                        :hrsh7th/cmp-emoji
-                                        :davidmh/cmp-git-co-authors]
+                                        :hrsh7th/cmp-emoji]
                          :event :InsertEnter
                          : config})]

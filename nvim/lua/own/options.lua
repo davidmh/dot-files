@@ -25,5 +25,5 @@ vim.o.termguicolors = true
 vim.o.updatetime = 100
 vim.wo.wrap = false
 vim.o.splitright = true
-vim.g.GuiWindowFrameless = true
+vim.o.winborder = "solid"
 return nil

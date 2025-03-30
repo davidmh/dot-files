@@ -7,17 +7,12 @@
 
    :TreesitterContext {:link :Normal}
 
-   :TroubleText {:link :Normal}
-   :TroubleCount {:link :Normal}
-   :TroubleNormal {:link :Normal}
-
    :TelescopeBorder {:fg color.crust :bg color.crust}
    :TelescopePromptBorder {:fg color.crust :bg color.crust}
-   :TelescopePromptNormal {:bg color.crust}
-   :TelescopePromptPrefix {:fg color.blue :bg color.crust}
+   :TelescopePromptNormal {:bg color.mantle}
+   :TelescopePromptPrefix {:fg color.blue :bg color.mantle}
    :TelescopeNormal {:bg color.crust}
-   :TelescopePreviewTitle {:fg color.crust :bg color.crust}
-   :TelescopePromptTitle {:fg color.crust :bg color.blue}
+   :TelescopePreview {:bg color.crust}
    :TelescopeResultsNormal { :bg color.mantle}
    :TelescopeResultsBorder {:fg color.mantle :bg color.mantle}
    :TelescopeSelection {:bg color.crust :fg color.blue}
@@ -101,14 +96,6 @@
    :NavicIconsOperator {:bg :NONE :fg color.blue :bold true}
    :NavicIconsTypeParameter {:bg :NONE :fg color.blue :bold true}
    :NavicText {:fg color.text :bg :NONE :bold true}
-   :NavicSeparator {:fg color.blue :bg :NONE :bold true}
-
-   :NoiceCmdline {:fg color.text :bg color.crust}
-   :NoiceCmdlineIcon {:fg color.sky :bg color.crust}
-   :NoiceCmdlineIconSearch {:fg color.yellow :bg color.crust}
-   :NoiceCmdlinePopup {:fg color.text :bg color.crust}
-   :NoiceCmdlinePopupBorder {:fg color.crust :bg color.crust}
-   :NoiceCmdlinePopupBorderSearch {:fg color.crust :bg color.crust}
-   :NoiceConfirmBorder {:fg color.crust :bg color.crust}})
+   :NavicSeparator {:fg color.blue :bg :NONE :bold true}})
 
 {: custom-highlights}
