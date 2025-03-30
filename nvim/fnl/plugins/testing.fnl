@@ -16,11 +16,16 @@
   (local neotest-rspec (require :neotest-rspec))
   (neotest-rspec {:rspec_cmd rspec-cmd}))
 
+(fn neotest-python-adapter []
+  (local neotest-python (require :neotest-python))
+  (neotest-python {:python :.venv/bin/python}))
+
 (fn config []
   (neotest.setup {:log_level vim.log.levels.DEBUG
                   :adapters [(neotest-rspec-adapter)
                              (require :neotest-rust)
                              (require :neotest-go)
+                             (neotest-python-adapter)
                              (neotest-playwright.adapter {})]
                   :quickfix {:enabled true
                              :open false}
@@ -37,6 +42,7 @@
                                            :thenbe/neotest-playwright
                                            :rouge8/neotest-rust
                                            :olimorris/neotest-rspec
+                                           :nvim-neotest/neotest-python
                                            :nvim-neotest/neotest-go]
                             :config config
                             :keys [(use :<localleader>trn "<cmd>Neotest run<cr>" {:desc "run nearest test"})
