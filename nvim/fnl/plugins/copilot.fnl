@@ -13,5 +13,6 @@
                                      :filetypes {:zsh #(let [path (vim.api.nvim_buf_get_name 0)]
                                                          (and
                                                           (= nil (string.match path ".*env.*"))
-                                                          (not (vim.endswith path :.zprofile))))
+                                                          (not (vim.endswith path :.zprofile))
+                                                          (not (vim.startswith path (.. vim.env.HOME "/.config")))))
                                                  :* true}}})
