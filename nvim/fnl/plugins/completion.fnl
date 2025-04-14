@@ -24,7 +24,6 @@
   (cmp.setup {:mapping (cmp.mapping.preset.insert cmd-mappings)
               :sources (cmp.config.sources [{:name :luasnip}
                                             {:name :nvim_lsp}
-                                            {:name :orgmode}
                                             {:name :emoji}
                                             {:name :nerdfonts}
                                             {:name :conjure}
