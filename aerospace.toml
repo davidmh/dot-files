@@ -12,8 +12,8 @@ after-startup-command = ['exec-and-forget borders active_color=0xffc6a0f6 hidpi=
 start-at-login = true
 
 # Normalizations. See: https://nikitabobko.github.io/AeroSpace/guide#normalization
-enable-normalization-flatten-containers = true
-enable-normalization-opposite-orientation-for-nested-containers = true
+enable-normalization-flatten-containers = false
+enable-normalization-opposite-orientation-for-nested-containers = false
 
 # See: https://nikitabobko.github.io/AeroSpace/guide#layouts
 # The 'accordion-padding' specifies the size of accordion padding
@@ -163,6 +163,11 @@ run = ['layout floating']
 
 [[on-window-detected]]
 if.app-id = 'com.apple.ScreenSharing'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-id = 'app.zen-browser.zen'
+if.window-title-regex-substring = 'Picture-in-Picture'
 run = ['layout floating']
 
 [exec.env-vars]
