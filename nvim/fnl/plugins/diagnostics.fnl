@@ -43,14 +43,12 @@
     diagnostic.message))
 
 (vim.diagnostic.config {:underline true
-                        :signs {:text cfg.icons}
+                        :signs false
                         :virtual_text false
-                        :virtual_lines {:current_line true}
+                        :virtual_lines false
                         :update_in_insert false
                         :severity_sort true
-                        :float {:header ""
-                                :border cfg.border
-                                :format diagnostic-format}})
+                        :float {:format diagnostic-format}})
 
 (vim.api.nvim_create_augroup :lsp-formatting {:clear true})
 

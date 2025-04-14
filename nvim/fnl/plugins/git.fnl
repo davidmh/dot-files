@@ -136,7 +136,7 @@
                                          :silent true}))
 
 
-[(use :lewis6991/gitsigns.nvim {:opts {:current_line_blame true
+[(use :lewis6991/gitsigns.nvim {:opts {:current_line_blame false
                                        :signcolumn true}
                                 :config true})
 

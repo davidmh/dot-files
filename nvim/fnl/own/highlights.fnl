@@ -8,13 +8,15 @@
    :TreesitterContext {:link :Normal}
 
    :TelescopeBorder {:fg color.crust :bg color.crust}
-   :TelescopePromptBorder {:fg color.crust :bg color.crust}
-   :TelescopePromptNormal {:bg color.mantle}
+   :TelescopePromptBorder {:fg color.crust :bg color.mantle}
+   :TelescopePromptNormal {:fg color.text :bg color.mantle}
    :TelescopePromptPrefix {:fg color.blue :bg color.mantle}
+   :TelescopePromptTitle {:fg color.text :bg color.crust}
    :TelescopeNormal {:bg color.crust}
    :TelescopePreview {:bg color.crust}
-   :TelescopeResultsNormal { :bg color.mantle}
-   :TelescopeResultsBorder {:fg color.mantle :bg color.mantle}
+   :TelescopeResultsNormal {:fg color.text :bg color.mantle}
+   :TelescopeResultsBorder {:fg color.crust :bg color.mantle}
+   :TelescopeResultsTitle {:fg color.text :bg color.crust}
    :TelescopeSelection {:bg color.crust :fg color.blue}
    :TelescopeSelectionCaret  {:fg color.blue}
    :TelescopeResultsDiffAdd {:fg color.green}

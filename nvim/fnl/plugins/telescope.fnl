@@ -15,7 +15,5 @@
                         :sorting_strategy :ascending
                         :prompt_prefix "   "
                         :selection_caret " "
-                        :set_env {:COLORTERM true}
-                        :results_title false
-                        :prompt_title false}
+                        :set_env {:COLORTERM true}}
              :pickers {:buffers {:sort_mru true}}}})

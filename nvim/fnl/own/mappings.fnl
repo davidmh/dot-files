@@ -146,11 +146,12 @@
 (nmap :Q (cmd :QToggle) (opts "quickfix toggle"))
 (nmap :<M-s> (cmd "silent! write") (opts "write file"))
 (nmap :z= (cmd "Telescope spell_suggest theme=get_cursor") (opts "suggest spelling"))
+
 ;; diagnostics
-(nmap "[d" #(vim.diagnostic.jump (core.merge {:count -1} error-filter) (opts "next diagnostic")))
-(nmap "]d" #(vim.diagnostic.jump (core.merge {:count 1} error-filter) (opts "previous diagnostic")))
-(nmap "[w" #(vim.diagnostic.jump (core.merge {:count -1} warning-filter) (opts "next warning")))
-(nmap "]w" #(vim.diagnostic.jump (core.merge {:count 1} warning-filter) (opts "previous warning")))
+(nmap "[d" #(vim.diagnostic.jump (core.merge {:count -1} error-filter)) (opts "next diagnostic"))
+(nmap "]d" #(vim.diagnostic.jump (core.merge {:count 1} error-filter)) (opts "previous diagnostic"))
+(nmap "[w" #(vim.diagnostic.jump (core.merge {:count -1} warning-filter)) (opts "next warning"))
+(nmap "]w" #(vim.diagnostic.jump (core.merge {:count 1} warning-filter)) (opts "previous warning"))
 
 ; LSP mappings
 ; Set only to the buffer where the LSP client is attached
@@ -174,7 +175,6 @@
   (vim.api.nvim_buf_set_option 0 :omnifunc :v:lua.vim.lsp.omnifunc)
 
   ;; Mappings
-  (buf-map :K #(vim.lsp.buf.hover) "lsp: hover")
   (buf-map :gd (cmd "Glance definitions") "lsp: go to definition")
   (buf-map :<leader>lf (cmd "Glance references") "lsp: find references")
   (buf-map :<leader>li (cmd "Glance implementations") "lsp: implementation")

@@ -10,7 +10,7 @@
 (set vim.o.hidden true)
 (set vim.o.ignorecase true)
 (set vim.o.inccommand :split)
-(set vim.o.number false)
+(set vim.o.number true)
 (set vim.o.laststatus 3)
 (set vim.o.list true)
 (set vim.o.listchars "tab:➤ ,trail:·")
@@ -25,4 +25,3 @@
 (set vim.o.updatetime 100)
 (set vim.wo.wrap false)
 (set vim.o.splitright true)
-(set vim.o.winborder :solid)

@@ -26,11 +26,11 @@ local cspell_filetypes = {"css", "clojure", "html", "javascript", "json", "less"
 local function get_source_name(diagnostic)
   local or_5_ = diagnostic.source
   if not or_5_ then
-    local tmp_91_auto = diagnostic.namespace
-    if (nil ~= tmp_91_auto) then
-      local tmp_91_auto0 = vim.diagnostic.get_namespace(tmp_91_auto)
-      if (nil ~= tmp_91_auto0) then
-        or_5_ = tmp_91_auto0.name
+    local tmp_3_auto = diagnostic.namespace
+    if (nil ~= tmp_3_auto) then
+      local tmp_3_auto0 = vim.diagnostic.get_namespace(tmp_3_auto)
+      if (nil ~= tmp_3_auto0) then
+        or_5_ = tmp_3_auto0.name
       else
         or_5_ = nil
       end
@@ -43,7 +43,7 @@ end
 local function diagnostic_format(diagnostic)
   return (cfg.icons[diagnostic.severity] .. " [" .. get_source_name(diagnostic) .. "] " .. diagnostic.message)
 end
-vim.diagnostic.config({underline = true, signs = {text = cfg.icons}, virtual_lines = {current_line = true}, severity_sort = true, float = {header = "", border = cfg.border, format = diagnostic_format}, update_in_insert = false, virtual_text = false})
+vim.diagnostic.config({underline = true, severity_sort = true, float = {format = diagnostic_format}, signs = false, update_in_insert = false, virtual_lines = false, virtual_text = false})
 vim.api.nvim_create_augroup("lsp-formatting", {clear = true})
 local function on_attach(client, bufnr)
   if client.supports_method("textDocument/formatting") then

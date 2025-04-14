@@ -10,7 +10,7 @@ vim.o.guifont = "Hasklug Nerd Font:h14"
 vim.o.hidden = true
 vim.o.ignorecase = true
 vim.o.inccommand = "split"
-vim.o.number = false
+vim.o.number = true
 vim.o.laststatus = 3
 vim.o.list = true
 vim.o.listchars = "tab:\226\158\164 ,trail:\194\183"
@@ -25,5 +25,4 @@ vim.o.termguicolors = true
 vim.o.updatetime = 100
 vim.wo.wrap = false
 vim.o.splitright = true
-vim.o.winborder = "solid"
 return nil
