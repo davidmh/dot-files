@@ -25,3 +25,4 @@
 (set vim.o.updatetime 100)
 (set vim.wo.wrap false)
 (set vim.o.splitright true)
+(set vim.o.winborder :rounded)

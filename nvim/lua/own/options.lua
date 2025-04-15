@@ -25,4 +25,5 @@ vim.o.termguicolors = true
 vim.o.updatetime = 100
 vim.wo.wrap = false
 vim.o.splitright = true
+vim.o.winborder = "rounded"
 return nil

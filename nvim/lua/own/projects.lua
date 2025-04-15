@@ -14,7 +14,7 @@ local _local_3_ = require("nfnl.module")
 local autoload = _local_3_["autoload"]
 local _local_4_ = require("own.helpers")
 local sanitize_path = _local_4_["sanitize-path"]
-local t = autoload("telescope.builtin")
+local snacks = autoload("snacks")
 local projects_path = (vim.fn.stdpath("state") .. "/projects.json")
 local function _5_()
   if (vim.fn.filereadable(projects_path) == 0) then
@@ -38,7 +38,7 @@ local function add_project(project_path)
   return spit(projects_path, vim.json.encode(merge(projects, {[project_path] = project})))
 end
 local function find_files(cwd)
-  return t.find_files({cwd = (cwd or vim.fn.getcwd()), find_command = {"fd", "--hidden", "--type", "f", "--exclude", ".git"}})
+  return snacks.picker.files({dirs = {(cwd or vim.fn.getcwd())}})
 end
 local function format_project(path, name)
   local function _8_()

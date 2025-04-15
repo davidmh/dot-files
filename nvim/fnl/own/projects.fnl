@@ -10,7 +10,7 @@
 (local {: take} (require :own.lists))
 (local {: autoload} (require :nfnl.module))
 (local {: sanitize-path} (require :own.helpers))
-(local t (autoload :telescope.builtin))
+(local snacks (autoload :snacks))
 
 (local projects-path (.. (vim.fn.stdpath :state) "/projects.json"))
 
@@ -34,11 +34,7 @@
 
 
 (fn find-files [cwd]
-  (t.find_files {:cwd (or cwd (vim.fn.getcwd))
-                 :find_command [:fd
-                                :--hidden
-                                :--type :f
-                                :--exclude :.git]}))
+  (snacks.picker.files {:dirs [(or cwd (vim.fn.getcwd))]}))
 
 (fn format-project [path name]
   {:name (.. name " -> " (sanitize-path path 3))

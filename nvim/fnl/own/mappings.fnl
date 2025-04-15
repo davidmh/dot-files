@@ -6,8 +6,6 @@
                 : augroup} :own.macros)
 (local {: autoload} (require :nfnl.module))
 
-(local t (autoload :telescope.builtin))
-(local themes (autoload :telescope.themes))
 (local gitsigns (autoload :gitsigns))
 (local toggle-term (autoload :toggleterm))
 (local terminal (autoload :toggleterm.terminal))
@@ -27,17 +25,11 @@
   (.. :<cmd> expression :<cr>))
 
 (fn grep-buffer-content []
-  (t.live_grep {:prompt_title "Find in open buffers"
-                :grep_open_files true}))
-
-(fn telescope-file-browser [path]
-  (t.find_files {:depth 4 :cwd path}))
+  (snacks.picker.grep_buffers {:title "Find in open buffers"}))
 
 (fn browse-plugins []
-  (telescope-file-browser (.. (vim.fn.stdpath :data) "/lazy")))
-
-(fn browse-runtime []
-  (telescope-file-browser (vim.fn.expand "$VIMRUNTIME/lua")))
+  (snacks.picker.files {:rtp true
+                        :title :plugins}))
 
 (fn toggle-blame-line []
   (let [enabled? (gitsigns.toggle_current_line_blame)]
@@ -99,13 +91,12 @@
 (nmap :<leader>s ":botright split /tmp/scratch.fnl<cr>" (opts "open scratch buffer"))
 
 (nmap :<leader>vp browse-plugins (opts "vim plugins"))
-(nmap :<leader>vr browse-runtime (opts "vim runtime"))
 
 ;; toggles
 (nmap :<leader>tb toggle-blame-line (opts "toggle blame line"))
 
 ;; buffers
-(nmap :<leader>bb #(t.buffers) (opts "list buffers"))
+(nmap :<leader>bb #(snacks.picker.buffers) (opts "list buffers"))
 (nmap :<leader>bk #(snacks.bufdelete.delete) (opts "kill buffer"))
 (nmap :<leader>bo #(snacks.bufdelete.other) (opts "kill other buffers"))
 
@@ -126,7 +117,8 @@
 
 ;; less used commands, grouped by feature
 
-(nmap :<localleader>c #(telescope-file-browser "~/.config/home-manager") (opts "home manager config"))
+(nmap :<localleader>c #(snacks.picker.files {:dirs ["~/.config/home-manager"]
+                                             :title "home manager config"}) (opts "home manager config"))
 
 ;; lazy ui
 (nmap :<localleader>l (cmd "Lazy show") (opts "lazy ui"))
@@ -145,7 +137,7 @@
 (nmap :L (cmd :LToggle) (opts "list toggle"))
 (nmap :Q (cmd :QToggle) (opts "quickfix toggle"))
 (nmap :<M-s> (cmd "silent! write") (opts "write file"))
-(nmap :z= (cmd "Telescope spell_suggest theme=get_cursor") (opts "suggest spelling"))
+(nmap :z= #(snacks.picker.spelling) (opts "suggest spelling"))
 
 ;; diagnostics
 (nmap "[d" #(vim.diagnostic.jump (core.merge {:count -1} error-filter)) (opts "next diagnostic"))
@@ -194,11 +186,10 @@
 
 (augroup :lsp-attach [:LspAttach {:callback on-attach}])
 
-; Telescope
-(nmap :<M-x> #(t.commands (themes.get_dropdown)) {:nowait true :silent true})
-(nmap :<M-h> #(t.help_tags (themes.get_dropdown)) {:nowait true :silent true})
-(nmap :<M-k> #(t.keymaps (themes.get_dropdown)) {:nowait true :silent true})
-(nmap :<M-o> ":Telescope oldfiles<CR>" {:nowait true :silent true})
+(nmap :<M-x> #(snacks.picker.commands {:layout {:preset :dropdown}}) {:nowait true :silent true})
+(nmap :<M-h> #(snacks.picker.help {:layout {:preset :dropdown}}) {:nowait true :silent true})
+(nmap :<M-k> #(snacks.picker.keymaps {:layout {:preset :vscode}}) {:nowait true :silent true})
+(nmap :<M-o> #(snacks.picker.recent) {:nowait true :silent true})
 
 ; Windows
 ;

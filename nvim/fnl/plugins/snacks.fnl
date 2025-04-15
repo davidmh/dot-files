@@ -36,4 +36,11 @@
                                                         :dirs project-list
                                                         :limit 10
                                                         :padding 1}
-                                                       {:section :startup}]}}})
+                                                       {:section :startup}]}
+                                 :input {:enabled true
+                                         :prompt_pos :left
+                                         :win {:col #(vim.fn.col :.)
+                                               :row #(vim.fn.line :.)}}}
+                               :init (fn []
+                                       (local snacks (require :snacks))
+                                       (set vim.ui.select snacks.picker.select))})

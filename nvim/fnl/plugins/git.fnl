@@ -152,13 +152,14 @@
  (use :tpope/vim-fugitive {:dependencies [:tpope/vim-rhubarb]})
 
  (use :NeogitOrg/neogit {:dependencies [:nvim-lua/plenary.nvim
-                                        :sindrets/diffview.nvim
-                                        :nvim-telescope/telescope.nvim]
+                                        :sindrets/diffview.nvim]
                          :opts {:disable_hint true
                                 :auto_close_console false
                                 :fetch_after_checkout true
                                 :graph_style :unicode
-                                :remember_settings false
+                                :remember_settings true
+                                :ignore_settings [:NeogitPopup--]
                                 :notification_icon :
-                                :recent_commit_count 15}
+                                :recent_commit_count 15
+                                :integrations {:telescope nil}}
                          :cmd [:Neogit :NeogitLogCurrent]})]

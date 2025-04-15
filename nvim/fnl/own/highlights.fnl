@@ -7,22 +7,6 @@
 
    :TreesitterContext {:link :Normal}
 
-   :TelescopeBorder {:fg color.crust :bg color.crust}
-   :TelescopePromptBorder {:fg color.crust :bg color.mantle}
-   :TelescopePromptNormal {:fg color.text :bg color.mantle}
-   :TelescopePromptPrefix {:fg color.blue :bg color.mantle}
-   :TelescopePromptTitle {:fg color.text :bg color.crust}
-   :TelescopeNormal {:bg color.crust}
-   :TelescopePreview {:bg color.crust}
-   :TelescopeResultsNormal {:fg color.text :bg color.mantle}
-   :TelescopeResultsBorder {:fg color.crust :bg color.mantle}
-   :TelescopeResultsTitle {:fg color.text :bg color.crust}
-   :TelescopeSelection {:bg color.crust :fg color.blue}
-   :TelescopeSelectionCaret  {:fg color.blue}
-   :TelescopeResultsDiffAdd {:fg color.green}
-   :TelescopeResultsDiffChange {:fg color.yellow}
-   :TelescopeResultsDiffDelete {:fg color.red}
-
    :NotifyINFOIcon  {:fg color.mauve}
    :NotifyINFOTitle  {:fg color.mauve}
    :NotifyINFOBorder  {:fg color.mauve}
@@ -65,11 +49,6 @@
    :CmpItemKindEvent {:fg color.crust :bg color.blue}
    :CmpItemKindOperator {:fg color.crust :bg color.blue}
    :CmpItemKindTypeParameter {:fg color.crust :bg color.blue}
-
-   :MiniStarterItemBullet {:fg :NONE :bg :NONE}
-   :MiniStarterItemPrefix {:fg color.blue :bg :NONE}
-   :MiniStarterQuery {:fg color.crust :bg color.blue}
-   :MiniStarterFooter {:fg color.subtext0 :bg :NONE}
 
    :NavicIconsFile {:bg :NONE :fg color.blue :bold true}
    :NavicIconsModule {:bg :NONE :fg color.blue :bold true}
