@@ -40,7 +40,11 @@
                                  :input {:enabled true
                                          :prompt_pos :left
                                          :win {:col #(vim.fn.col :.)
-                                               :row #(vim.fn.line :.)}}}
+                                               :row #(vim.fn.line :.)}}
+                                 :notifier {:enabled true
+                                            :style :fancy
+                                            :margin {:bottom 1}
+                                            :top_down false}}
                                :init (fn []
                                        (local snacks (require :snacks))
                                        (set vim.ui.select snacks.picker.select)
@@ -50,5 +54,5 @@
                                        (assoc-in layouts [:default :layout 1 1 :border] :solid)
                                        (assoc-in layouts [:default :layout 2 :border] :solid)
                                        (assoc-in layouts [:default :layout :backdrop] false)
-                                       (assoc-in layouts [:select :layout :border] :solid)
+                                       (assoc-in layouts [:select :layout :border] :none)
                                        (assoc-in layouts [:select :layout 1 :border] :solid))})

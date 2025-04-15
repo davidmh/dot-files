@@ -7,22 +7,20 @@
 
    :TreesitterContext {:link :Normal}
 
-   :NotifyINFOIcon  {:fg color.mauve}
-   :NotifyINFOTitle  {:fg color.mauve}
-   :NotifyINFOBorder  {:fg color.mauve}
+   :SnacksNotifierIconInfo  {:fg color.mauve}
+   :SnacksNotifierTitleInfo  {:fg color.mauve}
 
-   :NotifyBackground {:bg color.mantle}
-   :NotifyINFOBody {:bg color.mantle}
-   :NotifyWARNBody {:bg color.mantle}
-   :NotifyERRORBody {:bg color.mantle}
-   :NotifyDEBUGBody {:bg color.mantle}
-   :NotifyTRACEBody {:bg color.mantle}
+   :SnacksNotifierInfo {:bg color.mantle}
+   :SnacksNotifierWarn {:bg color.mantle}
+   :SnacksNotifierError {:bg color.mantle}
+   :SnacksNotifierDebug {:bg color.mantle}
+   :SnacksNotifierTrace {:bg color.mantle}
  
-   :NotifyINFOBorder  {:fg color.mantle :bg color.mantle}
-   :NotifyWARNBorder  {:fg color.mantle :bg color.mantle}
-   :NotifyERRORBorder {:fg color.mantle :bg color.mantle}
-   :NotifyDEBUGBorder {:fg color.mantle :bg color.mantle}
-   :NotifyTRACEBorder {:fg color.mantle :bg color.mantle}
+   :SnacksNotifierBorderInfo  {:fg color.mantle :bg color.mantle}
+   :SnacksNotifierBorderWarn  {:fg color.mantle :bg color.mantle}
+   :SnacksNotifierBorderError {:fg color.mantle :bg color.mantle}
+   :SnacksNotifierBorderDebug {:fg color.mantle :bg color.mantle}
+   :SnacksNotifierBorderTrace {:fg color.mantle :bg color.mantle}
 
    :CmpItemKindSnippet {:fg color.crust :bg color.mauve}
    :CmpItemKindKeyword {:fg color.crust :bg color.red}

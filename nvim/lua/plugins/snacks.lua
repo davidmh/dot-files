@@ -21,7 +21,7 @@ local function _5_()
   assoc_in(layouts, {"default", "layout", 1, 1, "border"}, "solid")
   assoc_in(layouts, {"default", "layout", 2, "border"}, "solid")
   assoc_in(layouts, {"default", "layout", "backdrop"}, false)
-  assoc_in(layouts, {"select", "layout", "border"}, "solid")
+  assoc_in(layouts, {"select", "layout", "border"}, "none")
   return assoc_in(layouts, {"select", "layout", 1, "border"}, "solid")
 end
-return {"folke/snacks.nvim", priority = 1000, opts = {bigfile = {enabled = true}, statuscolumn = {enabled = true}, dashboard = {enabled = true, preset = {header = get(quotes, math.random(#quotes))}, sections = {{section = "header"}, {icon = "\239\131\133", title = "Recent files", section = "recent_files", indent = 2, padding = 1, limit = 10}, {icon = "\238\171\183", title = "Projects", section = "projects", indent = 2, action = find_files, dirs = project_list, limit = 10, padding = 1}, {section = "startup"}}}, input = {enabled = true, prompt_pos = "left", win = {col = _3_, row = _4_}}}, init = _5_, lazy = false}
+return {"folke/snacks.nvim", priority = 1000, opts = {bigfile = {enabled = true}, statuscolumn = {enabled = true}, dashboard = {enabled = true, preset = {header = get(quotes, math.random(#quotes))}, sections = {{section = "header"}, {icon = "\239\131\133", title = "Recent files", section = "recent_files", indent = 2, padding = 1, limit = 10}, {icon = "\238\171\183", title = "Projects", section = "projects", indent = 2, action = find_files, dirs = project_list, limit = 10, padding = 1}, {section = "startup"}}}, input = {enabled = true, prompt_pos = "left", win = {col = _3_, row = _4_}}, notifier = {enabled = true, style = "fancy", margin = {bottom = 1}, top_down = false}}, init = _5_, lazy = false}

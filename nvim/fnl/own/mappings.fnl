@@ -88,6 +88,8 @@
 (nmap :<leader>/p (cmd :GrugFar) (opts "find in project"))
 (nmap :<leader>/w search-cword (opts "find current word"))
 
+(nmap :<leader>m #(snacks.picker.marks) (opts "list marks"))
+
 (nmap :<leader>s ":botright split /tmp/scratch.fnl<cr>" (opts "open scratch buffer"))
 
 (nmap :<leader>vp browse-plugins (opts "vim plugins"))
@@ -127,8 +129,8 @@
 (nmap :<localleader>m (cmd :Mason) (opts :mason))
 
 ;; notifications
-(nmap :<localleader>no (cmd "Telescope notify") (opts "open notifications"))
-(nmap :<localleader>nd #(vim.notify.dismiss) (opts "dismiss notifications"))
+(nmap :<localleader>no #(snacks.picker.notifications) (opts "open notifications"))
+(nmap :<localleader>nd #(snacks.notifier.hide) (opts "dismiss notifications"))
 
 ;; projects
 (nmap :<localleader>p #(projects.select-project) (opts "switch projects"))
