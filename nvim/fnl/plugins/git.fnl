@@ -5,6 +5,7 @@
 (local diff-view (autoload :diffview))
 (local git-signs (autoload :gitsigns))
 (local str (autoload :nfnl.string))
+(local snacks (autoload :snacks))
 
 (set vim.g.fugitive_legacy_commands false)
 
@@ -101,6 +102,11 @@
                        (if (= (vim.fn.filereadable lua-file) 1)
                            (git :add :-- lua-file))))))
 
+(local view-in-fugitive
+       {:confirm (fn [picker item]
+                   (picker:close)
+                   (if item (vim.schedule #(vim.cmd (.. "Gtabedit " item.commit)))))})
+
 (fn config []
   (gmap :g (cmd "Neogit") "git status")
   (gmap :c (cmd "Neogit commit") "git commit")
@@ -109,8 +115,8 @@
   (gmap :b (cmd "Git blame") "git blame")
   (gmap :- (cmd "Neogit branch") "git branch")
   (gmap :d toggle-diff-view "toggle git diff")
-  (gmap :l (cmd "Neogit log") "git log")
-  (gmap :L (cmd "NeogitLogCurrent") "current buffer's git log")
+  (gmap :l #(snacks.picker.git_log view-in-fugitive) "git log")
+  (gmap :L #(snacks.picker.git_log_file view-in-fugitive) "current buffer's git log")
   (gmap :<space> #(files-in-commit :HEAD) "files in git HEAD")
   (gmap :f (cmd "Neogit fetch" "git fetch"))
   (gmap :p (cmd "Neogit pull" "git pull"))
@@ -135,8 +141,7 @@
                                          :nowait true
                                          :silent true}))
 
-
-[(use :lewis6991/gitsigns.nvim {:opts {:current_line_blame false
+[(use :lewis6991/gitsigns.nvim {:opts {:current_line_blame true
                                        :signcolumn true}
                                 :config true})
 
