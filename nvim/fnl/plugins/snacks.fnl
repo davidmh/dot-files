@@ -1,5 +1,5 @@
 (import-macros {: use} :own.macros)
-(local {: get} (require :nfnl.core))
+(local {: assoc-in : get} (require :nfnl.core))
 (local {: find-files : project-list} (require :own.projects))
 
 (math.randomseed (os.time))
@@ -43,4 +43,12 @@
                                                :row #(vim.fn.line :.)}}}
                                :init (fn []
                                        (local snacks (require :snacks))
-                                       (set vim.ui.select snacks.picker.select))})
+                                       (set vim.ui.select snacks.picker.select)
+
+                                       (local layouts (require :snacks.picker.config.layouts))
+                                       (assoc-in layouts [:default :layout 1 :border] :solid)
+                                       (assoc-in layouts [:default :layout 1 1 :border] :solid)
+                                       (assoc-in layouts [:default :layout 2 :border] :solid)
+                                       (assoc-in layouts [:default :layout :backdrop] false)
+                                       (assoc-in layouts [:select :layout :border] :solid)
+                                       (assoc-in layouts [:select :layout 1 :border] :solid))})
