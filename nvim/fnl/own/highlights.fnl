@@ -22,6 +22,8 @@
    :SnacksNotifierBorderDebug {:fg color.mantle :bg color.mantle}
    :SnacksNotifierBorderTrace {:fg color.mantle :bg color.mantle}
 
+   :SnacksPickerTitle {:fg color.crust :bg color.mauve}
+
    :CmpItemKindSnippet {:fg color.crust :bg color.mauve}
    :CmpItemKindKeyword {:fg color.crust :bg color.red}
    :CmpItemKindText {:fg color.crust :bg color.teal}

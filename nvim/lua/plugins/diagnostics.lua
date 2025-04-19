@@ -43,7 +43,7 @@ end
 local function diagnostic_format(diagnostic)
   return (cfg.icons[diagnostic.severity] .. " [" .. get_source_name(diagnostic) .. "] " .. diagnostic.message)
 end
-vim.diagnostic.config({underline = true, severity_sort = true, float = {format = diagnostic_format}, signs = false, update_in_insert = false, virtual_lines = false, virtual_text = false})
+vim.diagnostic.config({underline = true, severity_sort = true, float = {format = diagnostic_format, header = {}}, signs = false, update_in_insert = false, virtual_lines = false, virtual_text = false})
 vim.api.nvim_create_augroup("lsp-formatting", {clear = true})
 local function on_attach(client, bufnr)
   if client.supports_method("textDocument/formatting") then

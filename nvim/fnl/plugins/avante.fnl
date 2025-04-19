@@ -2,7 +2,7 @@
 
 (use :yetone/avante.nvim {:version false
                           :event :VeryLazy
-                          :opts {}
+                          :opts {:provider :copilot}
                           :build :make
                           :dependencies [:nvim-lua/plenary.nvim
                                          :MunifTanjim/nui.nvim]})

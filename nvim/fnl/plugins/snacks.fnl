@@ -54,5 +54,5 @@
                                        (assoc-in layouts [:default :layout 1 1 :border] :solid)
                                        (assoc-in layouts [:default :layout 2 :border] :solid)
                                        (assoc-in layouts [:default :layout :backdrop] false)
-                                       (assoc-in layouts [:select :layout :border] :none)
-                                       (assoc-in layouts [:select :layout 1 :border] :solid))})
+                                       (assoc-in layouts [:select :layout :border] :solid)
+                                       (assoc-in layouts [:select :layout 1 :border] :none))})

@@ -48,7 +48,8 @@
                         :virtual_lines false
                         :update_in_insert false
                         :severity_sort true
-                        :float {:format diagnostic-format}})
+                        :float {:format diagnostic-format
+                                :header []}})
 
 (vim.api.nvim_create_augroup :lsp-formatting {:clear true})
 

@@ -128,8 +128,14 @@
 ; mason
 (nmap :<localleader>m (cmd :Mason) (opts :mason))
 
+(local copy-on-select
+       {:confirm (fn [picker choice]
+                   (picker:close)
+                   (if choice
+                      (vim.fn.setreg "\"" choice.item.msg)))})
+
 ;; notifications
-(nmap :<localleader>no #(snacks.picker.notifications) (opts "open notifications"))
+(nmap :<localleader>no #(snacks.picker.notifications copy-on-select) (opts "open notifications"))
 (nmap :<localleader>nd #(snacks.notifier.hide) (opts "dismiss notifications"))
 
 ;; projects
@@ -138,7 +144,6 @@
 ;; single key mappings
 (nmap :L (cmd :LToggle) (opts "list toggle"))
 (nmap :Q (cmd :QToggle) (opts "quickfix toggle"))
-(nmap :<M-s> (cmd "silent! write") (opts "write file"))
 (nmap :z= #(snacks.picker.spelling) (opts "suggest spelling"))
 
 ;; diagnostics
@@ -163,12 +168,22 @@
                          :silent true
                          : desc}))
 
+;; Use the :K keymap to trigger both the diagnostics, if any, and the LSP hover
+(fn hover []
+  (local diagnostic (vim.diagnostic.get 0 {:lnum (- (vim.fn.line ".") 1)}))
+  (if (> (length diagnostic) 0)
+    (vim.diagnostic.open_float)
+    (vim.lsp.buf.hover {:wrap false
+                        :max_width 130
+                        :max_heigth 20})))
+
 (fn on-attach [args]
   (local bufnr args.buf)
   (local client (vim.lsp.get_client_by_id args.data.client_id))
   (vim.api.nvim_buf_set_option 0 :omnifunc :v:lua.vim.lsp.omnifunc)
 
   ;; Mappings
+  (buf-map :K hover "lsp: hover")
   (buf-map :gd (cmd "Glance definitions") "lsp: go to definition")
   (buf-map :<leader>lf (cmd "Glance references") "lsp: find references")
   (buf-map :<leader>li (cmd "Glance implementations") "lsp: implementation")
@@ -192,6 +207,7 @@
 (nmap :<M-h> #(snacks.picker.help {:layout {:preset :dropdown}}) {:nowait true :silent true})
 (nmap :<M-k> #(snacks.picker.keymaps {:layout {:preset :vscode}}) {:nowait true :silent true})
 (nmap :<M-o> #(snacks.picker.recent) {:nowait true :silent true})
+(nmap :<M-s> #(snacks.picker) {:nowait true :silent true})
 
 ; Windows
 ;

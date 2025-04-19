@@ -160,41 +160,50 @@ end
 vim.keymap.set("n", "<localleader>c", _26_, opts("home manager config"))
 vim.keymap.set("n", "<localleader>l", cmd("Lazy show"), opts("lazy ui"))
 vim.keymap.set("n", "<localleader>m", cmd("Mason"), opts("mason"))
-local function _27_()
-  return snacks.picker.notifications()
+local copy_on_select
+local function _27_(picker, choice)
+  picker:close()
+  if choice then
+    return vim.fn.setreg("\"", choice.item.msg)
+  else
+    return nil
+  end
 end
-vim.keymap.set("n", "<localleader>no", _27_, opts("open notifications"))
-local function _28_()
+copy_on_select = {confirm = _27_}
+local function _29_()
+  return snacks.picker.notifications(copy_on_select)
+end
+vim.keymap.set("n", "<localleader>no", _29_, opts("open notifications"))
+local function _30_()
   return snacks.notifier.hide()
 end
-vim.keymap.set("n", "<localleader>nd", _28_, opts("dismiss notifications"))
-local function _29_()
+vim.keymap.set("n", "<localleader>nd", _30_, opts("dismiss notifications"))
+local function _31_()
   return projects["select-project"]()
 end
-vim.keymap.set("n", "<localleader>p", _29_, opts("switch projects"))
+vim.keymap.set("n", "<localleader>p", _31_, opts("switch projects"))
 vim.keymap.set("n", "L", cmd("LToggle"), opts("list toggle"))
 vim.keymap.set("n", "Q", cmd("QToggle"), opts("quickfix toggle"))
-vim.keymap.set("n", "<M-s>", cmd("silent! write"), opts("write file"))
-local function _30_()
+local function _32_()
   return snacks.picker.spelling()
 end
-vim.keymap.set("n", "z=", _30_, opts("suggest spelling"))
-local function _31_()
+vim.keymap.set("n", "z=", _32_, opts("suggest spelling"))
+local function _33_()
   return vim.diagnostic.jump(core.merge({count = -1}, error_filter))
 end
-vim.keymap.set("n", "[d", _31_, opts("next diagnostic"))
-local function _32_()
+vim.keymap.set("n", "[d", _33_, opts("next diagnostic"))
+local function _34_()
   return vim.diagnostic.jump(core.merge({count = 1}, error_filter))
 end
-vim.keymap.set("n", "]d", _32_, opts("previous diagnostic"))
-local function _33_()
+vim.keymap.set("n", "]d", _34_, opts("previous diagnostic"))
+local function _35_()
   return vim.diagnostic.jump(core.merge({count = -1}, warning_filter))
 end
-vim.keymap.set("n", "[w", _33_, opts("next warning"))
-local function _34_()
+vim.keymap.set("n", "[w", _35_, opts("next warning"))
+local function _36_()
   return vim.diagnostic.jump(core.merge({count = 1}, warning_filter))
 end
-vim.keymap.set("n", "]w", _34_, opts("previous warning"))
+vim.keymap.set("n", "]w", _36_, opts("previous warning"))
 vim.api.nvim_create_augroup("eslint-autofix", {clear = true})
 local function set_eslint_autofix(bufnr)
   return vim.api.nvim_create_autocmd("BufWritePre", {command = "EslintFixAll", group = "eslint-autofix", buffer = bufnr})
@@ -202,31 +211,40 @@ end
 local function buf_map(keymap, callback, desc)
   return vim.keymap.set("n", keymap, callback, {buffer = true, silent = true, desc = desc})
 end
+local function hover()
+  local diagnostic = vim.diagnostic.get(0, {lnum = (vim.fn.line(".") - 1)})
+  if (#diagnostic > 0) then
+    return vim.diagnostic.open_float()
+  else
+    return vim.lsp.buf.hover({max_width = 130, max_heigth = 20, wrap = false})
+  end
+end
 local function on_attach(args)
   local bufnr = args.buf
   local client = vim.lsp.get_client_by_id(args.data.client_id)
   vim.api.nvim_buf_set_option(0, "omnifunc", "v:lua.vim.lsp.omnifunc")
+  buf_map("K", hover, "lsp: hover")
   buf_map("gd", cmd("Glance definitions"), "lsp: go to definition")
   buf_map("<leader>lf", cmd("Glance references"), "lsp: find references")
   buf_map("<leader>li", cmd("Glance implementations"), "lsp: implementation")
   buf_map("<leader>lt", cmd("Glance type_definitions"), "lsp: type definition")
-  local function _35_()
+  local function _38_()
     return vim.diagnostic.setqflist(error_filter)
   end
-  buf_map("<leader>le", _35_)
-  local function _36_()
+  buf_map("<leader>le", _38_)
+  local function _39_()
     return vim.lsp.buf.code_action()
   end
-  buf_map("<leader>la", _36_, "lsp: code actions")
-  local function _37_()
+  buf_map("<leader>la", _39_, "lsp: code actions")
+  local function _40_()
     return vim.lsp.buf.rename()
   end
-  buf_map("<leader>lr", _37_, "lsp: rename")
+  buf_map("<leader>lr", _40_, "lsp: rename")
   buf_map("<leader>lR", "<cmd>LspRestart<CR>", "lsp: restart")
-  local function _38_()
+  local function _41_()
     return vim.lsp.buf.code_action()
   end
-  vim.keymap.set("v", "<leader>la", _38_, {buffer = true, desc = "lsp: code actions"})
+  vim.keymap.set("v", "<leader>la", _41_, {buffer = true, desc = "lsp: code actions"})
   if (client.name == "eslint") then
     set_eslint_autofix(bufnr)
   else
@@ -241,22 +259,26 @@ do
   local group = vim.api.nvim_create_augroup("lsp-attach", {clear = true})
   vim.api.nvim_create_autocmd("LspAttach", {callback = on_attach, group = group})
 end
-local function _41_()
+local function _44_()
   return snacks.picker.commands({layout = {preset = "dropdown"}})
 end
-vim.keymap.set("n", "<M-x>", _41_, {nowait = true, silent = true})
-local function _42_()
+vim.keymap.set("n", "<M-x>", _44_, {nowait = true, silent = true})
+local function _45_()
   return snacks.picker.help({layout = {preset = "dropdown"}})
 end
-vim.keymap.set("n", "<M-h>", _42_, {nowait = true, silent = true})
-local function _43_()
+vim.keymap.set("n", "<M-h>", _45_, {nowait = true, silent = true})
+local function _46_()
   return snacks.picker.keymaps({layout = {preset = "vscode"}})
 end
-vim.keymap.set("n", "<M-k>", _43_, {nowait = true, silent = true})
-local function _44_()
+vim.keymap.set("n", "<M-k>", _46_, {nowait = true, silent = true})
+local function _47_()
   return snacks.picker.recent()
 end
-vim.keymap.set("n", "<M-o>", _44_, {nowait = true, silent = true})
+vim.keymap.set("n", "<M-o>", _47_, {nowait = true, silent = true})
+local function _48_()
+  return snacks.picker()
+end
+vim.keymap.set("n", "<M-s>", _48_, {nowait = true, silent = true})
 vim.keymap.set("n", "<M-,>", "<C-W>5<")
 vim.keymap.set("n", "<M-.>", "<C-W>5>")
 vim.keymap.set("n", "<M-->", "<C-W>5-")
