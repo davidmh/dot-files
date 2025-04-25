@@ -17,4 +17,4 @@ end
 local function _4_()
   return confirm_quit.confirm_quit()
 end
-return {{"nvim-tree/nvim-web-devicons", config = true}, {"davidmh/confirm-quit.nvim", event = "CmdLineEnter", branch = "custom-quit-message", opts = {overwrite_q_command = true, quit_message = quit_message}, keys = {{"ZZ", _3_, mode = "n", desc = "Save and quit"}, {"ZQ", _4_, mode = "n", desc = "Quit without saving"}}}}
+return {{"nvim-tree/nvim-web-devicons", config = true}, {"yutkat/confirm-quit.nvim", event = "CmdLineEnter", opts = {overwrite_q_command = true, quit_message = quit_message}, keys = {{"ZZ", _3_, mode = "n", desc = "Save and quit"}, {"ZQ", _4_, mode = "n", desc = "Quit without saving"}}}}

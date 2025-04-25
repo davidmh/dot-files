@@ -27,16 +27,14 @@
 
 [(use :nvim-tree/nvim-web-devicons {:config true})
 
- ; :yutkat/confirm-quit.nvim
- (use :davidmh/confirm-quit.nvim {:event :CmdLineEnter
-                                  :branch :custom-quit-message
-                                  :opts {:overwrite_q_command true
-                                         :quit_message quit-message}
-                                  :keys [(use :ZZ
-                                              #(do (vim.cmd :update) (confirm-quit.confirm_quit))
-                                              {:mode :n
-                                               :desc "Save and quit"})
-                                         (use :ZQ
-                                              #(confirm-quit.confirm_quit)
-                                              {:mode :n
-                                               :desc "Quit without saving"})]})]
+ (use :yutkat/confirm-quit.nvim {:event :CmdLineEnter
+                                 :opts {:overwrite_q_command true
+                                        :quit_message quit-message}
+                                 :keys [(use :ZZ
+                                             #(do (vim.cmd :update) (confirm-quit.confirm_quit))
+                                             {:mode :n
+                                              :desc "Save and quit"})
+                                        (use :ZQ
+                                             #(confirm-quit.confirm_quit)
+                                             {:mode :n
+                                              :desc "Quit without saving"})]})]
