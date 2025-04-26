@@ -1,8 +1,8 @@
 -- [nfnl] after/ftplugin/fennel.fnl
-local _local_1_ = require("nfnl.module")
-local autoload = _local_1_["autoload"]
-local _local_2_ = autoload("own.lists")
-local find = _local_2_["find"]
+local _local_1_ = require("own.lists")
+local find = _local_1_["find"]
+local _local_2_ = require("nfnl.module")
+local autoload = _local_2_["autoload"]
 local _local_3_ = autoload("nfnl.core")
 local empty_3f = _local_3_["empty?"]
 local _local_4_ = autoload("nfnl.config")

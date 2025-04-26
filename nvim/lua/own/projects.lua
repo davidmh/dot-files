@@ -12,9 +12,11 @@ local _local_2_ = require("own.lists")
 local take = _local_2_["take"]
 local _local_3_ = require("nfnl.module")
 local autoload = _local_3_["autoload"]
+local define = _local_3_["define"]
 local _local_4_ = require("own.helpers")
 local sanitize_path = _local_4_["sanitize-path"]
 local snacks = autoload("snacks")
+local M = define("own.projects")
 local projects_path = (vim.fn.stdpath("state") .. "/projects.json")
 local function _5_()
   if (vim.fn.filereadable(projects_path) == 0) then
@@ -37,12 +39,12 @@ local function add_project(project_path)
   local project = {name = name, timestamp = os.time(), visible = true}
   return spit(projects_path, vim.json.encode(merge(projects, {[project_path] = project})))
 end
-local function find_files(cwd)
+M["find-files"] = function(cwd)
   return snacks.picker.files({dirs = {(cwd or vim.fn.getcwd())}})
 end
 local function format_project(path, name)
   local function _8_()
-    return find_files(path)
+    return M["find-files"](path)
   end
   return {name = (name .. " -> " .. sanitize_path(path, 3)), action = _8_, section = "Recent Projects"}
 end
@@ -57,7 +59,7 @@ local function sort_projects(projects)
   table.sort(projects, _11_)
   return projects
 end
-local function recent_projects(limit)
+M["recent-projects"] = function(limit)
   local function _13_(acc, _12_)
     local path = _12_[1]
     local project = _12_[2]
@@ -76,18 +78,18 @@ local function pick_project(choice)
     return nil
   end
 end
-local function select_project()
+M["select-project"] = function()
   local function _17_(_16_)
     local name = _16_["name"]
     return name
   end
-  return vim.ui.select(recent_projects(), {prompt = "switch to a project", format_item = _17_}, pick_project)
+  return vim.ui.select(M["recent-projects"](), {prompt = "switch to a project", format_item = _17_}, pick_project)
 end
-local function project_list()
+M["project-list"] = function()
   return map(first, sort_projects(kv_pairs(get_projects())))
 end
 local function _18_()
   return add_project(vim.fn.getcwd())
 end
 vim.api.nvim_create_autocmd("User", {pattern = "RooterChDir", callback = _18_})
-return {["find-files"] = find_files, ["recent-projects"] = recent_projects, ["select-project"] = select_project, ["project-list"] = project_list}
+return M

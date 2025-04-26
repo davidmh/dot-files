@@ -1,11 +1,11 @@
 (import-macros {: use} :own.macros)
 (local core (require :nfnl.core))
 (local {: autoload} (require :nfnl.module))
+(local str (require :own.string))
 (local null-ls (autoload :null-ls))
 (local u (autoload :null-ls.utils))
 (local cspell (autoload :cspell))
 (local cfg (autoload :own.config))
-(local str (autoload :own.string))
 
 (fn root-pattern [pattern]
   (fn [{: bufname}]

@@ -1,6 +1,8 @@
 (import-macros {: use : nmap} :own.macros)
-(local {: autoload} (require :nfnl.module))
-(local {: get-largest-window-id} (autoload :own.helpers))
+(local {: define} (require :nfnl.module))
+(local {: get-largest-window-id} (require :own.helpers))
+
+(local M (define :own.quickfix))
 
 (fn on-alternative-open [direction]
   #(let [{: bufnr
@@ -35,29 +37,11 @@
   (if (has-newer-qf-stack-entry?)
     (vim.api.nvim_command "silent cnewer")))
 
-(fn set-quickfix-mappings []
-  "Mappings to navigate the quickfix history stack and open quickfix items in splits."
-
-  (local opts {:buffer 0 :silent true :nowait true})
-
-  ; open in a new vertical split
-  (nmap :<c-v> (on-alternative-open :vsplit) opts)
-
-  ; open in a new horizontal split
-  (nmap :<c-x> (on-alternative-open :split) opts)
-
-  ; older quickfix list
-  (nmap qf-older-key qf-older-fn opts)
-
-  ; newer quickfix list
-  (nmap qf-newer-key qf-newer-fn opts))
-
 (fn get-quickfix-title []
   (local title (-> (vim.fn.getqflist {:title 1}) (. :title)))
   (if (= title "")
     "quickfix list"
-    title)
-  )
+    title))
 
 (fn quickfix-title [colors]
   [(use "  " {:guibg colors.lavender :guifg :black})
@@ -77,9 +61,26 @@
                        colors.surface1)})]
      ""))
 
-(fn quickfix-winbar-component [colors]
+(fn M.set-quickfix-mappings []
+  "Mappings to navigate the quickfix history stack and open quickfix items in splits."
+
+  (local opts {:buffer 0 :silent true :nowait true})
+
+  ; open in a new vertical split
+  (nmap :<c-v> (on-alternative-open :vsplit) opts)
+
+  ; open in a new horizontal split
+  (nmap :<c-x> (on-alternative-open :split) opts)
+
+  ; older quickfix list
+  (nmap qf-older-key qf-older-fn opts)
+
+  ; newer quickfix list
+  (nmap qf-newer-key qf-newer-fn opts))
+
+
+(fn M.quickfix-winbar-component [colors]
   [(quickfix-title colors)
    (quickfix-history-nav colors)])
 
-{: set-quickfix-mappings
- : quickfix-winbar-component}
+M

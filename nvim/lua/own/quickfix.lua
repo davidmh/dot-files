@@ -1,8 +1,9 @@
 -- [nfnl] fnl/own/quickfix.fnl
 local _local_1_ = require("nfnl.module")
-local autoload = _local_1_["autoload"]
-local _local_2_ = autoload("own.helpers")
+local define = _local_1_["define"]
+local _local_2_ = require("own.helpers")
 local get_largest_window_id = _local_2_["get-largest-window-id"]
+local M = define("own.quickfix")
 local function on_alternative_open(direction)
   local function _3_()
     local _let_4_ = vim.fn.getqflist()[vim.fn.line(".")]
@@ -43,13 +44,6 @@ local function qf_newer_fn()
     return nil
   end
 end
-local function set_quickfix_mappings()
-  local opts = {buffer = 0, silent = true, nowait = true}
-  vim.keymap.set("n", "<c-v>", on_alternative_open("vsplit"), opts)
-  vim.keymap.set("n", "<c-x>", on_alternative_open("split"), opts)
-  vim.keymap.set("n", qf_older_key, qf_older_fn, opts)
-  return vim.keymap.set("n", qf_newer_key, qf_newer_fn, opts)
-end
 local function get_quickfix_title()
   local title = vim.fn.getqflist({title = 1}).title
   if (title == "") then
@@ -80,7 +74,14 @@ local function quickfix_history_nav(colors)
     return ""
   end
 end
-local function quickfix_winbar_component(colors)
+M["set-quickfix-mappings"] = function()
+  local opts = {buffer = 0, silent = true, nowait = true}
+  vim.keymap.set("n", "<c-v>", on_alternative_open("vsplit"), opts)
+  vim.keymap.set("n", "<c-x>", on_alternative_open("split"), opts)
+  vim.keymap.set("n", qf_older_key, qf_older_fn, opts)
+  return vim.keymap.set("n", qf_newer_key, qf_newer_fn, opts)
+end
+M["quickfix-winbar-component"] = function(colors)
   return {quickfix_title(colors), quickfix_history_nav(colors)}
 end
-return {["set-quickfix-mappings"] = set_quickfix_mappings, ["quickfix-winbar-component"] = quickfix_winbar_component}
+return M

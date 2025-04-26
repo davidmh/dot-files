@@ -1,4 +1,7 @@
-(fn format [str tbl]
+(local {: define} (require :nfnl.module))
+(local M (define :own.string))
+
+(fn M.format [str tbl]
   "
   Formats a string using a table of substitutions.
 
@@ -10,4 +13,4 @@
               (or (. tbl (string.sub param 3 -2))
                   param))))
 
-{: format}
+M

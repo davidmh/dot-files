@@ -2,11 +2,11 @@
 local core = require("nfnl.core")
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
+local str = require("own.string")
 local null_ls = autoload("null-ls")
 local u = autoload("null-ls.utils")
 local cspell = autoload("cspell")
 local cfg = autoload("own.config")
-local str = autoload("own.string")
 local function root_pattern(pattern)
   local function _3_(_2_)
     local bufname = _2_["bufname"]

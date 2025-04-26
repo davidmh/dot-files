@@ -8,9 +8,11 @@
         : spit
         : slurp} (require :nfnl.core))
 (local {: take} (require :own.lists))
-(local {: autoload} (require :nfnl.module))
+(local {: autoload : define} (require :nfnl.module))
 (local {: sanitize-path} (require :own.helpers))
 (local snacks (autoload :snacks))
+
+(local M (define :own.projects))
 
 (local projects-path (.. (vim.fn.stdpath :state) "/projects.json"))
 
@@ -33,19 +35,19 @@
   (spit projects-path (vim.json.encode (merge projects {project-path project}))))
 
 
-(fn find-files [cwd]
+(fn M.find-files [cwd]
   (snacks.picker.files {:dirs [(or cwd (vim.fn.getcwd))]}))
 
 (fn format-project [path name]
   {:name (.. name " -> " (sanitize-path path 3))
-   :action #(find-files path)
+   :action #(M.find-files path)
    :section "Recent Projects"})
 
 (fn sort-projects [projects]
   (table.sort projects (fn [[_ a] [_ b]] (> a.timestamp b.timestamp)))
   projects)
 
-(fn recent-projects [limit]
+(fn M.recent-projects [limit]
   "Returns a list of recent projects to be used by mini.starter"
   (->> (get-projects)
        (kv-pairs)
@@ -60,13 +62,13 @@
 (fn pick-project [choice]
   (when choice (choice.action)))
 
-(fn select-project []
-  (vim.ui.select (recent-projects)
+(fn M.select-project []
+  (vim.ui.select (M.recent-projects)
                  {:prompt "switch to a project"
                   :format_item (fn [{: name}] name)}
                  pick-project))
 
-(fn project-list []
+(fn M.project-list []
   (->> (get-projects)
        (kv-pairs)
        (sort-projects)
@@ -75,7 +77,4 @@
 (autocmd :User {:pattern :RooterChDir
                 :callback #(add-project (vim.fn.getcwd))})
 
-{: find-files
- : recent-projects
- : select-project
- : project-list}
+M

@@ -1,6 +1,6 @@
 (import-macros {: augroup} :own.macros)
+(local {: find} (require :own.lists))
 (local {: autoload} (require :nfnl.module))
-(local {: find} (autoload :own.lists))
 (local {: empty?} (autoload :nfnl.core))
 (local {: find-and-load} (autoload :nfnl.config))
 

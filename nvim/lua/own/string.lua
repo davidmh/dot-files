@@ -1,8 +1,11 @@
 -- [nfnl] fnl/own/string.fnl
-local function format(str, tbl)
-  local function _1_(param)
+local _local_1_ = require("nfnl.module")
+local define = _local_1_["define"]
+local M = define("own.string")
+M.format = function(str, tbl)
+  local function _2_(param)
     return (tbl[string.sub(param, 3, -2)] or param)
   end
-  return str:gsub("$%b{}", _1_)
+  return str:gsub("$%b{}", _2_)
 end
-return {format = format}
+return M

@@ -1,4 +1,12 @@
-(fn custom-highlights [color]
+(local {: autoload : define} (require :nfnl.module))
+(local palettes (autoload :catppuccin.palettes))
+
+(local M (define :own.highlights))
+
+(comment
+  (local color (palettes.get_palette)))
+
+(fn M.custom-highlights [color]
   {:Comment {:style [:italic :bold]}
    :Pmenu {:bg color.crust}
    :WinSeparator {:fg color.overlay0 :bg :none}
@@ -79,4 +87,4 @@
    :NavicText {:fg color.text :bg :NONE :bold true}
    :NavicSeparator {:fg color.blue :bg :NONE :bold true}})
 
-{: custom-highlights}
+M
