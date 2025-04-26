@@ -1,6 +1,6 @@
--- [nfnl] Compiled from fnl/plugins/misc.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/plugins/misc.fnl
 local function _1_()
-  vim.g.rooter_patterns = {".envrc", ".git", ".obsidian", ".rspec", "Cargo.toml", "lazy-lock.json", "pyproject.toml"}
+  vim.g.rooter_patterns = {".envrc", ".git", ".obsidian", ".rspec", "Cargo.toml", "lazy-lock.json", "yarn.lock", "pyproject.toml"}
   vim.g.rooter_silent_chdir = true
   return nil
 end

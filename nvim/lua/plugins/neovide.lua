@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/plugins/neovide.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/plugins/neovide.fnl
 local function get_font_size()
   return tonumber(string.match(vim.o.guifont, "h(%d+)$"))
 end

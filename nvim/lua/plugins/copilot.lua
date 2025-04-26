@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/plugins/copilot.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/plugins/copilot.fnl
 local function _1_()
   local path = vim.api.nvim_buf_get_name(0)
   return ((nil == string.match(path, ".*env.*")) and not vim.endswith(path, ".zprofile") and not vim.startswith(path, (vim.env.HOME .. "/.config")))

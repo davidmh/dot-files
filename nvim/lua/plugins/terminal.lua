@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/plugins/terminal.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/plugins/terminal.fnl
 local core = require("nfnl.core")
 local function _1_()
   local envrc = core.first(vim.fs.find({".envrc"}, {type = "file", limit = 1}))

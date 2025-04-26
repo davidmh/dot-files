@@ -1,4 +1,4 @@
--- [nfnl] Compiled from after/ftplugin/gitrebase.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] after/ftplugin/gitrebase.fnl
 local _local_1_ = require("own.lists")
 local find_index = _local_1_["find-index"]
 local actions = {"pick", "reword", "edit", "squash", "fixup", "break", "drop"}

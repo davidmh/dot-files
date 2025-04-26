@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/plugins/editing.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/plugins/editing.fnl
 local function fennel_rules()
   vim.b.switch_custom_definitions = {{["\"\\(\\k\\+\\)\""] = ":\\1", [":\\(\\k\\+\\)"] = "\"\\1\"\\2", fn = "\206\187", ["\206\187"] = "fn"}}
   return nil

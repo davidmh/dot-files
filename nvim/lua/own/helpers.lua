@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/own/helpers.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/own/helpers.fnl
 local function window_size(window_id)
   return (vim.api.nvim_win_get_width(window_id) * vim.api.nvim_win_get_height(window_id))
 end

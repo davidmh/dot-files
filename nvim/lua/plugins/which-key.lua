@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/plugins/which-key.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/plugins/which-key.fnl
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
 local which_key = autoload("which-key")

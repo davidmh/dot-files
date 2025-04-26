@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/own/fennel-lua-paths.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/own/fennel-lua-paths.fnl
 local join
 local function _1_(_241)
   return table.concat(_241, ",")

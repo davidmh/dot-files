@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/own/sync-files.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/own/sync-files.fnl
 local config = require("nfnl.config")
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]

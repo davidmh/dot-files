@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/plugins/status-line.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/plugins/status-line.fnl
 local lazy_status = require("lazy.status")
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]

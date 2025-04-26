@@ -1,4 +1,4 @@
--- [nfnl] Compiled from init.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] init.fnl
 local _local_1_ = require("own.config")
 local border = _local_1_["border"]
 require("own.default-plugins")

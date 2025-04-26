@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/own/string.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/own/string.fnl
 local function format(str, tbl)
   local function _1_(param)
     return (tbl[string.sub(param, 3, -2)] or param)

@@ -26,3 +26,4 @@
 (set vim.wo.wrap false)
 (set vim.o.splitright true)
 (set vim.o.winborder :solid)
+(set vim.o.confirm true)

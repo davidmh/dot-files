@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/own/bootstrap.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/own/bootstrap.fnl
 local data_path = vim.fn.stdpath("data")
 local function ensure(user, repo, alias)
   local install_path = string.format("%s/lazy/%s", data_path, (alias or repo))

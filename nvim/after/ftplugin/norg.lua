@@ -1,4 +1,4 @@
--- [nfnl] Compiled from after/ftplugin/norg.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] after/ftplugin/norg.fnl
 local function setup_buffer()
   vim.wo.conceallevel = 3
   return nil

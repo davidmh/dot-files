@@ -1,4 +1,4 @@
--- [nfnl] Compiled from after/ftplugin/gitcommit.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] after/ftplugin/gitcommit.fnl
 local function setup_buffer()
   vim.bo.textwidth = 72
   return nil

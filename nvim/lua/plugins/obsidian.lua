@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/plugins/obsidian.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/plugins/obsidian.fnl
 local function keymap(_1_)
   local cmd = _1_["cmd"]
   local desc = _1_["desc"]

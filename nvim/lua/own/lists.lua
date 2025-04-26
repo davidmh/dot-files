@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/own/lists.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/own/lists.fnl
 local function find(pred, xs)
   vim.validate({pred = {pred, "function"}, xs = {xs, "table"}})
   for i, x in ipairs(xs) do

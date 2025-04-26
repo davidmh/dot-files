@@ -7,6 +7,7 @@
                                                                    :.rspec
                                                                    :Cargo.toml
                                                                    :lazy-lock.json
+                                                                   :yarn.lock
                                                                    :pyproject.toml])
                                        (set vim.g.rooter_silent_chdir true))})
 

@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/plugins/diagnostics.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/plugins/diagnostics.fnl
 local core = require("nfnl.core")
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
@@ -26,11 +26,11 @@ local cspell_filetypes = {"css", "clojure", "html", "javascript", "json", "less"
 local function get_source_name(diagnostic)
   local or_5_ = diagnostic.source
   if not or_5_ then
-    local tmp_3_auto = diagnostic.namespace
-    if (nil ~= tmp_3_auto) then
-      local tmp_3_auto0 = vim.diagnostic.get_namespace(tmp_3_auto)
-      if (nil ~= tmp_3_auto0) then
-        or_5_ = tmp_3_auto0.name
+    local tmp_3_ = diagnostic.namespace
+    if (nil ~= tmp_3_) then
+      local tmp_3_0 = vim.diagnostic.get_namespace(tmp_3_)
+      if (nil ~= tmp_3_0) then
+        or_5_ = tmp_3_0.name
       else
         or_5_ = nil
       end

@@ -1,4 +1,4 @@
--- [nfnl] Compiled from after/ftplugin/conf.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] after/ftplugin/conf.fnl
 local _1_ = vim.split(vim.fn.expand("%:t"), ".", {plain = true})
 if ((_G.type(_1_) == "table") and (_1_[1] == "DOCKERFILE")) then
   vim.bo.ft = "dockerfile"

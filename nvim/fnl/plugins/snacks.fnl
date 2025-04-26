@@ -43,7 +43,7 @@
                                                :row #(vim.fn.line :.)}}
                                  :notifier {:enabled true
                                             :style :fancy
-                                            :margin {:bottom 1}
+                                            :margin {:bottom 2}
                                             :top_down false}}
                                :init (fn []
                                        (local snacks (require :snacks))

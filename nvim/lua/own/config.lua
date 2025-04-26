@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/own/config.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/own/config.fnl
 local severity = vim.diagnostic.severity
 local icons = {ERROR = "\238\170\135", WARN = "\238\169\172", INFO = "\238\169\180", HINT = "\238\173\130"}
 icons[severity.ERROR] = icons.ERROR

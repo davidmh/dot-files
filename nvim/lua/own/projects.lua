@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/own/projects.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/own/projects.fnl
 local _local_1_ = require("nfnl.core")
 local concat = _local_1_["concat"]
 local kv_pairs = _local_1_["kv-pairs"]

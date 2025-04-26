@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/plugins/oil.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/plugins/oil.fnl
 local _local_1_ = require("own.config")
 local border = _local_1_["border"]
 local _local_2_ = require("nfnl.module")

@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/plugins/markdown.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/plugins/markdown.fnl
 local function _1_()
   return vim.fn["mkdp#util#install"]()
 end

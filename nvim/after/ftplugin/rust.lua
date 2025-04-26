@@ -1,2 +1,2 @@
--- [nfnl] Compiled from after/ftplugin/rust.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] after/ftplugin/rust.fnl
 return vim.keymap.set("n", "K", "<cmd>RustLsp hover actions<cr>", {buffer = true, silent = true})

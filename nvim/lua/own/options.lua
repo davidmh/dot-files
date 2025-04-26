@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/own/options.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/own/options.fnl
 vim.g.mapleader = " "
 vim.g.maplocalleader = ","
 vim.o.conceallevel = 2
@@ -26,4 +26,5 @@ vim.o.updatetime = 100
 vim.wo.wrap = false
 vim.o.splitright = true
 vim.o.winborder = "solid"
+vim.o.confirm = true
 return nil
