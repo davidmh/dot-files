@@ -1,4 +1,4 @@
--- [nfnl] Compiled from fnl/own/mappings.fnl by https://github.com/Olical/nfnl, do not edit.
+-- [nfnl] fnl/own/mappings.fnl
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
 local gitsigns = autoload("gitsigns")
@@ -189,19 +189,19 @@ local function _32_()
 end
 vim.keymap.set("n", "z=", _32_, opts("suggest spelling"))
 local function _33_()
-  return vim.diagnostic.jump(core.merge({count = -1}, error_filter))
+  return vim.diagnostic.jump(core.merge({float = true, count = -1}, error_filter))
 end
 vim.keymap.set("n", "[d", _33_, opts("next diagnostic"))
 local function _34_()
-  return vim.diagnostic.jump(core.merge({count = 1}, error_filter))
+  return vim.diagnostic.jump(core.merge({float = true, count = 1}, error_filter))
 end
 vim.keymap.set("n", "]d", _34_, opts("previous diagnostic"))
 local function _35_()
-  return vim.diagnostic.jump(core.merge({count = -1}, warning_filter))
+  return vim.diagnostic.jump(core.merge({float = true, count = -1}, warning_filter))
 end
 vim.keymap.set("n", "[w", _35_, opts("next warning"))
 local function _36_()
-  return vim.diagnostic.jump(core.merge({count = 1}, warning_filter))
+  return vim.diagnostic.jump(core.merge({float = true, count = 1}, warning_filter))
 end
 vim.keymap.set("n", "]w", _36_, opts("previous warning"))
 vim.api.nvim_create_augroup("eslint-autofix", {clear = true})
@@ -211,19 +211,14 @@ end
 local function buf_map(keymap, callback, desc)
   return vim.keymap.set("n", keymap, callback, {buffer = true, silent = true, desc = desc})
 end
-local function hover()
-  local diagnostic = vim.diagnostic.get(0, {lnum = (vim.fn.line(".") - 1)})
-  if (#diagnostic > 0) then
-    return vim.diagnostic.open_float()
-  else
-    return vim.lsp.buf.hover({max_width = 130, max_heigth = 20, wrap = false})
-  end
-end
 local function on_attach(args)
   local bufnr = args.buf
   local client = vim.lsp.get_client_by_id(args.data.client_id)
   vim.api.nvim_buf_set_option(0, "omnifunc", "v:lua.vim.lsp.omnifunc")
-  buf_map("K", hover, "lsp: hover")
+  local function _37_()
+    return vim.lsp.buf.hover({max_width = 130, max_heigth = 20, wrap = false})
+  end
+  buf_map("K", _37_, "lsp: hover")
   buf_map("gd", cmd("Glance definitions"), "lsp: go to definition")
   buf_map("<leader>lf", cmd("Glance references"), "lsp: find references")
   buf_map("<leader>li", cmd("Glance implementations"), "lsp: implementation")

@@ -147,10 +147,10 @@
 (nmap :z= #(snacks.picker.spelling) (opts "suggest spelling"))
 
 ;; diagnostics
-(nmap "[d" #(vim.diagnostic.jump (core.merge {:count -1} error-filter)) (opts "next diagnostic"))
-(nmap "]d" #(vim.diagnostic.jump (core.merge {:count 1} error-filter)) (opts "previous diagnostic"))
-(nmap "[w" #(vim.diagnostic.jump (core.merge {:count -1} warning-filter)) (opts "next warning"))
-(nmap "]w" #(vim.diagnostic.jump (core.merge {:count 1} warning-filter)) (opts "previous warning"))
+(nmap "[d" #(vim.diagnostic.jump (core.merge {:float true :count -1} error-filter)) (opts "next diagnostic"))
+(nmap "]d" #(vim.diagnostic.jump (core.merge {:float true :count 1} error-filter)) (opts "previous diagnostic"))
+(nmap "[w" #(vim.diagnostic.jump (core.merge {:float true :count -1} warning-filter)) (opts "next warning"))
+(nmap "]w" #(vim.diagnostic.jump (core.merge {:float true :count 1} warning-filter)) (opts "previous warning"))
 
 ; LSP mappings
 ; Set only to the buffer where the LSP client is attached
@@ -168,22 +168,15 @@
                          :silent true
                          : desc}))
 
-;; Use the :K keymap to trigger both the diagnostics, if any, and the LSP hover
-(fn hover []
-  (local diagnostic (vim.diagnostic.get 0 {:lnum (- (vim.fn.line ".") 1)}))
-  (if (> (length diagnostic) 0)
-    (vim.diagnostic.open_float)
-    (vim.lsp.buf.hover {:wrap false
-                        :max_width 130
-                        :max_heigth 20})))
-
 (fn on-attach [args]
   (local bufnr args.buf)
   (local client (vim.lsp.get_client_by_id args.data.client_id))
   (vim.api.nvim_buf_set_option 0 :omnifunc :v:lua.vim.lsp.omnifunc)
 
   ;; Mappings
-  (buf-map :K hover "lsp: hover")
+  (buf-map :K #(vim.lsp.buf.hover {:wrap false
+                                   :max_width 130
+                                   :max_heigth 20}) "lsp: hover")
   (buf-map :gd (cmd "Glance definitions") "lsp: go to definition")
   (buf-map :<leader>lf (cmd "Glance references") "lsp: find references")
   (buf-map :<leader>li (cmd "Glance implementations") "lsp: implementation")
