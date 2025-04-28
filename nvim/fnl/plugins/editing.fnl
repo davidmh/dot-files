@@ -44,6 +44,4 @@
 
  (use :tommcdo/vim-exchange {:keys [:cx :cX (use :X {:mode :v})]})
 
- (use :junegunn/vim-easy-align {:keys [(use :ga "<Plug>(EasyAlign)" {:mode [:x :n]})]})
-
- (use :wakatime/vim-wakatime {:lazy false})]
+ (use :junegunn/vim-easy-align {:keys [(use :ga "<Plug>(EasyAlign)" {:mode [:x :n]})]})]
