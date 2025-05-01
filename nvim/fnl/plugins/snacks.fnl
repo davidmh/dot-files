@@ -44,7 +44,9 @@
                                  :notifier {:enabled true
                                             :style :fancy
                                             :margin {:bottom 2}
-                                            :top_down false}}
+                                            :top_down false}
+                                 :picker {:sources {:files {:win {:input {:keys {:<c-x> (use :edit_split {:mode [:i :n]})}}}
+                                                            :hidden true}}}}
                                :init (fn []
                                        (local snacks (require :snacks))
                                        (set vim.ui.select snacks.picker.select)
