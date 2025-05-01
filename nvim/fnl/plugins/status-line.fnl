@@ -4,9 +4,9 @@
 
 (local heirline (autoload :heirline))
 (local conditions (autoload :heirline.conditions))
-(local core (autoload :nfnl.core))
 (local palettes (autoload :catppuccin.palettes))
 (local config (autoload :own.config))
+(local mode (autoload :own.mode))
 
 (local empty-space {:provider " "})
 
@@ -17,39 +17,11 @@
   (table.insert data {:hl {:bold true}})
   data)
 
-(local mode-colors {:n    :fg
-                    :i    :green
-                    :v    :blue
-                    :V    :cyan
-                    "\22" :cyan
-                    :c    :orange
-                    :s    :purple
-                    :S    :purple
-                    "\19" :purple
-                    :R    :orange
-                    :r    :orange
-                    :!    :red
-                    :t    :green})
-
-(local mode-label {:n    :NORMAL
-                   :i    :INSERT
-                   :v    :VISUAL
-                   :V    :V-LINE
-                   "\22" :V-BLOCK
-                   :c    :COMMAND
-                   :s    :SELECT
-                   :S    :S-LINE
-                   "\19" :S-BLOCK
-                   :R    :REPLACE
-                   :r    :REPLACE
-                   :!    :SHELL
-                   :t    :TERMINAL
-                   :nt   :T-NORMAL})
-
-(local vi-mode {:init #(tset $1 :mode (vim.fn.mode 1))
-                :condition #(not= vim.o.filetype :starter)
-                :provider #(.. " " (core.get mode-label $1.mode $1.mode) " ")
-                :hl #(-> {:fg (. mode-colors $1.mode)
+(local vi-mode {:condition #(and
+                              (not= vim.o.filetype :toggleterm)
+                              (not= vim.o.filetype :starter))
+                :provider #(.. " " (mode.get-label) " ")
+                :hl #(-> {:fg (mode.get-color)
                           :bold true})
                 :update [:ModeChanged :ColorScheme]})
 
