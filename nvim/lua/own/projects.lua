@@ -29,47 +29,53 @@ vim.schedule(_5_)
 local function get_projects()
   return vim.json.decode(slurp(projects_path))
 end
-local function add_project(project_path)
-  if string.match(project_path, ":") then
+local function add_project()
+  local path = vim.fn.getcwd()
+  if string.match(path, ":") then
+    return
+  else
+  end
+  local git_root = vim.fs.root(path, {".git"})
+  if (git_root == nil) then
     return
   else
   end
   local projects = get_projects()
-  local name = vim.fn.fnamemodify(project_path, ":t")
+  local name = vim.fn.fnamemodify(git_root, ":t")
   local project = {name = name, timestamp = os.time(), visible = true}
-  return spit(projects_path, vim.json.encode(merge(projects, {[project_path] = project})))
+  return spit(projects_path, vim.json.encode(merge(projects, {[git_root] = project})))
 end
 M["find-files"] = function(cwd)
   return snacks.picker.files({dirs = {(cwd or vim.fn.getcwd())}})
 end
 local function format_project(path, name)
-  local function _8_()
+  local function _9_()
     return M["find-files"](path)
   end
-  return {name = (name .. " -> " .. sanitize_path(path, 3)), action = _8_, section = "Recent Projects"}
+  return {name = (name .. " -> " .. sanitize_path(path, 3)), action = _9_, section = "Recent Projects"}
 end
 local function sort_projects(projects)
-  local function _11_(_9_, _10_)
-    local _ = _9_[1]
-    local a = _9_[2]
-    local _0 = _10_[1]
-    local b = _10_[2]
+  local function _12_(_10_, _11_)
+    local _ = _10_[1]
+    local a = _10_[2]
+    local _0 = _11_[1]
+    local b = _11_[2]
     return (a.timestamp > b.timestamp)
   end
-  table.sort(projects, _11_)
+  table.sort(projects, _12_)
   return projects
 end
 M["recent-projects"] = function(limit)
-  local function _13_(acc, _12_)
-    local path = _12_[1]
-    local project = _12_[2]
+  local function _14_(acc, _13_)
+    local path = _13_[1]
+    local project = _13_[2]
     if project.visible then
       return concat(acc, {format_project(path, project.name)})
     else
       return acc
     end
   end
-  return reduce(_13_, {}, take((limit or 30), sort_projects(kv_pairs(get_projects()))))
+  return reduce(_14_, {}, take((limit or 30), sort_projects(kv_pairs(get_projects()))))
 end
 local function pick_project(choice)
   if choice then
@@ -79,17 +85,14 @@ local function pick_project(choice)
   end
 end
 M["select-project"] = function()
-  local function _17_(_16_)
-    local name = _16_["name"]
+  local function _18_(_17_)
+    local name = _17_["name"]
     return name
   end
-  return vim.ui.select(M["recent-projects"](), {prompt = "switch to a project", format_item = _17_}, pick_project)
+  return vim.ui.select(M["recent-projects"](), {prompt = "switch to a project", format_item = _18_}, pick_project)
 end
 M["project-list"] = function()
   return map(first, sort_projects(kv_pairs(get_projects())))
 end
-local function _18_()
-  return add_project(vim.fn.getcwd())
-end
-vim.api.nvim_create_autocmd("User", {pattern = "RooterChDir", callback = _18_})
+vim.api.nvim_create_autocmd("User", {pattern = "RooterChDir", callback = add_project})
 return M

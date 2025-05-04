@@ -22,17 +22,23 @@
 (fn get-projects []
   (vim.json.decode (slurp projects-path)))
 
-(fn add-project [project-path]
+(fn add-project []
+  (local path (vim.fn.getcwd))
+
   ;; Some special buffers may yield a cwd that does not exist
-  (when (string.match project-path ::)
+  (when (string.match path ::)
+      (lua :return))
+
+  (local git-root (vim.fs.root path [:.git]))
+  (if (= git-root nil)
       (lua :return))
 
   (local projects (get-projects))
-  (local name (vim.fn.fnamemodify project-path ":t"))
+  (local name (vim.fn.fnamemodify git-root ":t"))
   (local project {:name name
                   :timestamp (os.time)
                   :visible true})
-  (spit projects-path (vim.json.encode (merge projects {project-path project}))))
+  (spit projects-path (vim.json.encode (merge projects {git-root project}))))
 
 
 (fn M.find-files [cwd]
@@ -75,6 +81,6 @@
        (map first)))
 
 (autocmd :User {:pattern :RooterChDir
-                :callback #(add-project (vim.fn.getcwd))})
+                :callback add-project})
 
 M
