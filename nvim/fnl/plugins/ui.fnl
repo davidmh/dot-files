@@ -1,4 +1,4 @@
-(import-macros {: use} :own.macros)
+(import-macros {: tx} :own.macros)
 (local {: get} (require :nfnl.core))
 (local {: autoload} (require :nfnl.module))
 (local confirm-quit (autoload :confirm-quit))
@@ -25,16 +25,17 @@
                       (get quit-messages)))
   (.. message "\nQuit?"))
 
-[(use :nvim-tree/nvim-web-devicons {:config true})
+[(tx :nvim-tree/nvim-web-devicons {:config true})
 
- (use :yutkat/confirm-quit.nvim {:event :CmdLineEnter
-                                 :opts {:overwrite_q_command true
-                                        :quit_message quit-message}
-                                 :keys [(use :ZZ
-                                             #(do (vim.cmd :update) (confirm-quit.confirm_quit))
-                                             {:mode :n
-                                              :desc "Save and quit"})
-                                        (use :ZQ
-                                             #(confirm-quit.confirm_quit)
-                                             {:mode :n
-                                              :desc "Quit without saving"})]})]
+ (tx :yutkat/confirm-quit.nvim {:event :CmdLineEnter
+                                :opts {:overwrite_q_command true
+                                       :quit_message quit-message}
+                                 :keys [(tx :ZZ
+                                            #(do (vim.cmd :update)
+                                                 (confirm-quit.confirm_quit))
+                                            {:mode :n
+                                             :desc "Save and quit"})
+                                        (tx :ZQ
+                                            #(confirm-quit.confirm_quit)
+                                            {:mode :n
+                                             :desc "Quit without saving"})]})]

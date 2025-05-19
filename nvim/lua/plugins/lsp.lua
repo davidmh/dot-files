@@ -63,7 +63,7 @@ local function lsp_config()
     config["settings"] = {workspace = {environmentPath = python_path}}
     return nil
   end
-  server_configs = {jsonls = {settings = {json = {schemas = schema_store.json.schemas(), validate = {enable = true}}}}, lua_ls = {settings = {Lua = {completion = {callSnippet = "Replace"}, diagnostics = {globals = {"vim", "it", "describe", "before_each", "after_each", "pending"}}, format = {enable = false}, workspace = {checkThirdParty = false}}}}, eslint = {root_dir = git_root}, fennel_language_server = {single_file_support = true, root_dir = lspconfig.util.root_pattern("fnl"), settings = {fennel = {diagnostics = {globals = {"vim", "jit", "comment", "love"}}, workspace = {library = vim.api.nvim_list_runtime_paths(), checkThirdParty = false}}}}, jedi_language_server = {on_new_config = _7_, root_dir = python_root}, ruff = {init_options = {settings = {lint = {enable = true, preview = true}}}}, harper_ls = {settings = {["harper-ls"] = {codeActions = {forceStable = true}}}}, cssls = {root_dir = git_root}, shellcheck = {root_dir = git_root}, tailwindcss = {root_dir = tailwind_root}}
+  server_configs = {jsonls = {settings = {json = {schemas = schema_store.json.schemas(), validate = {enable = true}}}}, lua_ls = {settings = {Lua = {completion = {callSnippet = "Replace"}, diagnostics = {globals = {"vim"}}, format = {enable = false}, workspace = {checkThirdParty = false}}}}, eslint = {root_dir = git_root}, fennel_language_server = {single_file_support = true, root_dir = lspconfig.util.root_pattern("fnl"), settings = {fennel = {diagnostics = {globals = {"vim", "jit", "comment", "love"}}, workspace = {library = vim.api.nvim_list_runtime_paths()}}}}, jedi_language_server = {on_new_config = _7_, root_dir = python_root}, ruff = {init_options = {settings = {lint = {enable = true, preview = true}}}}, harper_ls = {settings = {["harper-ls"] = {codeActions = {forceStable = true}}}}, cssls = {root_dir = git_root}, shellcheck = {root_dir = git_root}, tailwindcss = {root_dir = tailwind_root}}
   for _, server_name in ipairs(mason_lspconfig.get_installed_servers()) do
     local server_setup = core["get-in"](lspconfig, {server_name, "setup"})
     local server_config = core.get(server_configs, server_name, {})
@@ -75,69 +75,52 @@ local function lsp_config()
   end
   ruby_lsps()
   lspconfig.denols.setup({root_dir = deno_root})
-  lspconfig.sourcekit.setup({})
+  --[[ (vim.lsp.config "ty" {:cmd ["uv" "run" "ty" "server"]}) (vim.lsp.enable "ty") ]]
   return nil
 end
-local function glance_config()
-  local enter_quickfix
-  local function _9_()
-    return glance.actions.quickfix()
-  end
-  enter_quickfix = _9_
-  local enter_preview
-  local function _10_()
-    return glance.actions.enter_win("preview")
-  end
-  enter_preview = _10_
-  local enter_list
-  local function _11_()
-    return glance.actions.enter_win("list")
-  end
-  enter_list = _11_
-  local next_result
-  local function _12_()
-    return glance.actions.next_location()
-  end
-  next_result = _12_
-  local previous_result
-  local function _13_()
-    return glance.actions.previous_location()
-  end
-  previous_result = _13_
-  local vertical_split
-  local function _14_()
-    return glance.actions.jump_vsplit()
-  end
-  vertical_split = _14_
-  local horizontal_split
-  local function _15_()
-    return glance.actions.jump_split()
-  end
-  horizontal_split = _15_
-  local function _16_(results, open_preview, jump_to_result)
-    local _17_ = #results
-    if (_17_ == 0) then
-      return vim.notify("No results found")
-    elseif (_17_ == 1) then
-      jump_to_result(core.first(results))
-      return vim.cmd({cmd = "normal"}, "args", {"zz"}, "bang", true)
-    else
-      local _ = _17_
-      return open_preview(results)
-    end
-  end
-  return glance.setup({mappings = {list = {["<m-p>"] = enter_preview, ["<c-q>"] = enter_quickfix, ["<c-n>"] = next_result, ["<c-p>"] = previous_result, ["<c-v>"] = vertical_split, ["<c-x>"] = horizontal_split}, preview = {["<m-l>"] = enter_list, ["<c-q>"] = enter_quickfix, ["<c-n>"] = next_result, ["<c-p>"] = previous_result, ["<c-v>"] = vertical_split, ["<c-x>"] = horizontal_split}}, hooks = {before_open = _16_}})
+local function enter_quickfix()
+  return glance.actions.quickfix()
 end
-local function _19_(file_name)
+local function enter_preview()
+  return glance.actions.enter_win("preview")
+end
+local function enter_list()
+  return glance.actions.enter_win("list")
+end
+local function next_result()
+  return glance.actions.next_location()
+end
+local function previous_result()
+  return glance.actions.previous_location()
+end
+local function vertical_split()
+  return glance.actions.jump_vsplit()
+end
+local function horizontal_split()
+  return glance.actions.jump_split()
+end
+local function _9_(file_name)
   local deno_root = util.root_pattern("deno.json", "deno.jsonc")
   local ts_root = util.root_pattern("tsconfig.json")
   return ((deno_root(file_name) == nil) and ts_root(file_name))
 end
-local function _20_(text)
+local function _10_(text)
   if (text:match("^it%(") or text:match("^describe%(")) then
     return text:gsub("^it%('", "it "):gsub("^describe%('", "describe "):gsub("'%) callback$", "")
   else
     return text:gsub(" callback$", "")
   end
 end
-return {{"folke/lazydev.nvim", ft = "lua", opts = {library = {{path = "${3rd}/luv/library", words = {"vim%.uv"}}, "nvim-dap-ui"}}}, {"williamboman/mason.nvim", config = mason_config}, {"williamboman/mason-lspconfig.nvim", dependencies = {"williamboman/mason.nvim"}, opts = {ensure_installed = {"bashls", "clojure_lsp", "cssls", "jdtls", "jedi_language_server", "ruff", "jsonls", "lua_ls", "eslint", "fennel_language_server", "harper_ls", "tailwindcss"}}, config = true}, {"neovim/nvim-lspconfig", dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim", "b0o/SchemaStore.nvim", "folke/lazydev.nvim"}, config = lsp_config}, {"pmizio/typescript-tools.nvim", dependencies = {"neovim/nvim-lspconfig", "nvim-lua/plenary.nvim"}, opts = {settings = {expose_as_code_action = {"add_missing_imports"}}, root_dir = _19_}}, {"j-hui/fidget.nvim", dependencies = {"neovim/nvim-lspconfig"}, event = "LspAttach", opts = {notification = {window = {align = "top", y_padding = 2, winblend = 0}}}}, {"SmiteshP/nvim-navic", opts = {depth_limit = 4, depth_limit_indicator = " [ \238\169\188 ] ", click = true, highlight = true, format_text = _20_, icons = cfg["navic-icons"], separator = " \238\170\182 ", safe_output = false}, config = true, dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim"}}, {"dnlhc/glance.nvim", cmd = "Glance", config = glance_config}}
+local function _12_(results, open_preview, jump_to_result)
+  local _13_ = #results
+  if (_13_ == 0) then
+    return vim.notify("No results found")
+  elseif (_13_ == 1) then
+    jump_to_result(core.first(results))
+    return vim.cmd({cmd = "normal"}, "args", {"zz"}, "bang", true)
+  else
+    local _ = _13_
+    return open_preview(results)
+  end
+end
+return {{"folke/lazydev.nvim", ft = "lua", opts = {library = {{path = "${3rd}/luv/library", words = {"vim%.uv"}}, "nvim-dap-ui"}}}, {"williamboman/mason.nvim", config = mason_config}, {"williamboman/mason-lspconfig.nvim", dependencies = {"williamboman/mason.nvim"}, opts = {ensure_installed = {"bashls", "clojure_lsp", "cssls", "jdtls", "jedi_language_server", "ruff", "jsonls", "lua_ls", "eslint", "fennel_language_server", "harper_ls", "tailwindcss"}}}, {"neovim/nvim-lspconfig", dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim", "b0o/SchemaStore.nvim", "folke/lazydev.nvim"}, config = lsp_config}, {"pmizio/typescript-tools.nvim", dependencies = {"neovim/nvim-lspconfig", "nvim-lua/plenary.nvim"}, opts = {settings = {expose_as_code_action = {"add_missing_imports"}}, root_dir = _9_}}, {"j-hui/fidget.nvim", dependencies = {"neovim/nvim-lspconfig"}, event = "LspAttach", opts = {notification = {window = {align = "top", y_padding = 2, winblend = 0}}}}, {"SmiteshP/nvim-navic", opts = {depth_limit = 4, depth_limit_indicator = " [ \238\169\188 ] ", click = true, highlight = true, format_text = _10_, icons = cfg["navic-icons"], separator = " \238\170\182 ", safe_output = false}, config = true, dependencies = {"williamboman/mason.nvim", "williamboman/mason-lspconfig.nvim"}}, {"dnlhc/glance.nvim", cmd = "Glance", config = {mappings = {list = {["<m-p>"] = enter_preview, ["<c-q>"] = enter_quickfix, ["<c-n>"] = next_result, ["<c-p>"] = previous_result, ["<c-v>"] = vertical_split, ["<c-x>"] = horizontal_split}, preview = {["<m-l>"] = enter_list, ["<c-q>"] = enter_quickfix, ["<c-n>"] = next_result, ["<c-p>"] = previous_result, ["<c-v>"] = vertical_split, ["<c-x>"] = horizontal_split}}, hooks = {before_open = _12_}}}}

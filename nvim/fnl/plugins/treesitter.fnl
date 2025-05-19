@@ -1,4 +1,4 @@
-(import-macros {: use} :own.macros)
+(import-macros {: tx} :own.macros)
 (local {: autoload} (require :nfnl.module))
 (local configs (autoload :nvim-treesitter.configs))
 
@@ -59,12 +59,12 @@
                   :ensure_installed ensure-installed
                   :table_of_contents {:enable true}}))
 
-[(use :nvim-treesitter/nvim-treesitter-textobjects {:name :nvim-treesitter-textobjects})
- (use :nvim-treesitter/nvim-treesitter
-      {:dependencies [:nvim-treesitter-textobjects]
-       :build ::TSUpdate
-       :config config})
+[(tx :nvim-treesitter/nvim-treesitter-textobjects {:name :nvim-treesitter-textobjects})
+ (tx :nvim-treesitter/nvim-treesitter
+     {:dependencies [:nvim-treesitter-textobjects]
+      :build :TSUpdate
+      :config config})
 
- (use :davidmh/mdx.nvim {:dependencies [:nvim-treesitter/nvim-treesitter]
-                         :event "BufRead *.mdx"
-                         :config true})]
+ (tx :davidmh/mdx.nvim {:dependencies [:nvim-treesitter/nvim-treesitter]
+                        :event "BufRead *.mdx"
+                        :config true})]

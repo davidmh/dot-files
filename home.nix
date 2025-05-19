@@ -51,7 +51,6 @@
     unstable.neovim
     unstable.nixpkgs-fmt
     unstable.nerd-fonts.hasklug
-    unstable.sqlfluff
     unstable.tree-sitter
     wezterm
 
@@ -126,6 +125,11 @@
 
     diff-so-fancy.enable = true;
     lfs.enable = true;
+  };
+
+  programs.emacs = {
+    enable = true;
+    package = pkgs.unstable.emacs;
   };
 
   programs.tmux = {

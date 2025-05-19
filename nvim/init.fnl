@@ -15,5 +15,6 @@
 
 (vim.schedule #(do
                 (require :own.mappings)
+                (require :own.commands)
                 (require :own.projects)
                 (require :own.sync-files)))

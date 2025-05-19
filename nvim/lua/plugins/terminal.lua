@@ -8,4 +8,4 @@ local function _1_()
     return vim.o.shell
   end
 end
-return {{"chomosuke/term-edit.nvim", ft = "toggleterm", version = "1.*", opts = {prompt_end = "\226\157\175 "}}, {"akinsho/toggleterm.nvim", branch = "main", dependencies = {"chomosuke/term-edit.nvim"}, opts = {shell = _1_, shade_terminals = false}}}
+return {{"chomosuke/term-edit.nvim", event = "TermOpen", version = "1.*", opts = {prompt_end = "\226\157\175 "}}, {"akinsho/toggleterm.nvim", branch = "main", dependencies = {"chomosuke/term-edit.nvim"}, cmd = {"ToggleTerm"}, opts = {shell = _1_, shade_terminals = false}}}

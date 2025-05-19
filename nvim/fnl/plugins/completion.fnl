@@ -1,4 +1,4 @@
-(import-macros {: map : use} :own.macros)
+(import-macros {: map : tx} :own.macros)
 (local {: autoload} (require :nfnl.module))
 (local cmp (autoload :cmp))
 (local ls (autoload :luasnip))
@@ -27,7 +27,10 @@
                                             {:name :emoji}
                                             {:name :nerdfonts}
                                             {:name :conjure}
-                                            {:name :buffer :keyword_length 5}])
+                                            {:name :buffer :keyword_length 5}
+                                            {:name :obsidian}
+                                            {:name :obsidian_new}
+                                            {:name :obsidian_tags}])
               :formatting {:fields [:kind :abbr :menu]
                            :format cmp-format}
               :snippet {:expand (fn [args] (ls.lsp_expand args.body))}
@@ -58,13 +61,13 @@
   (ls.add_snippets :gitcommit [co-authored-by])
   (ls.add_snippets :org [(ls.parser.parse_snippet "<s" "#+BEGIN_SRC ${1}\n${0}\n#+END_SRC\n")]))
 
-[(use :hrsh7th/nvim-cmp {:dependencies [:hrsh7th/cmp-nvim-lsp
-                                        :hrsh7th/cmp-buffer
-                                        :PaterJason/cmp-conjure
-                                        :saadparwaiz1/cmp_luasnip
-                                        :L3MON4D3/LuaSnip
-                                        :davidmh/cmp-nerdfonts
-                                        :onsails/lspkind-nvim
-                                        :hrsh7th/cmp-emoji]
-                         :event :InsertEnter
-                         : config})]
+[(tx :hrsh7th/nvim-cmp {:dependencies [:hrsh7th/cmp-nvim-lsp
+                                       :hrsh7th/cmp-buffer
+                                       :PaterJason/cmp-conjure
+                                       :saadparwaiz1/cmp_luasnip
+                                       :L3MON4D3/LuaSnip
+                                       :davidmh/cmp-nerdfonts
+                                       :onsails/lspkind-nvim
+                                       :hrsh7th/cmp-emoji]
+                        :event :InsertEnter
+                        : config})]

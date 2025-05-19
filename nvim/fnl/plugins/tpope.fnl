@@ -1,6 +1,4 @@
-(import-macros {: use} :own.macros)
-
-[(use :tpope/vim-projectionist {:event :VeryLazy})
+[:tpope/vim-projectionist
  :tpope/vim-dispatch
  :radenling/vim-dispatch-neovim
  :tpope/vim-eunuch

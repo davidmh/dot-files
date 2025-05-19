@@ -34,7 +34,7 @@
 (fn tmap [from to opts]
   `(vim.keymap.set :t ,from ,to ,opts))
 
-(fn use [...]
+(fn tx [...]
   "
   Merge sequential and key-value tables.
 
@@ -47,7 +47,7 @@
   Fennel can't mix both, so to generate the table above,
   we would call it as:
 
-  (use :some-string {:a 1 :b 2})
+  (tx :some-string {:a 1 :b 2})
   "
   (local input [...])
   (local last-index (length input))
@@ -64,4 +64,4 @@
  : vmap
  : imap
  : tmap
- : use}
+ : tx}

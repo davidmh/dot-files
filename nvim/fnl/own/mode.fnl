@@ -43,6 +43,8 @@
 
 (fn M.get-label []
   (local mode (vim.fn.mode 1))
-  (. mode-label mode))
+  (or
+    (. mode-label mode)
+    mode))
 
 M

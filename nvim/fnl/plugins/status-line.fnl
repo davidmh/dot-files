@@ -1,4 +1,4 @@
-(import-macros {: augroup : use} :own.macros)
+(import-macros {: augroup : tx} :own.macros)
 (local lazy-status (require :lazy.status))
 (local {: autoload} (require :nfnl.module))
 
@@ -17,10 +17,7 @@
   (table.insert data {:hl {:bold true}})
   data)
 
-(local vi-mode {:condition #(and
-                              (not= vim.o.filetype :toggleterm)
-                              (not= vim.o.filetype :starter))
-                :provider #(.. " " (mode.get-label) " ")
+(local vi-mode {:provider #(.. " " (mode.get-label) " ")
                 :hl #(-> {:fg (mode.get-color)
                           :bold true})
                 :update [:ModeChanged :ColorScheme]})
@@ -36,18 +33,18 @@
 (fn diagnostic-count [severity-code]
   (length (vim.diagnostic.get 0 {:severity (. vim.diagnostic.severity severity-code)})))
 
-(local diagnostics-block (use (diagnostic :ERROR :red)
-                              (diagnostic :WARN :yellow)
-                              (diagnostic :INFO :fg)
-                              (diagnostic :HINT :green)
-                              empty-space
-                              {:conditon #(conditions.has_diagnostics)
-                               :init (fn [self]
-                                       (tset self :ERROR (diagnostic-count :ERROR))
-                                       (tset self :WARN (diagnostic-count :WARN))
-                                       (tset self :INFO (diagnostic-count :INFO))
-                                       (tset self :HINT (diagnostic-count :HINT)))
-                               :update [:DiagnosticChanged :BufEnter :ColorScheme]}))
+(local diagnostics-block (tx (diagnostic :ERROR :red)
+                             (diagnostic :WARN :yellow)
+                             (diagnostic :INFO :fg)
+                             (diagnostic :HINT :green)
+                             empty-space
+                             {:conditon #(conditions.has_diagnostics)
+                              :init (fn [self]
+                                      (tset self :ERROR (diagnostic-count :ERROR))
+                                      (tset self :WARN (diagnostic-count :WARN))
+                                      (tset self :INFO (diagnostic-count :INFO))
+                                      (tset self :HINT (diagnostic-count :HINT)))
+                              :update [:DiagnosticChanged :BufEnter :ColorScheme]}))
 
 (local git-block (component {:condition #(conditions.is_git_repo)
                              :init #(do (local {: head : root} vim.b.gitsigns_status_dict)
@@ -67,13 +64,12 @@
                                             (tset $1 :color :rosewater))
                                    :condition #(lazy-status.has_updates)})])
 
-(local statusline (use vi-mode
-                       push-right
-                       diagnostics-block
-                       git-block
-                       plugin-updates
-                       empty-space
-                       {:hl {:bg :NONE}}))
+(local statusline [vi-mode
+                   push-right
+                   diagnostics-block
+                   git-block
+                   plugin-updates
+                   empty-space])
 
 (fn initialize-heirline []
   (set vim.o.showmode false)
@@ -88,7 +84,7 @@
 (augroup :update-heirline [:ColorScheme {:pattern :*
                                          :callback initialize-heirline}])
 
-(use :rebelot/heirline.nvim {:dependencies [:nvim-tree/nvim-web-devicons
-                                            :catppuccin]
-                             :event :VeryLazy
-                             :config initialize-heirline})
+(tx :rebelot/heirline.nvim {:dependencies [:nvim-tree/nvim-web-devicons
+                                           :catppuccin]
+                            :event :VeryLazy
+                            :config initialize-heirline})

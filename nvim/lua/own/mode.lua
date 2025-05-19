@@ -14,6 +14,6 @@ M["get-color"] = function()
 end
 M["get-label"] = function()
   local mode = vim.fn.mode(1)
-  return mode_label[mode]
+  return (mode_label[mode] or mode)
 end
 return M

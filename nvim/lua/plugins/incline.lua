@@ -10,6 +10,7 @@ local helpers = autoload("incline.helpers")
 local navic = autoload("nvim-navic")
 local nvim_web_devicons = autoload("nvim-web-devicons")
 local palette = autoload("catppuccin.palettes")
+local mode = autoload("own.mode")
 local function file_name(bufnr)
   local file_name0 = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":.")
   local _4_
@@ -35,7 +36,8 @@ local function read_only_3f(bufnr)
   end
 end
 local function terminal_component(colors)
-  return {{" \238\158\149 ", guibg = colors.lavender, guifg = colors.surface1}, {" terminal ", guifg = colors.white}}
+  local term_color = mode["get-color"]()
+  return {{" \238\158\149 ", guibg = term_color, guifg = colors.surface1}, {" terminal ", guifg = colors.text}}
 end
 local function help_component(colors, props)
   local name = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
@@ -70,21 +72,22 @@ local function file_component(props)
 end
 local function render(props)
   local colors = palette.get_palette()
-  local _13_ = {core["get-in"](vim, {"bo", props.buf, "ft"})}
-  if (_13_[1] == "qf") then
-    return quickfix_winbar_component(colors)
-  elseif (_13_[1] == "toggleterm") then
+  local term_title = vim.b[props.buf].term_title
+  if term_title then
     return terminal_component(colors)
-  elseif (_13_[1] == "terminal") then
-    return terminal_component(colors)
-  elseif (_13_[1] == "help") then
-    return help_component(colors, props)
-  elseif (_13_[1] == "fugitiveblame") then
-    return {}
-  elseif true then
-    return file_component(props)
   else
-    return nil
+    local _13_ = {core["get-in"](vim, {"bo", props.buf, "ft"})}
+    if (_13_[1] == "qf") then
+      return quickfix_winbar_component(colors)
+    elseif (_13_[1] == "help") then
+      return help_component(colors, props)
+    elseif (_13_[1] == "fugitiveblame") then
+      return {}
+    elseif true then
+      return file_component(props)
+    else
+      return nil
+    end
   end
 end
 return {"b0o/incline.nvim", opts = {window = {padding = 0, margin = {horizontal = 0, vertical = 0}}, hide = {cursorline = true}, ignore = {buftypes = {"prompt", "nofile"}, wintypes = {"unknown", "popup", "autocmd"}, unlisted_buffers = false}, render = render}}

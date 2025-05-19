@@ -15,6 +15,8 @@
 
    :TreesitterContext {:link :Normal}
 
+   :StatusLine {:bg :NONE :fg color.text}
+
    :SnacksNotifierIconInfo  {:fg color.mauve}
    :SnacksNotifierTitleInfo  {:fg color.mauve}
 

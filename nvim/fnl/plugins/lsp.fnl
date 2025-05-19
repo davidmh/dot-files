@@ -1,4 +1,4 @@
-(import-macros {: use : autocmd} :own.macros)
+(import-macros {: tx : autocmd} :own.macros)
 (local {: autoload} (require :nfnl.module))
 (local core (autoload :nfnl.core))
 (local cfg (autoload :own.config))
@@ -70,20 +70,14 @@
   (local server-configs {:jsonls {:settings {:json {:schemas (schema-store.json.schemas)
                                                     :validate {:enable true}}}}
                          :lua_ls {:settings {:Lua {:completion {:callSnippet :Replace}
-                                                   :diagnostics {:globals [:vim
-                                                                           :it
-                                                                           :describe
-                                                                           :before_each
-                                                                           :after_each
-                                                                           :pending]}
+                                                   :diagnostics {:globals [:vim]}
                                                    :format {:enable false}
                                                    :workspace {:checkThirdParty false}}}}
                          :eslint {:root_dir git-root}
                          :fennel_language_server {:single_file_support true
                                                   :root_dir (lspconfig.util.root_pattern :fnl)
                                                   :settings {:fennel {:diagnostics {:globals [:vim :jit :comment :love]}
-                                                                      :workspace {:library (vim.api.nvim_list_runtime_paths)
-                                                                                  :checkThirdParty false}}}}
+                                                                      :workspace {:library (vim.api.nvim_list_runtime_paths)}}}}
                          :jedi_language_server {:on_new_config (fn [config root]
                                                                  (local python-path (get-python-path root))
                                                                  (tset config :settings {:workspace {:environmentPath python-path}}))
@@ -105,69 +99,47 @@
 
   (ruby-lsps)
   (lspconfig.denols.setup {:root_dir deno-root})
-  (lspconfig.sourcekit.setup {})
+  (comment
+    ; upcoming
+    (vim.lsp.config :ty {:cmd [:uv :run :ty :server]})
+    (vim.lsp.enable :ty))
   nil)
 
-(fn glance-config []
-  (local enter-quickfix #(glance.actions.quickfix))
-  (local enter-preview #(glance.actions.enter_win :preview))
-  (local enter-list #(glance.actions.enter_win :list))
-  (local next-result #(glance.actions.next_location))
-  (local previous-result #(glance.actions.previous_location))
-  (local vertical-split #(glance.actions.jump_vsplit))
-  (local horizontal-split #(glance.actions.jump_split))
+(fn enter-quickfix [] (glance.actions.quickfix))
+(fn enter-preview [] (glance.actions.enter_win :preview))
+(fn enter-list [] (glance.actions.enter_win :list))
+(fn next-result [] (glance.actions.next_location))
+(fn previous-result [] (glance.actions.previous_location))
+(fn vertical-split [] (glance.actions.jump_vsplit))
+(fn horizontal-split [] (glance.actions.jump_split))
 
-  (glance.setup {:mappings {:list {:<m-p> enter-preview
-                                   :<c-q> enter-quickfix
-                                   :<c-n> next-result
-                                   :<c-p> previous-result
-                                   :<c-v> vertical-split
-                                   :<c-x> horizontal-split}
-                            :preview {:<m-l> enter-list
-                                      :<c-q> enter-quickfix
-                                      :<c-n> next-result
-                                      :<c-p> previous-result
-                                      :<c-v> vertical-split
-                                      :<c-x> horizontal-split}}
-                   :hooks {:before_open (fn [results open-preview jump-to-result]
-                                          (match (length results)
-                                            0 (vim.notify "No results found")
-                                            1 (do
-                                                (jump-to-result (core.first results))
-                                                (vim.cmd {:cmd :normal}
-                                                         :args [:zz]
-                                                         :bang true))
-                                            _ (open-preview results)))}}))
+[(tx :folke/lazydev.nvim {:ft :lua
+                          :opts {:library [{:path "${3rd}/luv/library" :words [:vim%.uv]}
+                                           :nvim-dap-ui]}})
 
-[(use :folke/lazydev.nvim {:ft :lua
-                           :opts {:library [{:path "${3rd}/luv/library" :words [:vim%.uv]}
-                                            :nvim-dap-ui]}})
+ (tx :williamboman/mason.nvim {:config mason-config})
 
- (use :williamboman/mason.nvim {:config mason-config})
+ (tx :williamboman/mason-lspconfig.nvim {:dependencies [:williamboman/mason.nvim]
+                                         :opts {:ensure_installed [:bashls
+                                                                   :clojure_lsp
+                                                                   :cssls
+                                                                   :jdtls
+                                                                   :jedi_language_server
+                                                                   :ruff
+                                                                   :jsonls
+                                                                   :lua_ls
+                                                                   :eslint
+                                                                   :fennel_language_server
+                                                                   :harper_ls
+                                                                   :tailwindcss]}})
 
- (use :williamboman/mason-lspconfig.nvim {:dependencies [:williamboman/mason.nvim]
-                                          :opts {:ensure_installed [:bashls
-                                                                    :clojure_lsp
-                                                                    :cssls
-                                                                    :jdtls
-                                                                    :jedi_language_server
-                                                                    ;:pylsp
-                                                                    :ruff
-                                                                    :jsonls
-                                                                    :lua_ls
-                                                                    :eslint
-                                                                    :fennel_language_server
-                                                                    :harper_ls
-                                                                    :tailwindcss]}
-                                          :config true})
-
- (use :neovim/nvim-lspconfig {:dependencies [:williamboman/mason.nvim
+ (tx  :neovim/nvim-lspconfig {:dependencies [:williamboman/mason.nvim
                                              :williamboman/mason-lspconfig.nvim
                                              :b0o/SchemaStore.nvim
                                              :folke/lazydev.nvim]
                               :config lsp-config})
 
- (use :pmizio/typescript-tools.nvim {:dependencies [:neovim/nvim-lspconfig
+ (tx  :pmizio/typescript-tools.nvim {:dependencies [:neovim/nvim-lspconfig
                                                     :nvim-lua/plenary.nvim]
                                      :opts {:settings {:expose_as_code_action [:add_missing_imports]}
                                             :root_dir (fn [file-name]
@@ -176,13 +148,13 @@
                                                         (and (= (deno-root file-name) nil)
                                                              (ts-root file-name)))}})
 
- (use :j-hui/fidget.nvim {:dependencies [:neovim/nvim-lspconfig]
+ (tx  :j-hui/fidget.nvim {:dependencies [:neovim/nvim-lspconfig]
                           :event :LspAttach
                           :opts {:notification {:window {:align :top
                                                          :y_padding 2
                                                          :winblend 0}}}})
 
- (use :SmiteshP/nvim-navic {:opts {:depth_limit 4
+ (tx  :SmiteshP/nvim-navic {:opts {:depth_limit 4
                                    :depth_limit_indicator " [  ] "
                                    :click true
                                    :highlight true
@@ -201,6 +173,26 @@
                             :config true
                             :dependencies [:williamboman/mason.nvim
                                            :williamboman/mason-lspconfig.nvim]})
- (use :dnlhc/glance.nvim {:cmd :Glance
-                          :config glance-config})]
 
+ (tx  :dnlhc/glance.nvim {:cmd :Glance
+                          :config {:mappings {:list {:<m-p> enter-preview
+                                                     :<c-q> enter-quickfix
+                                                     :<c-n> next-result
+                                                     :<c-p> previous-result
+                                                     :<c-v> vertical-split
+                                                     :<c-x> horizontal-split}
+                                              :preview {:<m-l> enter-list
+                                                        :<c-q> enter-quickfix
+                                                        :<c-n> next-result
+                                                        :<c-p> previous-result
+                                                        :<c-v> vertical-split
+                                                        :<c-x> horizontal-split}}
+                                    :hooks {:before_open (fn [results open-preview jump-to-result]
+                                                           (match (length results)
+                                                             0 (vim.notify "No results found")
+                                                             1 (do
+                                                                 (jump-to-result (core.first results))
+                                                                 (vim.cmd {:cmd :normal}
+                                                                          :args [:zz]
+                                                                          :bang true))
+                                                             _ (open-preview results)))}}})]

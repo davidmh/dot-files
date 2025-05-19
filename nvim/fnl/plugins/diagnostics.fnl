@@ -1,4 +1,4 @@
-(import-macros {: use} :own.macros)
+(import-macros {: tx} :own.macros)
 (local core (require :nfnl.core))
 (local {: autoload} (require :nfnl.module))
 (local str (require :own.string))
@@ -113,6 +113,6 @@
 
      :on_attach on-attach}))
 
-(use :nvimtools/none-ls.nvim {:dependencies [:nvim-lua/plenary.nvim
-                                             :davidmh/cspell.nvim]
-                              : config})
+(tx :nvimtools/none-ls.nvim {:dependencies [:nvim-lua/plenary.nvim
+                                            :davidmh/cspell.nvim]
+                             : config})

@@ -1,4 +1,4 @@
-(import-macros {: use : nmap} :own.macros)
+(import-macros {: tx : nmap} :own.macros)
 (local {: define} (require :nfnl.module))
 (local {: get-largest-window-id} (require :own.helpers))
 
@@ -44,21 +44,21 @@
     title))
 
 (fn quickfix-title [colors]
-  [(use "  " {:guibg colors.lavender :guifg :black})
+  [(tx "  " {:guibg colors.lavender :guifg :black})
    (.. " " (get-quickfix-title) " ")])
 
 (fn quickfix-history-nav [colors]
   (if (> (get-quickfix-history-size) 1)
-     [(use (.. " " qf-older-key " ")
+     [(tx (.. " " qf-older-key " "
            {:guifg (if (has-older-qf-stack-entry?)
                        colors.lavender
-                       colors.surface1)})
-      (use (.. (get-quickfix-current-index) "/" (get-quickfix-history-size))
-           {:guifg colors.lavender})
-      (use (.. " " qf-newer-key " ")
-           {:guifg (if (has-newer-qf-stack-entry?)
-                       colors.lavender
-                       colors.surface1)})]
+                       colors.surface1)}))
+      (tx (.. (get-quickfix-current-index) "/" (get-quickfix-history-size))
+          {:guifg colors.lavender})
+      (tx (.. " " qf-newer-key " ")
+          {:guifg (if (has-newer-qf-stack-entry?)
+                      colors.lavender
+                      colors.surface1)})]
      ""))
 
 (fn M.set-quickfix-mappings []

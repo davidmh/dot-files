@@ -26,45 +26,42 @@ local function component(data)
 end
 local vi_mode
 local function _5_()
-  return ((vim.o.filetype ~= "toggleterm") and (vim.o.filetype ~= "starter"))
-end
-local function _6_()
   return (" " .. mode["get-label"]() .. " ")
 end
-local function _7_()
+local function _6_()
   return {fg = mode["get-color"](), bold = true}
 end
-vi_mode = {condition = _5_, provider = _6_, hl = _7_, update = {"ModeChanged", "ColorScheme"}}
+vi_mode = {provider = _5_, hl = _6_, update = {"ModeChanged", "ColorScheme"}}
 local push_right = {provider = "%="}
 local function diagnostic(severity_code, color)
-  local function _8_(_241)
+  local function _7_(_241)
     return (" " .. config.icons[severity_code] .. " " .. _241[severity_code])
   end
-  local function _9_(_241)
+  local function _8_(_241)
     return (_241[severity_code] > 0)
   end
-  return {provider = _8_, condition = _9_, hl = {fg = color}, event = "DiagnosticChanged"}
+  return {provider = _7_, condition = _8_, hl = {fg = color}, event = "DiagnosticChanged"}
 end
 local function diagnostic_count(severity_code)
   return #vim.diagnostic.get(0, {severity = vim.diagnostic.severity[severity_code]})
 end
 local diagnostics_block
-local function _10_()
+local function _9_()
   return conditions.has_diagnostics()
 end
-local function _11_(self)
+local function _10_(self)
   self["ERROR"] = diagnostic_count("ERROR")
   self["WARN"] = diagnostic_count("WARN")
   self["INFO"] = diagnostic_count("INFO")
   self["HINT"] = diagnostic_count("HINT")
   return nil
 end
-diagnostics_block = {diagnostic("ERROR", "red"), diagnostic("WARN", "yellow"), diagnostic("INFO", "fg"), diagnostic("HINT", "green"), empty_space, conditon = _10_, init = _11_, update = {"DiagnosticChanged", "BufEnter", "ColorScheme"}}
+diagnostics_block = {diagnostic("ERROR", "red"), diagnostic("WARN", "yellow"), diagnostic("INFO", "fg"), diagnostic("HINT", "green"), empty_space, conditon = _9_, init = _10_, update = {"DiagnosticChanged", "BufEnter", "ColorScheme"}}
 local git_block
-local function _12_()
+local function _11_()
   return conditions.is_git_repo()
 end
-local function _13_(_241)
+local function _12_(_241)
   local head = vim.b.gitsigns_status_dict["head"]
   local root = vim.b.gitsigns_status_dict["root"]
   local cwd_relative_path = string.gsub(string.gsub(vim.fn.getcwd(), vim.fn.fnamemodify(root, ":h"), ""), "^/", "")
@@ -74,22 +71,22 @@ local function _13_(_241)
   _241["content"] = table.concat({(" [" .. cwd_relative_path .. "]"), head, status}, " ")
   return nil
 end
-git_block = component({condition = _12_, init = _13_, hl = {bold = true}})
+git_block = component({condition = _11_, init = _12_, hl = {bold = true}})
 local plugin_updates
-local function _14_(_241)
-  local _let_15_ = vim.split(lazy_status.updates(), " ")
-  local icon = _let_15_[1]
-  local count = _let_15_[2]
+local function _13_(_241)
+  local _let_14_ = vim.split(lazy_status.updates(), " ")
+  local icon = _let_14_[1]
+  local count = _let_14_[2]
   _241["icon"] = (" " .. icon)
   _241["content"] = (" " .. count)
   _241["color"] = "rosewater"
   return nil
 end
-local function _16_()
+local function _15_()
   return lazy_status.has_updates()
 end
-plugin_updates = {component({init = _14_, condition = _16_})}
-local statusline = {vi_mode, push_right, diagnostics_block, git_block, plugin_updates, empty_space, hl = {bg = "NONE"}}
+plugin_updates = {component({init = _13_, condition = _15_})}
+local statusline = {vi_mode, push_right, diagnostics_block, git_block, plugin_updates, empty_space}
 local function initialize_heirline()
   vim.o.showmode = false
   local opts = {colors = palettes.get_palette()}

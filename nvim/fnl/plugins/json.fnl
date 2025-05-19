@@ -1,4 +1,4 @@
-(import-macros {: use} :own.macros)
+(import-macros {: tx} :own.macros)
 
-(use :davidmh/json-schema-validator.nvim {:opts {}
-                                          :ft [:json :jsonc]})
+(tx :davidmh/json-schema-validator.nvim {:opts {}
+                                         :cmd [:JsonSchemaValidate]})

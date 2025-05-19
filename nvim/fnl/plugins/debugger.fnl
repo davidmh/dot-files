@@ -1,4 +1,4 @@
-(import-macros {: use} :own.macros)
+(import-macros {: tx} :own.macros)
 (local {: autoload} (require :nfnl.module))
 (local dap (autoload :dap))
 (local dap-ui (autoload :dapui))
@@ -45,18 +45,18 @@
                                      :command :rspec
                                      :script "${file}"}])))
 
-[(use :mfussenegger/nvim-dap {:init config-dap})
- (use :rcarriga/nvim-dap-ui {:dependencies [:mfussenegger/nvim-dap
-                                            :nvim-neotest/nvim-nio]
-                             :opts {}
-                             :init config-ui
-                             :keys [(use :<localleader>dd #(dap.toggle_breakpoint) {:desc "Toggle Breakpoint"})
-                                    (use :<localleader>dc #(dap.continue) {:desc "Continue"})
-                                    (use :<localleader>di #(dap.step_into) {:desc "Step Into"})
-                                    (use :<localleader>do #(dap.step_out) {:desc "Step Out"})
-                                    (use :<localleader>dt #(dap.terminate) {:desc "Terminate"})
-                                    (use :<localleader>dr #(dap.repl.open) {:desc "Open REPL"})
-                                    (use :<localleader>dh #(dap-widgets.hover) {:desc "Hover"})
-                                    (use :<localleader>dp #(dap-widgets.preview) {:desc "Preview"})
-                                    (use :<localleader>du #(dap-ui.toggle) {:desc "Toggle DAP UI"})]})]
+[(tx :mfussenegger/nvim-dap {:init config-dap})
+ (tx :rcarriga/nvim-dap-ui {:dependencies [:mfussenegger/nvim-dap
+                                           :nvim-neotest/nvim-nio]
+                            :opts {}
+                            :init config-ui
+                            :keys [(tx :<localleader>dd #(dap.toggle_breakpoint) {:desc "Toggle Breakpoint"})
+                                   (tx :<localleader>dc #(dap.continue) {:desc "Continue"})
+                                   (tx :<localleader>di #(dap.step_into) {:desc "Step Into"})
+                                   (tx :<localleader>do #(dap.step_out) {:desc "Step Out"})
+                                   (tx :<localleader>dt #(dap.terminate) {:desc "Terminate"})
+                                   (tx :<localleader>dr #(dap.repl.open) {:desc "Open REPL"})
+                                   (tx :<localleader>dh #(dap-widgets.hover) {:desc "Hover"})
+                                   (tx :<localleader>dp #(dap-widgets.preview) {:desc "Preview"})
+                                   (tx :<localleader>du #(dap-ui.toggle) {:desc "Toggle DAP UI"})]})]
 

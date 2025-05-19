@@ -1,4 +1,4 @@
-(import-macros {: use} :own.macros)
+(import-macros {: tx} :own.macros)
 (local {: autoload} (require :nfnl.module))
 (local {: find-root} (require :own.helpers))
 (local neotest (autoload :neotest))
@@ -35,20 +35,20 @@
                           :running :󰦖
                           :watching :}}))
 
-(use :nvim-neotest/neotest {:dependencies [:nvim-neotest/nvim-nio
-                                           :nvim-lua/plenary.nvim
-                                           :antoinemadec/FixCursorHold.nvim
-                                           :nvim-treesitter/nvim-treesitter
-                                           :thenbe/neotest-playwright
-                                           :rouge8/neotest-rust
-                                           :olimorris/neotest-rspec
-                                           :nvim-neotest/neotest-python
-                                           :nvim-neotest/neotest-go]
-                            :config config
-                            :keys [(use :<localleader>trn "<cmd>Neotest run<cr>" {:desc "run nearest test"})
-                                   (use :<localleader>trf #(neotest.run.run (vim.fn.expand :%))
-                                                          {:desc "run test file"})
-                                   (use :<localleader>ts "<cmd>Neotest summary<cr>" {:desc "open test summary"})
-                                   (use :<localleader>to "<cmd>Neotest output-panel<cr>" {:desc "open test output"})
-                                   (use :<localleader>tjn "<cmd>Neotest jump next<cr>" {:desc "jump to next test"})
-                                   (use :<localleader>tjp "<cmd>Neotest jump prev<cr>" {:desc "jump to previous test"})]})
+(tx :nvim-neotest/neotest {:dependencies [:nvim-neotest/nvim-nio
+                                          :nvim-lua/plenary.nvim
+                                          :antoinemadec/FixCursorHold.nvim
+                                          :nvim-treesitter/nvim-treesitter
+                                          :thenbe/neotest-playwright
+                                          :rouge8/neotest-rust
+                                          :olimorris/neotest-rspec
+                                          :nvim-neotest/neotest-python
+                                          :nvim-neotest/neotest-go]
+                           :config config
+                           :keys [(tx :<localleader>trn "<cmd>Neotest run<cr>" {:desc "run nearest test"})
+                                  (tx :<localleader>trf #(neotest.run.run (vim.fn.expand :%))
+                                                        {:desc "run test file"})
+                                  (tx :<localleader>ts "<cmd>Neotest summary<cr>" {:desc "open test summary"})
+                                  (tx :<localleader>to "<cmd>Neotest output-panel<cr>" {:desc "open test output"})
+                                  (tx :<localleader>tjn "<cmd>Neotest jump next<cr>" {:desc "jump to next test"})
+                                  (tx :<localleader>tjp "<cmd>Neotest jump prev<cr>" {:desc "jump to previous test"})]})

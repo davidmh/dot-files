@@ -1,4 +1,4 @@
-(import-macros {: use} :own.macros)
+(import-macros {: tx} :own.macros)
 
-[(use :tpope/vim-rails {:ft :ruby})
- (use :tpope/vim-rake {:ft :ruby})]
+[(tx :tpope/vim-rails {:ft :ruby})
+ (tx :tpope/vim-rake {:ft :ruby})]

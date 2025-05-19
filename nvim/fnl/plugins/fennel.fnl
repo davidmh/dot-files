@@ -1,3 +1,3 @@
-(import-macros {: use} :own.macros)
+(import-macros {: tx} :own.macros)
 
-[(use :Olical/nfnl {:ft :fennel})]
+(tx :Olical/nfnl {:ft :fennel})

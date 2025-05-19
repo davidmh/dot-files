@@ -1,6 +1,6 @@
 (import-macros {: augroup
                 : nmap
-                : use} :own.macros)
+                : tx} :own.macros)
 
 (fn fennel-rules []
   "Copies clojure's string definition from evaluating
@@ -32,16 +32,12 @@
 
 [:junegunn/vim-slash
 
- (use :mg979/vim-visual-multi {:keys [(use :<c-n> {:mode [:n :v]})
-                                      (use "\\\\A" {:mode [:n :v]})]})
+ (tx :mg979/vim-visual-multi {:keys [(tx :<c-n> {:mode [:n :v]})
+                                     (tx "\\\\A" {:mode [:n :v]})]})
 
- ;; open files from a terminal buffer in the current instance
- (use :willothy/flatten.nvim {:opts {:window {:open :smart}}
-                              :tag :v0.5.1})
+ (tx :AndrewRadev/switch.vim {:config config-switch
+                              :event :VeryLazy})
 
- (use :AndrewRadev/switch.vim {:config config-switch
-                               :event :VeryLazy})
+ (tx :tommcdo/vim-exchange {:keys [:cx :cX (tx :X {:mode :v})]})
 
- (use :tommcdo/vim-exchange {:keys [:cx :cX (use :X {:mode :v})]})
-
- (use :junegunn/vim-easy-align {:keys [(use :ga "<Plug>(EasyAlign)" {:mode [:x :n]})]})]
+ (tx :junegunn/vim-easy-align {:keys [(tx :ga "<Plug>(EasyAlign)" {:mode [:x :n]})]})]

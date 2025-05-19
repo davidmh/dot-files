@@ -1,18 +1,22 @@
 {
   "*.fnl": {
-    "alternate": [
-      "{}.lua"
-    ]
+    "alternate": ["{}.lua"]
   },
   "*.lua": {
-    "alternate": [
-      "{}.fnl"
-    ]
+    "alternate": ["{}.fnl"]
   },
   "fnl/own/*.fnl": {
     "type": "module",
     "template": [
-      "(local core (require :nfnl.core))"
+      "(local {open}: autoload : define{close} (require :nfnl.module))",
+      "(local M (define :own.{}))",
+      "",
+      "(fn M.my-function [arg]",
+      "  (comment",
+      "    (example.some-method)))",
+
+      "",
+      "M"
     ],
     "alternate": [
       "lua/own/{}.lua"
@@ -27,10 +31,8 @@
     "type": "plugin",
     "template": [
       "(import-macros {open}: use{close} :own.macros)",
-      "(local {open}: autoload{close} (require :nfnl.module))",
-      "(local core (autoload :nfnl.core))",
       "",
-      "(use :plugin-url {open}{close})"
+      "(use :plugin-url {open}:opts {open}{close}{close})"
     ],
     "alternate": [
       "lua/plugins/{}.lua"

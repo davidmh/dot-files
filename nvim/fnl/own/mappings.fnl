@@ -6,18 +6,16 @@
                 : augroup} :own.macros)
 (local {: autoload} (require :nfnl.module))
 
+(local git (autoload :own.git))
 (local gitsigns (autoload :gitsigns))
-(local toggle-term (autoload :toggleterm))
-(local terminal (autoload :toggleterm.terminal))
 (local navic (autoload :nvim-navic))
 (local projects (autoload :own.projects))
 (local core (autoload :nfnl.core))
 (local snacks (autoload :snacks))
+(local notifications (autoload :own.notifications))
 
 (local error-filter {:severity vim.diagnostic.severity.ERROR})
 (local warning-filter {:severity vim.diagnostic.severity.WARNING})
-
-(local state {:tmux-term nil})
 
 ; helpers
 
@@ -38,55 +36,33 @@
       vim.log.levels.INFO
       {:title :toggle :timeout 1000})))
 
-(fn term-tab [id]
-  (toggle-term.toggle_command "direction=tab dir=. size=0" id))
-
-(fn term-split [id]
-  (toggle-term.toggle_command "direction=horizontal dir=. size=0" id))
-
-(fn toggle-tmux []
-  (local term terminal.Terminal)
-
-  (if (= state.tmux-term nil)
-     (tset state :tmux-term (term:new {:id 200
-                                       :cmd "tmux -2 attach 2>/dev/null || tmux -2"
-                                       :direction :tab
-                                       :close_on_exit true
-                                       :on_exit #(tset state :tmux-term nil)})))
-  (state.tmux-term:toggle))
+(fn toggle-quickfix []
+  ; The vim.g.qf_bufnr is set in after/ftplugin/qf.fnl
+  (if (= vim.g.qf_bufnr nil)
+      (vim.cmd.copen)
+      (vim.cmd.cclose)))
 
 (fn toggle-zellij []
-  (local term terminal.Terminal)
-
-  (if (= state.tmux-zellij nil)
-      (tset state :tmux-zellij (term:new {:id 200
-                                          :cmd "zellij attach || zellij"
-                                          :direction :tab
-                                          :close_on_exit true
-                                          :on_exit #(tset state :tmux-zellij nil)}))
-      (state.tmux-zellij:toggle)))
+  (snacks.terminal.toggle "direnv exec . zellij attach || direnv exec . zellij"
+                          {:win {:position :float}}))
 
 ; Zellij uses ctrl-t to enter the tab mode
 ; This function makes sure we fire the righ command depending on the context
-(fn ctrl-t [id]
+(fn ctrl-t []
   (if (string.find (vim.fn.expand "%") "zellij")
     (vim.system [:zellij :action :switch-mode :tab])
-    (term-split id)))
+    (snacks.terminal.toggle "direnv exec . zsh")))
 
 (fn opts [desc] {:silent true : desc})
 
 (fn get-git-root []
   (core.get-in vim [:b :gitsigns_status_dict :root]))
 
-(fn search-cword []
-  (vim.cmd "normal! yiw")
-  (vim.cmd "GrugFar")
-  (vim.schedule #(vim.cmd "normal! p$")))
-
-(nmap :<leader><leader> #(projects.find-files (get-git-root) (opts "find files")))
+(nmap :<leader><leader> #(projects.find-files (get-git-root)) (opts "find files"))
+(nmap :<leader>/ :<ignore> {:desc :find})
 (nmap :<leader>/b grep-buffer-content (opts "find in open buffers"))
-(nmap :<leader>/p (cmd :GrugFar) (opts "find in project"))
-(nmap :<leader>/w search-cword (opts "find current word"))
+(nmap :<leader>/p #(snacks.picker.grep) (opts "find in project"))
+(nmap :<leader>/w #(snacks.picker.grep_word) (opts "find current word"))
 
 (nmap :<leader>m #(snacks.picker.marks) (opts "list marks"))
 
@@ -95,26 +71,17 @@
 (nmap :<leader>vp browse-plugins (opts "vim plugins"))
 
 ;; toggles
-(nmap :<leader>tb toggle-blame-line (opts "toggle blame line"))
+(nmap :<leader>t :<ignore> {:desc :toggle})
+(nmap :<leader>tb toggle-blame-line (opts "blame line"))
 
 ;; buffers
+(nmap :<leader>b :<ignore> {:desc :buffer})
 (nmap :<leader>bb #(snacks.picker.buffers) (opts "list buffers"))
 (nmap :<leader>bk #(snacks.bufdelete.delete) (opts "kill buffer"))
 (nmap :<leader>bo #(snacks.bufdelete.other) (opts "kill other buffers"))
 
 ;; toggle term
-(map [:n :t] :<C-t> #(ctrl-t 100) (opts "split term"))
-(map [:n :t] :<C-1> #(term-split 1) (opts "split term 1"))
-(map [:n :t] :<C-2> #(term-split 2) (opts "split term 2"))
-(map [:n :t] :<C-3> #(term-split 3) (opts "split term 3"))
-(map [:n :t] :<C-4> #(term-split 4) (opts "split term 4"))
-(map [:n :t] :<C-5> #(term-split 5) (opts "split term 5"))
-(map [:n :t] :<M-1> #(term-tab 1) (opts "tab term 1"))
-(map [:n :t] :<M-2> #(term-tab 2) (opts "tab term 2"))
-(map [:n :t] :<M-3> #(term-tab 3) (opts "tab term 3"))
-(map [:n :t] :<M-4> #(term-tab 4) (opts "tab term 4"))
-(map [:n :t] :<M-5> #(term-tab 5) (opts "tab term 5"))
-(map [:n :t] :<M-t> toggle-tmux (opts "tmux"))
+(map [:n :t] :<C-t> #(ctrl-t) (opts "split term"))
 (map [:n :t] :<M-z> toggle-zellij (opts "zellij"))
 
 ;; less used commands, grouped by feature
@@ -128,22 +95,16 @@
 ; mason
 (nmap :<localleader>m (cmd :Mason) (opts :mason))
 
-(local copy-on-select
-       {:confirm (fn [picker choice]
-                   (picker:close)
-                   (if choice
-                      (vim.fn.setreg "\"" choice.item.msg)))})
-
 ;; notifications
-(nmap :<localleader>no #(snacks.picker.notifications copy-on-select) (opts "open notifications"))
-(nmap :<localleader>nd #(snacks.notifier.hide) (opts "dismiss notifications"))
+(nmap :<localleader>n :<ignore> {:desc :notifications})
+(nmap :<localleader>no #(notifications.open) (opts "open notifications"))
+(nmap :<localleader>nd #(notifications.discard) (opts "dismiss notifications"))
 
 ;; projects
 (nmap :<localleader>p #(projects.select-project) (opts "switch projects"))
 
 ;; single key mappings
-(nmap :L (cmd :LToggle) (opts "list toggle"))
-(nmap :Q (cmd :QToggle) (opts "quickfix toggle"))
+(nmap :Q toggle-quickfix (opts "quickfix toggle"))
 (nmap :z= #(snacks.picker.spelling) (opts "suggest spelling"))
 
 ;; diagnostics
@@ -168,7 +129,7 @@
                          :silent true
                          : desc}))
 
-(fn on-attach [args]
+(fn lsp-mappings [args]
   (local bufnr args.buf)
   (local client (vim.lsp.get_client_by_id args.data.client_id))
   (vim.api.nvim_buf_set_option 0 :omnifunc :v:lua.vim.lsp.omnifunc)
@@ -178,6 +139,8 @@
                                    :max_width 130
                                    :max_heigth 20}) "lsp: hover")
   (buf-map :gd (cmd "Glance definitions") "lsp: go to definition")
+
+  (buf-map :<leader>l :<ignore> :lsp)
   (buf-map :<leader>lf (cmd "Glance references") "lsp: find references")
   (buf-map :<leader>li (cmd "Glance implementations") "lsp: implementation")
   (buf-map :<leader>lt (cmd "Glance type_definitions") "lsp: type definition")
@@ -194,13 +157,51 @@
   (when client.server_capabilities.documentSymbolProvider
     (navic.attach client bufnr)))
 
-(augroup :lsp-attach [:LspAttach {:callback on-attach}])
+(augroup :lsp-attach [:LspAttach {:callback lsp-mappings}])
+
+;; git
+
+(nmap :<leader>g :<ignore> {:desc :git})
+(nmap :<leader>gg (cmd "Neogit") {:desc :status})
+(nmap :<leader>gc (cmd "Neogit commit") {:desc :commit})
+(nmap :<leader>gw #(git.write) {:desc :write})
+(nmap :<leader>gr (cmd "Gread") {:desc :read})
+(nmap :<leader>gb (cmd "Git blame") {:desc :blame})
+(nmap :<leader>g- (cmd "Neogit branch") {:desc :branch})
+(nmap :<leader>gd (cmd "Gvdiffsplit") {:desc :diff})
+(nmap :<leader>gl #(snacks.picker.git_log view-in-fugitive) {:desc :log})
+(nmap :<leader>gL #(snacks.picker.git_log_file view-in-fugitive) {:desc "log file"})
+(nmap :<leader>g<space> #(git.files-in-commit :HEAD) {:desc "files in git HEAD"})
+(nmap :<leader>gf (cmd "Neogit fetch" {:desc :fetch}))
+(nmap :<leader>gp (cmd "Neogit pull" {:desc :pull}))
+(nmap :<leader>gB (cmd "GBrowse") {:desc :browse})
+(nmap :<leader>gh :<ignore> {:desc :hunk})
+(nmap :<leader>ghs (cmd "Gitsigns stage_hunk") {:desc :stage})
+(nmap :<leader>ghu (cmd "Gitsigns undo_stage_hunk") {:desc :unstage})
+(nmap :<leader>ghr (cmd "Gitsigns reset_hunk") {:desc :reset})
+(nmap :<leader>ghp (cmd "Gitsigns preview_hunk") {:desc :preview})
+(nmap :<leader>ghb #(gitsigns.blame_line {:full true}) {:desc :blame})
+(vmap :<leader>gl (cmd "'<,'>GBrowse") {:desc "current's selection git browse"
+                                        :nowait true
+                                        :silent true})
+(vmap :<leader>gl (cmd "'<,'>NeogitLogCurrent") {:desc "current's selection git log"
+                                                 :nowait true
+                                                 :silent true})
+
+(nmap "[h" (cmd "Gitsigns prev_hunk") {:desc "previous git hunk"
+                                       :nowait true
+                                       :silent true})
+(nmap "]h" (cmd "Gitsigns next_hunk") {:desc "next git hunk"
+                                       :nowait true
+                                       :silent true})
 
 (nmap :<M-x> #(snacks.picker.commands {:layout {:preset :dropdown}}) {:nowait true :silent true})
 (nmap :<M-h> #(snacks.picker.help {:layout {:preset :dropdown}}) {:nowait true :silent true})
 (nmap :<M-k> #(snacks.picker.keymaps {:layout {:preset :vscode}}) {:nowait true :silent true})
 (nmap :<M-o> #(snacks.picker.recent) {:nowait true :silent true})
 (nmap :<M-s> #(snacks.picker) {:nowait true :silent true})
+
+(nmap :<leader>ff #(snacks.picker.explorer {:auto_close true}) {:desc "file explorer"})
 
 ; Windows
 ;
@@ -231,13 +232,24 @@
 
 (augroup :auto-resize-windows [:VimResized {:pattern :* :command "wincmd ="}])
 
+(local action-name {:y :yank
+                    :Y "yank line"
+                    :d :delete
+                    :D "delete line"
+                    :p :put
+                    :P "put before"
+                    :c :change
+                    :C "change line"})
+
 ; On-demand OS clipboard sharing
 ;
 ; Creates a map of handful of actions to share with
 ; the system clipbpard using the + registry.
 (each [_ action (ipairs [:y :d :p :c])]
-   (let [Action (string.upper action)]
-      (nmap (.. :<leader> action) (.. "\"+" action))
-      (vmap (.. :<leader> action) (.. "\"+" action))
-      (nmap (.. :<leader> Action) (.. "\"+" Action))
-      (vmap (.. :<leader> Action) (.. "\"+" Action))))
+  (local Action (string.upper action))
+  (local desc (. action-name action))
+  (local Desc (. action-name Action))
+  (nmap (.. :<leader> action) (.. "\"+" action) {:desc desc})
+  (vmap (.. :<leader> action) (.. "\"+" action) {:desc desc})
+  (nmap (.. :<leader> Action) (.. "\"+" Action) {:desc Desc})
+  (vmap (.. :<leader> Action) (.. "\"+" Action) {:desc Desc}))
