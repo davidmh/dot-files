@@ -59,11 +59,11 @@ vim.keymap.set("n", "<leader><leader>", _6_, opts("find files"))
 vim.keymap.set("n", "<leader>/", "<ignore>", {desc = "find"})
 vim.keymap.set("n", "<leader>/b", grep_buffer_content, opts("find in open buffers"))
 local function _7_()
-  return snacks.picker.grep()
+  return snacks.picker.grep({dirs = {get_git_root()}})
 end
 vim.keymap.set("n", "<leader>/p", _7_, opts("find in project"))
 local function _8_()
-  return snacks.picker.grep_word()
+  return snacks.picker.grep_word({dirs = {get_git_root()}})
 end
 vim.keymap.set("n", "<leader>/w", _8_, opts("find current word"))
 local function _9_()

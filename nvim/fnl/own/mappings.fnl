@@ -61,8 +61,8 @@
 (nmap :<leader><leader> #(projects.find-files (get-git-root)) (opts "find files"))
 (nmap :<leader>/ :<ignore> {:desc :find})
 (nmap :<leader>/b grep-buffer-content (opts "find in open buffers"))
-(nmap :<leader>/p #(snacks.picker.grep) (opts "find in project"))
-(nmap :<leader>/w #(snacks.picker.grep_word) (opts "find current word"))
+(nmap :<leader>/p #(snacks.picker.grep {:dirs [(get-git-root)]}) (opts "find in project"))
+(nmap :<leader>/w #(snacks.picker.grep_word {:dirs [(get-git-root)]}) (opts "find current word"))
 
 (nmap :<leader>m #(snacks.picker.marks) (opts "list marks"))
 
