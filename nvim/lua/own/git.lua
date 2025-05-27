@@ -92,7 +92,7 @@ M["files-in-commit"] = function(ref)
   return vim.ui.select(files, {prompt = title}, _10_)
 end
 M["copy-remote-url"] = function(opts)
-  local url = M["git-url-with-range"](opts)
+  local url = M["git-url-with-range"]((opts or {}))
   vim.fn.setreg("+", url)
   return vim.notify(url, vim.log.levels.INFO, {title = "Copied to clipboard", icon = "\239\131\170"})
 end

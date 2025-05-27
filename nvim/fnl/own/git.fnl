@@ -71,7 +71,7 @@
                                               (vim.cmd (.. "edit " git-root "/" $1)))))))
 
 (fn M.copy-remote-url [opts]
-  (local url (M.git-url-with-range opts))
+  (local url (M.git-url-with-range (or opts {})))
   (vim.fn.setreg :+ url)
   (vim.notify url vim.log.levels.INFO {:title "Copied to clipboard"
                                        :icon :}))
