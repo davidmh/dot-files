@@ -19,7 +19,7 @@ M.git = function(...)
   end
 end
 M["git-remote-base-url"] = function()
-  local remote = git("remote", "get-url", "origin")
+  local remote = M.git("remote", "get-url", "origin")
   local base_url
   do
     local _3_ = str.split(remote, ":")
@@ -35,10 +35,10 @@ M["git-remote-base-url"] = function()
   return string.gsub(base_url, ".git$", "")
 end
 M["git-url"] = function()
-  local repo_root = git("rev-parse", "--show-toplevel")
+  local repo_root = M.git("rev-parse", "--show-toplevel")
   local absolute_path = vim.fn.expand("%:p")
   local relative_path = string.sub(absolute_path, (2 + #repo_root))
-  local commit = git("rev-parse", "HEAD")
+  local commit = M.git("rev-parse", "HEAD")
   return (M["git-remote-base-url"]() .. "/blob/" .. commit .. "/" .. relative_path)
 end
 M["git-url-with-range"] = function(opts)
@@ -95,5 +95,16 @@ M["copy-remote-url"] = function(opts)
   local url = M["git-url-with-range"](opts)
   vim.fn.setreg("+", url)
   return vim.notify(url, vim.log.levels.INFO, {title = "Copied to clipboard", icon = "\239\131\170"})
+end
+M["view-in-fugitive"] = function(picker, item)
+  picker:close()
+  if item then
+    local function _13_()
+      return vim.cmd(("Gtabedit " .. item.commit))
+    end
+    return vim.schedule(_13_)
+  else
+    return nil
+  end
 end
 return M

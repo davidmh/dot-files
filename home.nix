@@ -52,6 +52,7 @@
     unstable.nixpkgs-fmt
     unstable.nerd-fonts.hasklug
     unstable.tree-sitter
+    unstable.shellcheck
     wezterm
 
     # Remix
@@ -125,6 +126,17 @@
 
     diff-so-fancy.enable = true;
     lfs.enable = true;
+  };
+
+  programs.jujutsu = {
+    enable = true;
+    package = pkgs.unstable.jujutsu;
+    settings = {
+      user = {
+        name = "David Mejorado";
+        email = "david.mejorado@gmail.com";
+      };
+    };
   };
 
   programs.emacs = {

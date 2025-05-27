@@ -16,5 +16,6 @@
 (vim.schedule #(do
                 (require :own.mappings)
                 (require :own.commands)
+                (require :own.autocommands)
                 (require :own.projects)
                 (require :own.sync-files)))

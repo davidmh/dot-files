@@ -62,7 +62,7 @@
 [(tx :nvim-treesitter/nvim-treesitter-textobjects {:name :nvim-treesitter-textobjects})
  (tx :nvim-treesitter/nvim-treesitter
      {:dependencies [:nvim-treesitter-textobjects]
-      :build :TSUpdate
+      :build ::TSUpdate
       :config config})
 
  (tx :davidmh/mdx.nvim {:dependencies [:nvim-treesitter/nvim-treesitter]

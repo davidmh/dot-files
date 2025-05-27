@@ -47,7 +47,7 @@
                           {:win {:position :float}}))
 
 ; Zellij uses ctrl-t to enter the tab mode
-; This function makes sure we fire the righ command depending on the context
+; This function makes sure we fire the right command depending on the context
 (fn ctrl-t []
   (if (string.find (vim.fn.expand "%") "zellij")
     (vim.system [:zellij :action :switch-mode :tab])
@@ -113,9 +113,6 @@
 (nmap "[w" #(vim.diagnostic.jump (core.merge {:float true :count -1} warning-filter)) (opts "next warning"))
 (nmap "]w" #(vim.diagnostic.jump (core.merge {:float true :count 1} warning-filter)) (opts "previous warning"))
 
-; LSP mappings
-; Set only to the buffer where the LSP client is attached
-
 (vim.api.nvim_create_augroup :eslint-autofix {:clear true})
 
 ; https://github.com/neovim/nvim-lspconfig/blob/da7461b596d70fa47b50bf3a7acfaef94c47727d/lua/lspconfig/server_configurations/eslint.lua#L141-L145
@@ -129,6 +126,7 @@
                          :silent true
                          : desc}))
 
+; Set only to the buffer where the LSP client is attached
 (fn lsp-mappings [args]
   (local bufnr args.buf)
   (local client (vim.lsp.get_client_by_id args.data.client_id))
@@ -137,7 +135,7 @@
   ;; Mappings
   (buf-map :K #(vim.lsp.buf.hover {:wrap false
                                    :max_width 130
-                                   :max_heigth 20}) "lsp: hover")
+                                   :max_height 20}) "lsp: hover")
   (buf-map :gd (cmd "Glance definitions") "lsp: go to definition")
 
   (buf-map :<leader>l :<ignore> :lsp)
@@ -169,8 +167,8 @@
 (nmap :<leader>gb (cmd "Git blame") {:desc :blame})
 (nmap :<leader>g- (cmd "Neogit branch") {:desc :branch})
 (nmap :<leader>gd (cmd "Gvdiffsplit") {:desc :diff})
-(nmap :<leader>gl #(snacks.picker.git_log view-in-fugitive) {:desc :log})
-(nmap :<leader>gL #(snacks.picker.git_log_file view-in-fugitive) {:desc "log file"})
+(nmap :<leader>gl #(snacks.picker.git_log {:confirm git.view-in-fugitive}) {:desc :log})
+(nmap :<leader>gL #(snacks.picker.git_log_file {:confirm git.view-in-fugitive}) {:desc "log file"})
 (nmap :<leader>g<space> #(git.files-in-commit :HEAD) {:desc "files in git HEAD"})
 (nmap :<leader>gf (cmd "Neogit fetch" {:desc :fetch}))
 (nmap :<leader>gp (cmd "Neogit pull" {:desc :pull}))

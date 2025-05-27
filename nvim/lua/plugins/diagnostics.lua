@@ -2,10 +2,8 @@
 local core = require("nfnl.core")
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
-local str = require("own.string")
 local null_ls = autoload("null-ls")
 local u = autoload("null-ls.utils")
-local cspell = autoload("cspell")
 local cfg = autoload("own.config")
 local function root_pattern(pattern)
   local function _3_(_2_)
@@ -22,7 +20,6 @@ local function with_root_file(...)
   end
   return _4_
 end
-local cspell_filetypes = {"css", "clojure", "html", "javascript", "json", "less", "lua", "python", "ruby", "typescript", "typescriptreact", "yaml"}
 local function get_source_name(diagnostic)
   local or_5_ = diagnostic.source
   if not or_5_ then
@@ -55,25 +52,12 @@ local function on_attach(client, bufnr)
     return nil
   end
 end
-local function on_add_to_json(_12_)
-  local cspell_config_path = _12_["cspell_config_path"]
-  return os.execute(str.format("jq -S '.words |= sort' ${path} > ${path}.tmp && mv ${path}.tmp ${path}", {path = cspell_config_path}))
-end
-local function on_add_to_dictionary(_13_)
-  local dictionary_path = _13_["dictionary_path"]
-  return os.execute(str.format("sort ${path} -o ${path}", {path = dictionary_path}))
-end
-local cspell_config = {on_add_to_json = on_add_to_json, on_add_to_dictionary = on_add_to_dictionary, cspell_config_dirs = {"~/.config/cspell"}}
 local function config()
   local formatting = null_ls.builtins.formatting
   local diagnostics = null_ls.builtins.diagnostics
-  local function _14_(_241)
-    _241["severity"] = vim.diagnostic.severity.W
-    return nil
-  end
-  local function _15_(params)
+  local function _12_(params)
     return core.concat({"run", "mypy"}, diagnostics.mypy._opts.args(params))
   end
-  return null_ls.setup({sources = {diagnostics.selene.with({cwd = root_pattern("selene.toml"), condition = with_root_file("selene.toml")}), diagnostics.pylint.with({cwd = root_pattern("requirements-dev.txt"), condition = with_root_file("venv/bin/pylint"), prefer_local = ".venv/bin", args = {"--from-stdin", "$FILENAME", "-f", "json", "-d", "line-too-long,missing-function-docstring"}}), cspell.diagnostics.with({cwd = root_pattern("cspell.json"), prefer_local = "node_modules/.bin", filetypes = cspell_filetypes, diagnostics_postprocess = _14_, config = cspell_config}), cspell.code_actions.with({cwd = root_pattern("cspell.json"), prefer_local = "node_modules/.bin", filetypes = cspell_filetypes, config = cspell_config}), diagnostics.mypy.with({command = "uv", args = _15_, prefer_local = ".venv/bin"}), formatting.gofmt, diagnostics.sqlfluff.with({extra_args = {"--dialect", "postgres"}, prefer_local = ".venv/bin"}), formatting.sqlfluff.with({extra_args = {"--dialect", "postgres"}, prefer_local = ".venv/bin"}), formatting.stylua, formatting.terraform_fmt, formatting.nixpkgs_fmt}, on_attach = on_attach})
+  return null_ls.setup({sources = {diagnostics.selene.with({cwd = root_pattern("selene.toml"), condition = with_root_file("selene.toml")}), diagnostics.pylint.with({cwd = root_pattern("requirements-dev.txt"), condition = with_root_file("venv/bin/pylint"), prefer_local = ".venv/bin", args = {"--from-stdin", "$FILENAME", "-f", "json", "-d", "line-too-long,missing-function-docstring"}}), diagnostics.mypy.with({command = "uv", args = _12_, prefer_local = ".venv/bin"}), formatting.gofmt, diagnostics.sqlfluff.with({extra_args = {"--dialect", "postgres"}, prefer_local = ".venv/bin"}), formatting.sqlfluff.with({extra_args = {"--dialect", "postgres"}, prefer_local = ".venv/bin"}), formatting.stylua, formatting.terraform_fmt, formatting.nixpkgs_fmt}, on_attach = on_attach})
 end
-return {"nvimtools/none-ls.nvim", dependencies = {"nvim-lua/plenary.nvim", "davidmh/cspell.nvim"}, config = config}
+return {"nvimtools/none-ls.nvim", dependencies = {"nvim-lua/plenary.nvim"}, config = config}

@@ -56,7 +56,7 @@ local function _10_(self)
   self["HINT"] = diagnostic_count("HINT")
   return nil
 end
-diagnostics_block = {diagnostic("ERROR", "red"), diagnostic("WARN", "yellow"), diagnostic("INFO", "fg"), diagnostic("HINT", "green"), empty_space, conditon = _9_, init = _10_, update = {"DiagnosticChanged", "BufEnter", "ColorScheme"}}
+diagnostics_block = {diagnostic("ERROR", "red"), diagnostic("WARN", "yellow"), diagnostic("INFO", "fg"), diagnostic("HINT", "green"), empty_space, condition = _9_, init = _10_, update = {"DiagnosticChanged", "BufEnter", "ColorScheme"}}
 local git_block
 local function _11_()
   return conditions.is_git_repo()

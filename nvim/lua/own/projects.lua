@@ -29,7 +29,7 @@ vim.schedule(_5_)
 local function get_projects()
   return vim.json.decode(slurp(projects_path))
 end
-local function add_project()
+M.add = function()
   local path = vim.fn.getcwd()
   if string.match(path, ":") then
     return
@@ -94,5 +94,4 @@ end
 M["project-list"] = function()
   return map(first, sort_projects(kv_pairs(get_projects())))
 end
-vim.api.nvim_create_autocmd("User", {pattern = "RooterChDir", callback = add_project})
 return M

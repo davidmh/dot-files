@@ -1,4 +1,4 @@
-(import-macros {: tx : autocmd} :own.macros)
+(import-macros {: tx} :own.macros)
 (local {: autoload} (require :nfnl.module))
 (local core (autoload :nfnl.core))
 (local cfg (autoload :own.config))
@@ -8,7 +8,6 @@
 (local lspconfig (autoload :lspconfig))
 (local mason (autoload :mason))
 (local mason-registry (autoload :mason-registry))
-(local mason-lspconfig (autoload :mason-lspconfig))
 (local glance (autoload :glance))
 
 ;; mason
@@ -35,7 +34,7 @@
 ;; The mason-lspconfig plugin allows you to define a list of LSP servers
 ;; to install automatically, this is meant to replicate that functionality
 ;; for linters and formatters.
-(local ensure-linters [:cspell :luacheck :stylua])
+(local ensure-linters [:luacheck :stylua])
 
 (fn mason-config []
   (mason.setup {:ui {:border cfg.border}})
@@ -48,24 +47,14 @@
            (pkg:install))))
     100))
 
-(fn ruby-lsps []
-  (lspconfig.solargraph.setup {:root_dir (util.root_pattern :.git)
-                               :cmd [:bundle :exec :solargraph :stdio]})
-
-  ; format on save with rubocop through solargraph
-  (autocmd :BufWritePre {:pattern :*.rb
-                         :callback #(vim.lsp.buf.format)}))
-
 (fn lsp-config []
   (local git-root (util.root_pattern :.git))
   (local deno-root (util.root_pattern :deno.json :deno.jsonc))
-  (local tailwind-root (util.root_pattern :tailwind.config.ts))
   (local python-root (util.root_pattern :uv.lock :venv/bin/python))
   (local client-capabilities (vim.lsp.protocol.make_client_capabilities))
   (local base-settings {:capabilities (cmp-lsp.default_capabilities client-capabilities)
                         :init_options {:preferences {:includeCompletionsWithSnippetText true
                                                      :includeCompletionsForImportStatements true}}})
-
 
   (local server-configs {:jsonls {:settings {:json {:schemas (schema-store.json.schemas)
                                                     :validate {:enable true}}}}
@@ -86,23 +75,20 @@
                                                                  :preview true}}}}
                          :harper_ls {:settings {:harper-ls {:codeActions {:forceStable true}}}}
                                      ;:filetypes [:markdown :gitcommit :text]}
+                         :gopls {}
+                         :typos_lsp {}
                          :cssls {:root_dir git-root}
-                         :shellcheck {:root_dir git-root}
-                         :tailwindcss {:root_dir tailwind-root}})
+                         :bashls {:root_dir git-root}
+                         :solargraph {:root_dir git-root
+                                      :cmd [:bundle :exec :solargraph :stdio]}
+                         :denols {:root_dir deno-root}})
 
-  (each [_ server-name (ipairs (mason-lspconfig.get_installed_servers))]
+  (each [_ server-name (ipairs (core.keys server-configs))]
     (let [server-setup (core.get-in lspconfig [server-name :setup])
           server-config (core.get server-configs server-name {})]
       (if (= server-name :gopls)
           (server-setup server-config)
           (server-setup (core.merge base-settings server-config)))))
-
-  (ruby-lsps)
-  (lspconfig.denols.setup {:root_dir deno-root})
-  (comment
-    ; upcoming
-    (vim.lsp.config :ty {:cmd [:uv :run :ty :server]})
-    (vim.lsp.enable :ty))
   nil)
 
 (fn enter-quickfix [] (glance.actions.quickfix))
@@ -120,7 +106,8 @@
  (tx :williamboman/mason.nvim {:config mason-config})
 
  (tx :williamboman/mason-lspconfig.nvim {:dependencies [:williamboman/mason.nvim]
-                                         :opts {:ensure_installed [:bashls
+                                         :opts {:automatic_enable false
+                                                :ensure_installed [:bashls
                                                                    :clojure_lsp
                                                                    :cssls
                                                                    :jdtls
@@ -131,7 +118,7 @@
                                                                    :eslint
                                                                    :fennel_language_server
                                                                    :harper_ls
-                                                                   :tailwindcss]}})
+                                                                   :typos_lsp]}})
 
  (tx  :neovim/nvim-lspconfig {:dependencies [:williamboman/mason.nvim
                                              :williamboman/mason-lspconfig.nvim

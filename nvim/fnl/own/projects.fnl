@@ -1,4 +1,3 @@
-(import-macros {: autocmd} :own.macros)
 (local {: concat
         : kv-pairs
         : first
@@ -22,7 +21,7 @@
 (fn get-projects []
   (vim.json.decode (slurp projects-path)))
 
-(fn add-project []
+(fn M.add []
   (local path (vim.fn.getcwd))
 
   ;; Some special buffers may yield a cwd that does not exist
@@ -79,8 +78,5 @@
        (kv-pairs)
        (sort-projects)
        (map first)))
-
-(autocmd :User {:pattern :RooterChDir
-                :callback add-project})
 
 M

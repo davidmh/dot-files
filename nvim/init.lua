@@ -9,6 +9,7 @@ lazy.setup("plugins", {dev = {path = (vim.env.HOME .. "/Projects"), fallback = t
 local function _2_()
   require("own.mappings")
   require("own.commands")
+  require("own.autocommands")
   require("own.projects")
   return require("own.sync-files")
 end

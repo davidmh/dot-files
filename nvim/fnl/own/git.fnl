@@ -17,7 +17,7 @@
     (M.git-error result)))
 
 (fn M.git-remote-base-url []
-  (let [remote (git :remote :get-url :origin)
+  (let [remote (M.git :remote :get-url :origin)
         base-url (match (str.split remote ::)
                   ["git@github.com" path] (.. "https://github.com/" path)
                   ["https"] remote)]
@@ -25,10 +25,10 @@
 
 ; Open the current file's remote URL
 (fn M.git-url []
-  (let [repo-root (git :rev-parse :--show-toplevel)
+  (let [repo-root (M.git :rev-parse :--show-toplevel)
         absolute-path (vim.fn.expand :%:p)
         relative-path (string.sub absolute-path (+ 2 (length repo-root)))
-        commit (git :rev-parse :HEAD)]
+        commit (M.git :rev-parse :HEAD)]
       (.. (M.git-remote-base-url) "/blob/" commit "/" relative-path)))
 
 (fn M.git-url-with-range [opts]
@@ -75,5 +75,10 @@
   (vim.fn.setreg :+ url)
   (vim.notify url vim.log.levels.INFO {:title "Copied to clipboard"
                                        :icon :}))
+
+; snack picker action
+(fn M.view-in-fugitive [picker item]
+   (picker:close)
+   (if item (vim.schedule #(vim.cmd (.. "Gtabedit " item.commit)))))
 
 M

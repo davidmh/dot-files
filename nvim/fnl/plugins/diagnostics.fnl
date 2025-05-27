@@ -1,10 +1,8 @@
 (import-macros {: tx} :own.macros)
 (local core (require :nfnl.core))
 (local {: autoload} (require :nfnl.module))
-(local str (require :own.string))
 (local null-ls (autoload :null-ls))
 (local u (autoload :null-ls.utils))
-(local cspell (autoload :cspell))
 (local cfg (autoload :own.config))
 
 (fn root-pattern [pattern]
@@ -15,19 +13,6 @@
 (fn with-root-file [& files]
   (fn [utils]
     (utils.root_has_file files)))
-
-(local cspell-filetypes [:css
-                         :clojure
-                         :html
-                         :javascript
-                         :json
-                         :less
-                         :lua
-                         :python
-                         :ruby
-                         :typescript
-                         :typescriptreact
-                         :yaml])
 
 (fn get-source-name [diagnostic]
   (or diagnostic.source
@@ -59,20 +44,6 @@
                                                :callback #(vim.lsp.buf.format {:bufnr bufnr})
                                                :group :lsp-formatting})))
 
-(fn on_add_to_json [{: cspell_config_path}]
-  (-> "jq -S '.words |= sort' ${path} > ${path}.tmp && mv ${path}.tmp ${path}"
-      (str.format {:path cspell_config_path})
-      (os.execute)))
-
-(fn on_add_to_dictionary [{: dictionary_path}]
-  (-> "sort ${path} -o ${path}"
-      (str.format {:path dictionary_path})
-      (os.execute)))
-
-(local cspell-config {: on_add_to_json
-                      : on_add_to_dictionary
-                      :cspell_config_dirs ["~/.config/cspell"]})
-
 (fn config []
   (local formatting null-ls.builtins.formatting)
   (local diagnostics null-ls.builtins.diagnostics)
@@ -85,17 +56,6 @@
                                          :condition (with-root-file :venv/bin/pylint)
                                          :prefer_local :.venv/bin
                                          :args [:--from-stdin :$FILENAME :-f :json :-d "line-too-long,missing-function-docstring"]})
-
-               (cspell.diagnostics.with {:cwd (root-pattern :cspell.json)
-                                         :prefer_local :node_modules/.bin
-                                         :filetypes cspell-filetypes
-                                         :diagnostics_postprocess #(tset $1 :severity vim.diagnostic.severity.W)
-                                         :config cspell-config})
-
-               (cspell.code_actions.with {:cwd (root-pattern :cspell.json)
-                                          :prefer_local :node_modules/.bin
-                                          :filetypes cspell-filetypes
-                                          :config cspell-config})
 
                (diagnostics.mypy.with {:command :uv
                                        :args (fn [params]
@@ -113,6 +73,5 @@
 
      :on_attach on-attach}))
 
-(tx :nvimtools/none-ls.nvim {:dependencies [:nvim-lua/plenary.nvim
-                                            :davidmh/cspell.nvim]
+(tx :nvimtools/none-ls.nvim {:dependencies [:nvim-lua/plenary.nvim]
                              : config})

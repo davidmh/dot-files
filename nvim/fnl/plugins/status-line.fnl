@@ -38,7 +38,7 @@
                              (diagnostic :INFO :fg)
                              (diagnostic :HINT :green)
                              empty-space
-                             {:conditon #(conditions.has_diagnostics)
+                             {:condition #(conditions.has_diagnostics)
                               :init (fn [self]
                                       (tset self :ERROR (diagnostic-count :ERROR))
                                       (tset self :WARN (diagnostic-count :WARN))
