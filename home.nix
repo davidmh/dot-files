@@ -31,6 +31,7 @@
     pass
     pnpm
     selene
+    stylua
     silver-searcher
     ripgrep
     tig
@@ -55,6 +56,24 @@
     unstable.shellcheck
     unstable.kitty
     unstable.wezterm
+
+    # LSP
+    unstable.air-formatter
+    unstable.bash-language-server
+    unstable.clojure-lsp
+    unstable.fennel-ls
+    unstable.gopls
+    unstable.harper
+    unstable.jdt-language-server
+    unstable.lua-language-server
+    unstable.nil
+    unstable.python313Packages.jedi-language-server
+    unstable.ruff
+    unstable.terraform-ls
+    unstable.tflint
+    unstable.typos-lsp
+    unstable.vscode-langservers-extracted
+    unstable.yaml-language-server
 
     # Remix
     colima
@@ -183,6 +202,10 @@
   };
 
   programs.zellij = {
+    enable = true;
+  };
+
+  programs.emacs = {
     enable = true;
   };
 

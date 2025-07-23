@@ -9,7 +9,7 @@
   (when (= client.name :eslint)
     (autocmd :BufWritePre {:group :own.autocommands
                            :buffer args.buf
-                           :command :EslintFixAll}))
+                           :command :LspEslintFixAll}))
 
   (when (vim.tbl_contains [:nil_ls :solargraph :terraformls :air]
                           client.name)

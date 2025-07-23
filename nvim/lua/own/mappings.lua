@@ -100,7 +100,6 @@ local function _16_()
 end
 vim.keymap.set("n", "<localleader>c", _16_, opts("home manager config"))
 vim.keymap.set("n", "<localleader>l", cmd("Lazy show"), opts("lazy ui"))
-vim.keymap.set("n", "<localleader>m", cmd("Mason"), opts("mason"))
 vim.keymap.set("n", "<localleader>n", "<ignore>", {desc = "notifications"})
 local function _17_()
   return notifications.open()
@@ -138,9 +137,7 @@ vim.keymap.set("n", "]w", _24_, opts("previous warning"))
 local function buf_map(keymap, callback, desc)
   return vim.keymap.set("n", keymap, callback, {buffer = true, silent = true, desc = desc})
 end
-local function lsp_mappings(args)
-  local bufnr = args.buf
-  local client = vim.lsp.get_client_by_id(args.data.client_id)
+local function lsp_mappings()
   vim.api.nvim_buf_set_option(0, "omnifunc", "v:lua.vim.lsp.omnifunc")
   local function _25_()
     return vim.lsp.buf.hover({max_width = 130, max_height = 20, wrap = false})

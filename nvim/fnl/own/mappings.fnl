@@ -91,9 +91,6 @@
 ;; lazy ui
 (nmap :<localleader>l (cmd "Lazy show") (opts "lazy ui"))
 
-; mason
-(nmap :<localleader>m (cmd :Mason) (opts :mason))
-
 ;; notifications
 (nmap :<localleader>n :<ignore> {:desc :notifications})
 (nmap :<localleader>no #(notifications.open) (opts "open notifications"))
@@ -118,9 +115,7 @@
                          : desc}))
 
 ; Set only to the buffer where the LSP client is attached
-(fn lsp-mappings [args]
-  (local bufnr args.buf)
-  (local client (vim.lsp.get_client_by_id args.data.client_id))
+(fn lsp-mappings []
   (vim.api.nvim_buf_set_option 0 :omnifunc :v:lua.vim.lsp.omnifunc)
 
   ;; Mappings

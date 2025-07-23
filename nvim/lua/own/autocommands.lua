@@ -6,7 +6,7 @@ local navic = autoload("nvim-navic")
 local function on_lsp_attach(args)
   local client = vim.lsp.get_client_by_id(args.data.client_id)
   if (client.name == "eslint") then
-    vim.api.nvim_create_autocmd("BufWritePre", {group = "own.autocommands", buffer = args.buf, command = "EslintFixAll"})
+    vim.api.nvim_create_autocmd("BufWritePre", {group = "own.autocommands", buffer = args.buf, command = "LspEslintFixAll"})
   else
   end
   if vim.tbl_contains({"nil_ls", "solargraph", "terraformls", "air"}, client.name) then
