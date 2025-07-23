@@ -1,0 +1,21 @@
+#!/bin/bash
+
+KITTY_SOCKET="unix:/tmp/mykitty"
+
+focus-kitty () {
+  kitten @ focus-window --to $KITTY_SOCKET &> /dev/null
+}
+
+start-kitty () {
+  kitty --detach --directory="~" -c ~/.config/kitty/kitty.conf --listen-on $KITTY_SOCKET
+  focus-kitty
+}
+
+# attempt to focus an existing kitty instance
+focus-kitty
+
+# If the previous command failed (exit code was not 0), initialize and focus
+# the Kitty application window.
+if [ $? -ne 0 ]; then
+  start-kitty
+fi

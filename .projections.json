@@ -1,0 +1,11 @@
+{
+  "home.nix": {
+    "type": "home",
+    "alternates": ["flake.nix"],
+    "dispatch": "home-manager switch"
+  },
+  "flake.nix": {
+    "type": "flake",
+    "alternates": ["home.nix"]
+  }
+}

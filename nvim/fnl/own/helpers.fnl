@@ -26,4 +26,10 @@
       (when (path:exists)
         (lua "return dir")))))
 
+(fn M.past-due? [iso-date]
+  (vim.validate :iso-date iso-date :string)
+  (local (year month day) (iso-date:match "(%d+)-(%d+)-(%d+)"))
+  (>= (os.time)
+      (os.time {: year : month : day})))
+
 M

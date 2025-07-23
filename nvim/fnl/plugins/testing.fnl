@@ -32,8 +32,9 @@
                   :discovery {:enabled false}
                   :icons {:failed :
                           :passed :
+                          :watching :
                           :running :󰦖
-                          :watching :}}))
+                          :running_animated [:⠋ :⠙ :⠹ :⠸ :⠼ :⠴ :⠦ :⠧ :⠇ :⠏]}}))
 
 (tx :nvim-neotest/neotest {:dependencies [:nvim-neotest/nvim-nio
                                           :nvim-lua/plenary.nvim

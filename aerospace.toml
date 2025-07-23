@@ -34,6 +34,7 @@ default-root-container-orientation = 'auto'
 # See https://nikitabobko.github.io/AeroSpace/commands#move-mouse
 # Fallback value (if you omit the key): on-focused-monitor-changed = []
 on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
+on-focus-changed = ['move-mouse window-lazy-center']
 
 # You can effectively turn off macOS "Hide application" (cmd-h) feature by toggling this flag
 # Useful if you don't use this macOS feature, but accidentally hit cmd-h or cmd-alt-h key
@@ -83,13 +84,7 @@ outer.right =      15
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
 # You can uncomment the following lines to open up terminal with alt + enter shortcut (like in i3)
-alt-enter = '''
-exec-and-forget osascript -e '
-  tell application "WezTerm"
-    activate
-  end tell
-'
-'''
+alt-enter = 'exec-and-forget ~/.config/home-manager/kitty-wrapper'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
 alt-shift-slash = 'layout tiles horizontal vertical'

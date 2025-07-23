@@ -24,7 +24,7 @@ local function neotest_python_adapter()
   return neotest_python({python = ".venv/bin/python"})
 end
 local function config()
-  return neotest.setup({log_level = vim.log.levels.DEBUG, adapters = {neotest_rspec_adapter(), require("neotest-rust"), require("neotest-go"), neotest_python_adapter(), neotest_playwright.adapter({})}, quickfix = {enabled = true, open = false}, discovery = {enabled = false}, icons = {failed = "\239\145\167", passed = "\239\144\174", running = "\243\176\166\150", watching = "\239\145\129"}})
+  return neotest.setup({log_level = vim.log.levels.DEBUG, adapters = {neotest_rspec_adapter(), require("neotest-rust"), require("neotest-go"), neotest_python_adapter(), neotest_playwright.adapter({})}, quickfix = {enabled = true, open = false}, discovery = {enabled = false}, icons = {failed = "\239\145\167", passed = "\239\144\174", watching = "\239\145\129", running = "\243\176\166\150", running_animated = {"\226\160\139", "\226\160\153", "\226\160\185", "\226\160\184", "\226\160\188", "\226\160\180", "\226\160\166", "\226\160\167", "\226\160\135", "\226\160\143"}}})
 end
 local function _4_()
   return neotest.run.run(vim.fn.expand("%"))

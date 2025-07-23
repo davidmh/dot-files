@@ -1,6 +1,8 @@
 (import-macros {: tx} :own.macros)
+(local {: autoload} (require :nfnl.module))
 (local {: assoc-in : get} (require :nfnl.core))
 (local {: find-files : project-list} (require :own.projects))
+(local actions (autoload :snacks.picker.actions))
 
 (math.randomseed (os.time))
 
@@ -41,12 +43,22 @@
                                         :win {:relative :cursor
                                               :col 0
                                               :row 1}}
+                                :image {:force true
+                                        :doc {:inline true}}
                                 :notifier {:enabled true
                                            :style :fancy
                                            :margin {:bottom 2}
                                            :top_down false}
-                                :picker {:sources {:files {:win {:input {:keys {:<c-x> (tx :edit_split {:mode [:i :n]})}}}
-                                                           :hidden true}}}
+                                :picker {:sources {:commands {:confirm :cmd!}
+                                                   :files {:win {:input {:keys {:<c-x> (tx :edit_split {:mode [:i :n]})}}}
+                                                           :hidden true}}
+                                         :actions {:cmd! (fn [picker item]
+                                                           (if (and item item.command
+                                                                    (= item.command.nargs :0))
+                                                               (do
+                                                                 (picker:close)
+                                                                 (vim.schedule #(vim.cmd item.cmd)))
+                                                               (actions.cmd picker item)))}}
                                 :terminal {:win {:position :bottom
                                                  :bo {:filetype :terminal}
                                                  :wo {:winbar ""

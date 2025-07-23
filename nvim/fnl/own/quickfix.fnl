@@ -49,10 +49,10 @@
 
 (fn quickfix-history-nav [colors]
   (if (> (get-quickfix-history-size) 1)
-     [(tx (.. " " qf-older-key " "
-           {:guifg (if (has-older-qf-stack-entry?)
-                       colors.lavender
-                       colors.surface1)}))
+     [(tx (.. " " qf-older-key " ")
+          {:guifg (if (has-older-qf-stack-entry?)
+                      colors.lavender
+                      colors.surface1)})
       (tx (.. (get-quickfix-current-index) "/" (get-quickfix-history-size))
           {:guifg colors.lavender})
       (tx (.. " " qf-newer-key " ")

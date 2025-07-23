@@ -1,10 +1,12 @@
 (import-macros {: map : tx} :own.macros)
+(local {: concat : merge} (require :nfnl.core))
 (local {: autoload} (require :nfnl.module))
 (local cmp (autoload :cmp))
 (local ls (autoload :luasnip))
 (local lspkind (autoload :lspkind))
+(local vscode-loader (autoload :luasnip.loaders.from_vscode))
 
-(set vim.opt.completeopt [:menuone :menuone :noselect :popup :fuzzy])
+(set vim.opt.completeopt [:menuone :menuone :noselect])
 
 (fn cmp-format [entry vim-item]
   (let [kind-fmt (lspkind.cmp_format {:mode :symbol
@@ -21,28 +23,42 @@
                        :<C-y> (cmp.mapping.confirm {:behavior cmp.ConfirmBehavior.Insert
                                                     :select true})})
 
-  (cmp.setup {:mapping (cmp.mapping.preset.insert cmd-mappings)
-              :sources (cmp.config.sources [{:name :luasnip}
-                                            {:name :nvim_lsp}
-                                            {:name :emoji}
-                                            {:name :nerdfonts}
-                                            {:name :conjure}
-                                            {:name :buffer :keyword_length 5}
-                                            {:name :obsidian}
-                                            {:name :obsidian_new}
-                                            {:name :obsidian_tags}])
-              :formatting {:fields [:kind :abbr :menu]
-                           :format cmp-format}
-              :snippet {:expand (fn [args] (ls.lsp_expand args.body))}
-              :window {:completion {:winhighlight "Normal:Pmenu,FloatBorder:Pmenu,Search:None"
-                                    :col_offset -3
-                                    :side_padding 0}}})
+  (local base-opts {:mapping (cmp.mapping.preset.insert cmd-mappings)
+                    :sources (cmp.config.sources [{:name :luasnip}
+                                                  {:name :nvim_lsp}
+                                                  {:name :emoji}
+                                                  {:name :nerdfonts}
+                                                  {:name :conjure}
+                                                  {:name :buffer :keyword_length 5}])
+                    :formatting {:fields [:kind :abbr :menu]
+                                 :format cmp-format}
+                    :snippet {:expand (fn [args] (ls.lsp_expand args.body))}
+                    :window {:completion {:winhighlight "Normal:Pmenu,FloatBorder:Pmenu,Search:None"
+                                          :col_offset -3
+                                          :side_padding 0}}})
+  (cmp.setup base-opts)
+
+  (cmp.setup.filetype [:r] (merge base-opts
+                                  {:sources (concat (cmp.config.sources [{:name :cmp_r}])
+                                                    base-opts.sources)}))
+
+  (cmp.setup.filetype [:markdown] (merge base-opts
+                                         {:sources (concat (cmp.config.sources [{:name :obsidian}
+                                                                                {:name :obsidian_new}
+                                                                                {:name :obsidian_tags}])
+                                                           base-opts.sources)}))
+
+  (cmp.setup.filetype [:sql] (merge base-opts {:sources (concat (cmp.config.sources [{:name :vim-dadbod-completion}])
+                                                                base-opts.sources)}))
+
 
   (cmp.setup.cmdline {:mapping (cmp.mapping.preset.cmdline cmd-mappings)})
 
   (ls.config.setup {:history true
                     :update_events "TextChanged,TextChangedI"
                     :enable_autosnippets true})
+
+  (vscode-loader.lazy_load)
 
   (map [:i :s] :<c-k> #(if (ls.expand_or_jumpable) (ls.expand_or_jump)))
 
@@ -68,6 +84,8 @@
                                        :L3MON4D3/LuaSnip
                                        :davidmh/cmp-nerdfonts
                                        :onsails/lspkind-nvim
-                                       :hrsh7th/cmp-emoji]
+                                       :hrsh7th/cmp-emoji
+                                       :rafamadriz/friendly-snippets
+                                       :kristijanhusak/vim-dadbod-completion]
                         :event :InsertEnter
                         : config})]

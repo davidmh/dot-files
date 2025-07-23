@@ -69,7 +69,7 @@ local function quickfix_history_nav(colors)
     else
       _10_ = colors.surface1
     end
-    return {(" " .. qf_older_key .. " " .. {guifg = _8_}), {(get_quickfix_current_index() .. "/" .. get_quickfix_history_size()), guifg = colors.lavender}, {(" " .. qf_newer_key .. " "), guifg = _10_}}
+    return {{(" " .. qf_older_key .. " "), guifg = _8_}, {(get_quickfix_current_index() .. "/" .. get_quickfix_history_size()), guifg = colors.lavender}, {(" " .. qf_newer_key .. " "), guifg = _10_}}
   else
     return ""
   end

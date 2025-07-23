@@ -2,13 +2,11 @@
                 : vmap
                 : tmap
                 : map
-                : autocmd
                 : augroup} :own.macros)
 (local {: autoload} (require :nfnl.module))
 
 (local git (autoload :own.git))
 (local gitsigns (autoload :gitsigns))
-(local navic (autoload :nvim-navic))
 (local projects (autoload :own.projects))
 (local core (autoload :nfnl.core))
 (local snacks (autoload :snacks))
@@ -37,10 +35,11 @@
       {:title :toggle :timeout 1000})))
 
 (fn toggle-quickfix []
-  ; The vim.g.qf_bufnr is set in after/ftplugin/qf.fnl
-  (if (= vim.g.qf_bufnr nil)
-      (vim.cmd.copen)
-      (vim.cmd.cclose)))
+  (if (core.some (fn [{: bufnr}] (= (core.get-in vim.bo [bufnr :filetype] "")
+                                    :qf))
+                 (vim.fn.getwininfo))
+      (vim.cmd.cclose)
+      (vim.cmd.copen)))
 
 (fn toggle-zellij []
   (snacks.terminal.toggle "direnv exec . zellij attach || direnv exec . zellij"
@@ -113,14 +112,6 @@
 (nmap "[w" #(vim.diagnostic.jump (core.merge {:float true :count -1} warning-filter)) (opts "next warning"))
 (nmap "]w" #(vim.diagnostic.jump (core.merge {:float true :count 1} warning-filter)) (opts "previous warning"))
 
-(vim.api.nvim_create_augroup :eslint-autofix {:clear true})
-
-; https://github.com/neovim/nvim-lspconfig/blob/da7461b596d70fa47b50bf3a7acfaef94c47727d/lua/lspconfig/server_configurations/eslint.lua#L141-L145
-(fn set-eslint-autofix [bufnr]
-  (autocmd :BufWritePre {:command :EslintFixAll
-                         :group :eslint-autofix
-                         :buffer bufnr}))
-
 (fn buf-map [keymap callback desc]
   (nmap keymap callback {:buffer true
                          :silent true
@@ -146,14 +137,10 @@
   (buf-map :<leader>la #(vim.lsp.buf.code_action) "lsp: code actions")
   (buf-map :<leader>lr #(vim.lsp.buf.rename) "lsp: rename")
   (buf-map :<leader>lR :<cmd>LspRestart<CR> "lsp: restart")
+  (buf-map :<leader>ls #(snacks.picker.lsp_symbols) "lsp: symbols")
 
   (vmap :<leader>la #(vim.lsp.buf.code_action) {:buffer true
-                                                :desc "lsp: code actions"})
-
-  (when (= client.name :eslint) (set-eslint-autofix bufnr))
-
-  (when client.server_capabilities.documentSymbolProvider
-    (navic.attach client bufnr)))
+                                                :desc "lsp: code actions"}))
 
 (augroup :lsp-attach [:LspAttach {:callback lsp-mappings}])
 
@@ -193,13 +180,14 @@
                                        :nowait true
                                        :silent true})
 
-(nmap :<M-x> #(snacks.picker.commands {:layout {:preset :dropdown}}) {:nowait true :silent true})
-(nmap :<M-h> #(snacks.picker.help {:layout {:preset :dropdown}}) {:nowait true :silent true})
+(nmap :<M-x> #(snacks.picker.commands {:layout {:preset :vscode}}) {:nowait true :silent true})
+(nmap :<M-h> #(snacks.picker.help {:layout {:preset :top}}) {:nowait true :silent true})
 (nmap :<M-k> #(snacks.picker.keymaps {:layout {:preset :vscode}}) {:nowait true :silent true})
 (nmap :<M-o> #(snacks.picker.recent) {:nowait true :silent true})
 (nmap :<M-s> #(snacks.picker) {:nowait true :silent true})
 
-(nmap :<leader>ff #(snacks.picker.explorer {:auto_close true}) {:desc "file explorer"})
+(nmap :<leader>ff #(snacks.picker.explorer {:auto_close true
+                                            :hidden true}) {:desc "file explorer"})
 
 ; Windows
 ;

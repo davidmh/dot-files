@@ -56,16 +56,13 @@ local function file_component(props)
   end
   local _10_
   if core["get-in"](vim, {"bo", props.buf, "modified"}) then
-    _10_ = "bold,italic"
+    _10_ = "italic"
   else
-    _10_ = "bold"
+    _10_ = ""
   end
   res = {_8_, {name, gui = _10_}, modified_3f(props.buf), read_only_3f(props.buf)}
-  if props.focused then
-    for _, item in ipairs((navic.get_data(props.buf) or {})) do
-      table.insert(res, {{" \239\132\133 ", group = "NavicSeparator"}, {item.icon, group = ("NavicIcons" .. item.type)}, {item.name, group = "NavicText"}})
-    end
-  else
+  for _, item in ipairs((navic.get_data(props.buf) or {})) do
+    table.insert(res, {{" \239\132\133 ", group = "NavicSeparator"}, {item.icon, group = ("NavicIcons" .. item.type)}, {item.name, group = "NavicText"}})
   end
   table.insert(res, " ")
   return res
@@ -76,12 +73,12 @@ local function render(props)
   if term_title then
     return terminal_component(colors)
   else
-    local _13_ = {core["get-in"](vim, {"bo", props.buf, "ft"})}
-    if (_13_[1] == "qf") then
+    local _12_ = {core["get-in"](vim, {"bo", props.buf, "ft"})}
+    if (_12_[1] == "qf") then
       return quickfix_winbar_component(colors)
-    elseif (_13_[1] == "help") then
+    elseif (_12_[1] == "help") then
       return help_component(colors, props)
-    elseif (_13_[1] == "fugitiveblame") then
+    elseif (_12_[1] == "fugitiveblame") then
       return {}
     elseif true then
       return file_component(props)

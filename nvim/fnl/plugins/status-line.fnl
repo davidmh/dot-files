@@ -7,11 +7,12 @@
 (local palettes (autoload :catppuccin.palettes))
 (local config (autoload :own.config))
 (local mode (autoload :own.mode))
+(local ghn (autoload :github-notifications))
 
 (local empty-space {:provider " "})
 
 (fn component [data]
-  (vim.validate {:init [data.init :function]})
+  (vim.validate :init data.init :function)
   (table.insert data {:provider #(-> $1.icon) :hl #(-> {:fg $1.color})})
   (table.insert data {:provider #(-> $1.content) :hl {:fg :fg}})
   (table.insert data {:hl {:bold true}})
@@ -64,10 +65,17 @@
                                             (tset $1 :color :rosewater))
                                    :condition #(lazy-status.has_updates)})])
 
+(local gh-notifications [(component {:init #(do
+                                              (tset $1 :icon "   ")
+                                              (tset $1 :content (length ghn.notifications))
+                                              (tset $1 :color :rosewater))
+                                     :condition #(> (length ghn.notifications) 0)})])
+
 (local statusline [vi-mode
                    push-right
                    diagnostics-block
                    git-block
+                   gh-notifications
                    plugin-updates
                    empty-space])
 

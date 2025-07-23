@@ -7,9 +7,10 @@ local conditions = autoload("heirline.conditions")
 local palettes = autoload("catppuccin.palettes")
 local config = autoload("own.config")
 local mode = autoload("own.mode")
+local ghn = autoload("github-notifications")
 local empty_space = {provider = " "}
 local function component(data)
-  vim.validate({init = {data.init, "function"}})
+  vim.validate("init", data.init, "function")
   local function _2_(_241)
     return _241.icon
   end
@@ -86,7 +87,18 @@ local function _15_()
   return lazy_status.has_updates()
 end
 plugin_updates = {component({init = _13_, condition = _15_})}
-local statusline = {vi_mode, push_right, diagnostics_block, git_block, plugin_updates, empty_space}
+local gh_notifications
+local function _16_(_241)
+  _241["icon"] = "  \239\130\155 "
+  _241["content"] = #ghn.notifications
+  _241["color"] = "rosewater"
+  return nil
+end
+local function _17_()
+  return (#ghn.notifications > 0)
+end
+gh_notifications = {component({init = _16_, condition = _17_})}
+local statusline = {vi_mode, push_right, diagnostics_block, git_block, gh_notifications, plugin_updates, empty_space}
 local function initialize_heirline()
   vim.o.showmode = false
   local opts = {colors = palettes.get_palette()}

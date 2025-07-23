@@ -67,9 +67,7 @@
                                            :prefer_local :.venv/bin})
                (formatting.sqlfluff.with {:extra_args [:--dialect :postgres]
                                           :prefer_local :.venv/bin})
-               formatting.stylua
-               formatting.terraform_fmt
-               formatting.nixpkgs_fmt]
+               formatting.stylua]
 
      :on_attach on-attach}))
 

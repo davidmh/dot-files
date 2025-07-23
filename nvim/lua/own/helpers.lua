@@ -29,4 +29,9 @@ M["find-root"] = function(pattern)
   end
   return finder
 end
+M["past-due?"] = function(iso_date)
+  vim.validate("iso-date", iso_date, "string")
+  local year, month, day = iso_date:match("(%d+)-(%d+)-(%d+)")
+  return (os.time() >= os.time({year = year, month = month, day = day}))
+end
 return M

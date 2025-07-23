@@ -1,8 +1,17 @@
 (import-macros {: tx} :own.macros)
 (local {: autoload} (require :nfnl.module))
 (local configs (autoload :nvim-treesitter.configs))
+(local parsers (autoload :nvim-treesitter.parsers))
 
 (fn config []
+  (comment
+      (vim.filetype.add {:extension {:wikitext :wikitext}})
+      (local parser-configs (parsers.get_parser_configs))
+      (tset parser-configs :wikitext {:install_info {:url "https://github.com/GhentCDH/tree-sitter-wikitext"
+                                                     :files [:src/parser.c]
+                                                     :branch :main}
+                                      :filetype :wikitext}))
+
   (local additional-vim-regex-highlighting [])
   (local ensure-installed [:bash
                            :clojure

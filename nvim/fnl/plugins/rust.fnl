@@ -5,5 +5,4 @@
                                                                                            :.devenv]}}}}})
 (set vim.g.rustfmt_autosave true)
 
-(tx :mrcjkb/rustaceanvim {:version :^5
-                          :ft :rust})
+(tx :mrcjkb/rustaceanvim {:version :^6})

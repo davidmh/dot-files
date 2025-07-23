@@ -44,15 +44,14 @@
                  (tx " " icon " " {:guibg color :guifg (helpers.contrast_color color)})
                  "")
              (tx name {:gui (if (core.get-in vim [:bo props.buf :modified])
-                                "bold,italic"
-                                :bold)})
+                                :italic
+                                "")})
              (modified? props.buf)
              (read-only? props.buf)]]
-    (if props.focused
-        (each [_ item (ipairs (or (navic.get_data props.buf) []))]
-          (table.insert res [(tx "  " {:group :NavicSeparator})
-                             (tx item.icon {:group (.. :NavicIcons item.type)})
-                             (tx item.name {:group :NavicText})])))
+    (each [_ item (ipairs (or (navic.get_data props.buf) []))]
+        (table.insert res [(tx "  " {:group :NavicSeparator})
+                           (tx item.icon {:group (.. :NavicIcons item.type)})
+                           (tx item.name {:group :NavicText})]))
     (table.insert res " ")
     res))
 

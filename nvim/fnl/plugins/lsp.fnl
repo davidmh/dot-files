@@ -24,6 +24,7 @@
 
 (fn get-python-path [workspace]
   (or
+    (executable? (.. workspace :/.devenv/state/venv/bin/python))
     (executable? (.. workspace :/.venv/bin/python))
     (executable? (.. workspace :/venv/bin/python))
     (vim.fn.exepath :python3)
@@ -52,9 +53,9 @@
   (local deno-root (util.root_pattern :deno.json :deno.jsonc))
   (local python-root (util.root_pattern :uv.lock :venv/bin/python))
   (local client-capabilities (vim.lsp.protocol.make_client_capabilities))
-  (local base-settings {:capabilities (cmp-lsp.default_capabilities client-capabilities)
-                        :init_options {:preferences {:includeCompletionsWithSnippetText true
-                                                     :includeCompletionsForImportStatements true}}})
+  (vim.lsp.config :* {:capabilities (cmp-lsp.default_capabilities client-capabilities)
+                      :init_options {:preferences {:includeCompletionsWithSnippetText true
+                                                   :includeCompletionsForImportStatements true}}})
 
   (local server-configs {:jsonls {:settings {:json {:schemas (schema-store.json.schemas)
                                                     :validate {:enable true}}}}
@@ -63,32 +64,37 @@
                                                    :format {:enable false}
                                                    :workspace {:checkThirdParty false}}}}
                          :eslint {:root_dir git-root}
-                         :fennel_language_server {:single_file_support true
-                                                  :root_dir (lspconfig.util.root_pattern :fnl)
-                                                  :settings {:fennel {:diagnostics {:globals [:vim :jit :comment :love]}
-                                                                      :workspace {:library (vim.api.nvim_list_runtime_paths)}}}}
+
+                         ; :fennel_language_server {:single_file_support true
+                         ;                          :root_dir (lspconfig.util.root_pattern :fnl)
+                         ;                          :settings {:fennel {:diagnostics {:globals [:vim :jit :comment :love]}
+                         ;                                              :workspace {:library (vim.api.nvim_list_runtime_paths)}}}}
+
                          :jedi_language_server {:on_new_config (fn [config root]
                                                                  (local python-path (get-python-path root))
                                                                  (tset config :settings {:workspace {:environmentPath python-path}}))
                                                 :root_dir python-root}
+
                          :ruff {:init_options {:settings {:lint {:enable true
                                                                  :preview true}}}}
                          :harper_ls {:settings {:harper-ls {:codeActions {:forceStable true}}}}
-                                     ;:filetypes [:markdown :gitcommit :text]}
                          :gopls {}
+                         :tflint {}
+                         :terraformls {}
                          :typos_lsp {}
+                         :yamlls {}
+                         :nil_ls {:settings {:nil {:formatting {:command [:nixpkgs-fmt]}}}}
+                         :air {}
                          :cssls {:root_dir git-root}
                          :bashls {:root_dir git-root}
                          :solargraph {:root_dir git-root
-                                      :cmd [:bundle :exec :solargraph :stdio]}
+                                      :cmd [:direnv :exec :. :solargraph :stdio]}
                          :denols {:root_dir deno-root}})
 
   (each [_ server-name (ipairs (core.keys server-configs))]
     (let [server-setup (core.get-in lspconfig [server-name :setup])
           server-config (core.get server-configs server-name {})]
-      (if (= server-name :gopls)
-          (server-setup server-config)
-          (server-setup (core.merge base-settings server-config)))))
+      (server-setup server-config)))
   nil)
 
 (fn enter-quickfix [] (glance.actions.quickfix))
@@ -118,7 +124,12 @@
                                                                    :eslint
                                                                    :fennel_language_server
                                                                    :harper_ls
-                                                                   :typos_lsp]}})
+                                                                   :typos_lsp
+                                                                   :tflint
+                                                                   :terraformls
+                                                                   :yamlls
+                                                                   :nil_ls
+                                                                   :air]}})
 
  (tx  :neovim/nvim-lspconfig {:dependencies [:williamboman/mason.nvim
                                              :williamboman/mason-lspconfig.nvim
@@ -162,24 +173,24 @@
                                            :williamboman/mason-lspconfig.nvim]})
 
  (tx  :dnlhc/glance.nvim {:cmd :Glance
-                          :config {:mappings {:list {:<m-p> enter-preview
-                                                     :<c-q> enter-quickfix
-                                                     :<c-n> next-result
-                                                     :<c-p> previous-result
-                                                     :<c-v> vertical-split
-                                                     :<c-x> horizontal-split}
-                                              :preview {:<m-l> enter-list
-                                                        :<c-q> enter-quickfix
-                                                        :<c-n> next-result
-                                                        :<c-p> previous-result
-                                                        :<c-v> vertical-split
-                                                        :<c-x> horizontal-split}}
-                                    :hooks {:before_open (fn [results open-preview jump-to-result]
-                                                           (match (length results)
-                                                             0 (vim.notify "No results found")
-                                                             1 (do
-                                                                 (jump-to-result (core.first results))
-                                                                 (vim.cmd {:cmd :normal}
-                                                                          :args [:zz]
-                                                                          :bang true))
-                                                             _ (open-preview results)))}}})]
+                          :opts {:mappings {:list {:<m-p> enter-preview
+                                                   :<c-q> enter-quickfix
+                                                   :<c-n> next-result
+                                                   :<c-p> previous-result
+                                                   :<c-v> vertical-split
+                                                   :<c-x> horizontal-split}
+                                            :preview {:<m-l> enter-list
+                                                      :<c-q> enter-quickfix
+                                                      :<c-n> next-result
+                                                      :<c-p> previous-result
+                                                      :<c-v> vertical-split
+                                                      :<c-x> horizontal-split}}
+                                  :hooks {:before_open (fn [results open-preview jump-to-result]
+                                                         (match (length results)
+                                                           0 (vim.notify "No results found")
+                                                           1 (do
+                                                               (jump-to-result (core.first results))
+                                                               (vim.cmd {:cmd :normal}
+                                                                        :args [:zz]
+                                                                        :bang true))
+                                                           _ (open-preview results)))}}})]

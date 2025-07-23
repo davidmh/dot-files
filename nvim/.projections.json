@@ -30,9 +30,9 @@
   "fnl/plugins/*.fnl": {
     "type": "plugin",
     "template": [
-      "(import-macros {open}: use{close} :own.macros)",
+      "(import-macros {open}: tx{close} :own.macros)",
       "",
-      "(use :plugin-url {open}:opts {open}{close}{close})"
+      "(tx :plugin-url {open}:opts {open}{close}{close})"
     ],
     "alternate": [
       "lua/plugins/{}.lua"

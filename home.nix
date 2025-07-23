@@ -1,4 +1,4 @@
-{ pkgs, config, inputs, ... }:
+{ pkgs, lib, ... }:
 
 {
   home.sessionVariables = {
@@ -39,9 +39,9 @@
     unstable.ast-grep
     unstable.bun
     unstable.deno
-    unstable.devenv
     unstable.cargo
     unstable.gh
+    unstable.gh-dash
     unstable.git-absorb
     unstable.gnupg
     unstable.jankyborders
@@ -53,7 +53,8 @@
     unstable.nerd-fonts.hasklug
     unstable.tree-sitter
     unstable.shellcheck
-    wezterm
+    unstable.kitty
+    unstable.wezterm
 
     # Remix
     colima
@@ -65,14 +66,21 @@
 
   programs.home-manager.enable = true;
 
-  programs.direnv.enable = true;
+  programs.direnv = {
+    enable = true;
+    config = {
+      global = {
+        hide_env_diff = true;
+      };
+    };
+  };
 
   programs.starship.enable = true;
 
   programs.zsh = {
     enable = true;
     autocd = true;
-    initExtraBeforeCompInit = ''
+    initContent = lib.mkOrder 550 ''
       if [ -f ~/.config/extra.zsh ]; then
         source ~/.config/extra.zsh
       fi
@@ -136,12 +144,22 @@
         name = "David Mejorado";
         email = "david.mejorado@gmail.com";
       };
+      ui = {
+        paginate = "never";
+      };
+      custom_commands = {
+        "show diff" = {
+          key = [ "U" ];
+          args = [ "diff" "-r" "$change_id" "--color" "always" ];
+          show = "diff";
+        };
+        "open in editor" = {
+          key = [ "e" ];
+          args = [ "edit" "$change_id" ];
+          show = "edit";
+        };
+      };
     };
-  };
-
-  programs.emacs = {
-    enable = true;
-    package = pkgs.unstable.emacs;
   };
 
   programs.tmux = {
@@ -172,6 +190,6 @@
     enable = true;
     defaultCacheTtl = 28800;
     enableSshSupport = true;
-    pinentryPackage = pkgs.pinentry_mac;
+    pinentry.package = pkgs.pinentry_mac;
   };
 }
