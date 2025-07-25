@@ -51,6 +51,8 @@
   (cmp.setup.filetype [:sql] (merge base-opts {:sources (concat (cmp.config.sources [{:name :vim-dadbod-completion}])
                                                                 base-opts.sources)}))
 
+  (cmp.setup.filetype [:gitcommit] (merge base-opts {:sources (concat (cmp.config.sources [{:name :git-co-authors}])
+                                                                      base-opts.sources)}))
 
   (cmp.setup.cmdline {:mapping (cmp.mapping.preset.cmdline cmd-mappings)})
 
@@ -83,6 +85,7 @@
                                        :saadparwaiz1/cmp_luasnip
                                        :L3MON4D3/LuaSnip
                                        :davidmh/cmp-nerdfonts
+                                       :davidmh/cmp-git-co-authors
                                        :onsails/lspkind-nvim
                                        :hrsh7th/cmp-emoji
                                        :rafamadriz/friendly-snippets

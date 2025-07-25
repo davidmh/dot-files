@@ -26,6 +26,7 @@ local function config()
   cmp.setup.filetype({"r"}, merge(base_opts, {sources = concat(cmp.config.sources({{name = "cmp_r"}}), base_opts.sources)}))
   cmp.setup.filetype({"markdown"}, merge(base_opts, {sources = concat(cmp.config.sources({{name = "obsidian"}, {name = "obsidian_new"}, {name = "obsidian_tags"}}), base_opts.sources)}))
   cmp.setup.filetype({"sql"}, merge(base_opts, {sources = concat(cmp.config.sources({{name = "vim-dadbod-completion"}}), base_opts.sources)}))
+  cmp.setup.filetype({"gitcommit"}, merge(base_opts, {sources = concat(cmp.config.sources({{name = "git-co-authors"}}), base_opts.sources)}))
   cmp.setup.cmdline({mapping = cmp.mapping.preset.cmdline(cmd_mappings)})
   ls.config.setup({history = true, update_events = "TextChanged,TextChangedI", enable_autosnippets = true})
   vscode_loader.lazy_load()
@@ -65,4 +66,4 @@ local function config()
   ls.add_snippets("gitcommit", {co_authored_by})
   return ls.add_snippets("org", {ls.parser.parse_snippet("<s", "#+BEGIN_SRC ${1}\n${0}\n#+END_SRC\n")})
 end
-return {{"hrsh7th/nvim-cmp", dependencies = {"hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "PaterJason/cmp-conjure", "saadparwaiz1/cmp_luasnip", "L3MON4D3/LuaSnip", "davidmh/cmp-nerdfonts", "onsails/lspkind-nvim", "hrsh7th/cmp-emoji", "rafamadriz/friendly-snippets", "kristijanhusak/vim-dadbod-completion"}, event = "InsertEnter", config = config}}
+return {{"hrsh7th/nvim-cmp", dependencies = {"hrsh7th/cmp-nvim-lsp", "hrsh7th/cmp-buffer", "PaterJason/cmp-conjure", "saadparwaiz1/cmp_luasnip", "L3MON4D3/LuaSnip", "davidmh/cmp-nerdfonts", "davidmh/cmp-git-co-authors", "onsails/lspkind-nvim", "hrsh7th/cmp-emoji", "rafamadriz/friendly-snippets", "kristijanhusak/vim-dadbod-completion"}, event = "InsertEnter", config = config}}
