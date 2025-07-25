@@ -69,6 +69,7 @@
     unstable.nil
     unstable.python313Packages.jedi-language-server
     unstable.ruff
+    unstable.solargraph
     unstable.terraform-ls
     unstable.tflint
     unstable.typos-lsp

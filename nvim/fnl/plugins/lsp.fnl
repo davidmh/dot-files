@@ -57,8 +57,7 @@
                          :air {}
                          :cssls {:root_markers git-root}
                          :bashls {:root_markers git-root}
-                         :solargraph {:root_markers git-root
-                                      :cmd [:direnv :exec :. :solargraph :stdio]}})
+                         :solargraph {}})
 
   (local server-names (core.keys server-configs))
 
