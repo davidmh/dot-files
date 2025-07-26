@@ -1,13 +1,11 @@
 (import-macros {: tx} :own.macros)
 (local {: autoload} (require :nfnl.module))
-(local {: find-root} (require :own.helpers))
 (local neotest (autoload :neotest))
 (local neotest-playwright (autoload :neotest-playwright))
 
 (fn rspec-cmd []
-  (local direnv-root (find-root :.envrc))
   (local current-file (vim.fn.expand "%"))
-  (local root (direnv-root current-file))
+  (local root (vim.fs.root current-file :.envrc))
   (if root
     [:direnv :exec (vim.fn.expand root) :bundle :exec :rspec]
     [:bundle :exec :rspec]))

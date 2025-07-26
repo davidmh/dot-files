@@ -18,14 +18,6 @@
       (string.gsub vim.env.REMIX_HOME "remix")
       (vim.fn.pathshorten (or size 2))))
 
-(fn M.find-root [pattern]
-  (local Path (require :plenary.path))
-  (fn finder [staring-path]
-    (each [dir (vim.fs.parents staring-path)]
-      (local path (Path:new (.. dir :/ pattern)))
-      (when (path:exists)
-        (lua "return dir")))))
-
 (fn M.past-due? [iso-date]
   (vim.validate :iso-date iso-date :string)
   (local (year month day) (iso-date:match "(%d+)-(%d+)-(%d+)"))

@@ -15,20 +15,6 @@ end
 M["sanitize-path"] = function(path, size)
   return vim.fn.pathshorten(string.gsub(string.gsub(path, vim.env.HOME, "~"), vim.env.REMIX_HOME, "remix"), (size or 2))
 end
-M["find-root"] = function(pattern)
-  local Path = require("plenary.path")
-  local function finder(staring_path)
-    for dir in vim.fs.parents(staring_path) do
-      local path = Path:new((dir .. "/" .. pattern))
-      if path:exists() then
-        return dir
-      else
-      end
-    end
-    return nil
-  end
-  return finder
-end
 M["past-due?"] = function(iso_date)
   vim.validate("iso-date", iso_date, "string")
   local year, month, day = iso_date:match("(%d+)-(%d+)-(%d+)")
