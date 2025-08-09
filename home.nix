@@ -46,6 +46,7 @@
     unstable.git-absorb
     unstable.gnupg
     unstable.jankyborders
+    unstable.kitty
     unstable.lldb_19
     unstable.lua
     unstable.lua51Packages.luarocks-nix
@@ -54,8 +55,6 @@
     unstable.nerd-fonts.hasklug
     unstable.tree-sitter
     unstable.shellcheck
-    unstable.kitty
-    unstable.wezterm
 
     # LSP
     unstable.air-formatter
@@ -203,10 +202,6 @@
   };
 
   programs.zellij = {
-    enable = true;
-  };
-
-  programs.emacs = {
     enable = true;
   };
 

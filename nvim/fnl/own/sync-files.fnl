@@ -8,23 +8,10 @@
 (local nvim-root (vim.fn.expand "~/.config/home-manager/nvim"))
 (local {: cfg} (config.find-and-load nvim-root))
 
-(local wezterm-config-path (vim.fn.expand "~/.config/home-manager/wezterm.lua"))
 (local nvim-colorscheme-path (vim.fn.expand "~/.config/home-manager/nvim/fnl/plugins/colorscheme.fnl"))
-
-(fn capitalize [text]
-  (let [first-letter (text:sub 1 1)
-        rest (text:sub 2)]
-    (.. (first-letter:upper) rest)))
 
 (fn symbolize [text]
   (.. :: text))
-
-(fn get-wezterm-catppuccin-flavor []
-  (let [(_ _ flavor) (-> wezterm-config-path
-                        (core.slurp)
-                        (string.lower)
-                        (string.find "color_scheme = 'catppuccin (%w*)'"))]
-    flavor))
 
 (fn get-nvim-catppuccin-flavor []
   (let [(_ _ flavor) (-> nvim-colorscheme-path
@@ -48,12 +35,7 @@
 
 (fn on-update-from-command []
   (let [new-flavor catppuccin.flavour
-        wezterm-flavor (get-wezterm-catppuccin-flavor)
         nvim-flavor (get-nvim-catppuccin-flavor)]
-    (when (not= new-flavor wezterm-flavor)
-      (update-file-content wezterm-config-path
-                           (capitalize wezterm-flavor)
-                           (capitalize new-flavor)))
     (when (not= new-flavor nvim-flavor)
       (update-file-content nvim-colorscheme-path
                            (symbolize nvim-flavor)
@@ -62,5 +44,5 @@
   nil)
 
 (augroup :sync-colorscheme [:ColorScheme {:pattern :*
-                                          :desc "Sync colorscheme between wezterm and nvim"
+                                          :desc "Persist the colorscheme when using the colorscheme command"
                                           :callback on-update-from-command}])
