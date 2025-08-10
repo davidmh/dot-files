@@ -9,6 +9,7 @@ local snacks = autoload("snacks")
 local notifications = autoload("own.notifications")
 local error_filter = {severity = vim.diagnostic.severity.ERROR}
 local warning_filter = {severity = vim.diagnostic.severity.WARNING}
+local project_root_patterns = {".envrc", ".rspec", "Cargo.toml", "yarn.lock", "pyproject.toml", "lazy-lock.json", ".git"}
 local function cmd(expression)
   return ("<cmd>" .. expression .. "<cr>")
 end
@@ -46,7 +47,8 @@ local function ctrl_t()
   if string.find(vim.fn.expand("%"), "zellij") then
     return vim.system({"zellij", "action", "switch-mode", "tab"})
   else
-    return snacks.terminal.toggle("direnv exec . zsh")
+    local term = snacks.terminal.toggle("direnv exec . zsh", {cwd = vim.fs.root(vim.fn.expand("%:p"), project_root_patterns)})
+    return core["assoc-in"](vim.b, {term.buf, "term_title"}, "scratch term")
   end
 end
 local function opts(desc)
@@ -151,7 +153,7 @@ local function lsp_mappings()
   local function _26_()
     return vim.diagnostic.setqflist(error_filter)
   end
-  buf_map("<leader>le", _26_)
+  buf_map("<leader>le", _26_, "lsp: errors")
   local function _27_()
     return vim.lsp.buf.code_action()
   end
@@ -222,7 +224,7 @@ local function _37_()
 end
 vim.keymap.set("n", "<M-h>", _37_, {nowait = true, silent = true})
 local function _38_()
-  return snacks.picker.keymaps({layout = {preset = "vscode"}})
+  return snacks.picker.keymaps({global = false})
 end
 vim.keymap.set("n", "<M-k>", _38_, {nowait = true, silent = true})
 local function _39_()

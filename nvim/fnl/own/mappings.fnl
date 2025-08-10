@@ -15,6 +15,14 @@
 (local error-filter {:severity vim.diagnostic.severity.ERROR})
 (local warning-filter {:severity vim.diagnostic.severity.WARNING})
 
+(local project-root-patterns [:.envrc
+                              :.rspec
+                              :Cargo.toml
+                              :yarn.lock
+                              :pyproject.toml
+                              :lazy-lock.json
+                              :.git])
+
 ; helpers
 
 (fn cmd [expression]
@@ -50,7 +58,10 @@
 (fn ctrl-t []
   (if (string.find (vim.fn.expand "%") "zellij")
     (vim.system [:zellij :action :switch-mode :tab])
-    (snacks.terminal.toggle "direnv exec . zsh")))
+    (do
+      (local term (snacks.terminal.toggle "direnv exec . zsh" {:cwd (vim.fs.root (vim.fn.expand "%:p")
+                                                                                 project-root-patterns)}))
+      (core.assoc-in vim.b [term.buf :term_title] "scratch term"))))
 
 (fn opts [desc] {:silent true : desc})
 
@@ -128,7 +139,7 @@
   (buf-map :<leader>lf (cmd "Glance references") "lsp: find references")
   (buf-map :<leader>li (cmd "Glance implementations") "lsp: implementation")
   (buf-map :<leader>lt (cmd "Glance type_definitions") "lsp: type definition")
-  (buf-map :<leader>le #(vim.diagnostic.setqflist error-filter)) "lsp: errors"
+  (buf-map :<leader>le #(vim.diagnostic.setqflist error-filter) "lsp: errors")
   (buf-map :<leader>la #(vim.lsp.buf.code_action) "lsp: code actions")
   (buf-map :<leader>lr #(vim.lsp.buf.rename) "lsp: rename")
   (buf-map :<leader>lR :<cmd>LspRestart<CR> "lsp: restart")
@@ -177,7 +188,7 @@
 
 (nmap :<M-x> #(snacks.picker.commands {:layout {:preset :vscode}}) {:nowait true :silent true})
 (nmap :<M-h> #(snacks.picker.help {:layout {:preset :top}}) {:nowait true :silent true})
-(nmap :<M-k> #(snacks.picker.keymaps {:layout {:preset :vscode}}) {:nowait true :silent true})
+(nmap :<M-k> #(snacks.picker.keymaps {:global false}) {:nowait true :silent true})
 (nmap :<M-o> #(snacks.picker.recent) {:nowait true :silent true})
 (nmap :<M-s> #(snacks.picker) {:nowait true :silent true})
 

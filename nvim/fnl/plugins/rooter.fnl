@@ -1,12 +1,7 @@
 (import-macros {: tx} :own.macros)
 
 [(tx :airblade/vim-rooter {:config #(do
-                                      (set vim.g.rooter_patterns [:.envrc
-                                                                  :.git
+                                      (set vim.g.rooter_patterns [:.git
                                                                   :.obsidian
-                                                                  :.rspec
-                                                                  :Cargo.toml
-                                                                  :lazy-lock.json
-                                                                  :yarn.lock
-                                                                  :pyproject.toml])
+                                                                  :lazy-lock.json])
                                       (set vim.g.rooter_silent_chdir true))})]
