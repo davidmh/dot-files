@@ -18,4 +18,22 @@ vim.api.nvim_create_user_command("GitHub", _4_, {nargs = 0})
 local function _5_()
   return snacks.terminal.toggle("lazydocker", {win = {position = "float"}})
 end
-return vim.api.nvim_create_user_command("Docker", _5_, {nargs = 0})
+vim.api.nvim_create_user_command("Docker", _5_, {nargs = 0})
+local function messages()
+  vim.cmd.redir("=> g:qf_messages")
+  vim.cmd("silent! messages")
+  vim.cmd.redir("END")
+  local function _6_(item)
+    return item.text
+  end
+  if (vim.g.qf_messages ~= table.concat(vim.tbl_map(_6_, vim.fn.getqflist()), "\n")) then
+    local function _7_(_241)
+      return {text = _241, lnum = 0}
+    end
+    vim.fn.setqflist({}, " ", {items = vim.tbl_map(_7_, vim.split(vim.g.qf_messages, "\n")), nr = "$", title = "Messages"})
+  else
+  end
+  vim.cmd.copen()
+  return vim.cmd.normal("G")
+end
+return vim.api.nvim_create_user_command("Messages", messages, {nargs = 0})
