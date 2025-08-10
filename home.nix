@@ -96,6 +96,11 @@
 
   programs.starship.enable = true;
 
+  programs.zoxide = {
+    enable = true;
+    options = [ "--cmd" "cd" ];
+  };
+
   programs.zsh = {
     enable = true;
     autocd = true;
