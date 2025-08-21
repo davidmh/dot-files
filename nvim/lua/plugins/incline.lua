@@ -35,9 +35,9 @@ local function read_only_3f(bufnr)
     return ""
   end
 end
-local function terminal_component(colors)
+local function terminal_component(term_title, colors)
   local term_color = mode["get-color"]()
-  return {{" \238\158\149 ", guibg = term_color, guifg = colors.surface1}, {" terminal ", guifg = colors.text}}
+  return {{" \238\158\149 ", guibg = term_color, guifg = colors.surface1}, {(" " .. term_title .. " "), guifg = colors.text}}
 end
 local function help_component(colors, props)
   local name = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
@@ -71,7 +71,7 @@ local function render(props)
   local colors = palette.get_palette()
   local term_title = vim.b[props.buf].term_title
   if term_title then
-    return terminal_component(colors)
+    return terminal_component(term_title, colors)
   else
     local _12_ = {core["get-in"](vim, {"bo", props.buf, "ft"})}
     if (_12_[1] == "qf") then

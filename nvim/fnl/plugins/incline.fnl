@@ -25,11 +25,11 @@
           (core.get-in vim [:bo bufnr :readonly]))
      " " ""))
 
-(fn terminal-component [colors]
+(fn terminal-component [term-title colors]
   (local term-color (mode.get-color))
 
   [(tx "  " {:guibg term-color :guifg colors.surface1})
-   (tx (.. " terminal ") {:guifg colors.text})])
+   (tx (.. " " term-title " ") {:guifg colors.text})])
 
 (fn help-component [colors props]
   (let [name (vim.fn.fnamemodify (vim.api.nvim_buf_get_name props.buf) ::t)]
@@ -59,7 +59,7 @@
   (local colors (palette.get_palette))
   (local term-title (. (. vim.b props.buf) :term_title))
   (if term-title
-    (terminal-component colors)
+    (terminal-component term-title colors)
     (match [(core.get-in vim [:bo props.buf :ft])]
       [:qf] (quickfix-winbar-component colors)
       [:help] (help-component colors props)
