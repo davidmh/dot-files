@@ -1,7 +1,6 @@
 (import-macros {: tx : nmap} :own.macros)
-(local {: autoload : define} (require :nfnl.module))
+(local {: define} (require :nfnl.module))
 (local {: get-largest-window-id} (require :own.helpers))
-(local glance (autoload :glance))
 
 (local M (define :own.quickfix))
 
@@ -83,12 +82,5 @@
 (fn M.quickfix-winbar-component [colors]
   [(quickfix-title colors)
    (quickfix-history-nav colors)])
-
-(fn M.glance/enter-preview [] (glance.actions.enter_win :preview))
-(fn M.glance/enter-list [] (glance.actions.enter_win :list))
-(fn M.glance/next-result [] (glance.actions.next_location))
-(fn M.glance/previous-result [] (glance.actions.previous_location))
-(fn M.glance/vertical-split [] (glance.actions.jump_vsplit))
-(fn M.glance/horizontal-split [] (glance.actions.jump_split))
 
 M

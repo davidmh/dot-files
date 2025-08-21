@@ -1,10 +1,8 @@
 -- [nfnl] fnl/own/quickfix.fnl
 local _local_1_ = require("nfnl.module")
-local autoload = _local_1_["autoload"]
 local define = _local_1_["define"]
 local _local_2_ = require("own.helpers")
 local get_largest_window_id = _local_2_["get-largest-window-id"]
-local glance = autoload("glance")
 local M = define("own.quickfix")
 local function on_alternative_open(direction)
   local function _3_()
@@ -85,23 +83,5 @@ M["set-quickfix-mappings"] = function()
 end
 M["quickfix-winbar-component"] = function(colors)
   return {quickfix_title(colors), quickfix_history_nav(colors)}
-end
-M["glance/enter-preview"] = function()
-  return glance.actions.enter_win("preview")
-end
-M["glance/enter-list"] = function()
-  return glance.actions.enter_win("list")
-end
-M["glance/next-result"] = function()
-  return glance.actions.next_location()
-end
-M["glance/previous-result"] = function()
-  return glance.actions.previous_location()
-end
-M["glance/vertical-split"] = function()
-  return glance.actions.jump_vsplit()
-end
-M["glance/horizontal-split"] = function()
-  return glance.actions.jump_split()
 end
 return M

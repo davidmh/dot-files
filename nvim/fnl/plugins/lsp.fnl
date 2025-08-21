@@ -2,28 +2,12 @@
 (local {: autoload} (require :nfnl.module))
 (local core (autoload :nfnl.core))
 (local cfg (autoload :own.config))
-(local qf (autoload :own.quickfix))
 (local cmp-lsp (autoload :cmp_nvim_lsp))
 (local schema-store (autoload :schemastore))
 
-(fn executable? [path]
-  (if (= (vim.fn.executable path) 1)
-    path
-    nil))
-
-(fn get-python-path [workspace]
-  (or
-    (executable? (.. workspace :/.devenv/state/venv/bin/python))
-    (executable? (.. workspace :/.venv/bin/python))
-    (executable? (.. workspace :/venv/bin/python))
-    (vim.fn.exepath :python3)
-    (vim.fn.exepath :python)
-    :python))
-
-
 (fn lsp-config []
   (local git-root [:.git])
-  (local python-root [:uv.lock :venv/bin/python])
+  (local python-root [:uv.lock])
   (local client-capabilities (vim.lsp.protocol.make_client_capabilities))
   (vim.lsp.config :* {:capabilities (cmp-lsp.default_capabilities client-capabilities)
                       :init_options {:preferences {:includeCompletionsWithSnippetText true
@@ -40,13 +24,11 @@
                          :fennel_ls {:settings {:fennel-ls {:extra-globals :vim
                                                             :macro-path (.. (vim.fn.stdpath :config) :/fnl/own/macros.fnl)}}}
 
-                         :jedi_language_server {:on_new_config (fn [config root]
-                                                                 (local python-path (get-python-path root))
-                                                                 (tset config :settings {:workspace {:environmentPath python-path}}))
-                                                :root_markers python-root}
+                         :jedi_language_server {:root_markers python-root}
 
                          :ruff {:init_options {:settings {:lint {:enable true
                                                                  :preview true}}}}
+
                          :harper_ls {:settings {:harper-ls {:codeActions {:forceStable true}}}}
                          :gopls {}
                          :tflint {}
@@ -82,8 +64,8 @@
 
  (tx  :j-hui/fidget.nvim {:event :LspAttach
                           :opts {:notification {:window {:align :top
-                                                         :y_padding 2
-                                                         :winblend 0}}}})
+                                                         :border :none
+                                                         :y_padding 2}}}})
 
  (tx  :SmiteshP/nvim-navic {:opts {:depth_limit 4
                                    :depth_limit_indicator " [  ] "
@@ -91,27 +73,4 @@
                                    :highlight true
                                    :icons cfg.navic-icons
                                    :safe_output false
-                                   :separator "  "}})
-
- (tx  :dnlhc/glance.nvim {:cmd :Glance
-                          :opts {:mappings {:list {:<m-p> qf.glance/enter-preview
-                                                   :<c-q> qf.glance/enter-quickfix
-                                                   :<c-n> qf.glance/next-result
-                                                   :<c-p> qf.glance/previous-result
-                                                   :<c-v> qf.glance/vertical-split
-                                                   :<c-x> qf.glance/horizontal-split}
-                                            :preview {:<m-l> qf.glance/enter-list
-                                                      :<c-q> qf.glance/enter-quickfix
-                                                      :<c-n> qf.glance/next-result
-                                                      :<c-p> qf.glance/previous-result
-                                                      :<c-v> qf.glance/vertical-split
-                                                      :<c-x> qf.glance/horizontal-split}}
-                                  :hooks {:before_open (fn [results open-preview jump-to-result]
-                                                         (match (length results)
-                                                           0 (vim.notify "No results found")
-                                                           1 (do
-                                                               (jump-to-result (core.first results))
-                                                               (vim.cmd {:cmd :normal}
-                                                                        :args [:zz]
-                                                                        :bang true))
-                                                           _ (open-preview results)))}}})]
+                                   :separator "  "}})]
