@@ -1,5 +1,4 @@
 -- [nfnl] fnl/plugins/diagnostics.fnl
-local core = require("nfnl.core")
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
 local null_ls = autoload("null-ls")
@@ -55,9 +54,6 @@ end
 local function config()
   local formatting = null_ls.builtins.formatting
   local diagnostics = null_ls.builtins.diagnostics
-  local function _12_(params)
-    return core.concat({"run", "mypy"}, diagnostics.mypy._opts.args(params))
-  end
-  return null_ls.setup({sources = {diagnostics.selene.with({cwd = root_pattern("selene.toml"), condition = with_root_file("selene.toml")}), diagnostics.pylint.with({cwd = root_pattern("requirements-dev.txt"), condition = with_root_file("venv/bin/pylint"), prefer_local = ".venv/bin", args = {"--from-stdin", "$FILENAME", "-f", "json", "-d", "line-too-long,missing-function-docstring"}}), diagnostics.mypy.with({command = "uv", args = _12_, prefer_local = ".venv/bin"}), formatting.gofmt, diagnostics.sqlfluff.with({extra_args = {"--dialect", "postgres"}, prefer_local = ".venv/bin"}), formatting.sqlfluff.with({extra_args = {"--dialect", "postgres"}, prefer_local = ".venv/bin"}), formatting.stylua}, on_attach = on_attach})
+  return null_ls.setup({sources = {diagnostics.selene.with({cwd = root_pattern("selene.toml"), condition = with_root_file("selene.toml")}), diagnostics.pylint.with({condition = with_root_file(".venv/bin/pylint"), prefer_local = ".venv/bin"}), diagnostics.mypy.with({condition = with_root_file("mypy.ini"), prefer_local = ".venv/bin"}), formatting.gofmt, diagnostics.sqlfluff.with({extra_args = {"--dialect", "postgres"}, prefer_local = ".venv/bin"}), formatting.sqlfluff.with({extra_args = {"--dialect", "postgres"}, prefer_local = ".venv/bin"}), formatting.stylua}, on_attach = on_attach})
 end
 return {"nvimtools/none-ls.nvim", dependencies = {"nvim-lua/plenary.nvim"}, config = config}

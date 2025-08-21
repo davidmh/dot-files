@@ -1,5 +1,4 @@
 (import-macros {: tx} :own.macros)
-(local core (require :nfnl.core))
 (local {: autoload} (require :nfnl.module))
 (local null-ls (autoload :null-ls))
 (local u (autoload :null-ls.utils))
@@ -52,14 +51,10 @@
     {:sources [(diagnostics.selene.with {:cwd (root-pattern :selene.toml)
                                          :condition (with-root-file :selene.toml)})
 
-               (diagnostics.pylint.with {:cwd (root-pattern :requirements-dev.txt)
-                                         :condition (with-root-file :venv/bin/pylint)
-                                         :prefer_local :.venv/bin
-                                         :args [:--from-stdin :$FILENAME :-f :json :-d "line-too-long,missing-function-docstring"]})
+               (diagnostics.pylint.with {:condition (with-root-file :.venv/bin/pylint)
+                                         :prefer_local :.venv/bin})
 
-               (diagnostics.mypy.with {:command :uv
-                                       :args (fn [params]
-                                               (core.concat [:run :mypy] (diagnostics.mypy._opts.args params)))
+               (diagnostics.mypy.with {:condition (with-root-file :mypy.ini)
                                        :prefer_local :.venv/bin})
 
                formatting.gofmt
