@@ -1,4 +1,4 @@
--- [nfnl] fnl/own/mappings.fnl
+-- [nfnl] plugin/mappings.fnl
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
 local git = autoload("own.git")

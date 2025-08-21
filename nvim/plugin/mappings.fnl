@@ -23,8 +23,6 @@
                               :lazy-lock.json
                               :.git])
 
-; helpers
-
 (fn cmd [expression]
   (.. :<cmd> expression :<cr>))
 

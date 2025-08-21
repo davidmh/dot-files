@@ -1,4 +1,4 @@
--- [nfnl] fnl/own/sync-files.fnl
+-- [nfnl] plugin/sync-colorscheme.fnl
 local config = require("nfnl.config")
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]

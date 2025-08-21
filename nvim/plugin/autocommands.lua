@@ -1,4 +1,4 @@
--- [nfnl] fnl/own/autocommands.fnl
+-- [nfnl] plugin/autocommands.fnl
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
 local projects = autoload("own.projects")

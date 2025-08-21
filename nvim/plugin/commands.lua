@@ -1,4 +1,4 @@
--- [nfnl] fnl/own/commands.fnl
+-- [nfnl] plugin/commands.fnl
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
 local git = autoload("own.git")
