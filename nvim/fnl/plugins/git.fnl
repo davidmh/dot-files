@@ -11,6 +11,8 @@
  (tx :tpope/vim-fugitive {:dependencies [:tpope/vim-rhubarb]
                           :init #(set vim.g.fugitive_legacy_commands false)})
 
+ :davidmh/gitattributes.nvim
+
  (tx :NeogitOrg/neogit {:dependencies [:nvim-lua/plenary.nvim]
                         :opts {:disable_hint true
                                :console_timeout 100
