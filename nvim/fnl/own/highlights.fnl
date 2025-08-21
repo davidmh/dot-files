@@ -1,10 +1,15 @@
-(local {: autoload : define} (require :nfnl.module))
-(local palettes (autoload :catppuccin.palettes))
+(local {: define} (require :nfnl.module))
 
 (local M (define :own.highlights))
 
 (comment
+  (local palettes (require :catppuccin.palettes))
   (local color (palettes.get_palette)))
+
+(fn diagnostic [sp]
+  {:cterm {:undercurl true}
+   :undercurl true
+   :sp sp})
 
 (fn M.custom-highlights [color]
   {:Comment {:style [:italic :bold]}
@@ -16,6 +21,15 @@
    :TreesitterContext {:link :Normal}
 
    :StatusLine {:bg :NONE :fg color.text}
+
+   :DiagnosticUnderlineError (diagnostic color.red)
+   :DiagnosticUnderlineHint (diagnostic color.teal)
+   :DiagnosticUnderlineInfo (diagnostic color.sky)
+   :DiagnosticUnderlineWarn (diagnostic color.yellow)
+   :LspDiagnosticsUnderlineError (diagnostic color.red)
+   :LspDiagnosticsUnderlineHint (diagnostic color.teal)
+   :LspDiagnosticsUnderlineInfo (diagnostic color.sky)
+   :LspDiagnosticsUnderlineWarning (diagnostic color.yellow)
 
    :SnacksNotifierIconInfo  {:fg color.mauve}
    :SnacksNotifierTitleInfo  {:fg color.mauve}
