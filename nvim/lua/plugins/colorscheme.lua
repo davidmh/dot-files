@@ -6,7 +6,7 @@ local autoload = _local_2_["autoload"]
 local catppuccin = autoload("catppuccin")
 local function _3_()
   local flavor = "frappe"
-  catppuccin.setup({flavour = flavor, term_colors = true, integrations = {which_key = true}, custom_highlights = custom_highlights, transparent_background = false})
+  catppuccin.setup({flavour = flavor, float = {solid = true}, term_colors = true, integrations = {which_key = true}, custom_highlights = custom_highlights, styles = {comments = {"italic"}}})
   return vim.cmd(table.concat({"Catppuccin", flavor}, " "))
 end
 return {"catppuccin/nvim", name = "catppuccin", config = _3_}

@@ -6,8 +6,9 @@
 (tx :catppuccin/nvim {:name :catppuccin
                       :config #(let [flavor :frappe]
                                  (catppuccin.setup {:flavour flavor
-                                                    :transparent_background false
+                                                    :float {:solid true}
                                                     :term_colors true
                                                     :integrations {:which_key true}
-                                                    :custom_highlights custom-highlights})
+                                                    :custom_highlights custom-highlights
+                                                    :styles {:comments [:italic]}})
                                  (vim.cmd (table.concat [:Catppuccin flavor] " ")))})
