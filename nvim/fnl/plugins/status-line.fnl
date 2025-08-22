@@ -1,5 +1,4 @@
 (import-macros {: augroup : tx} :own.macros)
-(local lazy-status (require :lazy.status))
 (local {: autoload} (require :nfnl.module))
 
 (local heirline (autoload :heirline))
@@ -7,7 +6,6 @@
 (local palettes (autoload :catppuccin.palettes))
 (local config (autoload :own.config))
 (local mode (autoload :own.mode))
-(local ghn (autoload :github-notifications))
 
 (local empty-space {:provider " "})
 
@@ -58,25 +56,10 @@
                                         (tset $1 :content (table.concat [(.. " [" cwd-relative-path "]") head status] " ")))
                              :hl {:bold true}}))
 
-(local plugin-updates [(component {:init #(let [[icon count] (-> (lazy-status.updates)
-                                                                 (vim.split " "))]
-                                            (tset $1 :icon (.. " " icon))
-                                            (tset $1 :content (.. " " count))
-                                            (tset $1 :color :rosewater))
-                                   :condition #(lazy-status.has_updates)})])
-
-(local gh-notifications [(component {:init #(do
-                                              (tset $1 :icon "   ")
-                                              (tset $1 :content (length ghn.notifications))
-                                              (tset $1 :color :rosewater))
-                                     :condition #(> (length ghn.notifications) 0)})])
-
 (local statusline [vi-mode
                    push-right
                    diagnostics-block
                    git-block
-                   gh-notifications
-                   plugin-updates
                    empty-space])
 
 (fn initialize-heirline []

@@ -1,5 +1,4 @@
 -- [nfnl] fnl/plugins/status-line.fnl
-local lazy_status = require("lazy.status")
 local _local_1_ = require("nfnl.module")
 local autoload = _local_1_["autoload"]
 local heirline = autoload("heirline")
@@ -7,7 +6,6 @@ local conditions = autoload("heirline.conditions")
 local palettes = autoload("catppuccin.palettes")
 local config = autoload("own.config")
 local mode = autoload("own.mode")
-local ghn = autoload("github-notifications")
 local empty_space = {provider = " "}
 local function component(data)
   vim.validate("init", data.init, "function")
@@ -73,32 +71,7 @@ local function _12_(_241)
   return nil
 end
 git_block = component({condition = _11_, init = _12_, hl = {bold = true}})
-local plugin_updates
-local function _13_(_241)
-  local _let_14_ = vim.split(lazy_status.updates(), " ")
-  local icon = _let_14_[1]
-  local count = _let_14_[2]
-  _241["icon"] = (" " .. icon)
-  _241["content"] = (" " .. count)
-  _241["color"] = "rosewater"
-  return nil
-end
-local function _15_()
-  return lazy_status.has_updates()
-end
-plugin_updates = {component({init = _13_, condition = _15_})}
-local gh_notifications
-local function _16_(_241)
-  _241["icon"] = "  \239\130\155 "
-  _241["content"] = #ghn.notifications
-  _241["color"] = "rosewater"
-  return nil
-end
-local function _17_()
-  return (#ghn.notifications > 0)
-end
-gh_notifications = {component({init = _16_, condition = _17_})}
-local statusline = {vi_mode, push_right, diagnostics_block, git_block, gh_notifications, plugin_updates, empty_space}
+local statusline = {vi_mode, push_right, diagnostics_block, git_block, empty_space}
 local function initialize_heirline()
   vim.o.showmode = false
   local opts = {colors = palettes.get_palette()}
