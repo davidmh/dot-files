@@ -29,6 +29,8 @@
                          :ruff {:init_options {:settings {:lint {:enable true
                                                                  :preview true}}}}
 
+                         :vtsls {}
+
                          :harper_ls {:settings {:harper-ls {:codeActions {:forceStable true}}}}
                          :gopls {}
                          :tflint {}
@@ -57,10 +59,6 @@
  (tx  :neovim/nvim-lspconfig {:dependencies [:b0o/SchemaStore.nvim
                                              :folke/lazydev.nvim]
                               :config lsp-config})
-
- (tx  :pmizio/typescript-tools.nvim {:dependencies [:nvim-lua/plenary.nvim]
-                                     :opts {:settings {:expose_as_code_action [:add_missing_imports]}
-                                            :root_markers [:tsconfig.json]}})
 
  (tx  :j-hui/fidget.nvim {:event :LspAttach
                           :opts {:notification {:window {:align :top

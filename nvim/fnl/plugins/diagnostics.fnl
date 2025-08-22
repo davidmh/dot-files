@@ -38,7 +38,7 @@
 (vim.api.nvim_create_augroup :lsp-formatting {:clear true})
 
 (fn on-attach [client bufnr]
-  (when (client.supports_method :textDocument/formatting)
+  (when (client:supports_method :textDocument/formatting)
     (vim.api.nvim_create_autocmd :BufWritePre {:buffer bufnr
                                                :callback #(vim.lsp.buf.format {:bufnr bufnr})
                                                :group :lsp-formatting})))

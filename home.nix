@@ -1,4 +1,4 @@
-{ pkgs, lib, ... }:
+{ pkgs, lib, inputs, ... }:
 
 {
   home.sessionVariables = {
@@ -50,11 +50,11 @@
     unstable.lldb_19
     unstable.lua
     unstable.lua51Packages.luarocks-nix
-    unstable.neovim
     unstable.nixpkgs-fmt
     unstable.nerd-fonts.hasklug
     unstable.tree-sitter
     unstable.shellcheck
+    unstable.sqlfluff
 
     # LSP
     unstable.air-formatter
@@ -73,6 +73,7 @@
     unstable.tflint
     unstable.typos-lsp
     unstable.vscode-langservers-extracted
+    unstable.vtsls
     unstable.yaml-language-server
 
     # Remix
@@ -131,6 +132,11 @@
     };
   };
 
+  programs.neovim = {
+    enable = true;
+    package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+  };
+
   programs.git = {
     enable = true;
     userName = "David Mejorado";
@@ -158,32 +164,6 @@
 
     diff-so-fancy.enable = true;
     lfs.enable = true;
-  };
-
-  programs.jujutsu = {
-    enable = true;
-    package = pkgs.unstable.jujutsu;
-    settings = {
-      user = {
-        name = "David Mejorado";
-        email = "david.mejorado@gmail.com";
-      };
-      ui = {
-        paginate = "never";
-      };
-      custom_commands = {
-        "show diff" = {
-          key = [ "U" ];
-          args = [ "diff" "-r" "$change_id" "--color" "always" ];
-          show = "diff";
-        };
-        "open in editor" = {
-          key = [ "e" ];
-          args = [ "edit" "$change_id" ];
-          show = "edit";
-        };
-      };
-    };
   };
 
   programs.tmux = {
