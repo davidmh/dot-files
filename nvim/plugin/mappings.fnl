@@ -72,8 +72,6 @@
 (nmap :<leader>/p #(snacks.picker.grep {:dirs [(get-git-root)]}) (opts "find in project"))
 (nmap :<leader>/w #(snacks.picker.grep_word {:dirs [(get-git-root)]}) (opts "find current word"))
 
-(nmap :<leader>m #(snacks.picker.marks) (opts "list marks"))
-
 (nmap :<leader>s ":botright split /tmp/scratch.fnl<cr>" (opts "open scratch buffer"))
 
 (nmap :<leader>vp browse-plugins (opts "vim plugins"))
