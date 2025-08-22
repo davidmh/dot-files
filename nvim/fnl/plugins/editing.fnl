@@ -4,7 +4,7 @@
 
 (fn fennel-rules []
   "Copies clojure's string definition from evaluating
-  vim.api.nvim_g.switch_builtins.clojure_string"
+  vim.g.switch_builtins.clojure_string"
   (set
     vim.b.switch_custom_definitions
     [{; string -> symbol
@@ -40,4 +40,9 @@
 
  (tx :tommcdo/vim-exchange {:keys [:cx :cX (tx :X {:mode :v})]})
 
- (tx :junegunn/vim-easy-align {:keys [(tx :ga "<Plug>(EasyAlign)" {:mode [:x :n]})]})]
+ (tx :junegunn/vim-easy-align {:keys [(tx :ga "<Plug>(EasyAlign)" {:mode [:x :n]})]})
+
+ (tx :folke/todo-comments.nvim {:opts {:highlight {:pattern [".*<(KEYWORDS):"
+                                                             ".*<(KEYWORDS)\\s"
+                                                             ".*<(KEYWORDS)\\s*\\(.*\\)\\s*"]}
+                                       :search {:pattern "\\b(KEYWORDS)\\b\\(.*\\)?"}}})]

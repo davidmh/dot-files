@@ -14,4 +14,4 @@ local function config_switch()
   vim.api.nvim_create_autocmd("FileType", {pattern = "css,less", callback = css_rules, group = group})
   return nil
 end
-return {"junegunn/vim-slash", {"mg979/vim-visual-multi", keys = {{"<c-n>", mode = {"n", "v"}}, {"\\\\A", mode = {"n", "v"}}}}, {"AndrewRadev/switch.vim", config = config_switch, event = "VeryLazy"}, {"tommcdo/vim-exchange", keys = {"cx", "cX", {"X", mode = "v"}}}, {"junegunn/vim-easy-align", keys = {{"ga", "<Plug>(EasyAlign)", mode = {"x", "n"}}}}}
+return {"junegunn/vim-slash", {"mg979/vim-visual-multi", keys = {{"<c-n>", mode = {"n", "v"}}, {"\\\\A", mode = {"n", "v"}}}}, {"AndrewRadev/switch.vim", config = config_switch, event = "VeryLazy"}, {"tommcdo/vim-exchange", keys = {"cx", "cX", {"X", mode = "v"}}}, {"junegunn/vim-easy-align", keys = {{"ga", "<Plug>(EasyAlign)", mode = {"x", "n"}}}}, {"folke/todo-comments.nvim", opts = {highlight = {pattern = {".*<(KEYWORDS):", ".*<(KEYWORDS)\\s", ".*<(KEYWORDS)\\s*\\(.*\\)\\s*"}}, search = {pattern = "\\b(KEYWORDS)\\b\\(.*\\)?"}}}}
