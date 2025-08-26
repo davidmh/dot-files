@@ -12,4 +12,4 @@ local function get_cwd()
     end
   end
 end
-return {"davidmh/direnv.nvim", branch = "custom-setup", opts = {async = true, get_cwd = get_cwd}}
+return {"actionshrimp/direnv.nvim", opts = {async = true, get_cwd = get_cwd}}

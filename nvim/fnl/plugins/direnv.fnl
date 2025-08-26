@@ -10,6 +10,5 @@
       (if (vim.uv.fs_stat buf-name)
           (vim.fs.dirname buf-name))))
 
-(tx :davidmh/direnv.nvim {:branch :custom-setup
-                          :opts {:async true
-                                 :get_cwd get-cwd}})
+(tx :actionshrimp/direnv.nvim {:opts {:async true
+                                      :get_cwd get-cwd}})

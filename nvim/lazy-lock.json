@@ -13,7 +13,7 @@
   "cmp-r": { "branch": "main", "commit": "602f399c4efde01147cadfebcc884b7aa154f8b7" },
   "cmp_luasnip": { "branch": "master", "commit": "98d9cb5c2c38532bd9bdb481067b20fea8f32e90" },
   "conjure": { "branch": "main", "commit": "91980ec7de78dcbca23b2044da1686778311cc6e" },
-  "direnv.nvim": { "branch": "custom-setup", "commit": "43f50da8d4530ea17650e9a9f7e461cff2e7e642" },
+  "direnv.nvim": { "branch": "main", "commit": "8a6d69b3a21928d54228f921bdee92b6839f25a1" },
   "fidget.nvim": { "branch": "main", "commit": "4d5858bd4c471c895060e1b9f3575f1551184dc5" },
   "friendly-snippets": { "branch": "main", "commit": "572f5660cf05f8cd8834e096d7b4c921ba18e175" },
   "gitattributes.nvim": { "branch": "main", "commit": "4802132ae467ad86e01803e6900429a2fd8d702f" },
