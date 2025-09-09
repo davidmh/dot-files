@@ -4,6 +4,7 @@
   home.sessionVariables = {
     EDITOR = "nvim";
     TIG_EDITOR = "nvim";
+    MANPAGER = "nvim +Man!";
     DIRENV_LOG_FORMAT = "";
     OVERCOMMIT_COLOR = 0;
   };
@@ -55,6 +56,7 @@
     unstable.tree-sitter
     unstable.shellcheck
     unstable.sqlfluff
+    unstable.plantuml
 
     # LSP
     unstable.air-formatter
@@ -146,7 +148,7 @@
 
     aliases = {
       current-branch = "rev-parse --abbrev-ref HEAD";
-      default-branch = "!git rev-parse --abbrev-ref origin/HEAD | awk -F/ '{print $2}'";
+      default-branch = "config init.defaultBranch";
       fresh = "!git switch $(git default-branch) && git pull origin $(git default-branch) && git fetch";
       pushc = "!git push origin $(git current-branch)";
       pullc = "!git pull origin $(git current-branch)";
