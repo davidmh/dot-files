@@ -73,7 +73,6 @@
     unstable.tflint
     unstable.typos-lsp
     unstable.vscode-langservers-extracted
-    unstable.vtsls
     unstable.yaml-language-server
 
     # Remix
@@ -135,6 +134,9 @@
   programs.neovim = {
     enable = true;
     package = inputs.neovim-nightly-overlay.packages.${pkgs.system}.default;
+    withRuby = false;
+    withPython3 = false;
+    withNodeJs = false;
   };
 
   programs.git = {

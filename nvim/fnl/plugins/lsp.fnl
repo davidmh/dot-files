@@ -3,7 +3,6 @@
 (local core (autoload :nfnl.core))
 (local cfg (autoload :own.config))
 (local cmp-lsp (autoload :cmp_nvim_lsp))
-(local schema-store (autoload :schemastore))
 
 (fn lsp-config []
   (local git-root [:.git])
@@ -13,9 +12,7 @@
                       :init_options {:preferences {:includeCompletionsWithSnippetText true
                                                    :includeCompletionsForImportStatements true}}})
 
-  (local server-configs {:jsonls {:settings {:json {:schemas (schema-store.json.schemas)
-                                                    :validate {:enable true}}}}
-                         :lua_ls {:settings {:Lua {:completion {:callSnippet :Replace}
+  (local server-configs {:lua_ls {:settings {:Lua {:completion {:callSnippet :Replace}
                                                    :diagnostics {:globals [:vim]}
                                                    :format {:enable false}
                                                    :workspace {:checkThirdParty false}}}}
@@ -28,8 +25,6 @@
 
                          :ruff {:init_options {:settings {:lint {:enable true
                                                                  :preview true}}}}
-
-                         :vtsls {}
 
                          :harper_ls {:settings {:harper-ls {:codeActions {:forceStable true}}}}
                          :gopls {}
@@ -56,14 +51,17 @@
                           :opts {:library [{:path "${3rd}/luv/library" :words [:vim%.uv]}
                                            :nvim-dap-ui]}})
 
- (tx  :neovim/nvim-lspconfig {:dependencies [:b0o/SchemaStore.nvim
-                                             :folke/lazydev.nvim]
+ (tx  :neovim/nvim-lspconfig {:dependencies [:folke/lazydev.nvim]
                               :config lsp-config})
 
  (tx  :j-hui/fidget.nvim {:event :LspAttach
                           :opts {:notification {:window {:align :top
                                                          :border :none
                                                          :y_padding 2}}}})
+
+ (tx  :pmizio/typescript-tools.nvim {:dependencies [:nvim-lua/plenary.nvim]
+                                     :opts {:settings {:expose_as_code_action [:add_missing_imports]}
+                                            :root_markers [:tsconfig.json]}})
 
  (tx  :SmiteshP/nvim-navic {:opts {:depth_limit 4
                                    :depth_limit_indicator " [  ] "
