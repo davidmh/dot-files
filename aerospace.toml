@@ -84,7 +84,7 @@ outer.right =      15
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#exec-and-forget
 # You can uncomment the following lines to open up terminal with alt + enter shortcut (like in i3)
-alt-enter = 'exec-and-forget ~/.config/home-manager/kitty-wrapper'
+alt-enter = 'exec-and-forget /Applications/Ghostty.app/Contents/MacOS/ghostty'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#layout
 alt-shift-slash = 'layout tiles horizontal vertical'
