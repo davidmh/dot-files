@@ -9,7 +9,7 @@ local function on_lsp_attach(args)
     vim.api.nvim_create_autocmd("BufWritePre", {group = "own.autocommands", buffer = args.buf, command = "LspEslintFixAll"})
   else
   end
-  if vim.tbl_contains({"nil_ls", "solargraph", "terraformls", "air"}, client.name) then
+  if vim.tbl_contains({"nil_ls", "solargraph", "terraformls", "air", "rust-analyzer"}, client.name) then
     local function _3_()
       return vim.lsp.buf.format({id = client.id})
     end

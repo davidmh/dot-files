@@ -11,7 +11,11 @@
                            :buffer args.buf
                            :command :LspEslintFixAll}))
 
-  (when (vim.tbl_contains [:nil_ls :solargraph :terraformls :air]
+  (when (vim.tbl_contains [:nil_ls
+                           :solargraph
+                           :terraformls
+                           :air
+                           :rust-analyzer]
                           client.name)
     (autocmd :BufWritePre {:group :own.autocommands
                            :buffer args.buf

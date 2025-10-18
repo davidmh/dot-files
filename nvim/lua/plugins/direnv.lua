@@ -1,4 +1,5 @@
 -- [nfnl] fnl/plugins/direnv.fnl
+local core = require("nfnl.core")
 local git_filetypes = {"git", "fugitive", "fugitiveblame", "NeogitStatus", "NeogitCommitPopup"}
 local function get_cwd()
   local buf_name = vim.api.nvim_buf_get_name(0)
@@ -12,4 +13,11 @@ local function get_cwd()
     end
   end
 end
-return {"actionshrimp/direnv.nvim", opts = {async = true, get_cwd = get_cwd}}
+local function on_direnv_finished(evt)
+  if (evt.filetype == "ruby") then
+    return vim.lsp.start({name = "solargraph", cmd = {"bundle", "exec", "solargraph", "stdio"}}, {bufnr = evt.buffer})
+  else
+    return nil
+  end
+end
+return {"actionshrimp/direnv.nvim", opts = {async = true, get_cwd = get_cwd, on_direnv_finished = on_direnv_finished}}

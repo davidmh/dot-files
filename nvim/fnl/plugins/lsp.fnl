@@ -18,8 +18,8 @@
                                                    :workspace {:checkThirdParty false}}}}
                          :eslint {:root_markers git-root}
 
-                         :fennel_ls {:settings {:fennel-ls {:extra-globals :vim
-                                                            :macro-path (.. (vim.fn.stdpath :config) :/fnl/own/macros.fnl)}}}
+                         ; :fennel_ls {:settings {:fennel-ls {:extra-globals :vim
+                         ;                                    :macro-path (.. (vim.fn.stdpath :config) :/fnl/own/macros.fnl)}}}
 
                          :jedi_language_server {:root_markers python-root}
 
@@ -35,8 +35,7 @@
                          :nil_ls {:settings {:nil {:formatting {:command [:nixpkgs-fmt]}}}}
                          :air {}
                          :cssls {:root_markers git-root}
-                         :bashls {:root_markers git-root}
-                         :solargraph {}})
+                         :bashls {:root_markers git-root}})
 
   (local server-names (core.keys server-configs))
 

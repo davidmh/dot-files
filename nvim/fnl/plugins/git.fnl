@@ -15,7 +15,7 @@
 
  (tx :NeogitOrg/neogit {:dependencies [:nvim-lua/plenary.nvim]
                         :opts {:disable_hint true
-                               :console_timeout 100
+                               :console_timeout 1500
                                :auto_close_console false
                                :fetch_after_checkout true
                                :graph_style :unicode

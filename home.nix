@@ -69,6 +69,7 @@
     unstable.nil
     unstable.python313Packages.jedi-language-server
     unstable.ruff
+    unstable.rust-analyzer
     unstable.solargraph
     unstable.terraform-ls
     unstable.tflint
@@ -148,7 +149,7 @@
     aliases = {
       current-branch = "rev-parse --abbrev-ref HEAD";
       default-branch = "config init.defaultBranch";
-      fresh = "!git switch $(git default-branch) && git pull origin $(git default-branch) && git fetch";
+      fresh = "!git fetch origin $(git default-branch):$(git default-branch) && git switch $(git default-branch)";
       pushc = "!git push origin $(git current-branch)";
       pullc = "!git pull origin $(git current-branch)";
       amend-date = ''!LC_ALL=C GIT_COMMITTER_DATE="$(date)" git commit -n --amend --no-edit --date "$(date)"'';
