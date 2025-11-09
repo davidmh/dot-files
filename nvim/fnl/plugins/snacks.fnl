@@ -8,6 +8,7 @@
                         :opts {:bigfile {:enabled true}
                                :statuscolumn {:enabled true}
                                :input {:enabled true
+                                       :title_pos :left
                                        :win {:relative :cursor
                                              :col 0
                                              :row 1}}

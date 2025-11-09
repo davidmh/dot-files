@@ -31,6 +31,10 @@
    :LspDiagnosticsUnderlineInfo (diagnostic color.sky)
    :LspDiagnosticsUnderlineWarning (diagnostic color.yellow)
 
+   :SnacksInputNormal {:bg color.crust}
+   :SnacksInputBorder {:bg color.crust}
+   :SnacksInputTitle {:bg color.mauve :fg color.crust}
+
    :SnacksNotifierIconInfo  {:fg color.mauve}
    :SnacksNotifierTitleInfo  {:fg color.mauve}
 

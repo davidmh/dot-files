@@ -22,11 +22,11 @@ M["git-remote-base-url"] = function()
   local remote = M.git("remote", "get-url", "origin")
   local base_url
   do
-    local _3_ = str.split(remote, ":")
-    if ((_G.type(_3_) == "table") and (_3_[1] == "git@github.com") and (nil ~= _3_[2])) then
-      local path = _3_[2]
+    local case_3_ = str.split(remote, ":")
+    if ((_G.type(case_3_) == "table") and (case_3_[1] == "git@github.com") and (nil ~= case_3_[2])) then
+      local path = case_3_[2]
       base_url = ("https://github.com/" .. path)
-    elseif ((_G.type(_3_) == "table") and (_3_[1] == "https")) then
+    elseif ((_G.type(case_3_) == "table") and (case_3_[1] == "https")) then
       base_url = remote
     else
       base_url = nil

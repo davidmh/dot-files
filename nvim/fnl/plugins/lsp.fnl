@@ -35,7 +35,9 @@
                          :nil_ls {:settings {:nil {:formatting {:command [:nixpkgs-fmt]}}}}
                          :air {}
                          :cssls {:root_markers git-root}
-                         :bashls {:root_markers git-root}})
+                         :bashls {:root_markers git-root}
+                         :solargraph {:root_markers git-root
+                                      :cmd [:direnv :exec :. :bundle :exec :solargraph :stdio]}})
 
   (local server-names (core.keys server-configs))
 

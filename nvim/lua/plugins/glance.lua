@@ -21,14 +21,14 @@ local function _6_()
 end
 mappings = {["<c-q>"] = _2_, ["<c-n>"] = _3_, ["<c-p>"] = _4_, ["<c-v>"] = _5_, ["<c-x>"] = _6_}
 local function _7_(results, open_preview, jump_to_result)
-  local _8_ = #results
-  if (_8_ == 0) then
+  local case_8_ = #results
+  if (case_8_ == 0) then
     return vim.notify("No results found")
-  elseif (_8_ == 1) then
+  elseif (case_8_ == 1) then
     jump_to_result(core.first(results))
     return vim.cmd({cmd = "normal", args = {"zz"}, bang = true})
   else
-    local _ = _8_
+    local _ = case_8_
     return open_preview(results)
   end
 end

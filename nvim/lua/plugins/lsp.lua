@@ -1,6 +1,6 @@
 -- [nfnl] fnl/plugins/lsp.fnl
 local _local_1_ = require("nfnl.module")
-local autoload = _local_1_["autoload"]
+local autoload = _local_1_.autoload
 local core = autoload("nfnl.core")
 local cfg = autoload("own.config")
 local cmp_lsp = autoload("cmp_nvim_lsp")
@@ -9,7 +9,7 @@ local function lsp_config()
   local python_root = {"uv.lock"}
   local client_capabilities = vim.lsp.protocol.make_client_capabilities()
   vim.lsp.config("*", {capabilities = cmp_lsp.default_capabilities(client_capabilities), init_options = {preferences = {includeCompletionsWithSnippetText = true, includeCompletionsForImportStatements = true}}})
-  local server_configs = {lua_ls = {settings = {Lua = {completion = {callSnippet = "Replace"}, diagnostics = {globals = {"vim"}}, format = {enable = false}, workspace = {checkThirdParty = false}}}}, eslint = {root_markers = git_root}, jedi_language_server = {root_markers = python_root}, ruff = {init_options = {settings = {lint = {enable = true, preview = true}}}}, harper_ls = {settings = {["harper-ls"] = {codeActions = {forceStable = true}}}}, gopls = {}, tflint = {}, terraformls = {}, typos_lsp = {}, yamlls = {}, nil_ls = {settings = {["nil"] = {formatting = {command = {"nixpkgs-fmt"}}}}}, air = {}, cssls = {root_markers = git_root}, bashls = {root_markers = git_root}}
+  local server_configs = {lua_ls = {settings = {Lua = {completion = {callSnippet = "Replace"}, diagnostics = {globals = {"vim"}}, format = {enable = false}, workspace = {checkThirdParty = false}}}}, eslint = {root_markers = git_root}, jedi_language_server = {root_markers = python_root}, ruff = {init_options = {settings = {lint = {enable = true, preview = true}}}}, harper_ls = {settings = {["harper-ls"] = {codeActions = {forceStable = true}}}}, gopls = {}, tflint = {}, terraformls = {}, typos_lsp = {}, yamlls = {}, nil_ls = {settings = {["nil"] = {formatting = {command = {"nixpkgs-fmt"}}}}}, air = {}, cssls = {root_markers = git_root}, bashls = {root_markers = git_root}, solargraph = {root_markers = git_root, cmd = {"direnv", "exec", ".", "bundle", "exec", "solargraph", "stdio"}}}
   local server_names = core.keys(server_configs)
   for name, config in pairs(server_configs) do
     vim.lsp.config[name] = config

@@ -13,11 +13,4 @@ local function get_cwd()
     end
   end
 end
-local function on_direnv_finished(evt)
-  if (evt.filetype == "ruby") then
-    return vim.lsp.start({name = "solargraph", cmd = {"bundle", "exec", "solargraph", "stdio"}}, {bufnr = evt.buffer})
-  else
-    return nil
-  end
-end
-return {"actionshrimp/direnv.nvim", opts = {async = true, get_cwd = get_cwd, on_direnv_finished = on_direnv_finished}}
+return {"actionshrimp/direnv.nvim", opts = {async = true, get_cwd = get_cwd}}

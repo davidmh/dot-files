@@ -18,11 +18,15 @@
   (local neotest-python (require :neotest-python))
   (neotest-python {:python :.venv/bin/python}))
 
+(fn neotest-golang-adapter []
+  (local adapter (require :neotest-golang))
+  (adapter {:runner :gotestsum}))
+
 (fn config []
   (neotest.setup {:log_level vim.log.levels.DEBUG
                   :adapters [(neotest-rspec-adapter)
                              (require :neotest-rust)
-                             (require :neotest-go)
+                             (neotest-golang-adapter)
                              (neotest-python-adapter)
                              (neotest-playwright.adapter {})]
                   :quickfix {:enabled true
@@ -42,7 +46,7 @@
                                           :rouge8/neotest-rust
                                           :olimorris/neotest-rspec
                                           :nvim-neotest/neotest-python
-                                          :nvim-neotest/neotest-go]
+                                          :fredrikaverpil/neotest-golang]
                            :config config
                            :keys [(tx :<localleader>trn "<cmd>Neotest run<cr>" {:desc "run nearest test"})
                                   (tx :<localleader>trf #(neotest.run.run (vim.fn.expand :%))

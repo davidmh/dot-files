@@ -11,12 +11,5 @@
       (if (vim.uv.fs_stat buf-name)
           (vim.fs.dirname buf-name))))
 
-(fn on-direnv-finished [evt]
-  (when (= evt.filetype :ruby)
-    (vim.lsp.start {:name :solargraph
-                    :cmd [:bundle :exec :solargraph :stdio]}
-                   {:bufnr evt.buffer})))
-
 (tx :actionshrimp/direnv.nvim {:opts {:async true
-                                      :get_cwd get-cwd
-                                      :on_direnv_finished on-direnv-finished}})
+                                      :get_cwd get-cwd}})

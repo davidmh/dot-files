@@ -143,19 +143,20 @@
 
   programs.git = {
     enable = true;
-    userName = "David Mejorado";
-    userEmail = "david.mejorado@gmail.com";
 
-    aliases = {
-      current-branch = "rev-parse --abbrev-ref HEAD";
-      default-branch = "config init.defaultBranch";
-      fresh = "!git fetch origin $(git default-branch):$(git default-branch) && git switch $(git default-branch)";
-      pushc = "!git push origin $(git current-branch)";
-      pullc = "!git pull origin $(git current-branch)";
-      amend-date = ''!LC_ALL=C GIT_COMMITTER_DATE="$(date)" git commit -n --amend --no-edit --date "$(date)"'';
-    };
-
-    extraConfig = {
+    settings = {
+      user = {
+        name = "David Mejorado";
+        email = "david.mejorado@gmail.com";
+      };
+      alias = {
+        current-branch = "rev-parse --abbrev-ref HEAD";
+        default-branch = "config init.defaultBranch";
+        fresh = "!git fetch origin $(git default-branch):$(git default-branch) && git switch $(git default-branch)";
+        pushc = "!git push origin $(git current-branch)";
+        pullc = "!git pull origin $(git current-branch)";
+        amend-date = ''!LC_ALL=C GIT_COMMITTER_DATE="$(date)" git commit -n --amend --no-edit --date "$(date)"'';
+      };
       init.defaultBranch = "main";
       rebase.autosquash = true;
       fetch.writeCommitGraph = true;
@@ -166,9 +167,10 @@
       delta.line-numbers = false;
     };
 
-    diff-so-fancy.enable = true;
     lfs.enable = true;
   };
+
+  programs.diff-so-fancy.enable = true;
 
   programs.tmux = {
     enable = true;

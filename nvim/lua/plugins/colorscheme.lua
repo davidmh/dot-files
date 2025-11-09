@@ -2,7 +2,7 @@
 local _local_1_ = require("own.highlights")
 local custom_highlights = _local_1_["custom-highlights"]
 local _local_2_ = require("nfnl.module")
-local autoload = _local_2_["autoload"]
+local autoload = _local_2_.autoload
 local catppuccin = autoload("catppuccin")
 local function _3_()
   local flavor = "frappe"

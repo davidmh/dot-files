@@ -73,12 +73,12 @@ local function render(props)
   if term_title then
     return terminal_component(term_title, colors)
   else
-    local _12_ = {core["get-in"](vim, {"bo", props.buf, "ft"})}
-    if (_12_[1] == "qf") then
+    local case_12_ = {core["get-in"](vim, {"bo", props.buf, "ft"})}
+    if (case_12_[1] == "qf") then
       return quickfix_winbar_component(colors)
-    elseif (_12_[1] == "help") then
+    elseif (case_12_[1] == "help") then
       return help_component(colors, props)
-    elseif (_12_[1] == "fugitiveblame") then
+    elseif (case_12_[1] == "fugitiveblame") then
       return {}
     elseif true then
       return file_component(props)
