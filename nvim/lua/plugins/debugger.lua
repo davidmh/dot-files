@@ -1,6 +1,6 @@
 -- [nfnl] fnl/plugins/debugger.fnl
 local _local_1_ = require("nfnl.module")
-local autoload = _local_1_["autoload"]
+local autoload = _local_1_.autoload
 local dap = autoload("dap")
 local dap_ui = autoload("dapui")
 local dap_widgets = autoload("dap.ui.widgets")

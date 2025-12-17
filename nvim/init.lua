@@ -1,6 +1,6 @@
 -- [nfnl] init.fnl
 local _local_1_ = require("own.config")
-local border = _local_1_["border"]
+local border = _local_1_.border
 require("own.default-plugins")
 require("own.bootstrap")
 require("own.options")

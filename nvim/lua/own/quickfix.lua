@@ -1,15 +1,15 @@
 -- [nfnl] fnl/own/quickfix.fnl
 local _local_1_ = require("nfnl.module")
-local define = _local_1_["define"]
+local define = _local_1_.define
 local _local_2_ = require("own.helpers")
 local get_largest_window_id = _local_2_["get-largest-window-id"]
 local M = define("own.quickfix")
 local function on_alternative_open(direction)
   local function _3_()
     local _let_4_ = vim.fn.getqflist()[vim.fn.line(".")]
-    local bufnr = _let_4_["bufnr"]
-    local lnum = _let_4_["lnum"]
-    local col = _let_4_["col"]
+    local bufnr = _let_4_.bufnr
+    local lnum = _let_4_.lnum
+    local col = _let_4_.col
     vim.fn.win_gotoid(get_largest_window_id())
     vim.cmd((direction .. " " .. vim.api.nvim_buf_get_name(bufnr)))
     return vim.fn.cursor(lnum, col)

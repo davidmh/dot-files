@@ -8,6 +8,7 @@
   (local git-root [:.git])
   (local python-root [:uv.lock])
   (local client-capabilities (vim.lsp.protocol.make_client_capabilities))
+  ; (vim.lsp.set_log_level :debug)
   (vim.lsp.config :* {:capabilities (cmp-lsp.default_capabilities client-capabilities)
                       :init_options {:preferences {:includeCompletionsWithSnippetText true
                                                    :includeCompletionsForImportStatements true}}})
@@ -26,7 +27,10 @@
                          :ruff {:init_options {:settings {:lint {:enable true
                                                                  :preview true}}}}
 
-                         :harper_ls {:settings {:harper-ls {:codeActions {:forceStable true}}}}
+                         :harper_ls {:settings {:harper-ls {:codeActions {:forceStable true}}}
+                                     :filetypes (vim.tbl_filter
+                                                  #(not (vim.tbl_contains [:typescript :typescriptreact] $1))
+                                                  vim.lsp.config.harper_ls.filetypes)}
                          :gopls {}
                          :tflint {}
                          :terraformls {}

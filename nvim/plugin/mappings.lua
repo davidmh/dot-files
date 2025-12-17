@@ -1,6 +1,6 @@
 -- [nfnl] plugin/mappings.fnl
 local _local_1_ = require("nfnl.module")
-local autoload = _local_1_["autoload"]
+local autoload = _local_1_.autoload
 local git = autoload("own.git")
 local gitsigns = autoload("gitsigns")
 local projects = autoload("own.projects")
@@ -31,7 +31,7 @@ local function toggle_blame_line()
 end
 local function toggle_quickfix()
   local function _5_(_4_)
-    local bufnr = _4_["bufnr"]
+    local bufnr = _4_.bufnr
     return (core["get-in"](vim.bo, {bufnr, "filetype"}, "") == "qf")
   end
   if core.some(_5_, vim.fn.getwininfo()) then
@@ -180,6 +180,7 @@ local function _30_()
 end
 vim.keymap.set("n", "<leader>gw", _30_, {desc = "write"})
 vim.keymap.set("n", "<leader>gr", cmd("Gread"), {desc = "read"})
+vim.keymap.set("n", "<leader>gR", cmd("Neogit rebase"), {desc = "rebase"})
 vim.keymap.set("n", "<leader>gb", cmd("Git blame"), {desc = "blame"})
 vim.keymap.set("n", "<leader>g-", cmd("Neogit branch"), {desc = "branch"})
 vim.keymap.set("n", "<leader>gd", cmd("Gvdiffsplit"), {desc = "diff"})

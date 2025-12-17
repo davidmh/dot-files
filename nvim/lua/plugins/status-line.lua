@@ -1,6 +1,6 @@
 -- [nfnl] fnl/plugins/status-line.fnl
 local _local_1_ = require("nfnl.module")
-local autoload = _local_1_["autoload"]
+local autoload = _local_1_.autoload
 local heirline = autoload("heirline")
 local conditions = autoload("heirline.conditions")
 local palettes = autoload("catppuccin.palettes")
@@ -61,8 +61,8 @@ local function _11_()
   return conditions.is_git_repo()
 end
 local function _12_(_241)
-  local head = vim.b.gitsigns_status_dict["head"]
-  local root = vim.b.gitsigns_status_dict["root"]
+  local head = vim.b.gitsigns_status_dict.head
+  local root = vim.b.gitsigns_status_dict.root
   local cwd_relative_path = string.gsub(string.gsub(vim.fn.getcwd(), vim.fn.fnamemodify(root, ":h"), ""), "^/", "")
   local status = vim.trim((vim.b.gitsigns_status or ""))
   _241["icon"] = "\239\144\152"

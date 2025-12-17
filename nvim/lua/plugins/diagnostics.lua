@@ -1,12 +1,12 @@
 -- [nfnl] fnl/plugins/diagnostics.fnl
 local _local_1_ = require("nfnl.module")
-local autoload = _local_1_["autoload"]
+local autoload = _local_1_.autoload
 local null_ls = autoload("null-ls")
 local u = autoload("null-ls.utils")
 local cfg = autoload("own.config")
 local function root_pattern(pattern)
   local function _3_(_2_)
-    local bufname = _2_["bufname"]
+    local bufname = _2_.bufname
     local root_fn = u.root_pattern(pattern)
     return root_fn(vim.fn.expand(bufname))
   end

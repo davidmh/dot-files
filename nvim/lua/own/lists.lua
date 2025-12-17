@@ -1,6 +1,6 @@
 -- [nfnl] fnl/own/lists.fnl
 local _local_1_ = require("nfnl.module")
-local define = _local_1_["define"]
+local define = _local_1_.define
 local M = define("own.lists")
 M.find = function(pred, xs)
   vim.validate("pred", pred, "function")

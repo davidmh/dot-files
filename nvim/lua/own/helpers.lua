@@ -1,6 +1,6 @@
 -- [nfnl] fnl/own/helpers.fnl
 local _local_1_ = require("nfnl.module")
-local define = _local_1_["define"]
+local define = _local_1_.define
 local M = define("own.helpers")
 M["window-size"] = function(window_id)
   return (vim.api.nvim_win_get_width(window_id) * vim.api.nvim_win_get_height(window_id))

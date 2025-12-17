@@ -4,7 +4,7 @@
 (local catppuccin (autoload :catppuccin))
 
 (tx :catppuccin/nvim {:name :catppuccin
-                      :config #(let [flavor :frappe]
+                      :config #(let [flavor :mocha]
                                  (catppuccin.setup {:flavour flavor
                                                     :float {:solid true}
                                                     :term_colors true

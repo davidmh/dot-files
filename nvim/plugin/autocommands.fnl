@@ -11,6 +11,7 @@
                            :solargraph
                            :terraformls
                            :air
+                           :ruff
                            :rust-analyzer]
                           client.name)
     (autocmd :BufWritePre {:group :own.autocommands

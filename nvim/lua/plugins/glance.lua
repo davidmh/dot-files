@@ -1,7 +1,7 @@
 -- [nfnl] fnl/plugins/glance.fnl
 local core = require("nfnl.core")
 local _local_1_ = require("nfnl.module")
-local autoload = _local_1_["autoload"]
+local autoload = _local_1_.autoload
 local glance = autoload("glance")
 local mappings
 local function _2_()

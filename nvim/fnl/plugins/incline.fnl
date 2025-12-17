@@ -69,7 +69,6 @@
 (tx :b0o/incline.nvim {:opts {:window {:padding 0
                                        :margin {:horizontal 0
                                                 :vertical 0}}
-                              :hide {:cursorline true}
                               :ignore {:unlisted_buffers false
                                        :buftypes [:prompt :nofile]
                                        :wintypes [:unknown :popup :autocmd]}

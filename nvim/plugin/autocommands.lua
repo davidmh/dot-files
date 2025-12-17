@@ -5,7 +5,7 @@ local projects = autoload("own.projects")
 local navic = autoload("nvim-navic")
 local function on_lsp_attach(args)
   local client = vim.lsp.get_client_by_id(args.data.client_id)
-  if vim.tbl_contains({"eslint", "nil_ls", "solargraph", "terraformls", "air", "rust-analyzer"}, client.name) then
+  if vim.tbl_contains({"eslint", "nil_ls", "solargraph", "terraformls", "air", "ruff", "rust-analyzer"}, client.name) then
     local function _2_()
       return vim.lsp.buf.format({id = client.id})
     end

@@ -1,9 +1,9 @@
 -- [nfnl] fnl/plugins/completion.fnl
 local _local_1_ = require("nfnl.core")
-local concat = _local_1_["concat"]
-local merge = _local_1_["merge"]
+local concat = _local_1_.concat
+local merge = _local_1_.merge
 local _local_2_ = require("nfnl.module")
-local autoload = _local_2_["autoload"]
+local autoload = _local_2_.autoload
 local cmp = autoload("cmp")
 local ls = autoload("luasnip")
 local lspkind = autoload("lspkind")

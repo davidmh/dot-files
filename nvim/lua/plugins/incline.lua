@@ -1,6 +1,6 @@
 -- [nfnl] fnl/plugins/incline.fnl
 local _local_1_ = require("nfnl.module")
-local autoload = _local_1_["autoload"]
+local autoload = _local_1_.autoload
 local _local_2_ = require("own.helpers")
 local sanitize_path = _local_2_["sanitize-path"]
 local _local_3_ = require("own.quickfix")
@@ -87,4 +87,4 @@ local function render(props)
     end
   end
 end
-return {"b0o/incline.nvim", opts = {window = {padding = 0, margin = {horizontal = 0, vertical = 0}}, hide = {cursorline = true}, ignore = {buftypes = {"prompt", "nofile"}, wintypes = {"unknown", "popup", "autocmd"}, unlisted_buffers = false}, render = render}}
+return {"b0o/incline.nvim", opts = {window = {padding = 0, margin = {horizontal = 0, vertical = 0}}, ignore = {buftypes = {"prompt", "nofile"}, wintypes = {"unknown", "popup", "autocmd"}, unlisted_buffers = false}, render = render}}

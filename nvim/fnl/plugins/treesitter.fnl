@@ -74,6 +74,4 @@
       :build ::TSUpdate
       :config config})
 
- (tx :davidmh/mdx.nvim {:dependencies [:nvim-treesitter/nvim-treesitter]
-                        :event "BufRead *.mdx"
-                        :config true})]
+ (tx :davidmh/mdx.nvim {:dependencies [:nvim-treesitter/nvim-treesitter]})]

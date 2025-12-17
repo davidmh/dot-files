@@ -1,18 +1,18 @@
 -- [nfnl] fnl/own/projects.fnl
 local _local_1_ = require("nfnl.core")
-local concat = _local_1_["concat"]
+local concat = _local_1_.concat
 local kv_pairs = _local_1_["kv-pairs"]
-local first = _local_1_["first"]
-local map = _local_1_["map"]
-local merge = _local_1_["merge"]
-local reduce = _local_1_["reduce"]
-local spit = _local_1_["spit"]
-local slurp = _local_1_["slurp"]
+local first = _local_1_.first
+local map = _local_1_.map
+local merge = _local_1_.merge
+local reduce = _local_1_.reduce
+local spit = _local_1_.spit
+local slurp = _local_1_.slurp
 local _local_2_ = require("own.lists")
-local take = _local_2_["take"]
+local take = _local_2_.take
 local _local_3_ = require("nfnl.module")
-local autoload = _local_3_["autoload"]
-local define = _local_3_["define"]
+local autoload = _local_3_.autoload
+local define = _local_3_.define
 local _local_4_ = require("own.helpers")
 local sanitize_path = _local_4_["sanitize-path"]
 local snacks = autoload("snacks")
@@ -86,7 +86,7 @@ local function pick_project(choice)
 end
 M["select-project"] = function()
   local function _18_(_17_)
-    local name = _17_["name"]
+    local name = _17_.name
     return name
   end
   return vim.ui.select(M["recent-projects"](), {prompt = "switch to a project", format_item = _18_}, pick_project)

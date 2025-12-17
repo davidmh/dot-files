@@ -7,6 +7,6 @@ font-size                     = 15
 font-thicken                  = true
 mouse-hide-while-typing       = true
 quit-after-last-window-closed = true
-theme                         = Catppuccin Frappe
+theme                         = Catppuccin Mocha
 title                         = " "
 macos-titlebar-proxy-icon     = hidden

@@ -1,7 +1,7 @@
 -- [nfnl] fnl/own/notifications.fnl
 local _local_1_ = require("nfnl.module")
-local autoload = _local_1_["autoload"]
-local define = _local_1_["define"]
+local autoload = _local_1_.autoload
+local define = _local_1_.define
 local M = define("own.notifications")
 local snacks = autoload("snacks")
 local function confirm(picker, choice)

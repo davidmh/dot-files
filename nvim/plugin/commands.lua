@@ -1,6 +1,6 @@
 -- [nfnl] plugin/commands.fnl
 local _local_1_ = require("nfnl.module")
-local autoload = _local_1_["autoload"]
+local autoload = _local_1_.autoload
 local git = autoload("own.git")
 local snacks = autoload("snacks")
 local function _2_()

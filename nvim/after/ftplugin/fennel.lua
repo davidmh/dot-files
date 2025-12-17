@@ -1,8 +1,8 @@
 -- [nfnl] after/ftplugin/fennel.fnl
 local _local_1_ = require("own.lists")
-local find = _local_1_["find"]
+local find = _local_1_.find
 local _local_2_ = require("nfnl.module")
-local autoload = _local_2_["autoload"]
+local autoload = _local_2_.autoload
 local _local_3_ = autoload("nfnl.core")
 local empty_3f = _local_3_["empty?"]
 local _local_4_ = autoload("nfnl.config")
@@ -16,7 +16,7 @@ local function find_window_id_by_path(path)
 end
 local function find_compiled_lua_path(fennel_path)
   local _local_6_ = find_and_load(vim.fn.stdpath("config"))
-  local cfg = _local_6_["cfg"]
+  local cfg = _local_6_.cfg
   local find_lua_path = cfg({"fnl-path->lua-path"})
   return find_lua_path(fennel_path)
 end

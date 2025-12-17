@@ -1,7 +1,7 @@
 -- [nfnl] fnl/own/git.fnl
 local _local_1_ = require("nfnl.module")
-local autoload = _local_1_["autoload"]
-local define = _local_1_["define"]
+local autoload = _local_1_.autoload
+local define = _local_1_.define
 local fs = autoload("nfnl.fs")
 local core = autoload("nfnl.core")
 local str = autoload("nfnl.string")

@@ -1,13 +1,13 @@
 -- [nfnl] plugin/sync-colorscheme.fnl
 local config = require("nfnl.config")
 local _local_1_ = require("nfnl.module")
-local autoload = _local_1_["autoload"]
+local autoload = _local_1_.autoload
 local core = autoload("nfnl.core")
 local compile = autoload("nfnl.compile")
 local catppuccin = autoload("catppuccin")
 local nvim_root = vim.fn.expand("~/.config/home-manager/nvim")
 local _local_2_ = config["find-and-load"](nvim_root)
-local cfg = _local_2_["cfg"]
+local cfg = _local_2_.cfg
 local nvim_colorscheme_path = vim.fn.expand("~/.config/home-manager/nvim/fnl/plugins/colorscheme.fnl")
 local function symbolize(text)
   return (":" .. text)

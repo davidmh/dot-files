@@ -153,6 +153,7 @@
 (nmap :<leader>gc (cmd "Neogit commit") {:desc :commit})
 (nmap :<leader>gw #(git.write) {:desc :write})
 (nmap :<leader>gr (cmd "Gread") {:desc :read})
+(nmap :<leader>gR (cmd "Neogit rebase") {:desc :rebase})
 (nmap :<leader>gb (cmd "Git blame") {:desc :blame})
 (nmap :<leader>g- (cmd "Neogit branch") {:desc :branch})
 (nmap :<leader>gd (cmd "Gvdiffsplit") {:desc :diff})
