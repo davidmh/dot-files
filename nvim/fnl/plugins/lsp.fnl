@@ -36,6 +36,8 @@
                          :terraformls {}
                          :typos_lsp {}
                          :yamlls {}
+                         :selene3p_ls {}
+                         :stylua3p_ls {}
                          :nil_ls {:settings {:nil {:formatting {:command [:nixpkgs-fmt]}}}}
                          :air {}
                          :cssls {:root_markers git-root}
