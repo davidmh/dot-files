@@ -19,8 +19,7 @@
                                                    :workspace {:checkThirdParty false}}}}
                          :eslint {:root_markers git-root}
 
-                         ; :fennel_ls {:settings {:fennel-ls {:extra-globals :vim
-                         ;                                    :macro-path (.. (vim.fn.stdpath :config) :/fnl/own/macros.fnl)}}}
+                         :fennel_ls {}
 
                          :jedi_language_server {:root_markers python-root}
 

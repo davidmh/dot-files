@@ -1,3 +1,7 @@
+(import-macros {: tx} :own.macros)
+(local {: autoload} (require :nfnl.module))
+(local cfg (autoload :own.config))
+
 (set vim.g.mapleader " ")
 (set vim.g.maplocalleader ",")
 
@@ -27,3 +31,25 @@
 (set vim.o.splitright true)
 (set vim.o.winborder :solid)
 (set vim.o.confirm true)
+
+(fn get-source-name [diagnostic]
+  (or diagnostic.source
+      (-?> diagnostic.namespace
+           (vim.diagnostic.get_namespace)
+           (. :name))
+     (.. "ns:" (tostring diagnostic.namespace))))
+
+(fn diagnostic-format [diagnostic]
+  (..
+    (. cfg.icons diagnostic.severity)
+    " [" (get-source-name diagnostic) "] "
+    diagnostic.message))
+
+(vim.diagnostic.config {:underline true
+                        :signs false
+                        :virtual_text false
+                        :virtual_lines false
+                        :update_in_insert false
+                        :severity_sort true
+                        :float {:format diagnostic-format
+                                :header []}})

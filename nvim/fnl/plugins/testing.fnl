@@ -31,7 +31,7 @@
                              (neotest-playwright.adapter {})]
                   :quickfix {:enabled true
                              :open false}
-                  :discovery {:enabled true}
+                  :discovery {:enabled false}
                   :icons {:failed :
                           :passed :
                           :watching :

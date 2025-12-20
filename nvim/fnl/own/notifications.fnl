@@ -6,12 +6,12 @@
 (fn confirm [picker choice]
   (picker:close)
   (when choice
-    (local text (.. "\n**"
+    (local text (.. "\n# "
                     (or choice.item.icon "󰍡 ")
                     (or
                       (and (= choice.item.title "") "no title")
                       choice.item.title)
-                    "**\n\n"
+                    "\n\n"
                     choice.item.msg))
     (snacks.win {:width 0.5
                  :height 0.4
