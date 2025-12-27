@@ -9,7 +9,7 @@ local function setup()
     return join({_241, (_241 .. "/fnl"), (_241 .. "/lua")})
   end
   vim.bo.path = join(vim.tbl_map(_2_, vim.opt.rtp:get()))
-  vim.bo.suffixesadd = join({".fnl", "/init.fnl", ".lua", "/init.lua"})
+  vim.bo.suffixesadd = join({".fnl", "/init.fnl", ".lua", "/init.lua", ".fnlm"})
   vim.bo.includeexpr = "tr(v:fname, '.', '/')"
   return nil
 end

@@ -8,7 +8,8 @@
   (set vim.bo.suffixesadd (join [".fnl"
                                  "/init.fnl"
                                  ".lua"
-                                 "/init.lua"]))
+                                 "/init.lua"
+                                 ".fnlm"]))
 
   (set vim.bo.includeexpr "tr(v:fname, '.', '/')"))
 
