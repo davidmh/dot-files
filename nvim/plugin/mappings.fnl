@@ -138,8 +138,12 @@
   (buf-map :<leader>le #(vim.diagnostic.setqflist error-filter) "lsp: errors")
   (buf-map :<leader>la #(vim.lsp.buf.code_action) "lsp: code actions")
   (buf-map :<leader>lr #(vim.lsp.buf.rename) "lsp: rename")
-  (buf-map :<leader>lR :<cmd>LspRestart<CR> "lsp: restart")
   (buf-map :<leader>ls #(snacks.picker.lsp_symbols) "lsp: symbols")
+  (buf-map :<leader>lI "<cmd>checkhealth vim.lsp<CR>" "lsp: info")
+  (buf-map :<leader>lR "<cmd>lsp restart<CR>" "lsp: restart")
+  (buf-map :<leader>lE "<cmd>lsp enable<CR>" "lsp: enable")
+  (buf-map :<leader>lD "<cmd>lsp disable<CR>" "lsp: disable")
+  (buf-map :<leader>lL #(vim.cmd (.. :tabnew " " (vim.lsp.log.get_filename))) "lsp: log")
 
   (vmap :<leader>la #(vim.lsp.buf.code_action) {:buffer true
                                                 :desc "lsp: code actions"}))

@@ -36,7 +36,6 @@
     silver-searcher
     ripgrep
     tig
-    ueberzug
     unstable.aerospace
     unstable.ast-grep
     unstable.bun

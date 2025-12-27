@@ -23,6 +23,8 @@
 
                          :jedi_language_server {:root_markers python-root}
 
+                         :jsonls {}
+
                          :ruff {:init_options {:settings {:lint {:enable true
                                                                  :preview true}}}}
 

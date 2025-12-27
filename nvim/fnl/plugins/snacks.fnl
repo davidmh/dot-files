@@ -6,7 +6,8 @@
 (tx :folke/snacks.nvim {:lazy false
                         :priority 1000
                         :opts {:bigfile {:enabled true}
-                               :statuscolumn {:enabled true}
+                               :statuscolumn {:enabled true
+                                              :git {:patterns [:GitSigns]}}
                                :input {:enabled true
                                        :title_pos :left
                                        :win {:relative :cursor
