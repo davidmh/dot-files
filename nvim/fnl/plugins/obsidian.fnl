@@ -28,7 +28,4 @@
                                          :workspaces [{:name :default
                                                        :path "~/Documents/Obsidian Vault/"}]
                                          :ui {:enable true}
-                                         :follow_url_func vim.ui.open
-                                         ; TODO: remove with deprecation warning
-                                         :statusline {:enabled false}
                                          :legacy_commands false}})

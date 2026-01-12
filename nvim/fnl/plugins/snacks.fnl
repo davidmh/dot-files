@@ -1,4 +1,5 @@
 (import-macros {: tx} :own.macros)
+(local {: border} (require :own.config))
 (local {: autoload} (require :nfnl.module))
 (local {: assoc-in} (require :nfnl.core))
 (local actions (autoload :snacks.picker.actions))
@@ -38,9 +39,9 @@
                                       (set vim.ui.select snacks.picker.select)
 
                                       (local layouts (require :snacks.picker.config.layouts))
-                                      (assoc-in layouts [:default :layout 1 :border] :solid)
+                                      (assoc-in layouts [:default :layout 1 :border] border)
                                       (assoc-in layouts [:default :layout 1 1 :border] :solid)
-                                      (assoc-in layouts [:default :layout 2 :border] :solid)
+                                      (assoc-in layouts [:default :layout 2 :border] border)
                                       (assoc-in layouts [:default :layout :backdrop] false)
-                                      (assoc-in layouts [:select :layout :border] :solid)
+                                      (assoc-in layouts [:select :layout :border] border)
                                       (assoc-in layouts [:select :layout 1 :border] :none))})

@@ -13,7 +13,7 @@
 (local notifications (autoload :own.notifications))
 
 (local error-filter {:severity vim.diagnostic.severity.ERROR})
-(local warning-filter {:severity vim.diagnostic.severity.WARNING})
+(local warning-filter {:severity vim.diagnostic.severity.WARN})
 
 (local project-root-patterns [:.envrc
                               :.rspec
@@ -72,7 +72,7 @@
 (nmap :<leader>/p #(snacks.picker.grep {:dirs [(get-git-root)]}) (opts "find in project"))
 (nmap :<leader>/w #(snacks.picker.grep_word {:dirs [(get-git-root)]}) (opts "find current word"))
 
-(nmap :<leader>s ":botright split /tmp/scratch.fnl<cr>" (opts "open scratch buffer"))
+(nmap :<leader>s ":botright split ~/.config/home-manager/nvim/scratch.fnl<cr>" (opts "open scratch buffer"))
 
 (nmap :<leader>vp browse-plugins (opts "vim plugins"))
 
@@ -164,8 +164,8 @@
 (nmap :<leader>gl #(snacks.picker.git_log {:confirm git.view-in-fugitive}) {:desc :log})
 (nmap :<leader>gL #(snacks.picker.git_log_file {:confirm git.view-in-fugitive}) {:desc "log file"})
 (nmap :<leader>g<space> #(git.files-in-commit :HEAD) {:desc "files in git HEAD"})
-(nmap :<leader>gf (cmd "Neogit fetch" {:desc :fetch}))
-(nmap :<leader>gp (cmd "Neogit pull" {:desc :pull}))
+(nmap :<leader>gf (cmd "Neogit fetch") {:desc :fetch})
+(nmap :<leader>gp (cmd "Neogit pull") {:desc :pull})
 (nmap :<leader>gB (cmd "GBrowse") {:desc :browse})
 (nmap :<leader>gh :<ignore> {:desc :hunk})
 (nmap :<leader>ghs (cmd "Gitsigns stage_hunk") {:desc :stage})

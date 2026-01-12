@@ -46,5 +46,5 @@
                                                "    (nfnl.compile-all-files (vim.fn.expand :$HOME/.config/home-manager/nvim))"])
       (vim.cmd "normal GG"))))
 
-(augroup :fennel-scratch-buffer [:BufEnter {:pattern :/tmp/scratch.fnl
+(augroup :fennel-scratch-buffer [:BufEnter {:pattern :*/scratch.fnl
                                             :callback setup-scratch-buffer}])

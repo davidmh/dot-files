@@ -48,5 +48,5 @@ local function setup_scratch_buffer()
   end
 end
 local group = vim.api.nvim_create_augroup("fennel-scratch-buffer", {clear = true})
-vim.api.nvim_create_autocmd("BufEnter", {pattern = "/tmp/scratch.fnl", callback = setup_scratch_buffer, group = group})
+vim.api.nvim_create_autocmd("BufEnter", {pattern = "*/scratch.fnl", callback = setup_scratch_buffer, group = group})
 return nil

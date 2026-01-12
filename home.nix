@@ -70,6 +70,7 @@
     unstable.ruff
     unstable.rust-analyzer
     unstable.solargraph
+    unstable.sqls
     unstable.terraform-ls
     unstable.tflint
     unstable.typos-lsp
@@ -193,6 +194,11 @@
 
   programs.zellij = {
     enable = true;
+  };
+
+  programs.ghostty = {
+    enable = true;
+    package = pkgs.ghostty-bin;
   };
 
   services.gpg-agent = {

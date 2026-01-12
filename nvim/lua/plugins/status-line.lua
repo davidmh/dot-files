@@ -48,11 +48,11 @@ local diagnostics_block
 local function _9_()
   return conditions.has_diagnostics()
 end
-local function _10_(self)
-  self["ERROR"] = diagnostic_count("ERROR")
-  self["WARN"] = diagnostic_count("WARN")
-  self["INFO"] = diagnostic_count("INFO")
-  self["HINT"] = diagnostic_count("HINT")
+local function _10_(_241)
+  _241.ERROR = diagnostic_count("ERROR")
+  _241.WARN = diagnostic_count("WARN")
+  _241.INFO = diagnostic_count("INFO")
+  _241.HINT = diagnostic_count("HINT")
   return nil
 end
 diagnostics_block = {diagnostic("ERROR", "red"), diagnostic("WARN", "yellow"), diagnostic("INFO", "fg"), diagnostic("HINT", "green"), empty_space, condition = _9_, init = _10_, update = {"DiagnosticChanged", "BufEnter", "ColorScheme"}}
@@ -65,9 +65,9 @@ local function _12_(_241)
   local root = vim.b.gitsigns_status_dict.root
   local cwd_relative_path = string.gsub(string.gsub(vim.fn.getcwd(), vim.fn.fnamemodify(root, ":h"), ""), "^/", "")
   local status = vim.trim((vim.b.gitsigns_status or ""))
-  _241["icon"] = "\239\144\152"
-  _241["color"] = "rosewater"
-  _241["content"] = table.concat({(" [" .. cwd_relative_path .. "]"), head, status}, " ")
+  _241.icon = "\239\144\152"
+  _241.color = "rosewater"
+  _241.content = table.concat({(" [" .. cwd_relative_path .. "]"), head, status}, " ")
   return nil
 end
 git_block = component({condition = _11_, init = _12_, hl = {bold = true}})

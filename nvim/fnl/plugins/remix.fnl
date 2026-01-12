@@ -1,1 +1,3 @@
-{:url "git@github.com:davidmh/remix.nvim.git" :opts {}}
+{:url "git@github.com:davidmh/remix.nvim.git"
+ :opts {}
+ :dev true}

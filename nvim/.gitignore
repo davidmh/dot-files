@@ -1,3 +1,5 @@
 .dev/
 plugin/packer_compiled.lua
 plugin/packer_compiled.vim
+scratch.fnl
+scratch.lua

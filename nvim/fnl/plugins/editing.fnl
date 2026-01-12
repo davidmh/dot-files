@@ -45,4 +45,6 @@
  (tx :folke/todo-comments.nvim {:opts {:highlight {:pattern [".*<(KEYWORDS):"
                                                              ".*<(KEYWORDS)\\s"
                                                              ".*<(KEYWORDS)\\s*\\(.*\\)\\s*"]}
-                                       :search {:pattern "\\b(KEYWORDS)\\b\\(.*\\)?"}}})]
+                                       :search {:pattern "\\b(KEYWORDS)\\b\\(.*\\)?"}}})
+
+ (tx :willothy/flatten.nvim {:opts {}})]

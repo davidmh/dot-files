@@ -6,13 +6,13 @@
 (local lspkind (autoload :lspkind))
 (local vscode-loader (autoload :luasnip.loaders.from_vscode))
 
-(set vim.opt.completeopt [:menuone :menuone :noselect])
+(set vim.opt.completeopt [:menu :menuone])
 
 (fn cmp-format [entry vim-item]
   (let [kind-fmt (lspkind.cmp_format {:mode :symbol
                                       :maxwidth 30})
         kind-item (kind-fmt entry vim-item)]
-    (tset kind-item :kind (.. " " kind-item.kind " "))
+    (set kind-item.kind (.. " " kind-item.kind " "))
     kind-item))
 
 (fn config []
@@ -26,6 +26,7 @@
   (local base-opts {:mapping (cmp.mapping.preset.insert cmd-mappings)
                     :sources (cmp.config.sources [{:name :luasnip}
                                                   {:name :nvim_lsp}
+                                                  {:name :async_path}
                                                   {:name :emoji}
                                                   {:name :nerdfonts}
                                                   {:name :conjure}
@@ -35,6 +36,7 @@
                     :snippet {:expand (fn [args] (ls.lsp_expand args.body))}
                     :window {:completion {:winhighlight "Normal:Pmenu,FloatBorder:Pmenu,Search:None"
                                           :col_offset -3
+                                          :border :none
                                           :side_padding 0}}})
   (cmp.setup base-opts)
 
@@ -89,6 +91,7 @@
                                        :onsails/lspkind-nvim
                                        :hrsh7th/cmp-emoji
                                        :rafamadriz/friendly-snippets
-                                       :kristijanhusak/vim-dadbod-completion]
+                                       :kristijanhusak/vim-dadbod-completion
+                                       "https://codeberg.org/FelipeLema/cmp-async-path.git"]
                         :event :InsertEnter
                         : config})]

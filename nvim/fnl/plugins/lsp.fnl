@@ -8,7 +8,6 @@
   (local git-root [:.git])
   (local python-root [:uv.lock])
   (local client-capabilities (vim.lsp.protocol.make_client_capabilities))
-  ; (vim.lsp.set_log_level :debug)
   (vim.lsp.config :* {:capabilities (cmp-lsp.default_capabilities client-capabilities)
                       :init_options {:preferences {:includeCompletionsWithSnippetText true
                                                    :includeCompletionsForImportStatements true}}})
@@ -37,8 +36,8 @@
                          :terraformls {}
                          :typos_lsp {}
                          :yamlls {}
-                         :selene3p_ls {}
                          :stylua3p_ls {}
+                         :sqls {}
                          :nil_ls {:settings {:nil {:formatting {:command [:nixpkgs-fmt]}}}}
                          :air {}
                          :cssls {:root_markers git-root}
@@ -50,6 +49,8 @@
 
   (each [name config (pairs server-configs)]
     (tset vim.lsp.config name config))
+
+  (vim.lsp.set_log_level vim.log.levels.OFF)
 
   (vim.lsp.enable server-names)
 
@@ -66,10 +67,6 @@
                           :opts {:notification {:window {:align :top
                                                          :border :none
                                                          :y_padding 2}}}})
-
- (tx  :pmizio/typescript-tools.nvim {:dependencies [:nvim-lua/plenary.nvim]
-                                     :opts {:settings {:expose_as_code_action [:add_missing_imports]}
-                                            :root_markers [:tsconfig.json]}})
 
  (tx  :SmiteshP/nvim-navic {:opts {:depth_limit 4
                                    :depth_limit_indicator " [  ] "

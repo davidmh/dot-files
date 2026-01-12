@@ -8,7 +8,7 @@ local core = autoload("nfnl.core")
 local snacks = autoload("snacks")
 local notifications = autoload("own.notifications")
 local error_filter = {severity = vim.diagnostic.severity.ERROR}
-local warning_filter = {severity = vim.diagnostic.severity.WARNING}
+local warning_filter = {severity = vim.diagnostic.severity.WARN}
 local project_root_patterns = {".envrc", ".rspec", "Cargo.toml", "yarn.lock", "pyproject.toml", "lazy-lock.json", ".git"}
 local function cmd(expression)
   return ("<cmd>" .. expression .. "<cr>")
@@ -71,7 +71,7 @@ local function _10_()
   return snacks.picker.grep_word({dirs = {get_git_root()}})
 end
 vim.keymap.set("n", "<leader>/w", _10_, opts("find current word"))
-vim.keymap.set("n", "<leader>s", ":botright split /tmp/scratch.fnl<cr>", opts("open scratch buffer"))
+vim.keymap.set("n", "<leader>s", ":botright split ~/.config/home-manager/nvim/scratch.fnl<cr>", opts("open scratch buffer"))
 vim.keymap.set("n", "<leader>vp", browse_plugins, opts("vim plugins"))
 vim.keymap.set("n", "<leader>t", "<ignore>", {desc = "toggle"})
 vim.keymap.set("n", "<leader>tb", toggle_blame_line, opts("blame line"))
@@ -203,8 +203,8 @@ local function _34_()
   return git["files-in-commit"]("HEAD")
 end
 vim.keymap.set("n", "<leader>g<space>", _34_, {desc = "files in git HEAD"})
-vim.keymap.set("n", "<leader>gf", cmd("Neogit fetch", {desc = "fetch"}))
-vim.keymap.set("n", "<leader>gp", cmd("Neogit pull", {desc = "pull"}))
+vim.keymap.set("n", "<leader>gf", cmd("Neogit fetch"), {desc = "fetch"})
+vim.keymap.set("n", "<leader>gp", cmd("Neogit pull"), {desc = "pull"})
 vim.keymap.set("n", "<leader>gB", cmd("GBrowse"), {desc = "browse"})
 vim.keymap.set("n", "<leader>gh", "<ignore>", {desc = "hunk"})
 vim.keymap.set("n", "<leader>ghs", cmd("Gitsigns stage_hunk"), {desc = "stage"})

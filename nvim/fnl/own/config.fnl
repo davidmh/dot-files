@@ -38,4 +38,4 @@
                :Operator " "
                :TypeParameter " "}
  :separator :▌
- :border :solid}
+ :border :rounded}

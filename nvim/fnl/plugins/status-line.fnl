@@ -38,11 +38,11 @@
                              (diagnostic :HINT :green)
                              empty-space
                              {:condition #(conditions.has_diagnostics)
-                              :init (fn [self]
-                                      (tset self :ERROR (diagnostic-count :ERROR))
-                                      (tset self :WARN (diagnostic-count :WARN))
-                                      (tset self :INFO (diagnostic-count :INFO))
-                                      (tset self :HINT (diagnostic-count :HINT)))
+                              :init #(do
+                                       (set $1.ERROR (diagnostic-count :ERROR))
+                                       (set $1.WARN (diagnostic-count :WARN))
+                                       (set $1.INFO (diagnostic-count :INFO))
+                                       (set $1.HINT (diagnostic-count :HINT)))
                               :update [:DiagnosticChanged :BufEnter :ColorScheme]}))
 
 (local git-block (component {:condition #(conditions.is_git_repo)
@@ -51,9 +51,9 @@
                                                                      (string.gsub (vim.fn.fnamemodify root ":h") "")
                                                                      (string.gsub "^/" "")))
                                         (local status (vim.trim (or vim.b.gitsigns_status "")))
-                                        (tset $1 :icon :)
-                                        (tset $1 :color :rosewater)
-                                        (tset $1 :content (table.concat [(.. " [" cwd-relative-path "]") head status] " ")))
+                                        (set $1.icon "")
+                                        (set $1.color "rosewater")
+                                        (set $1.content (table.concat [(.. " [" cwd-relative-path "]") head status] " ")))
                              :hl {:bold true}}))
 
 (local statusline [vi-mode

@@ -52,31 +52,31 @@
 
    :SnacksPickerTitle {:fg color.crust :bg color.mauve}
 
-   :CmpItemKindSnippet {:fg color.crust :bg color.mauve}
-   :CmpItemKindKeyword {:fg color.crust :bg color.red}
-   :CmpItemKindText {:fg color.crust :bg color.teal}
-   :CmpItemKindMethod {:fg color.crust :bg color.blue}
-   :CmpItemKindConstructor {:fg color.crust :bg color.blue}
-   :CmpItemKindFunction {:fg color.crust :bg color.blue}
-   :CmpItemKindFolder {:fg color.crust :bg color.blue}
-   :CmpItemKindModule {:fg color.crust :bg color.blue}
-   :CmpItemKindConstant {:fg color.crust :bg color.peach}
-   :CmpItemKindField {:fg color.crust :bg color.green}
-   :CmpItemKindProperty {:fg color.crust :bg color.green}
-   :CmpItemKindEnum {:fg color.crust :bg color.green}
-   :CmpItemKindUnit {:fg color.crust :bg color.green}
-   :CmpItemKindClass {:fg color.crust :bg color.yellow}
-   :CmpItemKindVariable {:fg color.crust :bg color.flamingo}
-   :CmpItemKindFile {:fg color.crust :bg color.blue}
-   :CmpItemKindInterface {:fg color.crust :bg color.yellow}
-   :CmpItemKindColor {:fg color.crust :bg color.red}
-   :CmpItemKindReference {:fg color.crust :bg color.red}
-   :CmpItemKindEnumMember {:fg color.crust :bg color.red}
-   :CmpItemKindStruct {:fg color.crust :bg color.blue}
-   :CmpItemKindValue {:fg color.crust :bg color.peach}
-   :CmpItemKindEvent {:fg color.crust :bg color.blue}
-   :CmpItemKindOperator {:fg color.crust :bg color.blue}
-   :CmpItemKindTypeParameter {:fg color.crust :bg color.blue}
+   :CmpItemKindSnippet {:bg color.crust :fg color.mauve}
+   :CmpItemKindKeyword {:bg color.crust :fg color.red}
+   :CmpItemKindText {:bg color.crust :fg color.teal}
+   :CmpItemKindMethod {:bg color.crust :fg color.blue}
+   :CmpItemKindConstructor {:bg color.crust :fg color.blue}
+   :CmpItemKindFunction {:bg color.crust :fg color.blue}
+   :CmpItemKindFolder {:bg color.crust :fg color.blue}
+   :CmpItemKindModule {:bg color.crust :fg color.blue}
+   :CmpItemKindConstant {:bg color.crust :fg color.peach}
+   :CmpItemKindField {:bg color.crust :fg color.green}
+   :CmpItemKindProperty {:bg color.crust :fg color.green}
+   :CmpItemKindEnum {:bg color.crust :fg color.green}
+   :CmpItemKindUnit {:bg color.crust :fg color.green}
+   :CmpItemKindClass {:bg color.crust :fg color.yellow}
+   :CmpItemKindVariable {:bg color.crust :fg color.flamingo}
+   :CmpItemKindFile {:bg color.crust :fg color.blue}
+   :CmpItemKindInterface {:bg color.crust :fg color.yellow}
+   :CmpItemKindColor {:bg color.crust :fg color.red}
+   :CmpItemKindReference {:bg color.crust :fg color.red}
+   :CmpItemKindEnumMember {:bg color.crust :fg color.red}
+   :CmpItemKindStruct {:bg color.crust :fg color.blue}
+   :CmpItemKindValue {:bg color.crust :fg color.peach}
+   :CmpItemKindEvent {:bg color.crust :fg color.blue}
+   :CmpItemKindOperator {:bg color.crust :fg color.blue}
+   :CmpItemKindTypeParameter {:bg color.crust :fg color.blue}
 
    :NavicIconsFile {:bg :NONE :fg color.blue :bold true}
    :NavicIconsModule {:bg :NONE :fg color.blue :bold true}

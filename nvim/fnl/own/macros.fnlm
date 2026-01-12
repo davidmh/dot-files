@@ -55,7 +55,7 @@
   (each [i v (ipairs input)]
     (if (~= i last-index)
       (tset props i v)))
-  `(-> ,props))
+  `,props)
 
 {: autocmd
  : augroup
