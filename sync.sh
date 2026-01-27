@@ -20,25 +20,3 @@ if ! command -v home-manager &> /dev/null; then
 else
   home-manager switch
 fi
-
-if [[  "$(uname)" == "Darwin" ]]; then
-  USER_APPS=/Applications
-  NIX_APPS="$HOME"/.nix-profile/Applications
-
-  # remove broken links
-  for f in "$USER_APPS"/*; do
-      if [ -L "$f" ] && [ ! -e "$f" ]; then
-          rm "$f"
-      fi
-  done
-
-  # link new ones
-  for f in "$NIX_APPS"/*; do
-      app_name="$(basename "$f")"
-      echo "$USER_APPS/$app_name"
-      if [ ! -e "$USER_APPS/$app_name" ]; then
-          echo ln -s "$f" "$USER_APPS"/
-          ln -s "$f" "$USER_APPS"/
-      fi
-  done
-fi

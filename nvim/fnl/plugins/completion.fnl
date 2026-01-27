@@ -4,16 +4,15 @@
 (local cmp (autoload :cmp))
 (local ls (autoload :luasnip))
 (local lspkind (autoload :lspkind))
-(local vscode-loader (autoload :luasnip.loaders.from_vscode))
 
 (set vim.opt.completeopt [:menu :menuone])
 
 (fn cmp-format [entry vim-item]
-  (let [kind-fmt (lspkind.cmp_format {:mode :symbol
+  (let [icon-fmt (lspkind.cmp_format {:mode :symbol
                                       :maxwidth 30})
-        kind-item (kind-fmt entry vim-item)]
-    (set kind-item.kind (.. " " kind-item.kind " "))
-    kind-item))
+        icon-item (icon-fmt entry vim-item)]
+    (set icon-item.icon (.. " " icon-item.icon " "))
+    icon-item))
 
 (fn config []
   (local cmd-mappings {:<C-d> (cmp.mapping.scroll_docs -4)
@@ -31,7 +30,7 @@
                                                   {:name :nerdfonts}
                                                   {:name :conjure}
                                                   {:name :buffer :keyword_length 5}])
-                    :formatting {:fields [:kind :abbr :menu]
+                    :formatting {:fields [:icon :abbr :menu]
                                  :format cmp-format}
                     :snippet {:expand (fn [args] (ls.lsp_expand args.body))}
                     :window {:completion {:winhighlight "Normal:Pmenu,FloatBorder:Pmenu,Search:None"
@@ -62,8 +61,6 @@
                     :update_events "TextChanged,TextChangedI"
                     :enable_autosnippets true})
 
-  (vscode-loader.lazy_load)
-
   (map [:i :s] :<c-k> #(if (ls.expand_or_jumpable) (ls.expand_or_jump)))
 
   (map [:i] :<c-h> #(if (ls.choice_active) (ls.change_choice -1)))
@@ -78,8 +75,7 @@
   (ls.add_snippets :javascript [js-log])
   (ls.add_snippets :typescript [js-log])
   (ls.add_snippets :typescriptreact [js-log])
-  (ls.add_snippets :gitcommit [co-authored-by])
-  (ls.add_snippets :org [(ls.parser.parse_snippet "<s" "#+BEGIN_SRC ${1}\n${0}\n#+END_SRC\n")]))
+  (ls.add_snippets :gitcommit [co-authored-by]))
 
 [(tx :hrsh7th/nvim-cmp {:dependencies [:hrsh7th/cmp-nvim-lsp
                                        :hrsh7th/cmp-buffer
@@ -90,7 +86,6 @@
                                        :davidmh/cmp-git-co-authors
                                        :onsails/lspkind-nvim
                                        :hrsh7th/cmp-emoji
-                                       :rafamadriz/friendly-snippets
                                        :kristijanhusak/vim-dadbod-completion
                                        "https://codeberg.org/FelipeLema/cmp-async-path.git"]
                         :event :InsertEnter

@@ -13,7 +13,9 @@
 (local notifications (autoload :own.notifications))
 
 (local error-filter {:severity vim.diagnostic.severity.ERROR})
-(local warning-filter {:severity vim.diagnostic.severity.WARN})
+(local other-filter {:severity [vim.diagnostic.severity.WARN
+                                vim.diagnostic.severity.INFO
+                                vim.diagnostic.severity.HINT]})
 
 (local project-root-patterns [:.envrc
                               :.rspec
@@ -82,7 +84,7 @@
 
 ;; buffers
 (nmap :<leader>b :<ignore> {:desc :buffer})
-(nmap :<leader>bb #(snacks.picker.buffers) (opts "list buffers"))
+(nmap :<leader>bb #(snacks.picker.buffers {:layout {:preset :ivy_split}}) (opts "list buffers"))
 (nmap :<leader>bk #(snacks.bufdelete.delete) (opts "kill buffer"))
 (nmap :<leader>bo #(snacks.bufdelete.other) (opts "kill other buffers"))
 
@@ -113,8 +115,8 @@
 ;; diagnostics
 (nmap "[d" #(vim.diagnostic.jump (core.merge {:float true :count -1} error-filter)) (opts "next diagnostic"))
 (nmap "]d" #(vim.diagnostic.jump (core.merge {:float true :count 1} error-filter)) (opts "previous diagnostic"))
-(nmap "[w" #(vim.diagnostic.jump (core.merge {:float true :count -1} warning-filter)) (opts "next warning"))
-(nmap "]w" #(vim.diagnostic.jump (core.merge {:float true :count 1} warning-filter)) (opts "previous warning"))
+(nmap "[w" #(vim.diagnostic.jump (core.merge {:float true :count -1} other-filter)) (opts "next warning"))
+(nmap "]w" #(vim.diagnostic.jump (core.merge {:float true :count 1} other-filter)) (opts "previous warning"))
 
 (fn buf-map [keymap callback desc]
   (nmap keymap callback {:buffer true
@@ -123,7 +125,7 @@
 
 ; Set only to the buffer where the LSP client is attached
 (fn lsp-mappings []
-  (vim.api.nvim_buf_set_option 0 :omnifunc :v:lua.vim.lsp.omnifunc)
+  (vim.api.nvim_set_option_value :omnifunc :v:lua.vim.lsp.omnifunc {:scope :local :buf 0})
 
   ;; Mappings
   (buf-map :K #(vim.lsp.buf.hover {:wrap false

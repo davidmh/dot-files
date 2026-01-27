@@ -50,7 +50,7 @@
   (each [name config (pairs server-configs)]
     (tset vim.lsp.config name config))
 
-  (vim.lsp.set_log_level vim.log.levels.OFF)
+  (vim.lsp.log.set_level vim.log.levels.OFF)
 
   (vim.lsp.enable server-names)
 

@@ -22,6 +22,12 @@
                                                            {:win {:position :float}})
                                   {:nargs 0})
 
+(vim.api.nvim_create_user_command :Restart
+                                  (fn []
+                                    (vim.cmd "mksession! /tmp/session.vim | restart source /tmp/session.vim")
+                                    (vim.system [:rm :/tmp/session.vim]))
+                                  {:nargs 0})
+
 (fn messages []
   ;; capture the messages into a global variable
   (vim.cmd.redir "=> g:qf_messages")

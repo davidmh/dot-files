@@ -19,18 +19,23 @@ local function _5_()
   return snacks.terminal.toggle("lazydocker", {win = {position = "float"}})
 end
 vim.api.nvim_create_user_command("Docker", _5_, {nargs = 0})
+local function _6_()
+  vim.cmd("mksession! /tmp/session.vim | restart source /tmp/session.vim")
+  return vim.system({"rm", "/tmp/session.vim"})
+end
+vim.api.nvim_create_user_command("Restart", _6_, {nargs = 0})
 local function messages()
   vim.cmd.redir("=> g:qf_messages")
   vim.cmd("silent! messages")
   vim.cmd.redir("END")
-  local function _6_(item)
+  local function _7_(item)
     return item.text
   end
-  if (vim.g.qf_messages ~= table.concat(vim.tbl_map(_6_, vim.fn.getqflist()), "\n")) then
-    local function _7_(_241)
+  if (vim.g.qf_messages ~= table.concat(vim.tbl_map(_7_, vim.fn.getqflist()), "\n")) then
+    local function _8_(_241)
       return {text = _241, lnum = 0}
     end
-    vim.fn.setqflist({}, " ", {items = vim.tbl_map(_7_, vim.split(vim.g.qf_messages, "\n")), nr = "$", title = "Messages"})
+    vim.fn.setqflist({}, " ", {items = vim.tbl_map(_8_, vim.split(vim.g.qf_messages, "\n")), nr = "$", title = "Messages"})
   else
   end
   vim.cmd.copen()

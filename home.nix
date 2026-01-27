@@ -201,6 +201,10 @@
     package = pkgs.ghostty-bin;
   };
 
+  programs.atuin = {
+    enable = true;
+  };
+
   services.gpg-agent = {
     enable = true;
     defaultCacheTtl = 28800;

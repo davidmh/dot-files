@@ -8,7 +8,7 @@ local core = autoload("nfnl.core")
 local snacks = autoload("snacks")
 local notifications = autoload("own.notifications")
 local error_filter = {severity = vim.diagnostic.severity.ERROR}
-local warning_filter = {severity = vim.diagnostic.severity.WARN}
+local other_filter = {severity = {vim.diagnostic.severity.WARN, vim.diagnostic.severity.INFO, vim.diagnostic.severity.HINT}}
 local project_root_patterns = {".envrc", ".rspec", "Cargo.toml", "yarn.lock", "pyproject.toml", "lazy-lock.json", ".git"}
 local function cmd(expression)
   return ("<cmd>" .. expression .. "<cr>")
@@ -77,7 +77,7 @@ vim.keymap.set("n", "<leader>t", "<ignore>", {desc = "toggle"})
 vim.keymap.set("n", "<leader>tb", toggle_blame_line, opts("blame line"))
 vim.keymap.set("n", "<leader>b", "<ignore>", {desc = "buffer"})
 local function _11_()
-  return snacks.picker.buffers()
+  return snacks.picker.buffers({layout = {preset = "ivy_split"}})
 end
 vim.keymap.set("n", "<leader>bb", _11_, opts("list buffers"))
 local function _12_()
@@ -125,18 +125,18 @@ local function _21_()
 end
 vim.keymap.set("n", "]d", _21_, opts("previous diagnostic"))
 local function _22_()
-  return vim.diagnostic.jump(core.merge({float = true, count = -1}, warning_filter))
+  return vim.diagnostic.jump(core.merge({float = true, count = -1}, other_filter))
 end
 vim.keymap.set("n", "[w", _22_, opts("next warning"))
 local function _23_()
-  return vim.diagnostic.jump(core.merge({float = true, count = 1}, warning_filter))
+  return vim.diagnostic.jump(core.merge({float = true, count = 1}, other_filter))
 end
 vim.keymap.set("n", "]w", _23_, opts("previous warning"))
 local function buf_map(keymap, callback, desc)
   return vim.keymap.set("n", keymap, callback, {buffer = true, silent = true, desc = desc})
 end
 local function lsp_mappings()
-  vim.api.nvim_buf_set_option(0, "omnifunc", "v:lua.vim.lsp.omnifunc")
+  vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", {scope = "local", buf = 0})
   local function _24_()
     return vim.lsp.buf.hover({max_width = 130, max_height = 20, wrap = false})
   end

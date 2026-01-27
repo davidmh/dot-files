@@ -4,6 +4,7 @@
                                       (set vim.g.rooter_patterns [:.git
                                                                   :.obsidian
                                                                   :Gemfile
+                                                                  :tsconfig.json
                                                                   :package.json
                                                                   :Cargo.toml
                                                                   :pyproject.toml

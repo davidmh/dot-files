@@ -18,7 +18,7 @@ local function lsp_config()
   for name, config in pairs(server_configs) do
     vim.lsp.config[name] = config
   end
-  vim.lsp.set_log_level(vim.log.levels.OFF)
+  vim.lsp.log.set_level(vim.log.levels.OFF)
   vim.lsp.enable(server_names)
   return nil
 end

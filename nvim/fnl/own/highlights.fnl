@@ -12,9 +12,9 @@
    :sp sp})
 
 (fn M.custom-highlights [color]
-  {:Comment {:style [:italic :bold]}
-   :Pmenu {:bg color.crust}
-   :WinSeparator {:fg color.overlay0 :bg :none}
+  {:Comment       {:style [:italic :bold]}
+   :Pmenu         {:bg color.crust}
+   :WinSeparator  {:fg color.overlay0 :bg :none}
 
    :FloatBorder {:link :NormalFloat}
 
@@ -22,24 +22,24 @@
 
    :StatusLine {:bg :NONE :fg color.text}
 
-   :DiagnosticUnderlineError (diagnostic color.red)
-   :DiagnosticUnderlineHint (diagnostic color.teal)
-   :DiagnosticUnderlineInfo (diagnostic color.sky)
-   :DiagnosticUnderlineWarn (diagnostic color.yellow)
-   :LspDiagnosticsUnderlineError (diagnostic color.red)
-   :LspDiagnosticsUnderlineHint (diagnostic color.teal)
-   :LspDiagnosticsUnderlineInfo (diagnostic color.sky)
+   :DiagnosticUnderlineError       (diagnostic color.red)
+   :DiagnosticUnderlineHint        (diagnostic color.teal)
+   :DiagnosticUnderlineInfo        (diagnostic color.sky)
+   :DiagnosticUnderlineWarn        (diagnostic color.yellow)
+   :LspDiagnosticsUnderlineError   (diagnostic color.red)
+   :LspDiagnosticsUnderlineHint    (diagnostic color.teal)
+   :LspDiagnosticsUnderlineInfo    (diagnostic color.sky)
    :LspDiagnosticsUnderlineWarning (diagnostic color.yellow)
 
    :SnacksInputNormal {:bg color.crust}
    :SnacksInputBorder {:bg color.crust}
-   :SnacksInputTitle {:bg color.mauve :fg color.crust}
+   :SnacksInputTitle  {:bg color.mauve :fg color.crust}
 
    :SnacksNotifierIconInfo  {:fg color.mauve}
-   :SnacksNotifierTitleInfo  {:fg color.mauve}
+   :SnacksNotifierTitleInfo {:fg color.mauve}
 
-   :SnacksNotifierInfo {:bg color.mantle}
-   :SnacksNotifierWarn {:bg color.mantle}
+   :SnacksNotifierInfo  {:bg color.mantle}
+   :SnacksNotifierWarn  {:bg color.mantle}
    :SnacksNotifierError {:bg color.mantle}
    :SnacksNotifierDebug {:bg color.mantle}
    :SnacksNotifierTrace {:bg color.mantle}
@@ -52,59 +52,59 @@
 
    :SnacksPickerTitle {:fg color.crust :bg color.mauve}
 
-   :CmpItemKindSnippet {:bg color.crust :fg color.mauve}
-   :CmpItemKindKeyword {:bg color.crust :fg color.red}
-   :CmpItemKindText {:bg color.crust :fg color.teal}
-   :CmpItemKindMethod {:bg color.crust :fg color.blue}
-   :CmpItemKindConstructor {:bg color.crust :fg color.blue}
-   :CmpItemKindFunction {:bg color.crust :fg color.blue}
-   :CmpItemKindFolder {:bg color.crust :fg color.blue}
-   :CmpItemKindModule {:bg color.crust :fg color.blue}
-   :CmpItemKindConstant {:bg color.crust :fg color.peach}
-   :CmpItemKindField {:bg color.crust :fg color.green}
-   :CmpItemKindProperty {:bg color.crust :fg color.green}
-   :CmpItemKindEnum {:bg color.crust :fg color.green}
-   :CmpItemKindUnit {:bg color.crust :fg color.green}
-   :CmpItemKindClass {:bg color.crust :fg color.yellow}
-   :CmpItemKindVariable {:bg color.crust :fg color.flamingo}
-   :CmpItemKindFile {:bg color.crust :fg color.blue}
-   :CmpItemKindInterface {:bg color.crust :fg color.yellow}
-   :CmpItemKindColor {:bg color.crust :fg color.red}
-   :CmpItemKindReference {:bg color.crust :fg color.red}
-   :CmpItemKindEnumMember {:bg color.crust :fg color.red}
-   :CmpItemKindStruct {:bg color.crust :fg color.blue}
-   :CmpItemKindValue {:bg color.crust :fg color.peach}
-   :CmpItemKindEvent {:bg color.crust :fg color.blue}
-   :CmpItemKindOperator {:bg color.crust :fg color.blue}
-   :CmpItemKindTypeParameter {:bg color.crust :fg color.blue}
+   :CmpItemKindSnippetIcon       {:fg color.crust :bg color.mauve}
+   :CmpItemKindKeywordIcon       {:fg color.crust :bg color.red}
+   :CmpItemKindTextIcon          {:fg color.crust :bg color.teal}
+   :CmpItemKindMethodIcon        {:fg color.crust :bg color.blue}
+   :CmpItemKindConstructorIcon   {:fg color.crust :bg color.blue}
+   :CmpItemKindFunctionIcon      {:fg color.crust :bg color.blue}
+   :CmpItemKindFolderIcon        {:fg color.crust :bg color.blue}
+   :CmpItemKindModuleIcon        {:fg color.crust :bg color.blue}
+   :CmpItemKindConstantIcon      {:fg color.crust :bg color.peach}
+   :CmpItemKindFieldIcon         {:fg color.crust :bg color.green}
+   :CmpItemKindPropertyIcon      {:fg color.crust :bg color.green}
+   :CmpItemKindEnumIcon          {:fg color.crust :bg color.green}
+   :CmpItemKindUnitIcon          {:fg color.crust :bg color.green}
+   :CmpItemKindClassIcon         {:fg color.crust :bg color.yellow}
+   :CmpItemKindVariableIcon      {:fg color.crust :bg color.flamingo}
+   :CmpItemKindFileIcon          {:fg color.crust :bg color.blue}
+   :CmpItemKindInterfaceIcon     {:fg color.crust :bg color.yellow}
+   :CmpItemKindColorIcon         {:fg color.crust :bg color.red}
+   :CmpItemKindReferenceIcon     {:fg color.crust :bg color.red}
+   :CmpItemKindEnumMemberIcon    {:fg color.crust :bg color.red}
+   :CmpItemKindStructIcon        {:fg color.crust :bg color.blue}
+   :CmpItemKindValueIcon         {:fg color.crust :bg color.peach}
+   :CmpItemKindEventIcon         {:fg color.crust :bg color.blue}
+   :CmpItemKindOperatorIcon      {:fg color.crust :bg color.blue}
+   :CmpItemKindTypeParameterIcon {:fg color.crust :bg color.blue}
 
-   :NavicIconsFile {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsModule {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsNamespace {:bg :NONE :fg color.green :bold true}
-   :NavicIconsPackage {:bg :NONE :fg color.maroon :bold true}
-   :NavicIconsClass {:bg :NONE :fg color.peach :bold true}
-   :NavicIconsMethod {:bg :NONE :fg color.lavender :bold true}
-   :NavicIconsProperty {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsField {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsConstructor {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsEnum {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsInterface {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsFunction {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsVariable {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsConstant {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsString {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsNumber {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsBoolean {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsArray {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsObject {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsKey {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsNull {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsEnumMember {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsStruct {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsEvent {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsOperator {:bg :NONE :fg color.blue :bold true}
-   :NavicIconsTypeParameter {:bg :NONE :fg color.blue :bold true}
-   :NavicText {:fg color.text :bg :NONE :bold true}
-   :NavicSeparator {:fg color.blue :bg :NONE :bold true}})
+   :NavicIconsFile          {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsModule        {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsNamespace     {:bold true :bg :NONE :fg color.green}
+   :NavicIconsPackage       {:bold true :bg :NONE :fg color.maroon}
+   :NavicIconsClass         {:bold true :bg :NONE :fg color.peach}
+   :NavicIconsMethod        {:bold true :bg :NONE :fg color.lavender}
+   :NavicIconsProperty      {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsField         {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsConstructor   {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsEnum          {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsInterface     {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsFunction      {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsVariable      {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsConstant      {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsString        {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsNumber        {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsBoolean       {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsArray         {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsObject        {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsKey           {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsNull          {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsEnumMember    {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsStruct        {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsEvent         {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsOperator      {:bold true :bg :NONE :fg color.blue}
+   :NavicIconsTypeParameter {:bold true :bg :NONE :fg color.blue}
+   :NavicText               {:bold true :bg :NONE :fg color.text}
+   :NavicSeparator          {:bold true :bg :NONE :fg color.blue}})
 
 M

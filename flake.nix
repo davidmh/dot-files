@@ -7,9 +7,13 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    mac-app-util = {
+      url = "github:hraban/mac-app-util";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, unstable, home-manager, ... }@inputs:
+  outputs = { nixpkgs, unstable, home-manager, mac-app-util, ... }@inputs:
     let
       system = "aarch64-darwin";
       pkgs = nixpkgs.legacyPackages.${system};
@@ -21,6 +25,7 @@
         inherit pkgs;
 
         modules = [
+          mac-app-util.homeManagerModules.default
           {
             nixpkgs = {
               config = {
