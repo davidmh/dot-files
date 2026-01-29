@@ -18,7 +18,6 @@
       system = "aarch64-darwin";
       pkgs = nixpkgs.legacyPackages.${system};
       username = "david.mejorado";
-      homeDirectory = "/Users/david.mejorado";
     in
     {
       homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
@@ -45,7 +44,6 @@
           ./home.nix
           {
             home.username = username;
-            home.homeDirectory = homeDirectory;
             home.stateVersion = "24.05";
 
             # Disable nixpkgs release check until nixpkgs 24.11 is released

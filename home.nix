@@ -1,6 +1,11 @@
-{ pkgs, lib, inputs, ... }:
+{ config, pkgs, lib, inputs, ... }:
 
+let
+  homeDirectory = "/Users/david.mejorado";
+  homeManagerPath = "${homeDirectory}/.config/home-manager";
+in
 {
+  home.homeDirectory = homeDirectory;
   home.sessionVariables = {
     EDITOR = "nvim";
     TIG_EDITOR = "nvim";
@@ -97,6 +102,7 @@
   };
 
   programs.starship.enable = true;
+  xdg.configFile."starship.toml".source = config.lib.file.mkOutOfStoreSymlink "${homeManagerPath}/starship.toml";
 
   programs.zoxide = {
     enable = true;
@@ -140,6 +146,7 @@
     withPython3 = false;
     withNodeJs = false;
   };
+  xdg.configFile."nvim".source = config.lib.file.mkOutOfStoreSymlink "${homeManagerPath}/nvim";
 
   programs.git = {
     enable = true;
@@ -200,10 +207,13 @@
     enable = true;
     package = pkgs.ghostty-bin;
   };
+  xdg.configFile."ghostty".source = config.lib.file.mkOutOfStoreSymlink "${homeManagerPath}/ghostty";
 
   programs.atuin = {
     enable = true;
   };
+
+  xdg.configFile."aerospace/aerospace.toml".source = config.lib.file.mkOutOfStoreSymlink "${homeManagerPath}/aerospace.toml";
 
   services.gpg-agent = {
     enable = true;
