@@ -71,4 +71,7 @@ binds {
   XF86AudioPause { spawn "dms" "ipc" "mpris" "playPause"; }
   XF86AudioPlay { spawn "dms" "ipc" "mpris" "playPause"; }
   XF86AudioPrev { spawn "dms" "ipc" "mpris" "previous"; }
+
+  // Shut up!
+  F1 { spawn "true"; }
 }
