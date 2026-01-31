@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 
-os=$(uname)
+os=${ uname; }
+
+cd ${ dirname "$0"; }
 
 notify() {
   local title="Nix Config"
@@ -27,7 +29,7 @@ if [[ "$os" == "Darwin" ]]; then
     home-manager switch --show-trace
   fi
 else
-  sudo nixos-rebuild switch --flake . --cores 2
+  sudo nixos-rebuild switch --flake . --cores 2 2> ./error.log
 fi
 
 status=$?
