@@ -9,7 +9,7 @@ git clone git@github.com:davidmh/dot-files.git ~/.config/nixos
 ## MacOS
 
 ```bash
-git clone git@github.com:davidmh/dot-files.git ~/.config/nixos
+git clone git@github.com:davidmh/dot-files.git ~/.config/home-manager
 ```
 
 ```bash
