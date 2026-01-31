@@ -15,7 +15,6 @@
 (fn M.sanitize-path [path size]
   (-> path
       (string.gsub vim.env.HOME "~")
-      (string.gsub vim.env.REMIX_HOME "remix")
       (vim.fn.pathshorten (or size 2))))
 
 (fn M.past-due? [iso-date]

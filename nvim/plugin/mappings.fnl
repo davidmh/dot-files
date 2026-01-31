@@ -74,7 +74,7 @@
 (nmap :<leader>/p #(snacks.picker.grep {:dirs [(get-git-root)]}) (opts "find in project"))
 (nmap :<leader>/w #(snacks.picker.grep_word {:dirs [(get-git-root)]}) (opts "find current word"))
 
-(nmap :<leader>s ":botright split ~/.config/home-manager/nvim/scratch.fnl<cr>" (opts "open scratch buffer"))
+(nmap :<leader>s ":botright split ~/.config/nvim/scratch.fnl<cr>" (opts "open scratch buffer"))
 
 (nmap :<leader>vp browse-plugins (opts "vim plugins"))
 
@@ -94,8 +94,10 @@
 
 ;; less used commands, grouped by feature
 
-(nmap :<localleader>c #(snacks.picker.files {:dirs ["~/.config/home-manager"]
-                                             :title "home manager config"}) (opts "home manager config"))
+(nmap :<localleader>c #(snacks.picker.files {:dirs ["~/.config/home-manager"
+                                                    "~/.config/nixos"]
+                                             :title :config})
+                      (opts :config))
 
 ;; lazy ui
 (nmap :<localleader>l (cmd "Lazy show") (opts "lazy ui"))

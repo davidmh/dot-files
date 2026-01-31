@@ -13,7 +13,7 @@ M["get-largest-window-id"] = function()
   return windows_by_size[table.maxn(windows_by_size)]
 end
 M["sanitize-path"] = function(path, size)
-  return vim.fn.pathshorten(string.gsub(string.gsub(path, vim.env.HOME, "~"), vim.env.REMIX_HOME, "remix"), (size or 2))
+  return vim.fn.pathshorten(string.gsub(path, vim.env.HOME, "~"), (size or 2))
 end
 M["past-due?"] = function(iso_date)
   vim.validate("iso-date", iso_date, "string")

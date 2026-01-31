@@ -1,0 +1,54 @@
+format = """
+$username\
+$hostname\
+$directory\
+$nix_shell\
+$git_branch\
+$git_state\
+$git_status\
+$cmd_duration\
+$line_break\
+$character"""
+
+command_timeout = 1000
+
+[directory]
+style = "blue"
+
+[character]
+success_symbol = "[❯](bold green)"
+error_symbol = "[❯](bold red)"
+vimcmd_symbol = "[󰰔 ❯](bold white)"
+vimcmd_replace_one_symbol = "[󰰠 ❯](bold gray)"
+vimcmd_replace_symbol = "[󰰠 ❯](bold gray)"
+vimcmd_visual_symbol = "[󰰬 ❯](bold gray)"
+
+[git_branch]
+format = " $branch"
+
+[git_status]
+untracked = '[ $count]() '
+deleted = '[-$count]() '
+modified = '[±$count]() '
+staged = '[+$count]() '
+renamed = '[ $count]() '
+ahead = "⇡"
+behind = "⇣"
+diverged = "󰙁"
+format = "[ [($conflicted$untracked$modified$deleted$staged$renamed$ahead_behind)](218) ]($style)"
+
+[git_state]
+format = '\([$state( $progress_current/$progress_total)]($style)\) '
+style = "bright-black"
+
+[cmd_duration]
+format = "[$duration]($style) "
+style = "yellow"
+
+[python]
+format = '[${symbol}${pyenv_prefix}(${version} )(\($virtualenv\) )]($style)'
+symbol = ' '
+
+[nix_shell]
+format = '[$symbol]($style) '
+symbol = ' '

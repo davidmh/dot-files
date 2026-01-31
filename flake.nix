@@ -1,61 +1,47 @@
 {
+  description = "Multi device nix config";
+
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs/release-25.11";
-    unstable.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
     home-manager = {
-      url = "github:nix-community/home-manager/master";
+      url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    neovim-nightly-overlay.url = "github:nix-community/neovim-nightly-overlay";
+    dms.url = "github:AvengeMedia/DankMaterialShell";
+    dgop = {
+      url = "github:AvengeMedia/dgop";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    niri = {
+      url = "github:YaLTeR/niri";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    danksearch = {
+      url = "github:AvengeMedia/danksearch";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    neovim-nightly-overlay = {
+      url = "github:nix-community/neovim-nightly-overlay";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
     mac-app-util = {
       url = "github:hraban/mac-app-util";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
 
-  outputs = { nixpkgs, unstable, home-manager, mac-app-util, ... }@inputs:
-    let
-      system = "aarch64-darwin";
-      pkgs = nixpkgs.legacyPackages.${system};
-      username = "david.mejorado";
-    in
-    {
-      homeConfigurations.${username} = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-
-        modules = [
-          mac-app-util.homeManagerModules.default
-          {
-            nixpkgs = {
-              config = {
-                allowUnfree = true;
-                allowUnfreePredicate = (pkgs: true);
-              };
-              overlays = [
-                (final: prev: {
-                  unstable = import inputs.unstable {
-                    system = final.system;
-                    config.allowUnfree = true;
-                  };
-                })
-              ];
-            };
-          }
-          ./home.nix
-          {
-            home.username = username;
-            home.stateVersion = "24.05";
-
-            # Disable nixpkgs release check until nixpkgs 24.11 is released
-            home.enableNixpkgsReleaseCheck = false;
-          }
-        ];
-
-        # Optionally use extraSpecialArgs
-        # to pass through arguments to home.nix
-        extraSpecialArgs = {
-          inherit inputs;
-        };
+  outputs = { self, nixpkgs, home-manager, ... }@inputs: {
+    nixosConfigurations = {
+      nixos = nixpkgs.lib.nixosSystem {
+        system = "aarch64-linux";
+        specialArgs = { inherit inputs; };
+        modules = [ ./hosts/nixos ];
       };
     };
+    homeConfigurations."david.mejorado" = home-manager.lib.homeManagerConfiguration {
+      pkgs = nixpkgs.legacyPackages."aarch64-darwin";
+      extraSpecialArgs = { inherit inputs; };
+      modules = [ ./hosts/darwin ];
+    };
+  };
 }

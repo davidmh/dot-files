@@ -1,0 +1,39 @@
+#!/usr/bin/env bash
+
+os=$(uname)
+
+notify() {
+  local title="Nix Config"
+  local body="$1"
+
+  if [[ -t 1 ]]; then
+    echo "[$title] $body"
+  else
+    if [[ "$os" == "Darwin" ]]; then
+      # Native macOS notification
+      osascript -e "display notification \"$body\" with title \"$title\""
+    else
+      notify-send -a "NixOS Rebuild" "$body"
+    fi
+  fi
+}
+
+notify "Running..."
+
+if [[ "$os" == "Darwin" ]]; then
+  if ! command -v home-manager &> /dev/null; then
+    nix run home-manager -- init --switch
+  else
+    home-manager switch --show-trace
+  fi
+else
+  sudo nixos-rebuild switch --flake . --cores 2
+fi
+
+status=$?
+
+if [ $status -eq 0 ]; then
+  notify "Success!"
+else
+  notify "Build failed!"
+fi

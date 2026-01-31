@@ -1,0 +1,74 @@
+spawn-at-startup "dms" "run" "-d"
+spawn-at-startup "niriswitcher"
+spawn-at-startup "swayidle" "-w" "timeout" "600" "niri msg action power-off-monitors"
+
+input {
+  keyboard {
+    xkb {
+      layout "us"
+    }
+  }
+  touchpad {
+    tap
+    dwt
+  }
+}
+
+binds {
+  // Basic actions
+  Mod+Return { spawn "ghostty"; }
+  Mod+B { spawn "firefox"; }
+  Mod+Q { close-window; }
+  Mod+Space { spawn "dms" "ipc" "launcher" "toggle"; }
+  Mod+Tab { spawn "niriswitcherctl" "show" "--window"; }
+
+  // Move across windows
+  Mod+H { focus-column-left; }
+  Mod+J { focus-window-or-workspace-down; }
+  Mod+K { focus-window-or-workspace-up; }
+  Mod+L { focus-column-right; }
+
+  // Move windows
+  Mod+Shift+H { move-column-left-or-to-monitor-left; }
+  Mod+Shift+J { move-window-down-or-to-workspace-down; }
+  Mod+Shift+K { move-window-up-or-to-workspace-up; }
+  Mod+Shift+L { move-column-right-or-to-monitor-right; }
+  Mod+Shift+P { switch-preset-column-width-back; }
+  Mod+Shift+T { toggle-window-floating; }
+
+  // Focus workspaces
+  Mod+1 { focus-workspace 1; }
+  Mod+2 { focus-workspace 2; }
+  Mod+3 { focus-workspace 3; }
+
+  // Move window to workspace
+  Mod+Shift+1 { move-window-to-workspace 1; }
+  Mod+Shift+2 { move-window-to-workspace 2; }
+  Mod+Shift+3 { move-window-to-workspace 3; }
+
+  // Utilities
+  Mod+Shift+F { fullscreen-window; }
+  Mod+Shift+R { spawn "~/.config/nixos/build"; }
+  Mod+Shift+4 { spawn "dms" "screenshot" "region"; }
+  Mod+F { maximize-column; }
+  Mod+Alt+H { show-hotkey-overlay; }
+  Mod+M { spawn "dms" "ipc" "dash" "toggle" "media"; }
+  Mod+N { spawn "dms" "ipc" "notifications" "toggle"; }
+  Mod+O { toggle-overview; }
+  Mod+Escape { spawn "dms" "ipc" "powermenu" "toggle"; }
+
+  XF86AudioRaiseVolume { spawn "dms" "ipc" "audio" "increment" "5"; }
+  XF86AudioLowerVolume { spawn "dms" "ipc" "audio" "decrement" "5"; }
+  XF86AudioMute { spawn "dms" "ipc" "audio" "mute"; }
+  XF86AudioMicMute { spawn "dms" "ipc" "audio" "micmute"; }
+
+  XF86MonBrightnessUp { spawn "dms" "ipc" "brightness" "increment" "5" "backlight:apple-panel-bl"; }
+  XF86MonBrightnessDown { spawn "dms" "ipc" "brightness" "decrement" "5" "backlight:apple-panel-bl"; }
+  XF86KbdBrightnessUp { spawn "dms" "ipc" "brightness" "increment" "5" "leds:kbd_backlight"; }
+  XF86KbdBrightnessDown { spawn "dms" "ipc" "brightness" "decrement" "5" "leds:kbd_backlight"; }
+
+  XF86AudioNext { spawn "dms" "ipc" "mpris" "next"; }
+  XF86AudioPause { spawn "dms" "ipc" "mpris" "playPause"; }
+  XF86AudioPlay { spawn "dms" "ipc" "mpris" "playPause"; }
+  XF86AudioPrev { spawn "dms" "ipc" "mpris" "previous"; }
+}
