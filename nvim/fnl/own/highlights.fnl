@@ -78,6 +78,8 @@
    :CmpItemKindOperatorIcon      {:fg color.crust :bg color.blue}
    :CmpItemKindTypeParameterIcon {:fg color.crust :bg color.blue}
 
+   :InclineNormal {:bg color.crust}
+
    :NavicIconsFile          {:bold true :bg :NONE :fg color.blue}
    :NavicIconsModule        {:bold true :bg :NONE :fg color.blue}
    :NavicIconsNamespace     {:bold true :bg :NONE :fg color.green}
