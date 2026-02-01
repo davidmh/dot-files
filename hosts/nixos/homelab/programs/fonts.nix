@@ -1,4 +1,4 @@
-{ pkgs, ... }:
+{ ... }:
 {
   fonts.fontconfig.enable = true;
 
@@ -8,11 +8,4 @@
     serif = [ "Hasklug Nerd Font" "Source Han Serif" ];
     emoji = [ "Noto Color Emoji" ];
   };
-
-  home.packages = with pkgs; [
-    font-awesome
-    nerd-fonts.hasklug
-    source-han-sans
-    noto-fonts-color-emoji
-  ];
 }

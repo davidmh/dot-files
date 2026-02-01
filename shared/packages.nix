@@ -6,6 +6,12 @@ with pkgs; [
   gh-dash
   tig
 
+  # fonts
+  font-awesome
+  nerd-fonts.hasklug
+  source-han-sans
+  noto-fonts-color-emoji
+
   # misc utilities
   (yarn.override {
     nodejs = nodejs_22;

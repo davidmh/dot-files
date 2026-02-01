@@ -28,12 +28,12 @@
 (fn terminal-component [term-title colors]
   (local term-color (mode.get-color))
 
-  [(tx "  " {:guibg term-color :guifg colors.surface1})
+  [(tx " " {:guibg term-color :guifg colors.surface1})
    (tx (.. " " term-title " ") {:guifg colors.text})])
 
 (fn help-component [colors props]
   (let [name (vim.fn.fnamemodify (vim.api.nvim_buf_get_name props.buf) ::t)]
-    [(tx "  " {:guibg colors.lavender :guifg colors.surface1})
+    [(tx " " {:guibg colors.lavender :guifg colors.surface1})
      (tx (.. " " name " ") {:guifg colors.white})]))
 
 (fn file-component [props]
@@ -41,7 +41,7 @@
         ext (vim.fn.fnamemodify name ::e)
         (icon color) (nvim-web-devicons.get_icon_color name ext {:default true})
         res [(if icon
-                 (tx " " icon " " {:guibg color :guifg (helpers.contrast_color color)})
+                 (tx icon " " {:guibg color :guifg (helpers.contrast_color color)})
                  "")
              (tx name {:gui (if (core.get-in vim [:bo props.buf :modified])
                                 :italic

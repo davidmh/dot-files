@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-os=${ uname; }
+os=$(uname)
 
-cd ${ dirname "$0"; }
+cd "$(dirname "$0")" || exit 1
 
 notify() {
   local title="Nix Config"
