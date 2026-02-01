@@ -31,7 +31,7 @@
     };
   };
 
-  # networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "homelab";
 
   nixpkgs.config.allowUnfree = true;
 

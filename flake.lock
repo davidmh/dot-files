@@ -29,26 +29,6 @@
         "type": "github"
       }
     },
-    "danksearch": {
-      "inputs": {
-        "nixpkgs": [
-          "nixpkgs"
-        ]
-      },
-      "locked": {
-        "lastModified": 1766814755,
-        "narHash": "sha256-iVZHhERnR07PMLSjVMW/72ah7ezyqaxdADmJQ8FdToU=",
-        "owner": "AvengeMedia",
-        "repo": "danksearch",
-        "rev": "2356124150c7a35a735d88a3d54a941b6cfe3a02",
-        "type": "github"
-      },
-      "original": {
-        "owner": "AvengeMedia",
-        "repo": "danksearch",
-        "type": "github"
-      }
-    },
     "dgop": {
       "inputs": {
         "nixpkgs": [
@@ -300,7 +280,6 @@
     "root": {
       "inputs": {
         "cl-nix-lite": "cl-nix-lite",
-        "danksearch": "danksearch",
         "dgop": "dgop",
         "dms": "dms",
         "flake-parts": "flake-parts",

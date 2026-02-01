@@ -6,7 +6,6 @@ in
 {
   imports = [
     inputs.dms.homeModules.dank-material-shell
-    inputs.danksearch.homeModules.default
     ./programs/dms.nix
     ./programs/fonts.nix
     ./programs/niri.nix
