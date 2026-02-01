@@ -1,6 +1,5 @@
 { inputs, ... }: {
   imports = [
-    inputs.mac-app-util.homeManagerModules.default
     ./configuration.nix
     ../../shared/options.nix
   ];
