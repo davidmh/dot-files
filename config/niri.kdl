@@ -17,7 +17,7 @@ input {
 binds {
   // Basic actions
   Mod+Return { spawn "ghostty"; }
-  Mod+B { spawn "firefox"; }
+  Mod+B { spawn "zen"; }
   Mod+Q { close-window; }
   Mod+Space { spawn "dms" "ipc" "launcher" "toggle"; }
   Mod+Tab { spawn "niriswitcherctl" "show" "--window"; }

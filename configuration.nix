@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ config, lib, pkgs, ... }:
+{ config, inputs, pkgs, ... }:
 
 {
   imports =
@@ -128,11 +128,10 @@
     ];
   };
 
-  programs.firefox.enable = true;
-
   # System-wide packages
   environment.systemPackages = with pkgs; [
     accountsservice
+    inputs.zen-browser.packages.${pkgs.stdenv.hostPlatform.system}.default
   ];
 
   # Some programs need SUID wrappers, can be configured further or are
