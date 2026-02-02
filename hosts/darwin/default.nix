@@ -1,4 +1,4 @@
-{ inputs, ... }: {
+{ ... }: {
   imports = [
     ./configuration.nix
     ../../shared/options.nix
@@ -9,7 +9,7 @@
       allowUnfree = true;
       allowUnfreePredicate = (_: true);
     };
-    overlays = [ inputs.neovim-nightly-overlay.overlays.default ];
+    overlays = [ ];
   };
 
   custom.dotfiles = "/Users/david.mejorado/.config/home-manager";

@@ -71,6 +71,7 @@
 [(tx :nvim-treesitter/nvim-treesitter-textobjects {:name :nvim-treesitter-textobjects})
  (tx :nvim-treesitter/nvim-treesitter
      {:dependencies [:nvim-treesitter-textobjects]
+      :branch :master
       :build ::TSUpdate
       :config config})
 

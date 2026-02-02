@@ -1,0 +1,3 @@
+#!/usr/bin/env bash
+
+sudo nix-env --delete-generations --profile /nix/var/nix/profiles/system +3
