@@ -115,9 +115,9 @@ alt-2 = 'workspace ○●○'
 alt-3 = 'workspace ○○●'
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#move-node-to-workspace
-alt-shift-1 = 'move-node-to-workspace ●○○'
-alt-shift-2 = 'move-node-to-workspace ○●○'
-alt-shift-3 = 'move-node-to-workspace ○○●'
+alt-shift-1 = ['move-node-to-workspace ●○○', 'workspace ●○○']
+alt-shift-2 = ['move-node-to-workspace ○●○', 'workspace ○●○']
+alt-shift-3 = ['move-node-to-workspace ○○●', 'workspace ○○●']
 
 # See: https://nikitabobko.github.io/AeroSpace/commands#workspace-back-and-forth
 alt-tab = 'workspace-back-and-forth'
