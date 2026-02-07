@@ -5,8 +5,10 @@ let
 in
 {
   imports = [
-    inputs.dms.homeModules.dank-material-shell
-    ./programs/dms.nix
+    # inputs.dms.homeModules.dank-material-shell
+    # ./programs/dms.nix
+    inputs.noctalia.homeModules.default
+    ./programs/noctalia.nix
     ./programs/fonts.nix
     ./programs/niri.nix
     ../../../shared/base.nix

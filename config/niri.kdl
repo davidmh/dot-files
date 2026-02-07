@@ -1,4 +1,4 @@
-spawn-at-startup "dms" "run" "-d"
+spawn-at-startup "noctalia-shell"
 spawn-at-startup "niriswitcher"
 spawn-at-startup "swayidle" "-w" "timeout" "600" "niri msg action power-off-monitors"
 
@@ -19,7 +19,7 @@ binds {
   Mod+Return { spawn "ghostty"; }
   Mod+B { spawn "zen"; }
   Mod+Q { close-window; }
-  Mod+Space { spawn "dms" "ipc" "launcher" "toggle"; }
+  Mod+Space { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
   Mod+Tab { spawn "niriswitcherctl" "show" "--window"; }
 
   // Move across windows
@@ -49,28 +49,29 @@ binds {
   // Utilities
   Mod+Shift+F { fullscreen-window; }
   Mod+Shift+R { spawn "~/.config/nixos/build"; }
-  Mod+Shift+4 { spawn "dms" "screenshot" "region"; }
+  Mod+Shift+4 { spawn "~/.config/nixos/scripts/screenshot-area"; }
   Mod+F { maximize-column; }
   Mod+Alt+H { show-hotkey-overlay; }
-  Mod+M { spawn "dms" "ipc" "dash" "toggle" "media"; }
-  Mod+N { spawn "dms" "ipc" "notifications" "toggle"; }
+  Mod+M { spawn "noctalia-shell" "ipc" "call" "controlCenter" "toggle"; }
+  Mod+N { spawn "noctalia-shell" "ipc" "call" "notifications" "toggleHistory"; }
   Mod+O { toggle-overview; }
-  Mod+Escape { spawn "dms" "ipc" "powermenu" "toggle"; }
+  Mod+Escape { spawn "noctalia-shell" "ipc" "call" "sessionMenu" "toggle"; }
+  Mod+Comma { spawn "noctalia-shell" "ipc" "call" "settings" "toggle"; }
 
-  XF86AudioRaiseVolume { spawn "dms" "ipc" "audio" "increment" "5"; }
-  XF86AudioLowerVolume { spawn "dms" "ipc" "audio" "decrement" "5"; }
-  XF86AudioMute { spawn "dms" "ipc" "audio" "mute"; }
-  XF86AudioMicMute { spawn "dms" "ipc" "audio" "micmute"; }
+  XF86AudioRaiseVolume { spawn "noctalia-shell" "ipc" "call" "volume" "increase"; }
+  XF86AudioLowerVolume { spawn "noctalia-shell" "ipc" "call" "volume" "decrease"; }
+  XF86AudioMute { spawn "noctalia-shell" "ipc" "call" "volume" "muteOutput"; }
+  XF86AudioMicMute { spawn "noctalia-shell" "ipc" "call" "volume" "muteInput"; }
 
-  XF86MonBrightnessUp { spawn "dms" "ipc" "brightness" "increment" "5" "backlight:apple-panel-bl"; }
-  XF86MonBrightnessDown { spawn "dms" "ipc" "brightness" "decrement" "5" "backlight:apple-panel-bl"; }
+  XF86MonBrightnessUp { spawn "noctalia-shell" "ipc" "call" "brightness" "increase"; }
+  XF86MonBrightnessDown { spawn "noctalia-shell" "ipc" "call" "brightness" "decrease"; }
   XF86KbdBrightnessUp { spawn "dms" "ipc" "brightness" "increment" "5" "leds:kbd_backlight"; }
   XF86KbdBrightnessDown { spawn "dms" "ipc" "brightness" "decrement" "5" "leds:kbd_backlight"; }
 
-  XF86AudioNext { spawn "dms" "ipc" "mpris" "next"; }
-  XF86AudioPause { spawn "dms" "ipc" "mpris" "playPause"; }
-  XF86AudioPlay { spawn "dms" "ipc" "mpris" "playPause"; }
-  XF86AudioPrev { spawn "dms" "ipc" "mpris" "previous"; }
+  XF86AudioNext { spawn "noctalia-shell" "ipc" "call" "media" "next"; }
+  XF86AudioPause { spawn "noctalia-shell" "ipc" "call" "media" "playPause"; }
+  XF86AudioPlay { spawn "noctalia-shell" "ipc" "call" "media" "playPause"; }
+  XF86AudioPrev { spawn "noctalia-shell" "ipc" "call" "media" "previous"; }
 
   // Shut up!
   F1 { spawn "true"; }
