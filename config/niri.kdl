@@ -52,7 +52,7 @@ binds {
   Mod+Shift+4 { spawn "~/.config/nixos/scripts/screenshot-area"; }
   Mod+F { maximize-column; }
   Mod+Alt+H { show-hotkey-overlay; }
-  Mod+M { spawn "noctalia-shell" "ipc" "call" "controlCenter" "toggle"; }
+  Mod+M { spawn "noctalia-shell" "ipc" "call" "media" "toggle"; }
   Mod+N { spawn "noctalia-shell" "ipc" "call" "notifications" "toggleHistory"; }
   Mod+O { toggle-overview; }
   Mod+Escape { spawn "noctalia-shell" "ipc" "call" "sessionMenu" "toggle"; }
@@ -65,8 +65,8 @@ binds {
 
   XF86MonBrightnessUp { spawn "noctalia-shell" "ipc" "call" "brightness" "increase"; }
   XF86MonBrightnessDown { spawn "noctalia-shell" "ipc" "call" "brightness" "decrease"; }
-  XF86KbdBrightnessUp { spawn "dms" "ipc" "brightness" "increment" "5" "leds:kbd_backlight"; }
-  XF86KbdBrightnessDown { spawn "dms" "ipc" "brightness" "decrement" "5" "leds:kbd_backlight"; }
+  // XF86KbdBrightnessUp { spawn "dms" "ipc" "brightness" "increment" "5" "leds:kbd_backlight"; }
+  // XF86KbdBrightnessDown { spawn "dms" "ipc" "brightness" "decrement" "5" "leds:kbd_backlight"; }
 
   XF86AudioNext { spawn "noctalia-shell" "ipc" "call" "media" "next"; }
   XF86AudioPause { spawn "noctalia-shell" "ipc" "call" "media" "playPause"; }
