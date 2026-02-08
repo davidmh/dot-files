@@ -152,6 +152,11 @@
   services.upower.enable = true;
   services.power-profiles-daemon.enable = true;
 
+  # Enable zram to prevent OOM
+  zramSwap.enable = true;
+  # Enable earlyoom to prevent lockups
+  services.earlyoom.enable = true;
+
   # Open ports in the firewall.
   # networking.firewall.allowedTCPPorts = [ ... ];
   # networking.firewall.allowedUDPPorts = [ ... ];
