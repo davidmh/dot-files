@@ -18,6 +18,7 @@ in
     ../../../shared/programs/neovim.nix
     ../../../shared/programs/shell.nix
     ../../../shared/programs/starship.nix
+    ../../../shared/programs/zellij.nix
     ../../../shared/options.nix
   ];
 

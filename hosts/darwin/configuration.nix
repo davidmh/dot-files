@@ -8,6 +8,7 @@
     ../../shared/programs/neovim.nix
     ../../shared/programs/shell.nix
     ../../shared/programs/starship.nix
+    ../../shared/programs/zellij.nix
   ];
 
   home.packages = with pkgs; [
@@ -21,10 +22,6 @@
     postgresql_16
     redis
   ] ++ import ../../shared/packages.nix { pkgs = pkgs; };
-
-  programs.zellij = {
-    enable = true;
-  };
 
   xdg.configFile."aerospace/aerospace.toml".source = config.lib.file.mkOutOfStoreSymlink "${config.custom.dotfiles}/config/aerospace.toml";
 }
