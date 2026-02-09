@@ -37,12 +37,12 @@
         "autoHideDelay": 500,
         "autoShowDelay": 150,
         "backgroundOpacity": 0.93,
-        "barType": "simple",
+        "barType": "floating",
         "capsuleColorKey": "none",
         "capsuleOpacity": 1,
         "density": "compact",
         "displayMode": "always_visible",
-        "floating": false,
+        "floating": true,
         "frameRadius": 12,
         "frameThickness": 8,
         "hideOnOverview": false,
@@ -72,7 +72,7 @@
                     "scrollingMode": "hover",
                     "showAlbumArt": true,
                     "showArtistFirst": true,
-                    "showProgressRing": true,
+                    "showProgressRing": false,
                     "showVisualizer": true,
                     "textColor": "none",
                     "useFixedWidth": false,
@@ -102,6 +102,17 @@
                     "iconColor": "none",
                     "id": "Bluetooth",
                     "textColor": "none"
+                },
+                {
+                    "blacklist": [
+                    ],
+                    "chevronColor": "none",
+                    "colorizeIcons": false,
+                    "drawerEnabled": false,
+                    "hidePassive": false,
+                    "id": "Tray",
+                    "pinned": [
+                    ]
                 },
                 {
                     "deviceNativePath": "__default__",
