@@ -11,5 +11,5 @@
     slurp # takes the screenshot
   ];
 
-  xdg.configFile."noctalia/settings.json".source = config.lib.file.mkOutOfStoreSymlink "${config.custom.dotfiles}/config/noctalia-settings.json";
+  xdg.configFile."noctalia".source = config.lib.file.mkOutOfStoreSymlink "${config.custom.dotfiles}/config/noctalia";
 }

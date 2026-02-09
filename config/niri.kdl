@@ -16,11 +16,11 @@ input {
 
 binds {
   // Basic actions
-  Mod+Return { spawn "ghostty"; }
-  Mod+B { spawn "zen"; }
-  Mod+Q { close-window; }
-  Mod+Space { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
-  Mod+Tab { spawn "niriswitcherctl" "show" "--window"; }
+  Mod+Return hotkey-overlay-title="Open a terminal" { spawn "ghostty"; }
+  Mod+B hotkey-overlay-title="Open a browser window" { spawn "zen"; }
+  Mod+Q hotkey-overlay-title="Close a window" { close-window; }
+  Mod+Space hotkey-overlay-title="Launcher" { spawn "noctalia-shell" "ipc" "call" "launcher" "toggle"; }
+  Mod+Tab hotkey-overlay-title="Window switcher" { spawn "niriswitcherctl" "show" "--window"; }
 
   // Move across windows
   Mod+H { focus-column-left; }
@@ -50,6 +50,7 @@ binds {
   Mod+Shift+F { fullscreen-window; }
   Mod+Shift+R { spawn "~/.config/nixos/build"; }
   Mod+Shift+4 { spawn "~/.config/nixos/scripts/screenshot-area"; }
+  Mod+E { spawn "noctalia-shell" "ipc" "call" "launcher" "emoji"; }
   Mod+F { maximize-column; }
   Mod+Alt+H { show-hotkey-overlay; }
   Mod+M { spawn "noctalia-shell" "ipc" "call" "media" "toggle"; }
