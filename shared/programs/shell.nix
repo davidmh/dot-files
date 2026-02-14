@@ -1,7 +1,5 @@
 { lib, ... }:
 {
-  programs.atuin.enable = true;
-
   programs.zoxide = {
     enable = true;
     options = [ "--cmd" "cd" ];
