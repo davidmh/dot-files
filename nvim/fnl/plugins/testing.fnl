@@ -1,7 +1,6 @@
 (import-macros {: tx} :own.macros)
 (local {: autoload} (require :nfnl.module))
 (local neotest (autoload :neotest))
-(local neotest-playwright (autoload :neotest-playwright))
 
 (fn rspec-cmd []
   (local current-file (vim.fn.expand "%"))
@@ -18,17 +17,11 @@
   (local neotest-python (require :neotest-python))
   (neotest-python {:python :.venv/bin/python}))
 
-(fn neotest-golang-adapter []
-  (local adapter (require :neotest-golang))
-  (adapter {:runner :gotestsum}))
-
 (fn config []
   (neotest.setup {:log_level vim.log.levels.DEBUG
                   :adapters [(neotest-rspec-adapter)
                              (require :neotest-rust)
-                             (neotest-golang-adapter)
-                             (neotest-python-adapter)
-                             (neotest-playwright.adapter {})]
+                             (neotest-python-adapter)]
                   :quickfix {:enabled true
                              :open false}
                   :discovery {:enabled false}
@@ -42,11 +35,9 @@
                                           :nvim-lua/plenary.nvim
                                           :antoinemadec/FixCursorHold.nvim
                                           :nvim-treesitter/nvim-treesitter
-                                          :thenbe/neotest-playwright
                                           :rouge8/neotest-rust
                                           :olimorris/neotest-rspec
-                                          :nvim-neotest/neotest-python
-                                          :fredrikaverpil/neotest-golang]
+                                          :nvim-neotest/neotest-python]
                            :config config
                            :keys [(tx :<localleader>trn "<cmd>Neotest run<cr>" {:desc "run nearest test"})
                                   (tx :<localleader>trf #(neotest.run.run (vim.fn.expand :%))
