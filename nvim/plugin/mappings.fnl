@@ -3,6 +3,7 @@
                 : tmap
                 : map
                 : augroup} :own.macros)
+(local {: get-terminal-job-id} (require :own.helpers))
 (local {: autoload} (require :nfnl.module))
 
 (local git (autoload :own.git))
@@ -88,9 +89,20 @@
 (nmap :<leader>bk #(snacks.bufdelete.delete) (opts "kill buffer"))
 (nmap :<leader>bo #(snacks.bufdelete.other) (opts "kill other buffers"))
 
-;; toggle term
+;; terminals
+
 (map [:n :t] :<C-t> #(ctrl-t) (opts "split term"))
 (map [:n :t] :<M-z> toggle-zellij (opts "zellij"))
+
+(fn send-line-to-terminal []
+  (local job-id (get-terminal-job-id))
+  (if job-id
+    (vim.api.nvim_chan_send job-id
+                           (.. (vim.api.nvim_get_current_line) "\n"))
+    (vim.print "There are no open terminals")))
+
+(nmap :<localleader>s :<ignore> {:desc "send to term"})
+(nmap :<localleader>sl send-line-to-terminal {:desc :line})
 
 ;; less used commands, grouped by feature
 
