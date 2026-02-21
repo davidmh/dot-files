@@ -17,20 +17,20 @@
                    :t    :TERMINAL
                    :nt   :T-NORMAL})
 
-(local mode-colors {:n    :fg
-                    :i    :lotusGreen
-                    :v    :blue
-                    :V    :lotusTeal1
-                    "\22" :lotusTeal1
-                    :c    :sakuraPink
-                    :s    :purple
-                    :S    :purple
-                    "\19" :purple
-                    :R    :sakuraPink
-                    :r    :sakuraPink
-                    :!    :red
-                    :t    :lotusGreen
-                    :nt   :fg})
+(local mode-colors {:n    :modeNormal
+                    :i    :modeInsert
+                    :v    :modeVisual
+                    :V    :modeVLine
+                    "\22" :modeVBlock
+                    :c    :modeCommand
+                    :s    :modeSelect
+                    :S    :modeSLine
+                    "\19" :modeSBlock
+                    :R    :modeReplace
+                    :r    :modeReplace
+                    :!    :modeShellCmd
+                    :t    :modeTerm
+                    :nt   :modeNormalTerm})
 
 (fn M.get-color []
   (local mode (vim.fn.mode 1))

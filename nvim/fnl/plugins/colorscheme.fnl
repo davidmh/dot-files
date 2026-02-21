@@ -8,7 +8,9 @@
                                                 (local fg theme.ui.bg)
                                                 (local cmp-fg theme.ui.fg_reverse)
 
-                                                {:SnacksNotifierInfo  {: bg}
+                                                {:WinSeparator {:fg theme.ui.bg_search}
+
+                                                 :SnacksNotifierInfo  {: bg}
                                                  :SnacksNotifierWarn  {: bg}
                                                  :SnacksNotifierError {: bg}
                                                  :SnacksNotifierDebug {: bg}
