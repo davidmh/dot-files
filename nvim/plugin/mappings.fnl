@@ -176,7 +176,7 @@
 (nmap :<leader>gR (cmd "Neogit rebase") {:desc :rebase})
 (nmap :<leader>gb (cmd "Git blame") {:desc :blame})
 (nmap :<leader>g- (cmd "Neogit branch") {:desc :branch})
-(nmap :<leader>gd (cmd "Gvdiffsplit") {:desc :diff})
+(nmap :<leader>gd (cmd "CodeDiff") {:desc :diff})
 (nmap :<leader>gl #(snacks.picker.git_log {:confirm git.view-in-fugitive}) {:desc :log})
 (nmap :<leader>gL #(snacks.picker.git_log_file {:confirm git.view-in-fugitive}) {:desc "log file"})
 (nmap :<leader>g<space> #(git.files-in-commit :HEAD) {:desc "files in git HEAD"})
