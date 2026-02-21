@@ -3,7 +3,6 @@ local _local_1_ = require("nfnl.module")
 local autoload = _local_1_.autoload
 local heirline = autoload("heirline")
 local conditions = autoload("heirline.conditions")
-local palettes = autoload("catppuccin.palettes")
 local config = autoload("own.config")
 local mode = autoload("own.mode")
 local empty_space = {provider = " "}
@@ -55,7 +54,7 @@ local function _10_(_241)
   _241.HINT = diagnostic_count("HINT")
   return nil
 end
-diagnostics_block = {diagnostic("ERROR", "red"), diagnostic("WARN", "yellow"), diagnostic("INFO", "fg"), diagnostic("HINT", "green"), empty_space, condition = _9_, init = _10_, update = {"DiagnosticChanged", "BufEnter", "ColorScheme"}}
+diagnostics_block = {diagnostic("ERROR", "autumnRed"), diagnostic("WARN", "autumnYellow"), diagnostic("INFO", "autumnGreen"), diagnostic("HINT", "crystalBlue"), empty_space, condition = _9_, init = _10_, update = {"DiagnosticChanged", "BufEnter", "ColorScheme"}}
 local git_block
 local function _11_()
   return conditions.is_git_repo()
@@ -66,7 +65,7 @@ local function _12_(_241)
   local cwd_relative_path = string.gsub(string.gsub(vim.fn.getcwd(), vim.fn.fnamemodify(root, ":h"), ""), "^/", "")
   local status = vim.trim((vim.b.gitsigns_status or ""))
   _241.icon = "\239\144\152"
-  _241.color = "rosewater"
+  _241.color = "oniViolet"
   _241.content = table.concat({(" [" .. cwd_relative_path .. "]"), head, status}, " ")
   return nil
 end
@@ -74,12 +73,8 @@ git_block = component({condition = _11_, init = _12_, hl = {bold = true}})
 local statusline = {vi_mode, push_right, diagnostics_block, git_block, empty_space}
 local function initialize_heirline()
   vim.o.showmode = false
-  local opts = {colors = palettes.get_palette()}
+  local opts = {colors = require("kanagawa.colors"):setup().palette}
   return heirline.setup({statusline = statusline, opts = opts})
 end
---[[ (initialize-heirline) ]]
-do
-  local group = vim.api.nvim_create_augroup("update-heirline", {clear = true})
-  vim.api.nvim_create_autocmd("ColorScheme", {pattern = "*", callback = initialize_heirline, group = group})
-end
-return {"rebelot/heirline.nvim", dependencies = {"nvim-tree/nvim-web-devicons", "catppuccin"}, event = "VeryLazy", config = initialize_heirline}
+--[[ (initialize-heirline) (augroup "update-heirline" ["ColorScheme" {:callback initialize-heirline :pattern "*"}]) ]]
+return {"rebelot/heirline.nvim", dependencies = {"nvim-tree/nvim-web-devicons"}, event = "VeryLazy", config = initialize_heirline}

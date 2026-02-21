@@ -6,8 +6,6 @@
 (local helpers (autoload :incline.helpers))
 (local navic (autoload :nvim-navic))
 (local nvim-web-devicons (autoload :nvim-web-devicons))
-(local palette (autoload :catppuccin.palettes))
-(local mode (autoload :own.mode))
 
 (fn file-name [bufnr]
   (let [file-name (vim.fn.fnamemodify (vim.api.nvim_buf_get_name bufnr) ::.)]
@@ -25,16 +23,14 @@
           (core.get-in vim [:bo bufnr :readonly]))
      " " ""))
 
-(fn terminal-component [term-title colors]
-  (local term-color (mode.get-color))
+(fn terminal-component [term-title]
+  [(tx " " {:guibg :fg :guifg :black})
+   (tx (.. " " term-title " ") {:guifg :fg})])
 
-  [(tx " " {:guibg term-color :guifg colors.surface1})
-   (tx (.. " " term-title " ") {:guifg colors.text})])
-
-(fn help-component [colors props]
+(fn help-component [props]
   (let [name (vim.fn.fnamemodify (vim.api.nvim_buf_get_name props.buf) ::t)]
-    [(tx " " {:guibg colors.lavender :guifg colors.surface1})
-     (tx (.. " " name " ") {:guifg colors.white})]))
+    [(tx " " {:guibg :purple})
+     (tx (.. " " name " ") {:guifg :white})]))
 
 (fn file-component [props]
   (let [name (file-name props.buf)
@@ -56,13 +52,12 @@
     res))
 
 (fn render [props]
-  (local colors (palette.get_palette))
   (local term-title (. (. vim.b props.buf) :term_title))
   (if term-title
-    (terminal-component term-title colors)
+    (terminal-component term-title)
     (match [(core.get-in vim [:bo props.buf :ft])]
-      [:qf] (quickfix-winbar-component colors)
-      [:help] (help-component colors props)
+      [:qf] (quickfix-winbar-component)
+      [:help] (help-component props)
       [:fugitiveblame] []
       [] (file-component props))))
 

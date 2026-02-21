@@ -9,8 +9,6 @@ local core = autoload("nfnl.core")
 local helpers = autoload("incline.helpers")
 local navic = autoload("nvim-navic")
 local nvim_web_devicons = autoload("nvim-web-devicons")
-local palette = autoload("catppuccin.palettes")
-local mode = autoload("own.mode")
 local function file_name(bufnr)
   local file_name0 = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(bufnr), ":.")
   local _4_
@@ -35,13 +33,12 @@ local function read_only_3f(bufnr)
     return ""
   end
 end
-local function terminal_component(term_title, colors)
-  local term_color = mode["get-color"]()
-  return {{"\238\158\149 ", guibg = term_color, guifg = colors.surface1}, {(" " .. term_title .. " "), guifg = colors.text}}
+local function terminal_component(term_title)
+  return {{"\238\158\149 ", guibg = "fg", guifg = "black"}, {(" " .. term_title .. " "), guifg = "fg"}}
 end
-local function help_component(colors, props)
+local function help_component(props)
   local name = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
-  return {{"\239\131\189 ", guibg = colors.lavender, guifg = colors.surface1}, {(" " .. name .. " "), guifg = colors.white}}
+  return {{"\239\131\189 ", guibg = "purple"}, {(" " .. name .. " "), guifg = "white"}}
 end
 local function file_component(props)
   local name = file_name(props.buf)
@@ -68,16 +65,15 @@ local function file_component(props)
   return res
 end
 local function render(props)
-  local colors = palette.get_palette()
   local term_title = vim.b[props.buf].term_title
   if term_title then
-    return terminal_component(term_title, colors)
+    return terminal_component(term_title)
   else
     local case_12_ = {core["get-in"](vim, {"bo", props.buf, "ft"})}
     if (case_12_[1] == "qf") then
-      return quickfix_winbar_component(colors)
+      return quickfix_winbar_component()
     elseif (case_12_[1] == "help") then
-      return help_component(colors, props)
+      return help_component(props)
     elseif (case_12_[1] == "fugitiveblame") then
       return {}
     elseif true then

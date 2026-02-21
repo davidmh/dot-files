@@ -3,7 +3,6 @@
 
 (local heirline (autoload :heirline))
 (local conditions (autoload :heirline.conditions))
-(local palettes (autoload :catppuccin.palettes))
 (local config (autoload :own.config))
 (local mode (autoload :own.mode))
 
@@ -32,10 +31,10 @@
 (fn diagnostic-count [severity-code]
   (length (vim.diagnostic.get 0 {:severity (. vim.diagnostic.severity severity-code)})))
 
-(local diagnostics-block (tx (diagnostic :ERROR :red)
-                             (diagnostic :WARN :yellow)
-                             (diagnostic :INFO :fg)
-                             (diagnostic :HINT :green)
+(local diagnostics-block (tx (diagnostic :ERROR :autumnRed)
+                             (diagnostic :WARN :autumnYellow)
+                             (diagnostic :INFO :autumnGreen)
+                             (diagnostic :HINT :crystalBlue)
                              empty-space
                              {:condition #(conditions.has_diagnostics)
                               :init #(do
@@ -52,7 +51,7 @@
                                                                      (string.gsub "^/" "")))
                                         (local status (vim.trim (or vim.b.gitsigns_status "")))
                                         (set $1.icon "")
-                                        (set $1.color "rosewater")
+                                        (set $1.color :oniViolet)
                                         (set $1.content (table.concat [(.. " [" cwd-relative-path "]") head status] " ")))
                              :hl {:bold true}}))
 
@@ -65,17 +64,19 @@
 (fn initialize-heirline []
   (set vim.o.showmode false)
 
-  (local opts {:colors (palettes.get_palette)})
+  (local opts {:colors (-> (require :kanagawa.colors)
+                           (: :setup)
+                           (. :palette))})
 
   (heirline.setup {: statusline
                    : opts}))
 
-(comment (initialize-heirline))
+(comment
+  (initialize-heirline)
 
-(augroup :update-heirline [:ColorScheme {:pattern :*
-                                         :callback initialize-heirline}])
+  (augroup :update-heirline [:ColorScheme {:pattern :*
+                                           :callback initialize-heirline}]))
 
-(tx :rebelot/heirline.nvim {:dependencies [:nvim-tree/nvim-web-devicons
-                                           :catppuccin]
+(tx :rebelot/heirline.nvim {:dependencies [:nvim-tree/nvim-web-devicons]
                             :event :VeryLazy
                             :config initialize-heirline})

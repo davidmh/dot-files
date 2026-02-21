@@ -11,7 +11,7 @@ vim.opt.completeopt = {"menu", "menuone"}
 local function cmp_format(entry, vim_item)
   local icon_fmt = lspkind.cmp_format({mode = "symbol", maxwidth = 30})
   local icon_item = icon_fmt(entry, vim_item)
-  icon_item.icon = (" " .. icon_item.icon .. " ")
+  icon_item.icon = (icon_item.icon .. " ")
   return icon_item
 end
 local function config()

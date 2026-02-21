@@ -11,7 +11,7 @@
   (let [icon-fmt (lspkind.cmp_format {:mode :symbol
                                       :maxwidth 30})
         icon-item (icon-fmt entry vim-item)]
-    (set icon-item.icon (.. " " icon-item.icon " "))
+    (set icon-item.icon (.. icon-item.icon " "))
     icon-item))
 
 (fn config []

@@ -43,22 +43,22 @@
     "quickfix list"
     title))
 
-(fn quickfix-title [colors]
-  [(tx "  " {:guibg colors.lavender :guifg :black})
+(fn quickfix-title []
+  [(tx "  " {:guibg :purple :guifg :black})
    (.. " " (get-quickfix-title) " ")])
 
-(fn quickfix-history-nav [colors]
+(fn quickfix-history-nav []
   (if (> (get-quickfix-history-size) 1)
      [(tx (.. " " qf-older-key " ")
           {:guifg (if (has-older-qf-stack-entry?)
-                      colors.lavender
-                      colors.surface1)})
+                      :purple
+                      :fg)})
       (tx (.. (get-quickfix-current-index) "/" (get-quickfix-history-size))
-          {:guifg colors.lavender})
+          {:guifg :purple})
       (tx (.. " " qf-newer-key " ")
           {:guifg (if (has-newer-qf-stack-entry?)
-                      colors.lavender
-                      colors.surface1)})]
+                      :purple
+                      :fg)})]
      ""))
 
 (fn M.set-quickfix-mappings []
@@ -79,8 +79,8 @@
   (nmap qf-newer-key qf-newer-fn opts))
 
 
-(fn M.quickfix-winbar-component [colors]
-  [(quickfix-title colors)
-   (quickfix-history-nav colors)])
+(fn M.quickfix-winbar-component []
+  [(quickfix-title)
+   (quickfix-history-nav)])
 
 M

@@ -1,6 +1,4 @@
-(local {: autoload
-        : define} (require :nfnl.module))
-(local palettes (autoload :catppuccin.palettes))
+(local {: define} (require :nfnl.module))
 
 (local M (define :own.mode))
 
@@ -19,27 +17,24 @@
                    :t    :TERMINAL
                    :nt   :T-NORMAL})
 
-(local mode-colors {:n    :text
-                    :i    :green
-                    :v    :sky
-                    :V    :teal
-                    "\22" :teal
-                    :c    :flamingo
-                    :s    :mauve
-                    :S    :mauve
-                    "\19" :mauve
-                    :R    :flamingo
-                    :r    :flamingo
+(local mode-colors {:n    :fg
+                    :i    :lotusGreen
+                    :v    :blue
+                    :V    :lotusTeal1
+                    "\22" :lotusTeal1
+                    :c    :sakuraPink
+                    :s    :purple
+                    :S    :purple
+                    "\19" :purple
+                    :R    :sakuraPink
+                    :r    :sakuraPink
                     :!    :red
-                    :t    :green
-                    :nt   :text})
+                    :t    :lotusGreen
+                    :nt   :fg})
 
 (fn M.get-color []
-  (local palette (palettes.get_palette))
   (local mode (vim.fn.mode 1))
-  (local color-name (. mode-colors mode))
-
-  (. palette color-name))
+  (. mode-colors mode))
 
 (fn M.get-label []
   (local mode (vim.fn.mode 1))

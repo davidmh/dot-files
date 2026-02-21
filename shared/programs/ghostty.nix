@@ -18,7 +18,7 @@
       font-thicken = true;
       mouse-hide-while-typing = true;
       quit-after-last-window-closed = true;
-      theme = "Catppuccin Mocha";
+      theme = "Kanagawa Wave";
       window-padding-y = "10,0";
     } // (
       if stdenv.isDarwin then

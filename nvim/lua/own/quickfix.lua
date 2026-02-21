@@ -52,24 +52,24 @@ local function get_quickfix_title()
     return title
   end
 end
-local function quickfix_title(colors)
-  return {{" \239\145\145 ", guibg = colors.lavender, guifg = "black"}, (" " .. get_quickfix_title() .. " ")}
+local function quickfix_title()
+  return {{" \239\145\145 ", guibg = "purple", guifg = "black"}, (" " .. get_quickfix_title() .. " ")}
 end
-local function quickfix_history_nav(colors)
+local function quickfix_history_nav()
   if (get_quickfix_history_size() > 1) then
     local _8_
     if has_older_qf_stack_entry_3f() then
-      _8_ = colors.lavender
+      _8_ = "purple"
     else
-      _8_ = colors.surface1
+      _8_ = "fg"
     end
     local _10_
     if has_newer_qf_stack_entry_3f() then
-      _10_ = colors.lavender
+      _10_ = "purple"
     else
-      _10_ = colors.surface1
+      _10_ = "fg"
     end
-    return {{(" " .. qf_older_key .. " "), guifg = _8_}, {(get_quickfix_current_index() .. "/" .. get_quickfix_history_size()), guifg = colors.lavender}, {(" " .. qf_newer_key .. " "), guifg = _10_}}
+    return {{(" " .. qf_older_key .. " "), guifg = _8_}, {(get_quickfix_current_index() .. "/" .. get_quickfix_history_size()), guifg = "purple"}, {(" " .. qf_newer_key .. " "), guifg = _10_}}
   else
     return ""
   end
@@ -81,7 +81,7 @@ M["set-quickfix-mappings"] = function()
   vim.keymap.set("n", qf_older_key, qf_older_fn, opts)
   return vim.keymap.set("n", qf_newer_key, qf_newer_fn, opts)
 end
-M["quickfix-winbar-component"] = function(colors)
-  return {quickfix_title(colors), quickfix_history_nav(colors)}
+M["quickfix-winbar-component"] = function()
+  return {quickfix_title(), quickfix_history_nav()}
 end
 return M
