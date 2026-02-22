@@ -3,9 +3,10 @@
                 : tmap
                 : map
                 : augroup} :own.macros)
-(local {: get-terminal-job-id} (require :own.helpers))
+(local {: get-term} (require :own.helpers))
 (local {: autoload} (require :nfnl.module))
 
+(local helpers (autoload :own.helpers))
 (local git (autoload :own.git))
 (local gitsigns (autoload :gitsigns))
 (local projects (autoload :own.projects))
@@ -54,15 +55,17 @@
   (snacks.terminal.toggle "direnv exec . zellij attach || direnv exec . zellij"
                           {:win {:position :float}}))
 
+(fn toggle-term []
+  (local term (snacks.terminal.toggle "direnv exec . zsh" {:cwd (vim.fs.root (vim.fn.expand "%:p")
+                                                                             project-root-patterns)}))
+  (core.assoc-in vim.b [term.buf :term_title] "scratch term"))
+
 ; Zellij uses ctrl-t to enter the tab mode
 ; This function makes sure we fire the right command depending on the context
 (fn ctrl-t []
   (if (string.find (vim.fn.expand "%") "zellij")
     (vim.system [:zellij :action :switch-mode :tab])
-    (do
-      (local term (snacks.terminal.toggle "direnv exec . zsh" {:cwd (vim.fs.root (vim.fn.expand "%:p")
-                                                                                 project-root-patterns)}))
-      (core.assoc-in vim.b [term.buf :term_title] "scratch term"))))
+    (toggle-term)))
 
 (fn opts [desc] {:silent true : desc})
 
@@ -94,15 +97,37 @@
 (map [:n :t] :<C-t> #(ctrl-t) (opts "split term"))
 (map [:n :t] :<M-z> toggle-zellij (opts "zellij"))
 
-(fn send-line-to-terminal []
-  (local job-id (get-terminal-job-id))
-  (if job-id
-    (vim.api.nvim_chan_send job-id
-                           (.. (vim.api.nvim_get_current_line) "\n"))
-    (vim.print "There are no open terminals")))
+(fn send-to-terminal [content]
+  (local term (get-term))
+  (if term
+    (do
+      (local {: channel : buffer : window} term)
+      (vim.api.nvim_chan_send channel content)
+      (vim.schedule (fn []
+                      (local last-row (-> buffer
+                                          (vim.api.nvim_buf_get_lines 0 -1 true)
+                                          (length)))
+                      (vim.api.nvim_win_set_cursor window [last-row 0]))))
+    (do
+      (toggle-term)
+      (vim.schedule #(send-to-terminal content)))))
 
-(nmap :<localleader>s :<ignore> {:desc "send to term"})
+(fn send-file-to-terminal []
+  (local file-path (vim.fn.expand :%:p))
+  (send-to-terminal (.. file-path "\n")))
+
+(fn send-line-to-terminal []
+  (send-to-terminal (.. (vim.api.nvim_get_current_line) "\n")))
+
+(fn send-lines-to-terminal []
+  (send-to-terminal (-> (helpers.get-lines-from-visual-range)
+                        (table.concat "\n")
+                        (.. "\n"))))
+
+(map [:n :v] :<localleader>s :<ignore> {:desc "send to term"})
+(nmap :<localleader>sf send-file-to-terminal {:desc :file})
 (nmap :<localleader>sl send-line-to-terminal {:desc :line})
+(vmap :<localleader>sl send-lines-to-terminal {:desc :lines})
 
 ;; less used commands, grouped by feature
 

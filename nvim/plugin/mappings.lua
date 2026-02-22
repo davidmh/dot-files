@@ -1,8 +1,9 @@
 -- [nfnl] plugin/mappings.fnl
 local _local_1_ = require("own.helpers")
-local get_terminal_job_id = _local_1_["get-terminal-job-id"]
+local get_term = _local_1_["get-term"]
 local _local_2_ = require("nfnl.module")
 local autoload = _local_2_.autoload
+local helpers = autoload("own.helpers")
 local git = autoload("own.git")
 local gitsigns = autoload("gitsigns")
 local projects = autoload("own.projects")
@@ -45,12 +46,15 @@ end
 local function toggle_zellij()
   return snacks.terminal.toggle("direnv exec . zellij attach || direnv exec . zellij", {win = {position = "float"}})
 end
+local function toggle_term()
+  local term = snacks.terminal.toggle("direnv exec . zsh", {cwd = vim.fs.root(vim.fn.expand("%:p"), project_root_patterns)})
+  return core["assoc-in"](vim.b, {term.buf, "term_title"}, "scratch term")
+end
 local function ctrl_t()
   if string.find(vim.fn.expand("%"), "zellij") then
     return vim.system({"zellij", "action", "switch-mode", "tab"})
   else
-    local term = snacks.terminal.toggle("direnv exec . zsh", {cwd = vim.fs.root(vim.fn.expand("%:p"), project_root_patterns)})
-    return core["assoc-in"](vim.b, {term.buf, "term_title"}, "scratch term")
+    return toggle_term()
   end
 end
 local function opts(desc)
@@ -95,97 +99,121 @@ local function _15_()
 end
 vim.keymap.set({"n", "t"}, "<C-t>", _15_, opts("split term"))
 vim.keymap.set({"n", "t"}, "<M-z>", toggle_zellij, opts("zellij"))
-local function send_line_to_terminal()
-  local job_id = get_terminal_job_id()
-  if job_id then
-    return vim.api.nvim_chan_send(job_id, (vim.api.nvim_get_current_line() .. "\n"))
+local function send_to_terminal(content)
+  local term = get_term()
+  if term then
+    local channel = term.channel
+    local buffer = term.buffer
+    local window = term.window
+    vim.api.nvim_chan_send(channel, content)
+    local function _16_()
+      local last_row = #vim.api.nvim_buf_get_lines(buffer, 0, -1, true)
+      return vim.api.nvim_win_set_cursor(window, {last_row, 0})
+    end
+    return vim.schedule(_16_)
   else
-    return vim.print("There are no open terminals")
+    toggle_term()
+    local function _17_()
+      return send_to_terminal(content)
+    end
+    return vim.schedule(_17_)
   end
 end
-vim.keymap.set("n", "<localleader>s", "<ignore>", {desc = "send to term"})
+local function send_file_to_terminal()
+  local file_path = vim.fn.expand("%:p")
+  return send_to_terminal((file_path .. "\n"))
+end
+local function send_line_to_terminal()
+  return send_to_terminal((vim.api.nvim_get_current_line() .. "\n"))
+end
+local function send_lines_to_terminal()
+  return send_to_terminal((table.concat(helpers["get-lines-from-visual-range"](), "\n") .. "\n"))
+end
+vim.keymap.set({"n", "v"}, "<localleader>s", "<ignore>", {desc = "send to term"})
+vim.keymap.set("n", "<localleader>sf", send_file_to_terminal, {desc = "file"})
 vim.keymap.set("n", "<localleader>sl", send_line_to_terminal, {desc = "line"})
-local function _17_()
+vim.keymap.set("v", "<localleader>sl", send_lines_to_terminal, {desc = "lines"})
+local function _19_()
   return snacks.picker.files({dirs = {"~/.config/home-manager", "~/.config/nixos"}, title = "config"})
 end
-vim.keymap.set("n", "<localleader>c", _17_, opts("config"))
+vim.keymap.set("n", "<localleader>c", _19_, opts("config"))
 vim.keymap.set("n", "<localleader>l", cmd("Lazy show"), opts("lazy ui"))
 vim.keymap.set("n", "<localleader>n", "<ignore>", {desc = "notifications"})
-local function _18_()
+local function _20_()
   return notifications.open()
 end
-vim.keymap.set("n", "<localleader>no", _18_, opts("open notifications"))
-local function _19_()
+vim.keymap.set("n", "<localleader>no", _20_, opts("open notifications"))
+local function _21_()
   return notifications.discard()
 end
-vim.keymap.set("n", "<localleader>nd", _19_, opts("dismiss notifications"))
-local function _20_()
+vim.keymap.set("n", "<localleader>nd", _21_, opts("dismiss notifications"))
+local function _22_()
   return projects["select-project"]()
 end
-vim.keymap.set("n", "<localleader>p", _20_, opts("switch projects"))
+vim.keymap.set("n", "<localleader>p", _22_, opts("switch projects"))
 vim.keymap.set("n", "Q", toggle_quickfix, opts("quickfix toggle"))
-local function _21_()
+local function _23_()
   return snacks.picker.spelling()
 end
-vim.keymap.set("n", "z=", _21_, opts("suggest spelling"))
-local function _22_()
+vim.keymap.set("n", "z=", _23_, opts("suggest spelling"))
+local function _24_()
   return vim.diagnostic.jump(core.merge({float = true, count = -1}, error_filter))
 end
-vim.keymap.set("n", "[d", _22_, opts("next diagnostic"))
-local function _23_()
+vim.keymap.set("n", "[d", _24_, opts("next diagnostic"))
+local function _25_()
   return vim.diagnostic.jump(core.merge({float = true, count = 1}, error_filter))
 end
-vim.keymap.set("n", "]d", _23_, opts("previous diagnostic"))
-local function _24_()
+vim.keymap.set("n", "]d", _25_, opts("previous diagnostic"))
+local function _26_()
   return vim.diagnostic.jump(core.merge({float = true, count = -1}, other_filter))
 end
-vim.keymap.set("n", "[w", _24_, opts("next warning"))
-local function _25_()
+vim.keymap.set("n", "[w", _26_, opts("next warning"))
+local function _27_()
   return vim.diagnostic.jump(core.merge({float = true, count = 1}, other_filter))
 end
-vim.keymap.set("n", "]w", _25_, opts("previous warning"))
+vim.keymap.set("n", "]w", _27_, opts("previous warning"))
 local function buf_map(keymap, callback, desc)
   return vim.keymap.set("n", keymap, callback, {buffer = true, silent = true, desc = desc})
 end
 local function lsp_mappings()
   vim.api.nvim_set_option_value("omnifunc", "v:lua.vim.lsp.omnifunc", {scope = "local", buf = 0})
-  local function _26_()
+  local function _28_()
     return vim.lsp.buf.hover({max_width = 130, max_height = 20, wrap = false})
   end
-  buf_map("K", _26_, "lsp: hover")
+  buf_map("K", _28_, "lsp: hover")
   buf_map("gd", cmd("Glance definitions"), "lsp: go to definition")
   buf_map("<leader>l", "<ignore>", "lsp")
   buf_map("<leader>lf", cmd("Glance references"), "lsp: find references")
   buf_map("<leader>li", cmd("Glance implementations"), "lsp: implementation")
   buf_map("<leader>lt", cmd("Glance type_definitions"), "lsp: type definition")
-  local function _27_()
+  local function _29_()
     return vim.diagnostic.setqflist(error_filter)
   end
-  buf_map("<leader>le", _27_, "lsp: errors")
-  local function _28_()
+  buf_map("<leader>le", _29_, "lsp: errors")
+  local function _30_()
     return vim.lsp.buf.code_action()
   end
-  buf_map("<leader>la", _28_, "lsp: code actions")
-  local function _29_()
+  buf_map("<leader>la", _30_, "lsp: code actions")
+  local function _31_()
     return vim.lsp.buf.rename()
   end
-  buf_map("<leader>lr", _29_, "lsp: rename")
-  local function _30_()
+  buf_map("<leader>lr", _31_, "lsp: rename")
+  local function _32_()
     return snacks.picker.lsp_symbols()
   end
-  buf_map("<leader>ls", _30_, "lsp: symbols")
+  buf_map("<leader>ls", _32_, "lsp: symbols")
   buf_map("<leader>lI", "<cmd>checkhealth vim.lsp<CR>", "lsp: info")
   buf_map("<leader>lR", "<cmd>lsp restart<CR>", "lsp: restart")
   buf_map("<leader>lE", "<cmd>lsp enable<CR>", "lsp: enable")
   buf_map("<leader>lD", "<cmd>lsp disable<CR>", "lsp: disable")
-  local function _31_()
+  local function _33_()
     return vim.cmd(("tabnew" .. " " .. vim.lsp.log.get_filename()))
   end
-  buf_map("<leader>lL", _31_, "lsp: log")
-  local function _32_()
+  buf_map("<leader>lL", _33_, "lsp: log")
+  local function _34_()
     return vim.lsp.buf.code_action()
   end
-  return vim.keymap.set("v", "<leader>la", _32_, {buffer = true, desc = "lsp: code actions"})
+  return vim.keymap.set("v", "<leader>la", _34_, {buffer = true, desc = "lsp: code actions"})
 end
 do
   local group = vim.api.nvim_create_augroup("lsp-attach", {clear = true})
@@ -194,27 +222,27 @@ end
 vim.keymap.set("n", "<leader>g", "<ignore>", {desc = "git"})
 vim.keymap.set("n", "<leader>gg", cmd("Neogit"), {desc = "status"})
 vim.keymap.set("n", "<leader>gc", cmd("Neogit commit"), {desc = "commit"})
-local function _33_()
+local function _35_()
   return git.write()
 end
-vim.keymap.set("n", "<leader>gw", _33_, {desc = "write"})
+vim.keymap.set("n", "<leader>gw", _35_, {desc = "write"})
 vim.keymap.set("n", "<leader>gr", cmd("Gread"), {desc = "read"})
 vim.keymap.set("n", "<leader>gR", cmd("Neogit rebase"), {desc = "rebase"})
 vim.keymap.set("n", "<leader>gb", cmd("Git blame"), {desc = "blame"})
 vim.keymap.set("n", "<leader>g-", cmd("Neogit branch"), {desc = "branch"})
 vim.keymap.set("n", "<leader>gd", cmd("CodeDiff"), {desc = "diff"})
-local function _34_()
+local function _36_()
   return snacks.picker.git_log({confirm = git["view-in-fugitive"]})
 end
-vim.keymap.set("n", "<leader>gl", _34_, {desc = "log"})
-local function _35_()
+vim.keymap.set("n", "<leader>gl", _36_, {desc = "log"})
+local function _37_()
   return snacks.picker.git_log_file({confirm = git["view-in-fugitive"]})
 end
-vim.keymap.set("n", "<leader>gL", _35_, {desc = "log file"})
-local function _36_()
+vim.keymap.set("n", "<leader>gL", _37_, {desc = "log file"})
+local function _38_()
   return git["files-in-commit"]("HEAD")
 end
-vim.keymap.set("n", "<leader>g<space>", _36_, {desc = "files in git HEAD"})
+vim.keymap.set("n", "<leader>g<space>", _38_, {desc = "files in git HEAD"})
 vim.keymap.set("n", "<leader>gf", cmd("Neogit fetch"), {desc = "fetch"})
 vim.keymap.set("n", "<leader>gp", cmd("Neogit pull"), {desc = "pull"})
 vim.keymap.set("n", "<leader>gB", cmd("GBrowse"), {desc = "browse"})
@@ -223,38 +251,38 @@ vim.keymap.set("n", "<leader>ghs", cmd("Gitsigns stage_hunk"), {desc = "stage"})
 vim.keymap.set("n", "<leader>ghu", cmd("Gitsigns undo_stage_hunk"), {desc = "unstage"})
 vim.keymap.set("n", "<leader>ghr", cmd("Gitsigns reset_hunk"), {desc = "reset"})
 vim.keymap.set("n", "<leader>ghp", cmd("Gitsigns preview_hunk"), {desc = "preview"})
-local function _37_()
+local function _39_()
   return gitsigns.blame_line({full = true})
 end
-vim.keymap.set("n", "<leader>ghb", _37_, {desc = "blame"})
+vim.keymap.set("n", "<leader>ghb", _39_, {desc = "blame"})
 vim.keymap.set("v", "<leader>gl", cmd("'<,'>GBrowse"), {desc = "current's selection git browse", nowait = true, silent = true})
 vim.keymap.set("v", "<leader>gl", cmd("'<,'>NeogitLogCurrent"), {desc = "current's selection git log", nowait = true, silent = true})
 vim.keymap.set("n", "[h", cmd("Gitsigns prev_hunk"), {desc = "previous git hunk", nowait = true, silent = true})
 vim.keymap.set("n", "]h", cmd("Gitsigns next_hunk"), {desc = "next git hunk", nowait = true, silent = true})
-local function _38_()
+local function _40_()
   return snacks.picker.commands({layout = {preset = "vscode"}})
 end
-vim.keymap.set("n", "<M-x>", _38_, {nowait = true, silent = true})
-local function _39_()
+vim.keymap.set("n", "<M-x>", _40_, {nowait = true, silent = true})
+local function _41_()
   return snacks.picker.help({layout = {preset = "top"}})
 end
-vim.keymap.set("n", "<M-h>", _39_, {nowait = true, silent = true})
-local function _40_()
+vim.keymap.set("n", "<M-h>", _41_, {nowait = true, silent = true})
+local function _42_()
   return snacks.picker.keymaps({global = false})
 end
-vim.keymap.set("n", "<M-k>", _40_, {nowait = true, silent = true})
-local function _41_()
+vim.keymap.set("n", "<M-k>", _42_, {nowait = true, silent = true})
+local function _43_()
   return snacks.picker.recent()
 end
-vim.keymap.set("n", "<M-o>", _41_, {nowait = true, silent = true})
-local function _42_()
+vim.keymap.set("n", "<M-o>", _43_, {nowait = true, silent = true})
+local function _44_()
   return snacks.picker()
 end
-vim.keymap.set("n", "<M-s>", _42_, {nowait = true, silent = true})
-local function _43_()
+vim.keymap.set("n", "<M-s>", _44_, {nowait = true, silent = true})
+local function _45_()
   return snacks.picker.explorer({auto_close = true, hidden = true})
 end
-vim.keymap.set("n", "<leader>ff", _43_, {desc = "file explorer"})
+vim.keymap.set("n", "<leader>ff", _45_, {desc = "file explorer"})
 vim.keymap.set("n", "<M-,>", "<C-W>5<")
 vim.keymap.set("n", "<M-.>", "<C-W>5>")
 vim.keymap.set("n", "<M-->", "<C-W>5-")
