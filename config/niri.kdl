@@ -77,3 +77,25 @@ binds {
   // Shut up!
   F1 { spawn "true"; }
 }
+
+// Noctalia integration
+
+window-rule {
+  // Rounded corners for a modern look.
+  geometry-corner-radius 4
+
+  // Clips window contents to the rounded corner boundaries.
+  clip-to-geometry true
+}
+
+debug {
+  // Allows notification actions and window activation from Noctalia.
+  honor-xdg-activation-with-invalid-serial
+}
+
+layout {
+  focus-ring {
+    width 1
+    active-color "#76946a"
+  }
+}
