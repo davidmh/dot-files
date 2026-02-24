@@ -70,8 +70,8 @@
   # Enable thunderbolt
   services.hardware.bolt.enable = true;
 
-  # Enable Displaylink
-  services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
+  # # Enable Displaylink
+  # services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
 
   # Specify path to peripheral firmware files.
   hardware.asahi.peripheralFirmwareDirectory = ./firmware;
@@ -107,7 +107,7 @@
       commands = [
         {
           command = "/run/current-system/sw/bin/nixos-rebuild";
-          options = [ "NOPASSWD" ];
+          options = [ "NOPASSWD" "SETENV" ];
         }
       ];
     }
@@ -166,6 +166,14 @@
   nix.settings = {
     experimental-features = "nix-command flakes";
     trusted-users = [ "root" "homelab" ];
+
+    # Trigger GC when free space drops below 5GB
+    min-free = 5368709120; # 5 GiB
+    # GC until 10GB is free
+    max-free = 10737418240; # 10 GiB
+
+    # Use the USB drive for build temp files
+    build-dir = "/mnt/nix-build";
   };
 
   # Copy the NixOS configuration file and link it from the resulting system

@@ -1,0 +1,72 @@
+#!/usr/bin/env bash
+# Formats (if needed) and mounts a USB drive for use as the Nix build TMPDIR.
+# Usage: ./mount-build-usb [device]
+# Default device: /dev/sda
+
+set -euo pipefail
+
+DEVICE="${1:-/dev/sda}"
+PARTITION="${DEVICE}1"
+MOUNT_POINT="/mnt/nix-build"
+LABEL="nix-build"
+
+if [[ $EUID -ne 0 ]]; then
+  echo "Re-running with sudo..."
+  exec sudo "$0" "$@"
+fi
+
+# Already mounted?
+if mountpoint -q "$MOUNT_POINT" 2>/dev/null; then
+  echo "Already mounted at $MOUNT_POINT"
+  echo "Set TMPDIR=$MOUNT_POINT/tmp before building."
+  exit 0
+fi
+
+# Check if the first partition exists and has a writable filesystem
+FSTYPE=$(lsblk -no FSTYPE "$PARTITION" 2>/dev/null || true)
+
+if echo "$FSTYPE" | grep -qE "^(ext4|btrfs|xfs)$"; then
+  echo "Found existing $FSTYPE filesystem on $PARTITION, mounting..."
+else
+  # Need to format — show what's on the device and ask for confirmation
+  DEVICE_SIZE=$(lsblk -no SIZE "$DEVICE" 2>/dev/null || echo "unknown")
+  CURRENT_LABEL=$(lsblk -no LABEL "$DEVICE" 2>/dev/null || echo "none")
+  CURRENT_FSTYPE=$(lsblk -no FSTYPE "$DEVICE" 2>/dev/null || echo "unknown")
+
+  echo ""
+  echo "  Device:     $DEVICE"
+  echo "  Size:       $DEVICE_SIZE"
+  echo "  Filesystem: $CURRENT_FSTYPE"
+  echo "  Label:      $CURRENT_LABEL"
+  echo ""
+  echo "WARNING: This will ERASE ALL DATA on $DEVICE."
+  read -rp "Type 'yes' to continue: " confirm
+  if [[ "$confirm" != "yes" ]]; then
+    echo "Aborted."
+    exit 1
+  fi
+
+  echo "Creating GPT partition table..."
+  parted "$DEVICE" --script mklabel gpt mkpart primary ext4 0% 100%
+
+  # Wait for the kernel to register the new partition
+  udevadm settle --timeout=10 || partprobe "$DEVICE"
+  sleep 1
+
+  echo "Formatting $PARTITION as ext4..."
+  mkfs.ext4 -L "$LABEL" "$PARTITION"
+fi
+
+echo "Mounting $PARTITION at $MOUNT_POINT..."
+mkdir -p "$MOUNT_POINT"
+mount "$PARTITION" "$MOUNT_POINT"
+
+# Create a world-writable tmp dir for Nix builds
+mkdir -p "$MOUNT_POINT/tmp"
+chmod 1777 "$MOUNT_POINT/tmp"
+
+echo ""
+echo "Done. To build with this disk as TMPDIR, run:"
+echo ""
+echo "  sudo TMPDIR=$MOUNT_POINT/tmp nixos-rebuild switch --flake /home/homelab/.config/nixos --cores 4"
+echo ""

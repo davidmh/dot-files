@@ -29,7 +29,7 @@ if [[ "$os" == "Darwin" ]]; then
     home-manager switch --show-trace
   fi
 else
-  sudo nixos-rebuild switch --flake . --cores 2 2> ./error.log
+  sudo nixos-rebuild switch --flake path:. --cores 4
 fi
 
 status=$?
