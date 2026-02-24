@@ -11,15 +11,10 @@
  (tx :tpope/vim-fugitive {:dependencies [:tpope/vim-rhubarb]
                           :init #(set vim.g.fugitive_legacy_commands false)})
 
- (tx :esmuellert/codediff.nvim {:dependencies [:MunifTanjim/nui.nvim]
-                                :cmd [:CodeDiff]})
-
  :davidmh/gitattributes.nvim
 
- (tx :NeogitOrg/neogit {:dependencies [:nvim-lua/plenary.nvim
-                                       :esmuellert/codediff.nvim]
+ (tx :NeogitOrg/neogit {:dependencies [:nvim-lua/plenary.nvim]
                         :opts {:disable_hint true
-                               :diff_viewer :codediff
                                :console_timeout 1500
                                :auto_close_console false
                                :fetch_after_checkout true

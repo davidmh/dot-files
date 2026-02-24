@@ -230,7 +230,7 @@ vim.keymap.set("n", "<leader>gr", cmd("Gread"), {desc = "read"})
 vim.keymap.set("n", "<leader>gR", cmd("Neogit rebase"), {desc = "rebase"})
 vim.keymap.set("n", "<leader>gb", cmd("Git blame"), {desc = "blame"})
 vim.keymap.set("n", "<leader>g-", cmd("Neogit branch"), {desc = "branch"})
-vim.keymap.set("n", "<leader>gd", cmd("CodeDiff"), {desc = "diff"})
+vim.keymap.set("n", "<leader>gd", cmd("Gvdiffsplit"), {desc = "diff"})
 local function _36_()
   return snacks.picker.git_log({confirm = git["view-in-fugitive"]})
 end
