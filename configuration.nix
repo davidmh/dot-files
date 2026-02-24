@@ -71,7 +71,7 @@
   services.hardware.bolt.enable = true;
 
   # Enable Displaylink
-  services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
+  # services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
 
   # Specify path to peripheral firmware files.
   hardware.asahi.peripheralFirmwareDirectory = ./firmware;
@@ -162,6 +162,12 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
+
+  fileSystems."/nix" = {
+    device = "/dev/disk/by-label/nix-store";
+    fsType = "ext4";
+    neededForBoot = true;
+  };
 
   nix.settings = {
     experimental-features = "nix-command flakes";

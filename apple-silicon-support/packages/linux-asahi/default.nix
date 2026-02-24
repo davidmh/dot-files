@@ -1,18 +1,17 @@
-{
-  lib,
-  callPackage,
-  linuxPackagesFor,
-  _kernelPatches ? [ ],
+{ lib
+, callPackage
+, linuxPackagesFor
+, _kernelPatches ? [ ]
+,
 }:
 
 let
   linux-asahi-pkg =
-    {
-      stdenv,
-      lib,
-      fetchFromGitHub,
-      buildLinux,
-      ...
+    { stdenv
+    , lib
+    , fetchFromGitHub
+    , buildLinux
+    , ...
     }:
     buildLinux rec {
       inherit stdenv lib;
@@ -56,6 +55,16 @@ let
             SND_SOC_TAS2764 = module;
             SND_SOC_TAS2770 = module;
             SND_SIMPLE_CARD_UTILS = module;
+
+            # Not present in Asahi kernel fork; force-override common-config's hard setting
+            # so generate-config.pl treats it as a warning instead of an error
+            NOVA_CORE = lib.mkForce (option no);
+            # BCACHEFS_FS = lib.mkForce (option no);
+            # DRM_HYPERV = lib.mkForce (option no);
+            # DRM_NOUVEAU_GSP_DEFAULT = lib.mkForce (option no);
+            # FB_HYPERV = lib.mkForce (option no);
+            # IP_NF_TARGET_REDIRECT = lib.mkForce (option no);
+            # ZPOOL = lib.mkForce (option no);
           };
           features.rust = true;
         }
