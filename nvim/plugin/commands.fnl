@@ -22,6 +22,13 @@
                                                            {:win {:position :float}})
                                   {:nargs 0})
 
+(local process-compose "process-compose list 2>/dev/null && process-compose attach || process-compose up -f process-compose.yaml --detached-with-tui")
+(vim.api.nvim_create_user_command :ProcessCompose
+                                   #(snacks.terminal.toggle process-compose
+                                                            {:win {:position :float}
+                                                             :cwd (vim.fs.root 0 :process-compose.yaml)})
+                                   {:nargs 0})
+
 (vim.api.nvim_create_user_command :Restart
                                   (fn []
                                     (vim.cmd "mksession! /tmp/session.vim | restart source /tmp/session.vim")
