@@ -53,23 +53,23 @@ local function get_quickfix_title()
   end
 end
 local function quickfix_title()
-  return {{" \239\145\145 ", guibg = "purple", guifg = "black"}, (" " .. get_quickfix_title() .. " ")}
+  return {{" \239\145\145 ", guibg = "fg", guifg = "black"}, (" " .. get_quickfix_title() .. " ")}
 end
 local function quickfix_history_nav()
   if (get_quickfix_history_size() > 1) then
     local _8_
     if has_older_qf_stack_entry_3f() then
-      _8_ = "purple"
+      _8_ = "fg"
     else
       _8_ = "fg"
     end
     local _10_
     if has_newer_qf_stack_entry_3f() then
-      _10_ = "purple"
+      _10_ = "fg"
     else
       _10_ = "fg"
     end
-    return {{(" " .. qf_older_key .. " "), guifg = _8_}, {(get_quickfix_current_index() .. "/" .. get_quickfix_history_size()), guifg = "purple"}, {(" " .. qf_newer_key .. " "), guifg = _10_}}
+    return {{(" " .. qf_older_key .. " "), guifg = _8_}, {(get_quickfix_current_index() .. "/" .. get_quickfix_history_size()), guifg = "fg"}, {(" " .. qf_newer_key .. " "), guifg = _10_}}
   else
     return ""
   end

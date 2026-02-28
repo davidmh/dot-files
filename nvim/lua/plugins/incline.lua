@@ -34,11 +34,11 @@ local function read_only_3f(bufnr)
   end
 end
 local function terminal_component(term_title)
-  return {{"\238\158\149 ", guibg = "fg", guifg = "black"}, {(" " .. term_title .. " "), guifg = "fg"}}
+  return {{" \238\158\149 ", guibg = "fg", guifg = "black"}, {(" " .. term_title .. " "), guifg = "fg"}}
 end
 local function help_component(props)
   local name = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(props.buf), ":t")
-  return {{"\239\131\189 ", guibg = "purple"}, {(" " .. name .. " "), guifg = "white"}}
+  return {{" \239\131\189 ", guibg = "purple"}, {(" " .. name .. " "), guifg = "white"}}
 end
 local function file_component(props)
   local name = file_name(props.buf)
@@ -47,7 +47,7 @@ local function file_component(props)
   local res
   local _8_
   if icon then
-    _8_ = {icon, " ", guibg = color, guifg = helpers.contrast_color(color)}
+    _8_ = {" ", icon, " ", guibg = color, guifg = helpers.contrast_color(color)}
   else
     _8_ = ""
   end

@@ -24,12 +24,12 @@
      " " ""))
 
 (fn terminal-component [term-title]
-  [(tx " " {:guibg :fg :guifg :black})
+  [(tx "  " {:guibg :fg :guifg :black})
    (tx (.. " " term-title " ") {:guifg :fg})])
 
 (fn help-component [props]
   (let [name (vim.fn.fnamemodify (vim.api.nvim_buf_get_name props.buf) ::t)]
-    [(tx " " {:guibg :purple})
+    [(tx "  " {:guibg :purple})
      (tx (.. " " name " ") {:guifg :white})]))
 
 (fn file-component [props]
@@ -37,7 +37,7 @@
         ext (vim.fn.fnamemodify name ::e)
         (icon color) (nvim-web-devicons.get_icon_color name ext {:default true})
         res [(if icon
-                 (tx icon " " {:guibg color :guifg (helpers.contrast_color color)})
+                 (tx " " icon " " {:guibg color :guifg (helpers.contrast_color color)})
                  "")
              (tx name {:gui (if (core.get-in vim [:bo props.buf :modified])
                                 :italic

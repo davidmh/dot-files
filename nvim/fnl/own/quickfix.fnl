@@ -44,20 +44,20 @@
     title))
 
 (fn quickfix-title []
-  [(tx "  " {:guibg :purple :guifg :black})
+  [(tx "  " {:guibg :fg :guifg :black})
    (.. " " (get-quickfix-title) " ")])
 
 (fn quickfix-history-nav []
   (if (> (get-quickfix-history-size) 1)
      [(tx (.. " " qf-older-key " ")
           {:guifg (if (has-older-qf-stack-entry?)
-                      :purple
+                      :fg
                       :fg)})
       (tx (.. (get-quickfix-current-index) "/" (get-quickfix-history-size))
-          {:guifg :purple})
+          {:guifg :fg})
       (tx (.. " " qf-newer-key " ")
           {:guifg (if (has-newer-qf-stack-entry?)
-                      :purple
+                      :fg
                       :fg)})]
      ""))
 
